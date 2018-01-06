@@ -1,0 +1,118 @@
+@charset "utf-8";
+body {
+    color: #333;
+    font: 400 12px/1.6 arial, sans-serif;
+}
+
+#city-select {
+    position: absolute;
+    display: none;
+    z-index: 999999;
+    width: 405px;
+    left: 0px;
+    top: 10px;
+}
+
+#city-select-tab {
+    border-bottom: 1px solid #ccc;
+    border-right: 1px solid #ccc;
+    border-top: 1px solid #ccc;
+    height: 35px;
+    background: #f0f0f0;
+}
+
+#city-select-tab a {
+    font: 400 12px/1.6 arial, sans-serif;
+    float: left;
+    display: inline;
+    margin-bottom: -1px;
+    padding: 8px 0px;
+    width: 100px;
+    color: #4D4D4D;
+    border-left: 1px solid #ccc;
+    border-bottom: 1px solid transparent;
+    text-align: center;
+    text-decoration: none;
+}
+
+#city-select-tab a:hover {
+    color: #EE3131;
+}
+
+#city-select-tab .current {
+    background: #fff;
+    border-bottom: 1px solid #fff;
+    color: #EE3131;
+}
+
+#city-select-tab .last {
+
+}
+
+.city-wrapper {
+    display: none;
+    border: 1px #ccc solid;
+    border-top: 0;
+    padding: 10px 15px;
+    width: 373px;
+    background: #fff;
+    font-size: 12px;
+}
+
+#city-select-content .current {
+    display: block;
+}
+
+#city-select-content a:hover {
+    background-color: #FFD2D2;
+    color: #EE3131;
+}
+
+.city-wrapper dl {
+    line-height: 2;
+    clear: both;
+    padding: 3px 0;
+    margin: 0;
+    overflow: hidden;
+}
+
+.city-wrapper dt {
+    display: inline-block;
+    width: 25px;
+    float: left;
+    padding-right: 10px;
+    font-weight: 700;
+    text-align: right;
+}
+
+.city-wrapper dd {
+    display: inline;
+    float: left;
+    margin-left: 0;
+}
+
+#city-province dd {
+
+}
+
+.city-wrapper a {
+    display: inline-block;
+    color: #4D4D4D;
+    padding: 0 10px;
+    text-decoration: none;
+    margin-right: 2px;
+    border-radius: 2px;
+}
+
+.city-wrapper .selected {
+    background-color: #EE3131;
+    color: #fff;
+}
+
+#city-street .dl.border-top {
+    border-top: 1px solid #ccc;
+}
+
+#city-street span {
+    color: #ccc;
+}

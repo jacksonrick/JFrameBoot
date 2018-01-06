@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>拒绝访问</title>
+    <link rel="shortcut icon" href="/static/theme/images/favicon.ico"/>
+    <link rel="stylesheet" href="/static/common/404/style.css"/>
+</head>
+
+<body onload="cycleTimer();">
+<div class=bg>
+    <div class=cont>
+        <div class=c1>
+            <img class=img1 src="/static/common/404/01.png">
+        </div>
+        <h2>Sorry…您没有权限访问该页面</h2>
+        <DIV class=c2>
+            <a class=re href="/">返回首页</a>
+            <a class=home href="/"><span id="timecount" style="color: red">5</span>秒自动跳转</a>
+        </div>
+        <div class=c3>
+            提醒您 - 您可能输入了错误的网址，或者该网页已删除或移动
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var timer = 5;
+
+    function cycleTimer() {
+        if (timer == 0) {
+            location.href = '/';
+        } else {
+            document.getElementById("timecount").innerHTML = timer;
+            setTimeout(function () {
+                cycleTimer(timer--);
+            }, 1000);
+        }
+    }
+</script>
+</body>
+</html>

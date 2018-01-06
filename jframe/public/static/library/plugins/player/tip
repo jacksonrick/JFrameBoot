@@ -1,0 +1,29 @@
+<script type="text/javascript">
+    var player;
+    function onJSBridge(playerId, event, data) {
+        switch(event) {
+            case "onJavaScriptBridgeCreated":
+                player = document.getElementById(playerId);
+                break;
+            default:
+                break;
+        }
+    }
+    //player.setMediaResourceURL(url)
+
+	var flashvars = {
+		src : "1.mp4",
+		javascriptCallbackFunction : "onJSBridge"
+	};
+
+	var params = {
+		allowFullScreen : true,
+		allowScriptAccess : "always",
+		bgcolor : "#000000"
+	};
+	var attrs = {
+		name : "player"
+	};
+
+	swfobject.embedSWF("GrindPlayer.swf", "player", "100%", "100%", "10.2", null, flashvars, params, attrs);
+</script>

@@ -1,0 +1,31 @@
+server:
+  port: 8082
+spring:
+  profiles:
+    active: dev
+  session:
+    store-type: none
+  application:
+    name: JFRAME-WEB-APP
+management:
+  security:
+    enabled: true
+  port: 9090
+  context-path: /monitor
+security:
+  user:
+    name: cloud
+    password: cloud1234
+  basic:
+    path: /monitor
+endpoints:
+  health:
+    enabled: false
+info:
+  app:
+    name: ${spring.application.name}
+    version: 1.0
+#eureka:
+  #client:
+    #serviceUrl:
+      #defaultZone: http://eureka:eureka1234@127.0.0.1:10000/eureka/

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="COMMON">
+
+	<!-- pagination -->
+	<sql id="PAGE">
+		<if test="pageSort != null and pageSort != ''"> ORDER BY ${pageSort} </if>
+		<if test="page">
+			<if test="pageStart != null and pageSize != null"> LIMIT #{pageStart},#{pageSize} </if>
+		</if>
+	</sql>
+
+	<sql id="ORDER">
+		<if test="pageSort != null and pageSort != ''"> ORDER BY ${pageSort} </if>
+	</sql>
+	
+	<!--
+		<if test="stsArr != null">
+			AND w.state IN <foreach item="idx" collection="stsArr" open="(" separator="," close=")"> #{idx} </foreach>
+		</if> 
+	-->
+
+	<sql id="USER">
+		<if test="keywords != null and keywords != ''">
+			AND (u.nickname = #{keywords} OR u.phone = #{keywords})
+		</if>
+	</sql>
+
+	<sql id="DATE">
+		<if test="startDate != null and startDate != ''">
+			AND DATE_FORMAT(${column},"%Y-%m-%d") &gt;= DATE_FORMAT(#{startDate},"%Y-%m-%d")
+		</if>
+		<if test="endDate != null and endDate != ''">
+			AND DATE_FORMAT(${column},"%Y-%m-%d") &lt;= ADDDATE(DATE_FORMAT(#{endDate},"%Y-%m-%d"),1)
+		</if>
+	</sql>
+
+</mapper>

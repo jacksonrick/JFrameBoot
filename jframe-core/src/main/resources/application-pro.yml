@@ -1,0 +1,113 @@
+logging:
+  config: classpath:logback-boot.xml
+server:
+  session:
+    timeout: 1800
+  tomcat:
+    max-threads: 800
+    uri-encoding: UTF-8
+spring:
+  mvc:
+    static-path-pattern: /static/**
+  http:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 10MB
+  resources:
+    static-locations: classpath:/static/,file:${system.static_path}
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    default-property-inclusion: non_null
+  freemarker:
+    template-loader-path: classpath:/templates
+    cache: false
+    charset: UTF-8
+    settings:
+      template_update_delay: 0
+      default_encoding: UTF-8
+      locale: zh_CN
+      url_escaping_charset: zh_CN
+      date_format: yyyy-MM-dd
+      time_format: HH:mm:ss
+      datetime_format: yyyy-MM-dd HH:mm:ss
+      number_format: 0.##
+      boolean_format: true,false
+      classic_compatible: true
+      whitespace_stripping: true
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://120.79.56.97:3306/jframe?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false
+    username: root
+    password: zhigui.db@apP1688
+    initialSize: 5
+    minIdle: 5
+    maxActive: 20
+    maxWait: 60000
+    timeBetweenEvictionRunsMillis: 60000
+    minEvictableIdleTimeMillis: 300000
+    validationQuery: SELECT 1 FROM DUAL
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    maxOpenPreparedStatements: 20
+    removeAbandoned: true
+    removeAbandonedTimeout: 1800
+  task:
+    corePoolSize: 10
+    maxPoolSize: 30
+  mail:
+    host: smtp.qq.com
+    username: 1@qq.com
+    password: 1
+    properties:
+      mail:
+        smtp:
+          auth: true
+          timeout: 25000
+  redis:
+    host: 172.16.13.151
+    port: 6500
+    password:
+    timeout: 3000
+    pool:
+      max-idle: 50
+      min-idle: 10
+      max-active: 10
+    maxIdle: 50
+    minIdle: 10
+    maxTotal: 500
+    maxWaitMillis: 50
+    testOnBorrow: true
+    testOnReturn: false
+fdfs:
+  connect_timeout: 5
+  network_timeout: 30
+  charset: UTF-8
+  tracker_server: 172.16.13.151
+  tracker_server_port: 22122
+  nginx_server: http://172.16.13.151:22123
+  http:
+    tracker_http_port: 80
+    anti_steal_token: no
+    secret_key: FastDFS1234567890
+system:
+  appkey: 00056cb1d74435076a4c15a490798df4
+  static_host: http://127.0.0.1/
+  static_path: /data/wwwroot/default/app/static/
+  log_path: /data/wwwlogs/
+  aliyun:
+    partner: partner
+    seller: seller@163.com
+    app_id: app_id
+    rsa_private_key: MIICdwIBADANBgkqhkiG9w0BAQEFAASCAmEwggJdAgEAAoGBAN80D1ZAR+ejvrDfo28ST88ZHVQnfSAtNQs4PijfHNw9PDjHNVgn+bk9XtCZafFVPU86DYJRLMfuwSGr0yroPLLDILsVIMjliN3fqz1mt1WdgyGO3bEO/fxHKOO0IrBBWunxu7p0YOXpgrWaQ99QGX4+ZTg7jxFEqswHi6glXELpAgMBAAECgYAc0A+axrmBgXXAR15FnEuJJGjQ0Dgqyyspw5zikcqb85uuiKiuNJrb+rwemW8/pA1CCPBtfiUVuhBcVF3yEAClpR6h8AIdkJ4JVomuR+3aHXQGgdR6wazLvzhFxz+1q9eDU7fu6kNAYtGPi5eI/XfS1t6cFIQD9Kg9Zv0IqUWOMQJBAPj0LGKAZiFtD+V7HoUr1N8vBwvGUb49zzOoigQ6T0JOVXlDv8UTiYG8nyg7OGHtxczgGvfqIeuiA7a72ZTp7OsCQQDlhU7zYaOuk1VIaN0bhOemDkO7CuMvHXR9SjcViVWhz/bHSciB97SUvegNWy8R+VvEJYY7iBz1p4ZfQ0oyksp7AkArYnn9rHyf5J65kiwubwYI4uwqbCRAsArU6NEsjXDUkEwq9tiLoqz69AEUhMV9o28uFfv9KktBAhn9lV0Eq4ODAkEAiAJ7SpZtnKIKQ6KAhDI545lIYaqN/fmCckxsYALGD+Fg56+9decHx6zRujhyqEAQNSfXZ6e9IYVoh0Mk0NtTyQJBAJy420ATl9ICccAAuUhqPAPj394DKMQY5hXT2B4SSgcPaKiqcYgjqMIOUUcZ5Cy/WEF+jbsrmXrEs0HVGViUiqo=
+    public_key: MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDDI6d306Q8fIfCOaTXyiUeJHkrIvYISRcc73s3vF1ZT7XN8RNPwJxo8pWaJMmvyTn9N4HQ632qJBVHf8sxHi/fEsraprwCtzvzQETrNRwVxLO5jVmRGi60j8Ue1efIlzPXV9je9mkjzOmdssymZkh2QhUrCmZYI/FCEa3/cNMW0QIDAQAB
+    notify_url: http://url/alipay_callback.do
+  wechat:
+    pay_partner: partner
+    pay_appid: appid
+    partnerkey: ef0aa966db5bcd212
+    notify_url: http://url/wxpay_callback.do
+  geetest:
+    geetest_id: a53178cc0f5a776e1c7acf9ba0cf1496
+    geetest_key: 51dbc83635e623de97da576c3fb50070

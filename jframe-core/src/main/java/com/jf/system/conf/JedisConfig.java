@@ -1,0 +1,106 @@
+package com.jf.system.conf;
+
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import redis.clients.jedis.JedisPoolConfig;
+import redis.clients.jedis.JedisShardInfo;
+import redis.clients.jedis.ShardedJedisPool;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Created with IntelliJ IDEA.
+ * Description: Redis jedis配置
+ * User: xujunfei
+ * Date: 2017-12-12
+ * Time: 14:28
+ */
+@Configuration
+@ConfigurationProperties(prefix = "spring.redis")
+public class JedisConfig {
+
+    // 主机
+    private String host;
+    // 端口
+    private int port;
+    // 密码（如果需要）
+    private String password;
+    // 超时
+    private int timeout;
+    // 最大空闲
+    private int maxIdle;
+    // 初始化连接数
+    private int minIdle;
+    // 最大等待时间
+    private int maxWaitMillis;
+    // 最大分配的对象数
+    private int maxTotal;
+    // 对拿到的connection进行validateObject校验
+    private boolean testOnBorrow;
+    // 在进行returnObject对返回的connection进行validateObject校验
+    private boolean testOnReturn;
+
+    @Bean
+    public JedisPoolConfig getRedisConfig() {
+        JedisPoolConfig config = new JedisPoolConfig();
+        config.setMaxIdle(maxIdle);
+        config.setMinIdle(minIdle);
+        config.setMaxWaitMillis(maxWaitMillis);
+        config.setMaxTotal(maxTotal);
+        config.setTestOnBorrow(testOnBorrow);
+        config.setTestOnReturn(testOnReturn);
+        return config;
+    }
+
+    @Bean
+    public ShardedJedisPool getShardedJedisPool() {
+        JedisPoolConfig config = getRedisConfig();
+        List<JedisShardInfo> list = new ArrayList<JedisShardInfo>();
+        JedisShardInfo jedis1 = new JedisShardInfo(host, port, timeout);
+        list.add(jedis1);
+        ShardedJedisPool pool = new ShardedJedisPool(config, list);
+        return pool;
+    }
+
+    public void setHost(String host) {
+        this.host = host;
+    }
+
+    public void setPort(int port) {
+        this.port = port;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setTimeout(int timeout) {
+        this.timeout = timeout;
+    }
+
+    public void setMaxIdle(int maxIdle) {
+        this.maxIdle = maxIdle;
+    }
+
+    public void setMinIdle(int minIdle) {
+        this.minIdle = minIdle;
+    }
+
+    public void setMaxWaitMillis(int maxWaitMillis) {
+        this.maxWaitMillis = maxWaitMillis;
+    }
+
+    public void setMaxTotal(int maxTotal) {
+        this.maxTotal = maxTotal;
+    }
+
+    public void setTestOnBorrow(boolean testOnBorrow) {
+        this.testOnBorrow = testOnBorrow;
+    }
+
+    public void setTestOnReturn(boolean testOnReturn) {
+        this.testOnReturn = testOnReturn;
+    }
+}

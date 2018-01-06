@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.jf.mapper.AdminMapper">
+
+	<sql id="adminCondition">
+		<where>
+            <if test="keywords != null and keywords != ''">
+                AND (
+                    a.admin_name = #{keywords} OR
+                    a.admin_realname = #{keywords} OR
+                    a.admin_phone = #{keywords}
+                )
+            </if>
+            <if test="adminName != null and adminName !=''">AND a.admin_name = #{adminName}</if>
+            <if test="roleId != null">AND a.role_id = #{roleId}</if>
+		</where>
+	</sql>
+
+	<sql id="baseColumn">
+		a.id,
+		a.role_id,
+		a.admin_name,
+		a.admin_realname,
+		a.admin_phone,
+		a.admin_create_time,
+		a.admin_login_time,
+		a.admin_login_ip,
+		a.is_delete,
+		a.admin_flag,
+        <include refid="com.jf.mapper.RoleMapper.simpleColumn"/>
+	</sql>
+
+	<resultMap type="admin" id="adminResultMap">
+		<id property="id" column="id" />
+		<result property="roleId" column="role_id" />
+		<result property="adminName" column="admin_name" />
+		<result property="adminRealname" column="admin_realname" />
+		<result property="adminPhone" column="admin_phone" />
+		<result property="adminCreateTime" column="admin_create_time" />
+		<result property="adminLoginTime" column="admin_login_time" />
+		<result property="adminLoginIp" column="admin_login_ip" />
+		<result property="adminFlag" column="admin_flag" />
+		<result property="isDelete" column="is_delete" />
+		<association property="role" javaType="role">
+			<id property="id" column="role_id" />
+			<result property="roleName" column="role_name" />
+			<result property="isDelete" column="role_delete" />
+		</association>
+	</resultMap>
+
+	<select id="findByCondition" resultMap="adminResultMap" parameterType="baseVo">
+		SELECT <include refid="baseColumn"/>
+		FROM s_admin a LEFT JOIN s_role r ON a.role_id = r.id
+		<include refid="adminCondition"/>
+		<include refid="COMMON.ORDER"/>
+	</select>
+
+    <select id="findById" resultMap="adminResultMap" parameterType="long">
+        SELECT <include refid="baseColumn"/>
+        FROM s_admin a LEFT JOIN s_role r ON a.role_id = r.id
+        WHERE a.id = #{id}
+    </select>
+
+	<select id="findCountByKey" resultType="int" parameterType="baseVo">
+		SELECT COUNT(1)
+		FROM s_admin a
+        <include refid="adminCondition"/>
+	</select>
+
+	<select id="findByNameAndPwd" resultMap="adminResultMap" parameterType="string">
+		SELECT <include refid="baseColumn"/>
+		FROM s_admin a LEFT JOIN s_role r ON a.role_id = r.id
+		WHERE a.admin_name = #{adminName} AND a.admin_password = #{adminPassword}
+	</select>
+
+	<insert id="insert" parameterType="admin">
+		INSERT INTO s_admin (
+		  role_id,
+		  admin_name,
+		  admin_realname,
+		  admin_password,
+		  admin_phone
+		)
+		VALUE (
+		  #{roleId},
+		  #{adminName},
+		  #{adminRealname},
+		  #{adminPassword},
+		  #{adminPhone}
+		)
+	</insert>
+
+	<update id="update" parameterType="admin">
+		UPDATE s_admin
+		<set>
+			<if test="roleId != null">role_id = #{roleId},</if>
+			<if test="adminName != null and adminName != ''">admin_name = #{adminName},</if>
+			<if test="adminRealname != null and adminRealname != ''">admin_realname = #{adminRealname},</if>
+			<if test="adminPassword != null and adminPassword != ''">admin_password = #{adminPassword},</if>
+			<if test="adminPhone != null and adminPhone != ''">admin_phone = #{adminPhone},</if>
+			<if test="adminLoginTime != null">admin_login_time = #{adminLoginTime},</if>
+			<if test="adminLoginIp != null and adminLoginIp != ''">admin_login_ip = #{adminLoginIp},</if>
+		</set>
+		WHERE id = #{id}
+	</update>
+
+    <update id="delete" parameterType="long">
+        UPDATE s_admin SET is_delete = !is_delete
+        WHERE id = #{id}
+    </update>
+
+</mapper>

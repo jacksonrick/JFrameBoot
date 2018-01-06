@@ -1,0 +1,22 @@
+#!/bin/bash
+# description: start app
+# author: jackson rick
+
+JARNAME=$1
+JAVAPATH=/usr/local/jdk/bin
+APPATH=/data/wwwroot/app
+
+if  [ ! -n "$JARNAME" ] ;then
+    echo "Usage: $0 appname"
+    exit 1;
+fi
+
+APP_NAME="jframe-web-$JARNAME"
+PID=$(ps -aux | grep ${APP_NAME} | grep -v grep | awk '{print $2}' )
+
+if [ -n "$PID" ];then
+    kill -9 $PID
+fi
+
+exec $JAVAPATH/java -jar $APPATH/$APP_NAME.jar --spring.profiles.active=pro 5 > /opt/run.log &
+echo -e "$APP_NAME is started."

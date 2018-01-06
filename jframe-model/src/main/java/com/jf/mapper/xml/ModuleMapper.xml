@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.jf.mapper.ModuleMapper">
+
+	<resultMap type="module" id="moduleResultMap">
+		<id property="id" column="id" />
+		<result property="parentId" column="parent_id" />
+		<result property="modName" column="mod_name" />
+		<result property="modPath" column="mod_path" />
+		<result property="modIcon" column="mod_icon" />
+		<result property="modFlag" column="mod_flag" />
+	</resultMap>
+
+	<select id="findByCondition" resultMap="moduleResultMap" parameterType="baseVo">
+		SELECT id, parent_id, mod_name, mod_path, mod_icon, mod_flag
+		FROM s_module
+		<where>
+            <if test="flag != null">
+                AND mod_flag IN <foreach item="idx" collection="flag" open="(" separator="," close=")"> #{idx} </foreach>
+            </if>
+            <if test="roleId != null">
+                AND FIND_IN_SET(id, (SELECT role_rights FROM s_role WHERE id = #{roleId}))
+            </if>
+		</where>
+	</select>
+
+	<update id="update" parameterType="module">
+		update s_module
+		<set>
+			<if test="modName != null and modName != ''">mod_name = #{modName},</if>
+			<if test="modPath != null and modPath != ''">mod_path = #{modPath},</if>
+			<if test="modIcon != null">mod_icon = #{modIcon},</if>
+		</set>
+		where id = #{id}
+	</update>
+
+	<insert id="insert" parameterType="module">
+		insert into s_module(
+			parent_id,
+			mod_name,
+			mod_path,
+			mod_icon,
+			mod_flag
+		)
+		value (
+			#{parentId},
+			#{modName},
+			#{modPath},
+			#{modIcon},
+			#{modFlag}
+		)
+	</insert>
+	
+</mapper>

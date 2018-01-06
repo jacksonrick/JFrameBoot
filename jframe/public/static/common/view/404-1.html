@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>404</title>
+    <link rel="shortcut icon" href="/static/theme/images/favicon.ico"/>
+    <style>
+        * {
+            padding: 0px;
+            margin: 0px;
+            font-family: 'Consolas'
+        }
+
+        body {
+            background-color: rgb(47, 75, 89);
+        }
+
+        .main {
+            margin: 200px auto;
+            width: 480px;
+            height: 480px;
+            border: dashed 1px #ffffff;
+        }
+
+        li {
+            display: block;
+            width: 50px;
+            height: 50px;
+            background-color: rgba(0, 0, 0, 0.2);
+            font-size: 18px;
+            line-height: 50px;
+            position: relative;
+            text-align: center;
+            float: left;
+            margin: 3px 0px 0px 3px;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .actives {
+            color: #ffffff;
+            background-color: rgba(26, 188, 156, 0.7);
+            width: 50px;
+            height: 50px;
+            position: absolute;
+            top: -700px;
+            left: 0px;
+            z-index: -1;
+            transition: all 1s ease-in-out 0s;
+        }
+
+        .actives.on {
+            top: 0px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="main">
+    <ul>
+        <li>H</li>
+        <li>D</li>
+        <li>W</li>
+        <li>V</li>
+        <li>Z</li>
+        <li>O</li>
+        <li>P</li>
+        <li>N</li>
+        <li>A</li>
+        <li>W</li>
+        <li>G</li>
+        <li>N</li>
+        <li class="active">4</li>
+        <li class="active">0</li>
+        <li class="active">4</li>
+        <li>Q</li>
+        <li>L</li>
+        <li>K</li>
+        <li>Q</li>
+        <li>C</li>
+        <li>V</li>
+        <li>D</li>
+        <li>M</li>
+        <li>G</li>
+        <li>S</li>
+        <li>V</li>
+        <li>K</li>
+        <li>S</li>
+        <li class="active">P</li>
+        <li class="active">A</li>
+        <li class="active">G</li>
+        <li class="active">E</li>
+        <li>H</li>
+        <li>J</li>
+        <li>N</li>
+        <li>V</li>
+        <li>Z</li>
+        <li>O</li>
+        <li>X</li>
+        <li>S</li>
+        <li>L</li>
+        <li>M</li>
+        <li>V</li>
+        <li>D</li>
+        <li>V</li>
+        <li>R</li>
+        <li class="active">N</li>
+        <li class="active">O</li>
+        <li class="active">T</li>
+        <li>B</li>
+        <li>U</li>
+        <li>Y</li>
+        <li>I</li>
+        <li>O</li>
+        <li>C</li>
+        <li>T</li>
+        <li>V</li>
+        <li>S</li>
+        <li>J</li>
+        <li>G</li>
+        <li>K</li>
+        <li>H</li>
+        <li>U</li>
+        <li>N</li>
+        <li>Y</li>
+        <li class="active">F</li>
+        <li class="active">O</li>
+        <li class="active">U</li>
+        <li class="active">N</li>
+        <li class="active">D</li>
+        <li>L</li>
+        <li>D</li>
+        <li>E</li>
+        <li>R</li>
+        <li>X</li>
+        <li>V</li>
+        <li>M</li>
+        <li>I</li>
+        <li>P</li>
+        <li>Y</li>
+        <li>P</li>
+    </ul>
+</div>
+
+<script src="/static/library/jquery/jquery-1.11.2.min.js"></script>
+<script>
+    $(function () {
+        var $dom = $("ul li.active");
+        for (var i = 0; i < $dom.length; i++) {
+            (function ($this, i) {
+                setTimeout(function () {
+                    $this.append("<div class='actives' id='div" + i + "'></div>");
+                    $("#div" + i).animate({top: "0px"}, 100);
+                }, i * 100)
+            })($($dom[i]), i)
+        }
+    });
+</script>
+
+</body>
+</html>
