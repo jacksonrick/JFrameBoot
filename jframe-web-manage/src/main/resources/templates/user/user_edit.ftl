@@ -111,7 +111,7 @@
 <script type="text/javascript">
     $(function () {
         datePicker("#birthday", "yyyy-mm-dd", 2);
-        cityPicker("#city-picker", "distrdict", "address");
+        cityPicker("#city-picker", "district", "code");
         var index = parent.layer.getFrameIndex(window.name);
 
         $("#avatar").Uploader({

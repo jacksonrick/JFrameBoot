@@ -17,9 +17,9 @@ import java.util.Map;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class ApplicationTests {
+public class ManageTests {
 
-    @Test
+    @org.junit.Test
     public void test() {
 
     }

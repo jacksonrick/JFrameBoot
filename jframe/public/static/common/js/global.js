@@ -1,6 +1,7 @@
 /********************
  * @Author jfxu
- * <p> need:jquery.js/layer.js/dropzone.js/toastr.js </p>
+ * <p> need:jquery.js </p>
+ * <p> plugins:layer.js/dropzone.js/toastr.js </p>
  ********************/
 
 /*******************************************************************************
@@ -455,7 +456,8 @@ function checkRE(sel, reExp) {
 function cityPicker(id, level, type) {
     $.ajaxSetup({cache: true});
     addCSS("/static/library/plugins/city-picker/city-picker.css");
-    $.getScript("/static/library/plugins/city-picker/city-picker.data.js", function () {
+    // 如仅省市区，则引用city-picker.data.js
+    $.getScript("/static/library/plugins/city-picker/city-picker.data.all.js", function () {
         $.getScript("/static/library/plugins/city-picker/city-picker.js", function () {
             var $citypicker = $(id);
             $citypicker.citypicker({

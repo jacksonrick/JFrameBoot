@@ -5,6 +5,8 @@ import com.jf.date.DateUtil;
 import com.jf.system.PathUtil;
 import org.apache.tools.zip.ZipEntry;
 import org.apache.tools.zip.ZipFile;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -27,8 +29,8 @@ public class FileUtil {
      * @param path
      * @return
      */
-    public static List<Directory> getDirectory(String path) {
-        String parent = PathUtil.static_path + path;
+    public static List<Directory> getDirectory(String path, String parent) {
+        parent += path;
         List<Directory> list = new ArrayList<Directory>();
         File f = new File(parent);
         File[] files = f.listFiles();
@@ -68,9 +70,8 @@ public class FileUtil {
      *
      * @return
      */
-    public static List<Map<String, String>> getLogFileList() {
+    public static List<Map<String, String>> getLogFileList(String logPath) {
         List<Map<String, String>> list = new ArrayList<Map<String, String>>();
-        String logPath = PathUtil.log_path;
         File file = new File(logPath);
         File[] fs = file.listFiles();
         if (fs == null) {

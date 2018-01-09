@@ -187,7 +187,7 @@ public class GenerateBeansAndMybatisUtil {
      */
     private String processField(String field) {
         StringBuffer sb = new StringBuffer(field.length());
-        // field = field.toLowerCase();
+        field = field.toLowerCase();
         String[] fields = field.split("_");
         String temp = null;
         sb.append(fields[0]);

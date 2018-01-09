@@ -203,6 +203,26 @@ public class User extends BaseVo implements Serializable {
         return this.isDelete;
     }
 
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", nickname='" + nickname + '\'' +
+                ", phone='" + phone + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", avatar='" + avatar + '\'' +
+                ", money=" + money +
+                ", createTime=" + createTime +
+                ", lastLoginTime=" + lastLoginTime +
+                ", realname='" + realname + '\'' +
+                ", idcard='" + idcard + '\'' +
+                ", gender=" + gender +
+                ", address='" + address + '\'' +
+                ", birthday='" + birthday + '\'' +
+                ", isDelete=" + isDelete +
+                '}';
+    }
 }
 
 

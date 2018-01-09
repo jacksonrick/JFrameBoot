@@ -27,8 +27,7 @@ public class ViewPDF extends AbstractPdfView {
     @SuppressWarnings("rawtypes")
     @Override
     protected void buildPdfDocument(Map<String, Object> map, Document document, PdfWriter pdfWriter,
-                                    HttpServletRequest request,
-                                    HttpServletResponse response) throws Exception {
+                                    HttpServletRequest request, HttpServletResponse response) throws Exception {
         String pdfName = map.get("pname") + ".pdf";
         // 设置response方式,使执行此controller时候自动出现下载页面
         response.setContentType("APPLICATION/OCTET-STREAM");

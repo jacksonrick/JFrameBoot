@@ -1,10 +1,14 @@
 package com.jf.system.third.wechat;
 
 import com.alibaba.fastjson.JSON;
+import com.jf.system.LogManager;
 import com.jf.system.conf.SysConfig;
+import com.wechat.WXUtil;
 import com.wechat.util.HttpUtils;
 import com.wechat.util.XMLUtil;
+import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.SortedMap;
@@ -13,17 +17,20 @@ import java.util.TreeMap;
 /**
  * Created on 16/6/29.
  */
-public class WxPayUtil {
+@Component
+public class WxPayService {
+
+    @Resource
+    private SysConfig config;
 
     /**
-     * @param ip IP地址
+     * @param ip       IP地址
      * @param body
-     * @param price 价格
+     * @param price    价格
      * @param orderNum 订单编号
-     * @param url 回调地址
      * @return
      */
-    public static String wxPay(String ip, String body, Double price, String orderNum, String url) {
+    public String wxPay(String ip, String body, Double price, String orderNum) {
         Map<Object, Object> resInfo = new HashMap<Object, Object>();
         SortedMap<Object, Object> parameters = new TreeMap<Object, Object>();
         int retcode;
@@ -36,8 +43,8 @@ public class WxPayUtil {
         //设置package订单参数
         //packageReqHandler.setParameter("bank_type", "WX");//银行渠道
         parameters.put("body", body); //商品描述
-        parameters.put("notify_url", url); //接收财付通通知的URL
-        parameters.put("mch_id", SysConfig.mch_id); //商户号
+        parameters.put("notify_url", config.getWechat().getNotifyUrl()); //接收财付通通知的URL
+        parameters.put("mch_id", config.getWechat().getPartner()); //商户号
         parameters.put("out_trade_no", orderNum); //商家订单号+随机数 = 支付流水号
         parameters.put("total_fee", (int) (price * 100) + ""); //商品金额,以分为单位
         //parameters.put("spbill_create_ip",HttpUtils.getIpAddr(request)); //订单生成的机器IP，指用户浏览器端IP
@@ -47,11 +54,11 @@ public class WxPayUtil {
 
         String noncestr = WXUtil.getNonceStr();
         ////设置获取prepayid支付参数
-        parameters.put("appid", SysConfig.APP_ID);
+        parameters.put("appid", config.getWechat().getAppid());
         parameters.put("nonce_str", noncestr);
 
         //生成获取预支付签名
-        String sign = WXUtil.createSign(parameters);
+        String sign = WXUtil.createSign(parameters, config.getWechat().getPartner());
         //增加非参与签名的额外参数
         parameters.put("sign", sign);
         resInfo.put("retmsg", WXUtil.getXmlBody(parameters));
@@ -69,21 +76,22 @@ public class WxPayUtil {
 
         SortedMap<Object, Object> finalpackage = new TreeMap<Object, Object>();
         String timestamp = WXUtil.getTimeStamp();
-        finalpackage.put("appid", SysConfig.APP_ID);
+        finalpackage.put("appid", config.getWechat().getAppid());
         finalpackage.put("timestamp", timestamp);
         finalpackage.put("noncestr", noncestr);
-        finalpackage.put("partnerid", SysConfig.mch_id);
+        finalpackage.put("partnerid", config.getWechat().getPartner());
         finalpackage.put("package", "Sign=WXPay");
         try {
             Map map = XMLUtil.doXMLParse(s);
             finalpackage.put("prepayid", map.get("prepay_id"));
             if (map.get("return_code").equals("FAIL")) {
+                LogManager.error(map.toString(), WxPayService.class);
                 throw new Exception();
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        String finalsign = WXUtil.createSign(finalpackage);
+        String finalsign = WXUtil.createSign(finalpackage, config.getWechat().getPartner());
         finalpackage.put("sign", finalsign);
 
         return JSON.toJSONString(finalpackage);

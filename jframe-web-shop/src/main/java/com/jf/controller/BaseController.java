@@ -2,20 +2,18 @@ package com.jf.controller;
 
 import com.jf.entity.ResMsg;
 import com.jf.model.User;
-import com.jf.service.system.SystemService;
 import com.jf.system.Constant;
 import com.jf.system.LogManager;
 import com.jf.system.conf.SysConfig;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.util.WebUtils;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * controller基类
@@ -24,9 +22,6 @@ import javax.servlet.http.HttpServletResponse;
  * @version 1.0
  */
 public class BaseController extends Constant {
-
-    @Resource
-    private SystemService systemService;
 
     /**
      * 获取当前用户
@@ -55,7 +50,7 @@ public class BaseController extends Constant {
     @ResponseBody
     public Object exceptionHandler(Exception exception, HttpServletRequest request, HttpServletResponse response) {
         // 跟踪错误信息
-        LogManager.error("front error log", exception);
+        LogManager.error("manage error log", exception);
         String requestType = request.getHeader("X-Requested-With");
         String appHeader = request.getHeader("Req-Type");
         if (appHeader != null && "APP".equals(appHeader)) {
@@ -64,7 +59,9 @@ public class BaseController extends Constant {
         if (requestType != null && "XMLHttpRequest".equalsIgnoreCase(requestType)) {
             return new ResMsg(-1, SERVER_ERROR);
         } else {
-            return null;
+            Map map = new HashMap();
+            map.put("msg", exception.toString());
+            return new ModelAndView("error/500", map);
         }
     }
 

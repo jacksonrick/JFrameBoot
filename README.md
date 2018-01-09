@@ -1,7 +1,7 @@
 # JFrame
-##### JFrame - SpringBoot & Cloud Project `v4.1`
+##### JFrame - SpringBoot & Cloud Project `v4.2`
 `jackson-rick`   <br>
-`https://github.com/jacksonrick/JFrame`
+`https://github.com/jacksonrick/JFrameBoot`
 
 ### 模块
 * jframe `文档/配置/共享静态资源`
@@ -32,6 +32,10 @@
     * Demo：`jframe-web-front/../WEB-INF/demo/`
 
 ### 更新日志：
+* v4.2 `20180109`
+    * 1.集成spring activemq
+    * 2.集成boot-admin服务监控[front]
+    * 3.优化代码和目录结构
 * v4.1 `20180104`
     * 1.集成Spring Redisson分布式事务
     * 2.Spring Session Redis管理

@@ -1,5 +1,6 @@
 package com.jf.controller;
 
+import com.jf.email.EmailService;
 import com.jf.entity.ResMsg;
 import com.jf.model.User;
 import com.jf.service.user.UserService;
@@ -19,6 +20,8 @@ public class TestController extends BaseController {
 
     @Resource
     private SMService smService;
+    @Resource
+    private EmailService emailService;
 
     @Resource
     private UserService userService;
@@ -52,6 +55,12 @@ public class TestController extends BaseController {
         return new ResMsg(0, SUCCESS);
     }
 
+    @GetMapping("/testEmail")
+    public ResMsg testEmail() {
+        emailService.sendTemplateMail(null, "80222@qq.com", "123", "email_register");
+        return new ResMsg(0, SUCCESS);
+    }
+
 
     @GetMapping("/testSetSession")
     public ResMsg testSetSession(HttpSession session) {
@@ -66,7 +75,7 @@ public class TestController extends BaseController {
 
     @GetMapping("/testLock")
     public ResMsg testLock() {
-        userService.testLock(10000l);
+        //userService.testLock(10000l);
         return new ResMsg(0, SUCCESS);
     }
 

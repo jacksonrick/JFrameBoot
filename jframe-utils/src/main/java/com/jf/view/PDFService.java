@@ -21,7 +21,7 @@ import java.util.Map;
  * @version 2.0
  */
 @Component
-public class PDFUtil {
+public class PDFService {
 
     @Autowired
     private FreeMarkerConfigurer freeMarkerConfigurer;
@@ -33,14 +33,14 @@ public class PDFUtil {
      * @param map 数据
      * @return
      */
-    public String pdfCreate(String ftl, Map<String, Object> map) {
+    public String pdfCreate(String ftl, Map<String, Object> map, String staticPath) {
         try {
             // 存储目录
-            String basePath = PathUtil.static_path + "upload/pdf/";
+            String basePath = staticPath + "upload/pdf/";
             String fileName = StringUtil.randomFilename();
             String target = "/static/upload/pdf/";
 
-            Template temp = freeMarkerConfigurer.getConfiguration().getTemplate(ftl + ".ftl");
+            Template temp = freeMarkerConfigurer.getConfiguration().getTemplate("pdf/" + ftl + ".ftl");
 
 			/* 创建数据模型 */
             // Map<String, Object> root = new HashMap<String, Object>();

@@ -16,12 +16,19 @@ import com.alipay.api.response.AlipayFundTransToaccountTransferResponse;
 import com.alipay.api.response.AlipayTradeAppPayResponse;
 import com.alipay.api.response.AlipayTradeRefundResponse;
 import com.jf.system.conf.SysConfig;
+import org.springframework.stereotype.Component;
+
+import javax.annotation.Resource;
 
 /**
  * 支付宝
  * Created on 16/6/20.
  */
-public class AliPayUtil {
+@Component
+public class AliPayService {
+
+    @Resource
+    private SysConfig config;
 
     /**
      * 下单
@@ -32,9 +39,9 @@ public class AliPayUtil {
      * @param orderNum
      * @return
      */
-    public static String alipay(String body, String subject, Double price, String orderNum) {
+    public String alipay(String body, String subject, Double price, String orderNum) {
         AlipayClient alipayClient = new DefaultAlipayClient("https://openapi.alipay.com/gateway.do",
-                SysConfig.appid, SysConfig.rsa_private_key, "json", "utf-8", SysConfig.alipay_public_key, "RSA");
+                config.getAliyun().getAppId(), config.getAliyun().getRsaPrivateKey(), "json", "utf-8", config.getAliyun().getPublicKey(), "RSA");
 
         AlipayTradeAppPayRequest request = new AlipayTradeAppPayRequest();
         AlipayTradeAppPayModel model = new AlipayTradeAppPayModel();
@@ -45,7 +52,7 @@ public class AliPayUtil {
         model.setTotalAmount(price + "");
         model.setProductCode("QUICK_MSECURITY_PAY");
         request.setBizModel(model);
-        request.setNotifyUrl(SysConfig.notify_url);
+        request.setNotifyUrl(config.getAliyun().getNotifyUrl());
         try {
             AlipayTradeAppPayResponse response = alipayClient.sdkExecute(request);
             return response.getBody();
@@ -64,9 +71,9 @@ public class AliPayUtil {
      * @param realname
      * @return
      */
-    public static String transfer(String orderNum, Double price, String account, String realname) {
+    public String transfer(String orderNum, Double price, String account, String realname) {
         AlipayClient alipayClient = new DefaultAlipayClient("https://openapi.alipay.com/gateway.do",
-                SysConfig.appid, SysConfig.rsa_private_key, "json", "utf-8", SysConfig.alipay_public_key, "RSA");
+                config.getAliyun().getAppId(), config.getAliyun().getRsaPrivateKey(), "json", "utf-8", config.getAliyun().getPublicKey(), "RSA");
 
         try {
             AlipayFundTransToaccountTransferRequest request = new AlipayFundTransToaccountTransferRequest();
@@ -99,9 +106,9 @@ public class AliPayUtil {
      * @param thirdNum
      * @return
      */
-    public static Boolean check(String orderNum, String thirdNum) {
+    public Boolean check(String orderNum, String thirdNum) {
         AlipayClient alipayClient = new DefaultAlipayClient("https://openapi.alipay.com/gateway.do",
-                SysConfig.appid, SysConfig.rsa_private_key, "json", "utf-8", SysConfig.alipay_public_key, "RSA");
+                config.getAliyun().getAppId(), config.getAliyun().getRsaPrivateKey(), "json", "utf-8", config.getAliyun().getPublicKey(), "RSA");
 
         try {
             AlipayFundTransOrderQueryRequest request = new AlipayFundTransOrderQueryRequest();
@@ -129,9 +136,9 @@ public class AliPayUtil {
      * @param reason
      * @return
      */
-    public static String refund(String orderNum, String thirdNum, Double price, String reason) {
+    public String refund(String orderNum, String thirdNum, Double price, String reason) {
         AlipayClient alipayClient = new DefaultAlipayClient("https://openapi.alipay.com/gateway.do",
-                SysConfig.appid, SysConfig.rsa_private_key, "json", "utf-8", SysConfig.alipay_public_key, "RSA");
+                config.getAliyun().getAppId(), config.getAliyun().getRsaPrivateKey(), "json", "utf-8", config.getAliyun().getPublicKey(), "RSA");
 
         try {
             AlipayTradeRefundRequest request = new AlipayTradeRefundRequest();

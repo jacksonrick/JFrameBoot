@@ -1,6 +1,5 @@
-package com.jf.system.third.wechat;
+package com.wechat;
 
-import com.jf.system.conf.SysConfig;
 import com.wechat.util.TenpayUtil;
 import com.wechat.util.XMLUtil;
 
@@ -49,11 +48,11 @@ public class ResponseHandler {
      * @param request
      * @param response
      */
-    public ResponseHandler(HttpServletRequest request, HttpServletResponse response) {
+    public ResponseHandler(HttpServletRequest request, HttpServletResponse response, String partnerKey) {
         this.request = request;
         this.response = response;
 
-        this.key = SysConfig.PARTNER_KEY;
+        this.key = partnerKey;
         this.parameters = new TreeMap();
         this.debugInfo = "";
 
@@ -132,7 +131,7 @@ public class ResponseHandler {
     public boolean isTenpaySign() {
 
         //算出摘要
-        String sign = WXUtil.createSign(this.parameters);
+        String sign = WXUtil.createSign(this.parameters, this.key);
 
         String tenpaySign = this.getParameter("sign").toUpperCase();
 

@@ -1,8 +1,8 @@
 package com.jf.system.conf;
 
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.stereotype.Component;
+import org.springframework.context.annotation.Configuration;
 
 /**
  * Created with IntelliJ IDEA.
@@ -11,7 +11,8 @@ import org.springframework.stereotype.Component;
  * Date: 2017-11-28
  * Time: 15:52
  */
-@Component
+@Configuration
+@ConfigurationProperties(prefix = "system")
 public class SysConfig {
 
     // 每页显示数量->BaseVo
@@ -31,132 +32,245 @@ public class SysConfig {
     //// 以下来自 application.yml 自定义配置
 
     // app key
-    public static String appkey;
-
+    private String appkey;
     // 静态文件IP地址
-    public static String static_host;
-
+    private String staticHost;
     // 静态文件目录,以 / 结尾
-    public static String static_path;
-
+    private String staticPath;
     // 日志文件目录,以 / 结尾
-    public static String log_path;
+    private String logPath;
+    // 支付宝
+    private SysConfig.Aliyun aliyun;
+    // 微信
+    private SysConfig.Wechat wechat;
+    // 极验验证
+    private SysConfig.Geetest geetest;
 
-    // 支付宝-合作身份者ID，以2088开头由16位纯数字组成的字符串
-    public static String partner;
+    public String getAppkey() {
+        return appkey;
+    }
 
-    // 支付宝-APPID
-    public static String appid;
-
-    // 支付宝-账号
-    public static String seller;
-
-    // 支付宝-接收通知的接口
-    public static String notify_url;
-
-    // 支付宝-商户私钥,需要PKCS8格式,使用支付宝提供工具生成
-    public static String rsa_private_key;
-
-    // 支付宝-公钥，使用支付宝提供工具生成后上传至开发者平台=>点击查看支付宝公钥=>复制
-    public static String alipay_public_key;
-
-    // 微信-在开发平台登记的app应用
-    public static String APP_ID;
-
-    // 微信-商户号
-    public static String mch_id;
-
-    // 微信-商户在微信平台设置的32位长度的api秘钥
-    public static String PARTNER_KEY;
-
-    // 微信-异步通知地址
-    public static String pay_notify_url;
-
-    // geet验证-id
-    public static String geetest_id;
-
-    // geet验证-key
-    public static String geetest_key;
-
-    ////// 注意，Set方法必须为非静态方法，调用：SysConfig.name
-
-    @Value("${system.appkey}")
     public void setAppkey(String appkey) {
-        SysConfig.appkey = appkey;
+        this.appkey = appkey;
     }
 
-    @Value("${system.static_host}")
-    public void setStatic_host(String static_host) {
-        SysConfig.static_host = static_host;
+    public String getStaticHost() {
+        return staticHost;
     }
 
-    @Value("${system.static_path}")
-    public void setStatic_path(String static_path) {
-        SysConfig.static_path = static_path;
+    public void setStaticHost(String staticHost) {
+        this.staticHost = staticHost;
     }
 
-    @Value("${system.log_path}")
-    public void setLog_path(String log_path) {
-        SysConfig.log_path = log_path;
+    public String getStaticPath() {
+        return staticPath;
     }
 
-    @Value("${system.aliyun.partner}")
-    public void setPartner(String partner) {
-        SysConfig.partner = partner;
+    public void setStaticPath(String staticPath) {
+        this.staticPath = staticPath;
     }
 
-    @Value("${system.aliyun.app_id}")
-    public void setAppid(String appid) {
-        SysConfig.appid = appid;
+    public String getLogPath() {
+        return logPath;
     }
 
-    @Value("${system.aliyun.seller}")
-    public void setSeller(String seller) {
-        SysConfig.seller = seller;
+    public void setLogPath(String logPath) {
+        this.logPath = logPath;
     }
 
-    @Value("${system.aliyun.notify_url}")
-    public void setNotify_url(String notify_url) {
-        SysConfig.notify_url = notify_url;
+    @Override
+    public String toString() {
+        return "SysConfig{" +
+                "appkey='" + appkey + '\'' +
+                ", staticHost='" + staticHost + '\'' +
+                ", staticPath='" + staticPath + '\'' +
+                ", logPath='" + logPath + '\'' +
+                '}';
     }
 
-    @Value("${system.aliyun.rsa_private_key}")
-    public void setRsa_private_key(String rsa_private_key) {
-        SysConfig.rsa_private_key = rsa_private_key;
+    // internal java config
+
+    public SysConfig.Aliyun getAliyun() {
+        return aliyun;
     }
 
-    @Value("${system.aliyun.public_key}")
-    public void setAlipay_public_key(String alipay_public_key) {
-        SysConfig.alipay_public_key = alipay_public_key;
+    public void setAliyun(SysConfig.Aliyun aliyun) {
+        this.aliyun = aliyun;
     }
 
-    @Value("${system.wechat.pay_appid}")
-    public void setAppId(String appId) {
-        APP_ID = appId;
+    public SysConfig.Wechat getWechat() {
+        return wechat;
     }
 
-    @Value("${system.wechat.pay_partner}")
-    public void setMch_id(String mch_id) {
-        SysConfig.mch_id = mch_id;
+    public void setWechat(SysConfig.Wechat wechat) {
+        this.wechat = wechat;
     }
 
-    @Value("${system.wechat.partnerkey}")
-    public void setPartnerKey(String partnerKey) {
-        PARTNER_KEY = partnerKey;
+    public SysConfig.Geetest getGeetest() {
+        return geetest;
     }
 
-    @Value("${system.wechat.notify_url}")
-    public void setPay_notify_url(String pay_notify_url) {
-        SysConfig.pay_notify_url = pay_notify_url;
+    public void setGeetest(SysConfig.Geetest geetest) {
+        this.geetest = geetest;
     }
 
-    @Value("${system.geetest.geetest_id}")
-    public void setGeetest_id(String geetest_id) {
-        SysConfig.geetest_id = geetest_id;
+    public static class Aliyun {
+        // 支付宝-合作身份者ID，以2088开头由16位纯数字组成的字符串
+        private String partner;
+        // 支付宝-APPID
+        private String appId;
+        // 支付宝-账号
+        private String seller;
+        // 支付宝-接收通知的接口
+        private String notifyUrl;
+        // 支付宝-商户私钥,需要PKCS8格式,使用支付宝提供工具生成
+        private String rsaPrivateKey;
+        // 支付宝-公钥，使用支付宝提供工具生成后上传至开发者平台=>点击查看支付宝公钥=>复制
+        private String publicKey;
+
+        public String getPartner() {
+            return partner;
+        }
+
+        public void setPartner(String partner) {
+            this.partner = partner;
+        }
+
+        public String getAppId() {
+            return appId;
+        }
+
+        public void setAppId(String appId) {
+            this.appId = appId;
+        }
+
+        public String getSeller() {
+            return seller;
+        }
+
+        public void setSeller(String seller) {
+            this.seller = seller;
+        }
+
+        public String getNotifyUrl() {
+            return notifyUrl;
+        }
+
+        public void setNotifyUrl(String notifyUrl) {
+            this.notifyUrl = notifyUrl;
+        }
+
+        public String getRsaPrivateKey() {
+            return rsaPrivateKey;
+        }
+
+        public void setRsaPrivateKey(String rsaPrivateKey) {
+            this.rsaPrivateKey = rsaPrivateKey;
+        }
+
+        public String getPublicKey() {
+            return publicKey;
+        }
+
+        public void setPublicKey(String publicKey) {
+            this.publicKey = publicKey;
+        }
+
+        @Override
+        public String toString() {
+            return "Aliyun{" +
+                    "partner='" + partner + '\'' +
+                    ", appId='" + appId + '\'' +
+                    ", seller='" + seller + '\'' +
+                    ", notifyUrl='" + notifyUrl + '\'' +
+                    ", rsaPrivateKey='" + rsaPrivateKey + '\'' +
+                    ", publicKey='" + publicKey + '\'' +
+                    '}';
+        }
     }
 
-    @Value("${system.geetest.geetest_key}")
-    public void setGeetest_key(String geetest_key) {
-        SysConfig.geetest_key = geetest_key;
+    public static class Wechat{
+        // 微信-在开发平台登记的app应用
+        private String appid;
+        // 微信-商户号
+        private String partner;
+        // 微信-商户在微信平台设置的32位长度的api秘钥
+        private String partnerKey;
+        // 微信-异步通知地址
+        private String notifyUrl;
+
+        public String getAppid() {
+            return appid;
+        }
+
+        public void setAppid(String appid) {
+            this.appid = appid;
+        }
+
+        public String getPartner() {
+            return partner;
+        }
+
+        public void setPartner(String partner) {
+            this.partner = partner;
+        }
+
+        public String getPartnerKey() {
+            return partnerKey;
+        }
+
+        public void setPartnerKey(String partnerKey) {
+            this.partnerKey = partnerKey;
+        }
+
+        public String getNotifyUrl() {
+            return notifyUrl;
+        }
+
+        public void setNotifyUrl(String notifyUrl) {
+            this.notifyUrl = notifyUrl;
+        }
+
+        @Override
+        public String toString() {
+            return "Wechat{" +
+                    "appid='" + appid + '\'' +
+                    ", partner='" + partner + '\'' +
+                    ", partnerKey='" + partnerKey + '\'' +
+                    ", notifyUrl='" + notifyUrl + '\'' +
+                    '}';
+        }
     }
+
+    public static class Geetest{
+        // geet验证-id
+        private String id;
+        // geet验证-key
+        private String key;
+
+        public String getId() {
+            return id;
+        }
+
+        public void setId(String id) {
+            this.id = id;
+        }
+
+        public String getKey() {
+            return key;
+        }
+
+        public void setKey(String key) {
+            this.key = key;
+        }
+
+        @Override
+        public String toString() {
+            return "Geetest{" +
+                    "id='" + id + '\'' +
+                    ", key='" + key + '\'' +
+                    '}';
+        }
+    }
+
 }

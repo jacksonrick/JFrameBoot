@@ -4,13 +4,13 @@ import com.github.pagehelper.PageInfo;
 import com.jf.entity.ResMsg;
 import com.jf.model.User;
 import com.jf.model.custom.IdText;
-import com.jf.page.Pagination;
 import com.jf.service.user.UserService;
 import com.jf.sms.SMService;
 import com.jf.string.StringUtil;
+import com.jf.system.conf.SysConfig;
 import com.jf.system.job.QuartzManager;
 import com.jf.system.job.TestQuartz;
-import com.jf.view.PDFUtil;
+import com.jf.view.PDFService;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.quartz.SchedulerFactory;
@@ -37,7 +37,9 @@ public class TestController extends BaseController {
     @Resource
     private SMService smService;
     @Resource
-    private PDFUtil pdfUtil;
+    private PDFService pdfService;
+    @Resource
+    private SysConfig sysConfig;
 
     @RequestMapping("/demo/{path}")
     public String demo(@PathVariable("path") String path) {
@@ -126,7 +128,7 @@ public class TestController extends BaseController {
             // 导入数据
             Map<String, Object> map = new HashMap<String, Object>();
             map.put("name", "xujunfei");
-            String str = pdfUtil.pdfCreate("pdf_user", map);
+            String str = pdfService.pdfCreate("pdf_user", map, sysConfig.getStaticPath());
             if ("error".equals(str)) {
                 return new ResMsg(0, "转换失败");
             }

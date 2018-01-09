@@ -31,7 +31,7 @@ public class SMService {
         String text = "";
         try {
             // 通过指定模板名获取FreeMarker模板实例
-            Template tpl = freeMarkerConfigurer.getConfiguration().getTemplate(templateName + ".ftl");
+            Template tpl = freeMarkerConfigurer.getConfiguration().getTemplate("sms/" + templateName + ".ftl");
             text = FreeMarkerTemplateUtils.processTemplateIntoString(tpl, root);
         } catch (Exception e) {
             e.printStackTrace();

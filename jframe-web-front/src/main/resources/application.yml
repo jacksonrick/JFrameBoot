@@ -19,7 +19,7 @@ spring:
 management:
   security:
     enabled: false # spring-boot 1.5.2之后严格执行安全策略
-  port: 9090
+  #port: 9090
   context-path: /monitor
 security: # spring安全设置
   basic: # 启用|关闭安全

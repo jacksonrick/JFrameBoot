@@ -26,15 +26,12 @@ public class UserService {
     @Resource
     private UserMapper userMapper;
 
-    @Resource
-    private RedisLocker locker;
-
     /**
      * 测试Redisson分布式锁
      *
      * @param userId
      */
-    public void testLock(Long userId) {
+    /*public void testLock(Long userId) {
         try {
             locker.lock("user_" + userId + "_lock", new AquiredLockWorker<Object>() {
                 @Override
@@ -50,7 +47,7 @@ public class UserService {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
+    }*/
 
     /**
      * 按id查询用户

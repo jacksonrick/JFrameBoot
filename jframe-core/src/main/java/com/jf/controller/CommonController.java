@@ -15,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.annotation.Resource;
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -41,11 +42,14 @@ public class CommonController {
     // 图片大小
     private Integer imageSize = 3;
     // 图片类型
-    String[] imgType = new String[]{"jpg", "jpeg", "png"};
+    private String[] imgType = new String[]{"jpg", "jpeg", "png"};
     // 文件大小【非图片】
     private Integer fileSize = 10;
     // 文件类型
-    String[] fileType = new String[]{"zip", "rar", "txt"};
+    private String[] fileType = new String[]{"zip", "rar", "txt"};
+
+    @Resource
+    private SysConfig config;
 
     /**
      * geetest验证
@@ -56,7 +60,7 @@ public class CommonController {
     @RequestMapping("/startCaptcha")
     @ResponseBody
     public Map<String, Object> startCaptcha(HttpServletRequest request) {
-        GeetestLib gtSdk = new GeetestLib(SysConfig.geetest_id, SysConfig.geetest_key, true);
+        GeetestLib gtSdk = new GeetestLib(config.getGeetest().getId(), config.getGeetest().getKey(), true);
         int gtServerStatus = gtSdk.preProcess();
         request.getSession().setAttribute(gtSdk.gtServerStatusSessionKey, gtServerStatus);
         return gtSdk.getResponse();
@@ -150,7 +154,7 @@ public class CommonController {
 
         if (upload == 1) {
             String basePathFormat = DateUtil.getYearAndMonth(false);
-            String uploadPath = SysConfig.static_path + "upload/" + basePathFormat;
+            String uploadPath = config.getStaticPath() + "upload/" + basePathFormat;
             String filename = StringUtil.randomFilename(file.getOriginalFilename());
             // String realPath = request.getSession().getServletContext().getRealPath("/" + uploadPath + basePathFormat);
             File filePath = new File(uploadPath);
@@ -158,7 +162,7 @@ public class CommonController {
                 filePath.mkdirs();
             }
             FileUtils.copyInputStreamToFile(file.getInputStream(), new File(filePath, filename));
-            return new UploadRet(0, SysConfig.static_host + "static/upload/" + basePathFormat + "/" + filename, "SUCCESS");
+            return new UploadRet(0, config.getStaticPath() + "static/upload/" + basePathFormat + "/" + filename, "SUCCESS");
         } else {
             FastDFSFile dfs = new FastDFSFile(FDFSUtil.waterMark(file, suffix), suffix);
             // 参数数组
@@ -215,7 +219,7 @@ public class CommonController {
             if (t == 2) { // 文件
                 dirPath = "upload/file/" + basePathFormat;
             }
-            String uploadPath = SysConfig.static_path + dirPath;
+            String uploadPath = config.getStaticPath() + dirPath;
             String filename = StringUtil.randomFilename(file.getOriginalFilename());
             // String realPath = request.getSession().getServletContext().getRealPath("/" + uploadPath + basePathFormat);
             File filePath = new File(uploadPath);
@@ -223,7 +227,7 @@ public class CommonController {
                 filePath.mkdirs();
             }
             FileUtils.copyInputStreamToFile(file.getInputStream(), new File(filePath, filename));
-            return new UploadRet(0, SysConfig.static_host + "static/" + dirPath + "/" + filename, "SUCCESS");
+            return new UploadRet(0, config.getStaticPath() + "static/" + dirPath + "/" + filename, "SUCCESS");
         } else {
             FastDFSFile dfs;
             if (t == 2) {
@@ -269,7 +273,7 @@ public class CommonController {
         }
         FileUtils.copyInputStreamToFile(file.getInputStream(), new File(realPath, filename));
 
-        return new ResMsg(0, SysConfig.static_host + "static/upload/images/" + basePathFormat + "/" + filename);
+        return new ResMsg(0, config.getStaticHost() + "static/upload/images/" + basePathFormat + "/" + filename);
     }
 
     /**
@@ -294,7 +298,7 @@ public class CommonController {
         }
         FileUtils.copyInputStreamToFile(file.getInputStream(), new File(realPath, filename));
 
-        return new ResMsg(0, SysConfig.static_host + "static/upload/file/" + basePathFormat + "/" + filename);
+        return new ResMsg(0, config.getStaticHost() + "static/upload/file/" + basePathFormat + "/" + filename);
     }
 
 

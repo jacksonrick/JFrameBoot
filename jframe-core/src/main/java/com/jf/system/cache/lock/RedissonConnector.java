@@ -16,20 +16,17 @@ import javax.annotation.PostConstruct;
  * Date: 2018-01-03
  * Time: 09:54
  */
-@Configuration
-@ConfigurationProperties(prefix = "spring.redis")
+//@Configuration
+//@ConfigurationProperties(prefix = "spring.redis")
 public class RedissonConnector {
 
-    @Value("${spring.redis.host}")
     private String host;
-    @Value("${spring.redis.port}")
     private int port;
-    @Value("${spring.redis.timeout}")
     private int timeout;
 
     private RedissonClient redisson;
 
-    @PostConstruct
+    //@PostConstruct
     public void init() {
         Config config = new Config();
         config.useSingleServer().setAddress(host + ":" + port).setTimeout(timeout);
@@ -40,4 +37,27 @@ public class RedissonConnector {
         return redisson;
     }
 
+    public String getHost() {
+        return host;
+    }
+
+    public void setHost(String host) {
+        this.host = host;
+    }
+
+    public int getPort() {
+        return port;
+    }
+
+    public void setPort(int port) {
+        this.port = port;
+    }
+
+    public int getTimeout() {
+        return timeout;
+    }
+
+    public void setTimeout(int timeout) {
+        this.timeout = timeout;
+    }
 }

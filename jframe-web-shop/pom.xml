@@ -38,6 +38,11 @@
 				<directory>../jframe/public/templates</directory>
 				<targetPath>templates</targetPath>
 			</resource>
+			<!-- include jframe-web-manage's theme -->
+			<resource>
+				<directory>../jframe-web-manage/src/main/resources/static</directory>
+				<targetPath>static</targetPath>
+			</resource>
 		</resources>
 		<plugins>
 			<!-- package plugin -->

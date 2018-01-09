@@ -15,14 +15,14 @@ import java.util.concurrent.TimeUnit;
  * Date: 2018-01-03
  * Time: 09:55
  */
-@Component
+//@Component
 public class RedisLocker implements DistributedLocker {
 
     private final static String LOCKER_PREFIX = "lock:";
     private final static int LOCKER_TIME = 100;
     private final static int WAIT_TIME = 100;
 
-    @Autowired
+    //@Autowired
     RedissonConnector redissonConnector;
 
     @Override

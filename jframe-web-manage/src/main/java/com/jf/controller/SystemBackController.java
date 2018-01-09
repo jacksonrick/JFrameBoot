@@ -50,6 +50,8 @@ public class SystemBackController extends BaseController {
     private SystemService systemService;
     @Resource
     private AddrService addrService;
+    @Resource
+    private SysConfig config;
 
     @RequestMapping("file")
     @AuthPassport
@@ -546,7 +548,7 @@ public class SystemBackController extends BaseController {
     @AuthPassport
     @ResponseBody
     public Object getLogList() {
-        List<Map<String, String>> list = FileUtil.getLogFileList();
+        List<Map<String, String>> list = FileUtil.getLogFileList(config.getLogPath());
         return list;
     }
 
@@ -567,7 +569,7 @@ public class SystemBackController extends BaseController {
         }
         // windows D:/Developer/Java/apache-tomcat-6.0/logs
         // linux /data/wwwlogs
-        String path = SysConfig.log_path + "/";
+        String path = config.getLogPath() + "/";
         // 以流的方式下载
         response.setCharacterEncoding("utf-8");
         response.setContentType("multipart/form-data");
@@ -655,7 +657,7 @@ public class SystemBackController extends BaseController {
         } else {
             return new ResMsg(2, "invalid param type");
         }
-        String file = SysConfig.static_path + "WEB-INF/tpl/" + path + "/" + name + ".ftl";
+        String file = config.getStaticPath() + "WEB-INF/tpl/" + path + "/" + name + ".ftl";
         String output = "";
         File src = new File(file);
         BufferedReader reader = null;
@@ -701,7 +703,7 @@ public class SystemBackController extends BaseController {
         } else {
             return new ResMsg(3, "invalid param type");
         }
-        String file = SysConfig.static_path + "WEB-INF/tpl/" + path + "/" + name + ".ftl";
+        String file = config.getStaticPath() + "WEB-INF/tpl/" + path + "/" + name + ".ftl";
         File src = new File(file);
         OutputStream os = null;
         try {
@@ -745,7 +747,7 @@ public class SystemBackController extends BaseController {
         if (!path.startsWith("/")) {
             return new ResMsg(2, "路径必须以斜杠/开头", null);
         }
-        List<Directory> list = FileUtil.getDirectory(path);
+        List<Directory> list = FileUtil.getDirectory(path, config.getStaticHost());
         if (list == null) {
             return new ResMsg(3, "路径不存在", null);
         }

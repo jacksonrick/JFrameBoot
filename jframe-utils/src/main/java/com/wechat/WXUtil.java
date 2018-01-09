@@ -1,6 +1,5 @@
-package com.jf.system.third.wechat;
+package com.wechat;
 
-import com.jf.system.conf.SysConfig;
 import com.wechat.util.MD5Util;
 
 import java.util.*;
@@ -20,10 +19,11 @@ public class WXUtil {
      * 微信支付签名算法sign
      *
      * @param parameters
+     * @param partnerKey
      * @return
      */
     @SuppressWarnings("unchecked")
-    public static String createSign(SortedMap<Object, Object> parameters) {
+    public static String createSign(SortedMap<Object, Object> parameters, String partnerKey) {
         StringBuffer sb = new StringBuffer();
         Set es = parameters.entrySet();//所有参与传参的参数按照accsii排序（升序）
         Iterator it = es.iterator();
@@ -36,7 +36,7 @@ public class WXUtil {
                 sb.append(k + "=" + v + "&");
             }
         }
-        sb.append("key=" + SysConfig.PARTNER_KEY);
+        sb.append("key=" + partnerKey);
         String sign = MD5Util.MD5Encode(sb.toString(), "UTF-8").toUpperCase();
         return sign;
     }

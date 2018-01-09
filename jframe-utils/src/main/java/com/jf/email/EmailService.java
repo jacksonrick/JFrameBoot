@@ -37,7 +37,7 @@ public class EmailService {
         String htmlText = "";
         try {
             // 通过指定模板名获取FreeMarker模板实例
-            Template tpl = freeMarkerConfigurer.getConfiguration().getTemplate(templateName + ".ftl");
+            Template tpl = freeMarkerConfigurer.getConfiguration().getTemplate("email/" + templateName + ".ftl");
             htmlText = FreeMarkerTemplateUtils.processTemplateIntoString(tpl, root);
         } catch (Exception e) {
             e.printStackTrace();

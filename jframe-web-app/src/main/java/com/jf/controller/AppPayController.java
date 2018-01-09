@@ -3,9 +3,10 @@ package com.jf.controller;
 import com.alipay.api.internal.util.AlipaySignature;
 import com.jf.convert.Convert;
 import com.jf.system.conf.SysConfig;
-import com.jf.system.third.wechat.ResponseHandler;
+import com.wechat.ResponseHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -23,6 +24,9 @@ import java.util.SortedMap;
 //@Controller
 //@RequestMapping("/app")
 public class AppPayController {
+
+    @Resource
+    private SysConfig config;
 
     /**
      * Alipay Callback
@@ -44,7 +48,7 @@ public class AppPayController {
             }
             params.put(name, valueStr);
         }
-        boolean flag = AlipaySignature.rsaCheckV1(params, SysConfig.alipay_public_key, "utf-8", "RSA");
+        boolean flag = AlipaySignature.rsaCheckV1(params, config.getAliyun().getPublicKey(), "utf-8", "RSA");
         if (flag) {
             String out_trade_no = request.getParameter("out_trade_no");
             String trade_status = request.getParameter("trade_status");
@@ -75,7 +79,7 @@ public class AppPayController {
     @RequestMapping("/wxpay_callback")
     public void wxpay_callback(HttpServletRequest request, HttpServletResponse response) throws Exception {
         // 创建支付应答对象
-        ResponseHandler resHandler = new ResponseHandler(request, response);
+        ResponseHandler resHandler = new ResponseHandler(request, response, config.getWechat().getPartner());
         // 判断签名
         if (resHandler.isTenpaySign()) {
             SortedMap<String, String> queryRes = resHandler.getAllParameters();
