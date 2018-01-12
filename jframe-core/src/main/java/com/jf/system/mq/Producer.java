@@ -59,5 +59,6 @@ public class Producer {
     }
 
     //Destination destination = new ActiveMQQueue("test.queue");
-    //producer.sendObjectMessage(destination, ...)
+    //User user = new User(1000l);
+    //producer.sendObjectMessage(destination, user);
 }

@@ -10,21 +10,25 @@ import com.jf.string.StringUtil;
 import com.jf.system.conf.SysConfig;
 import com.jf.system.job.QuartzManager;
 import com.jf.system.job.TestQuartz;
+import com.jf.system.ws.SocketMessage;
 import com.jf.view.PDFService;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.quartz.SchedulerFactory;
 import org.quartz.impl.StdSchedulerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.socket.config.WebSocketMessageBrokerStats;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import javax.servlet.http.HttpSession;
+import java.security.Principal;
+import java.util.*;
 
 /**
  * Created by xujunfei on 2016/12/21.
@@ -40,6 +44,41 @@ public class TestController extends BaseController {
     private PDFService pdfService;
     @Resource
     private SysConfig sysConfig;
+
+    @Autowired
+    private SimpMessagingTemplate template;
+    @Autowired
+    private WebSocketMessageBrokerStats stats;
+
+    @RequestMapping("/ws")
+    public String ws(String name, HttpSession session) {
+        if (StringUtil.isBlank(name)) {
+            return "error/404";
+        }
+        User user = new User();
+        user.setNickname(name);
+        session.setAttribute("user", user);
+        return "demo/ws";
+    }
+
+    @MessageMapping("/say")
+    //@SendTo("/topic/test01")
+    public void say(SocketMessage message, Principal principal) {
+        message.setDate(new Date());
+        message.setUsername(principal.getName());
+        System.out.println(message.toString());
+        System.out.println("principal name:" + principal.getName());
+        template.convertAndSendToUser(message.getTarget(), "/chat", message);
+        //return new ResMsg(0, "welcome," + message.getUsername() + " !");
+    }
+
+    @RequestMapping("/getWsInfo")
+    @ResponseBody
+    public void getWsInfo() {
+        System.out.println(stats.getWebSocketSessionStatsInfo());
+        System.out.println(stats.getSockJsTaskSchedulerStatsInfo());
+    }
+
 
     @RequestMapping("/demo/{path}")
     public String demo(@PathVariable("path") String path) {

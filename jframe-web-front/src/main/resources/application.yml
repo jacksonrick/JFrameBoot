@@ -3,19 +3,19 @@ server:
 spring:
   profiles:
     active: dev
-  session: # session存储类型 NONE | REDIS
-    store-type: none
+  session: # session存储类型 NONE | REDIS | HASH_MAP
+    store-type: REDIS
   application:
     name: JFRAME-WEB-FRONT
-  boot:
-    admin:
-      client:
-        enabled: true
-        prefer-ip: true # 解决windows下运行时无法识别主机名的问题
-      url: http://127.0.0.1:10000
-      api-path: sba/api/applications # 服务端注册的ip和地址
-      username: eureka
-      password: eureka1234
+#  boot:
+#    admin:
+#      client:
+#        enabled: false
+#        prefer-ip: true # 解决windows下运行时无法识别主机名的问题
+#      url: http://127.0.0.1:10000
+#      api-path: sba/api/applications # 服务端注册的ip和地址
+#      username: eureka
+#      password: eureka1234
 management:
   security:
     enabled: false # spring-boot 1.5.2之后严格执行安全策略
@@ -30,13 +30,15 @@ security: # spring安全设置
     password: cloud1234
 endpoints: # 开启监控
   health:
-    enabled: true
+    enabled: false
+  actuator:
+    enabled: false
 info: # 定义各种额外的详情给服务端显示
   app:
     name: ${spring.application.name}
     version: 1.0
 eureka: # eureka客户端注册
   client:
-    enabled: true
+    enabled: false
     serviceUrl:
       defaultZone: http://eureka:eureka1234@127.0.0.1:10000/eureka/ # eureka服务端地址
