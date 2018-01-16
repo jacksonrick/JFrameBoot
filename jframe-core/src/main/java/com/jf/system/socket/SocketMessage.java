@@ -1,4 +1,4 @@
-package com.jf.system.ws;
+package com.jf.system.socket;
 
 import java.io.Serializable;
 import java.util.Date;

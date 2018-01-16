@@ -1,4 +1,4 @@
-package com.jf.system.ws;
+package com.jf.system.socket;
 
 import com.jf.system.conf.SysConfig;
 import org.springframework.http.server.ServerHttpRequest;
@@ -20,10 +20,12 @@ import java.util.Map;
 public class SessionAuthHandshakeInterceptor implements HandshakeInterceptor {
 
     @Override
-    public boolean beforeHandshake(ServerHttpRequest request, ServerHttpResponse response, WebSocketHandler handler, Map<String, Object> map) throws Exception {
+    public boolean beforeHandshake(ServerHttpRequest request, ServerHttpResponse response, WebSocketHandler handler,
+                                   Map<String, Object> map) throws Exception {
+
         HttpSession session = getSession(request);
         if (session == null || session.getAttribute(SysConfig.SESSION_USER) == null) {
-            System.out.println("WebSocket Session Interceptor:用户未登录.");
+            System.out.println("【WebSocket Session Interceptor】用户未登录");
             return false;
         }
         map.put(SysConfig.SESSION_USER, session.getAttribute(SysConfig.SESSION_USER));

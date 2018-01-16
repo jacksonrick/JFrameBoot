@@ -1,5 +1,5 @@
 # JFrame
-##### JFrame - SpringBoot & Cloud Project `v4.2`
+##### JFrame - SpringBoot & Cloud Project `v4.2.1`
 `jackson-rick`   <br>
 `https://github.com/jacksonrick/JFrameBoot`
 
@@ -14,7 +14,7 @@
 
 ### 集成
 * Spring/SpringMVC/MyBatis
-* Spring Redis/Redis Session
+* Spring Redis/Redis Session/Redisson
 * 拦截器/AppToken/FastDFS
 * 后台管理：自定义权限、模块、地址、文件等
 * 线程池、日志服务、分布式日志Flume、异常管理
@@ -32,6 +32,10 @@
     * Demo：`jframe-web-front/../WEB-INF/demo/`
 
 ### 更新日志：
+* v4.2.1 `20180116`
+    * 1.集成Spring WebSocket并与Redis Session集成
+    * 2.优化目录结构，暂时关闭不需要的组件服务
+    * 3.通过ConfigurationProperties进行配置[FastDFS暂未支持]
 * v4.2 `20180109`
     * 1.集成spring activemq
     * 2.集成boot-admin服务监控[front]

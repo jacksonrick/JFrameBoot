@@ -1,8 +1,7 @@
 package com.jf.system.conf;
 
 import com.jf.model.User;
-import com.jf.system.ws.SessionAuthHandshakeInterceptor;
-import org.springframework.context.annotation.Configuration;
+import com.jf.system.socket.SessionAuthHandshakeInterceptor;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
@@ -13,7 +12,6 @@ import org.springframework.messaging.support.ChannelInterceptorAdapter;
 import org.springframework.session.ExpiringSession;
 import org.springframework.session.web.socket.config.annotation.AbstractSessionWebSocketMessageBrokerConfigurer;
 import org.springframework.web.socket.WebSocketHandler;
-import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.server.support.DefaultHandshakeHandler;
 
@@ -27,8 +25,8 @@ import java.util.Map;
  * Date: 2018-01-09
  * Time: 14:40
  */
-@Configuration
-@EnableWebSocketMessageBroker
+//@Configuration
+//@EnableWebSocketMessageBroker
 public class WebSocketConfig extends AbstractSessionWebSocketMessageBrokerConfigurer<ExpiringSession> {
 
     @Override

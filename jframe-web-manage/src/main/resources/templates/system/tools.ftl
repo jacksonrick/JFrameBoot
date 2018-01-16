@@ -3,11 +3,12 @@
 <head>
     <meta charset="utf-8">
     <title></title>
+    <link type="text/css" href="/static/library/plugins/dropzone/dropzone.css" rel="stylesheet"/>
+    <link type="text/css" href="/static/library/plugins/select2/select2.min.css" rel="stylesheet">
 <#include "include.ftl"/>
 </head>
 
 <body class="gray-bg">
-
 <ul class="nav nav-tabs" role="tablist">
     <li role="presentation" class="active"><a href="#form" aria-controls="form" role="tab" data-toggle="tab">表单构建</a></li>
     <li role="presentation"><a href="#interface" aria-controls="interface" role="tab" data-toggle="tab">APP接口测试</a></li>
@@ -18,49 +19,46 @@
     <div role="tabpanel" class="tab-pane fade in active" id="form">
         <div class="wrapper-content">
             <div class="row">
-                <div class="col-sm-5">
+                <div class="col-sm-6">
                     <div class="ibox float-e-margins">
                         <div class="ibox-title">
                             <h5>元素</h5>
                         </div>
-                        <div class="ibox-content">
-                            <div class="alert alert-info">
-                                拖拽左侧的表单元素到右侧区域，即可生成相应的HTML代码！
-                            </div>
+                        <div class="ibox-content" id="elem">
                             <form role="form" class="form-horizontal m-t">
-                                <div class="form-group draggable">
+                                <div class="form-group">
                                     <label class="col-sm-3 control-label">纯文本：</label>
-
                                     <div class="col-sm-9">
                                         <p class="form-control-static">这里是纯文字信息</p>
                                     </div>
                                 </div>
-                                <div class="form-group draggable">
+                                <div class="form-group">
                                     <label class="col-sm-3 control-label">文本框：</label>
                                     <div class="col-sm-9">
-                                        <input type="text" name="" class="form-control" placeholder="请输入文本">
+                                        <input type="text" name="" class="form-control" placeholder="请输入文本" value="11">
                                         <span class="help-block m-b-none">说明文字</span>
                                     </div>
                                 </div>
-                                <div class="form-group draggable">
+                                <div class="form-group">
                                     <label class="col-sm-3 control-label">密码框：</label>
                                     <div class="col-sm-9">
-                                        <input type="password" class="form-control" name="password" placeholder="请输入密码">
+                                        <input type="password" class="form-control" name="password" placeholder="请输入密码" value="11">
                                     </div>
                                 </div>
-                                <div class="form-group draggable">
+                                <div class="form-group">
                                     <label class="col-sm-3 control-label">下拉列表：</label>
                                     <div class="col-sm-9">
                                         <select class="form-control" name="">
-                                            <option>选项 1</option>
-                                            <option>选项 2</option>
-                                            <option>选项 3</option>
-                                            <option>选项 4</option>
+                                            <option value>--请选择--</option>
+                                            <option value="1">选项 1</option>
+                                            <option value="2">选项 2</option>
+                                            <option value="3">选项 3</option>
+                                            <option value="4">选项 4</option>
                                         </select>
                                     </div>
                                 </div>
-                                <div class="form-group draggable">
-                                    <label class="col-sm-3 control-label">单选框2：</label>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">单选框：</label>
                                     <div class="col-sm-9">
                                         <div class="radio radio-inline">
                                             <input type="radio" name="radio1" id="radio1" value="option1" checked="">
@@ -72,63 +70,100 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="form-group draggable">
+                                <div class="form-group">
                                     <label class="col-sm-3 control-label">复选框：</label>
                                     <div class="col-sm-9">
-                                        <div class="checkbox">
-                                            <input id="checkbox1" type="checkbox">
+                                        <div class="checkbox checkbox-inline">
+                                            <input id="checkbox1" type="checkbox" checked>
                                             <label for="checkbox1">Default</label>
                                         </div>
-                                        <div class="checkbox checkbox-primary">
-                                            <input id="checkbox2" type="checkbox" checked="">
+                                        <div class="checkbox checkbox-inline">
+                                            <input id="checkbox2" type="checkbox">
                                             <label for="checkbox2">Primary</label>
                                         </div>
-                                        <div class="checkbox checkbox-success">
+                                        <div class="checkbox checkbox-inline">
                                             <input id="checkbox3" type="checkbox">
                                             <label for="checkbox3">Success</label>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="form-group draggable">
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">复选框2：</label>
+                                    <div class="col-sm-9">
+                                        <div class="checkbox checkbox-info">
+                                            <input id="checkbox11" type="checkbox">
+                                            <label for="checkbox11">Default</label>
+                                        </div>
+                                        <div class="checkbox checkbox-primary">
+                                            <input id="checkbox22" type="checkbox" checked>
+                                            <label for="checkbox22">Primary</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
                                     <label class="col-sm-3 control-label">地址选择：</label>
                                     <div class="col-sm-9">
                                         <input id="city-picker" name="address" value="340000/340100/340102/340102001" style="width: 100%"/>
                                     </div>
                                 </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">头像：</label>
+                                    <div class="col-sm-9">
+                                        <a class="img-area-btn" id="avatar"></a>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">时间：</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" id="birthday" name="birthday" value="" class="form-control" placeholder="生日">
+                                        <input type="text" id="birthday2" name="birthday" value="" class="form-control" placeholder="生日2">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">Select2：</label>
+                                    <div class="col-sm-9">
+                                        <select class="form-control" id="sel_menu" style="width: 100%;">
+                                            <optgroup label="系统设置">
+                                                <option value="1">用户管理</option>
+                                                <option value="2">角色管理</option>
+                                                <option value="3">部门管理</option>
+                                                <option value="4">菜单管理</option>
+                                            </optgroup>
+                                            <optgroup label="订单管理">
+                                                <option value="5">订单查询</option>
+                                                <option value="6">订单导入</option>
+                                                <option value="7">订单删除</option>
+                                                <option value="8">订单撤销</option>
+                                            </optgroup>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">编辑器：</label>
+                                    <div class="col-sm-9">
+                                        <textarea name="content" style="width: 100%;height: 100px;"></textarea>
+                                        <div class="word-count">字数统计：<span id="wc"></span></div>
+                                    </div>
+                                </div>
+
                                 <div class="hr-line-dashed"></div>
-                                <div class="form-group draggable">
+                                <div class="form-group">
                                     <div class="col-sm-12 col-sm-offset-3">
-                                        <button class="btn btn-info" type="button">保存内容</button>
+                                        <button class="btn btn-info" type="button">提交</button>
                                         <button class="btn btn-default" type="button">取消</button>
                                     </div>
                                 </div>
                             </form>
-                            <div class="clearfix"></div>
                         </div>
                     </div>
                 </div>
-                <div class="col-sm-7">
+                <div class="col-sm-6">
                     <div class="ibox float-e-margins">
                         <div class="ibox-title">
-                            <h5>拖拽左侧表单元素到此区域</h5>
-                            <div class="ibox-tools">请选择显示的列数：
-                                <select id="n-columns">
-                                    <option value="1">显示1列</option>
-                                    <option value="2">显示2列</option>
-                                </select>
-                            </div>
+                            <h5>代码区</h5>
                         </div>
-
-                        <div class="ibox-content">
-                            <div class="row form-body form-horizontal m-t">
-                                <div class="col-md-12 droppable sortable">
-                                </div>
-                                <div class="col-md-6 droppable sortable" style="display: none;">
-                                </div>
-                                <div class="col-md-6 droppable sortable" style="display: none;">
-                                </div>
-                            </div>
-                            <button type="button" class="btn btn-warning" data-clipboard-text="testing" id="copy-to-clipboard">复制代码</button>
+                        <div class="ibox-content" style="overflow: scroll;">
+                            <textarea id="code" class="form-control" style="min-height: 800px; margin-bottom: 10px;font-family: Monaco, Fixed; width: 150%;"></textarea>
                         </div>
                     </div>
                 </div>
@@ -297,12 +332,47 @@
     </div>
 </div>
 
-<script type="text/javascript" src="/static/library/jquery/jquery-ui.min.js"></script>
 <script type="text/javascript" src="/static/library/plugins/beautifyhtml/beautifyhtml.js"></script>
+<script type="text/javascript" src="/static/library/plugins/dropzone/dropzone.js"></script>
+<script type="text/javascript" src="/static/library/plugins/select2/select2.min.js"></script>
+<script type="text/javascript" src="/static/library/plugins/kindeditor/kindeditor-min.js"></script>
 <script type="text/javascript">
     $(document).ready(function () {
-        // 注意：此插件和jquery-ui不兼容，会存在一些问题
+        $("#code").val(html_beautify($("#elem").html()))
+
+        // 注意：此插件和jquery-ui不兼容，会存在一些问题，请忽略
         cityPicker("#city-picker", "district", "code");
+        // 上传头像
+        $("#avatar").Uploader({
+            limit: 1,
+            default: '',
+            type: 1
+        });
+        // Select2
+        $("#sel_menu").select2({
+            allowClear: true,
+            multiple: true,
+            maximumSelectionLength: 10
+        });
+        // 时间
+        datePicker("#birthday", "yyyy-mm-dd", 2);
+        datePicker("#birthday2", "yyyy-mm-dd hh:ii", 1);
+        // 编辑器
+        var editor;
+        KindEditor.ready(function (K) {
+            editor = K.create('textarea[name="content"]', {
+                resizeType: 1,
+                allowPreviewEmoticons: false,
+                allowImageUpload: true,
+                uploadJson: '/uploadwithKE.do',
+                afterBlur: function () {
+                    this.sync();
+                },
+                afterChange: function () {
+                    K('#wc').html(this.count('text'));
+                }
+            });
+        });
 
         $(".btn-tools").click(function () {
             var name = $(this).attr("title");
@@ -310,133 +380,6 @@
             var index = openLayerUrl(name, document.body.scrollWidth - 100 + "px", "600px", url, true);
             layer.full(index);
         });
-
-        setup_draggable();
-
-        $("#n-columns").on("change", function () {
-            var v = $(this).val();
-            if (v === "1") {
-                var $col = $('.form-body .col-md-12').toggle(true);
-                $('.form-body .col-md-6 .draggable').each(function (i, el) {
-                    $(this).remove().appendTo($col);
-                });
-                $('.form-body .col-md-6').toggle(false);
-            } else {
-                var $col = $('.form-body .col-md-6').toggle(true);
-                $(".form-body .col-md-12 .draggable").each(function (i, el) {
-                    $(this).remove().appendTo(i % 2 ? $col[1] : $col[0]);
-                });
-                $('.form-body .col-md-12').toggle(false);
-            }
-        });
-
-        $("#copy-to-clipboard").on("click", function () {
-            var $copy = $(".form-body").clone().appendTo(document.body);
-            $copy.find(".tools, :hidden").remove();
-            $.each(["draggable", "droppable", "sortable", "dropped", "ui-sortable", "ui-draggable", "ui-droppable", "form-body"], function (i, c) {
-                $copy.find("." + c).removeClass(c).removeAttr("style");
-            });
-            var html = html_beautify($copy.html());
-            $copy.remove();
-
-            $modal = get_modal(html).modal("show");
-            $modal.find(".btn").remove();
-            $modal.find(".modal-title").html("复制HTML代码");
-            $modal.find(":input:first").select().focus();
-
-            return false;
-        })
-
-    });
-
-    var setup_draggable = function () {
-        $(".draggable").draggable({
-            appendTo: "body",
-            helper: "clone"
-        });
-        $(".droppable").droppable({
-            accept: ".draggable",
-            helper: "clone",
-            hoverClass: "droppable-active",
-            drop: function (event, ui) {
-                $(".empty-form").remove();
-                var $orig = $(ui.draggable);
-                if (!$(ui.draggable).hasClass("dropped")) {
-                    var $el = $orig.clone().addClass("dropped").css({
-                        "position": "static",
-                        "left": null,
-                        "right": null
-                    }).appendTo(this);
-
-                    var id = $orig.find(":input").attr("id");
-                    if (id) {
-                        id = id.split("-").slice(0, -1).join("-") + "-" + (parseInt(id.split("-").slice(-1)[0]) + 1);
-                        $orig.find(":input").attr("id", id);
-                        $orig.find("label").attr("for", id);
-                    }
-                    // tools
-                    $('<p class="tools col-sm-12 col-sm-offset-3">\
-					<a class="edit-link">编辑HTML<a> | \
-					<a class="remove-link">移除</a></p>').appendTo($el);
-                } else {
-                    if ($(this)[0] != $orig.parent()[0]) {
-                        var $el = $orig.clone().css({
-                            "position": "static",
-                            "left": null,
-                            "right": null
-                        }).appendTo(this);
-                        $orig.remove();
-                    }
-                }
-            }
-        }).sortable();
-    };
-
-    var get_modal = function (content) {
-        var modal = $('<div class="modal" style="overflow: auto;" tabindex="-1">\
-		<div class="modal-dialog">\
-			<div class="modal-content">\
-				<div class="modal-header">\
-					<a type="button" class="close"\
-						data-dismiss="modal" aria-hidden="true">&times;</a>\
-					<h4 class="modal-title">编辑HTML</h4>\
-				</div>\
-				<div class="modal-body ui-front">\
-					<textarea class="form-control" \
-						style="min-height: 200px; margin-bottom: 10px;\
-						font-family: Monaco, Fixed">' + content + '</textarea>\
-					<button class="btn btn-success">更新HTML</button>\
-				</div>\
-			</div>\
-		</div>\
-		</div>').appendTo(document.body);
-
-        return modal;
-    };
-
-    $(document).on("click", ".edit-link", function (ev) {
-        var $el = $(this).parent().parent();
-        var $el_copy = $el.clone();
-
-        var $edit_btn = $el_copy.find(".edit-link").parent().remove();
-
-        var $modal = get_modal(html_beautify($el_copy.html())).modal("show");
-        $modal.find(":input:first").focus();
-        $modal.find(".btn-success").click(function (ev2) {
-            var html = $modal.find("textarea").val();
-            if (!html) {
-                $el.remove();
-            } else {
-                $el.html(html);
-                $edit_btn.appendTo($el);
-            }
-            $modal.modal("hide");
-            return false;
-        })
-    });
-
-    $(document).on("click", ".remove-link", function (ev) {
-        $(this).parent().parent().remove();
     });
 </script>
 

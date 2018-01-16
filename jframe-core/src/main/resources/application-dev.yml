@@ -89,7 +89,7 @@ spring:
     password: 12345678
     packages:
       trust-all: true
-fdfs: # fastDFS配置
+fdfs: # fastDFS配置【暂无法使用ConfigurationProperties】
   connect_timeout: 5
   network_timeout: 30
   charset: UTF-8
