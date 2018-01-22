@@ -2,15 +2,10 @@ package com.jf.system.third.alipay;
 
 import com.alipay.api.AlipayApiException;
 import com.alipay.api.AlipayClient;
+import com.alipay.api.AlipayResponse;
 import com.alipay.api.DefaultAlipayClient;
-import com.alipay.api.domain.AlipayFundTransOrderQueryModel;
-import com.alipay.api.domain.AlipayFundTransToaccountTransferModel;
-import com.alipay.api.domain.AlipayTradeAppPayModel;
-import com.alipay.api.domain.AlipayTradeRefundModel;
-import com.alipay.api.request.AlipayFundTransOrderQueryRequest;
-import com.alipay.api.request.AlipayFundTransToaccountTransferRequest;
-import com.alipay.api.request.AlipayTradeAppPayRequest;
-import com.alipay.api.request.AlipayTradeRefundRequest;
+import com.alipay.api.domain.*;
+import com.alipay.api.request.*;
 import com.alipay.api.response.AlipayFundTransOrderQueryResponse;
 import com.alipay.api.response.AlipayFundTransToaccountTransferResponse;
 import com.alipay.api.response.AlipayTradeAppPayResponse;
@@ -31,7 +26,7 @@ public class AliPayService {
     private SysConfig config;
 
     /**
-     * 下单
+     * Web下单
      *
      * @param body
      * @param subject
@@ -39,10 +34,43 @@ public class AliPayService {
      * @param orderNum
      * @return
      */
-    public String alipay(String body, String subject, Double price, String orderNum) {
-        AlipayClient alipayClient = new DefaultAlipayClient("https://openapi.alipay.com/gateway.do",
-                config.getAliyun().getAppId(), config.getAliyun().getRsaPrivateKey(), "json", "utf-8", config.getAliyun().getPublicKey(), "RSA");
+    public String alipayWeb(String body, String subject, Double price, String orderNum) {
+        AlipayClient alipayClient = new DefaultAlipayClient(config.getAliyun().getGateway(), config.getAliyun().getAppId(),
+                config.getAliyun().getRsaPrivateKey(), config.getAliyun().getFormat(), config.getAliyun().getCharset(),
+                config.getAliyun().getPublicKey(), config.getAliyun().getSignType());
+        AlipayTradePagePayRequest request = new AlipayTradePagePayRequest();
+        AlipayTradePagePayModel model = new AlipayTradePagePayModel();
+        model.setBody(body);
+        model.setSubject(subject);
+        model.setOutTradeNo(orderNum);
+        model.setTimeoutExpress("10m");
+        model.setTotalAmount(price + "");
+        model.setProductCode("FAST_INSTANT_TRADE_PAY");
+        request.setBizModel(model);
+        request.setNotifyUrl(config.getAliyun().getNotifyUrl());
+        request.setReturnUrl(config.getAliyun().getReturnUrl());
+        try {
+            AlipayResponse response = alipayClient.pageExecute(request);
+            return response.getBody();
+        } catch (AlipayApiException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 
+    /**
+     * APP下单
+     *
+     * @param body
+     * @param subject
+     * @param price
+     * @param orderNum
+     * @return
+     */
+    public String alipayApp(String body, String subject, Double price, String orderNum) {
+        AlipayClient alipayClient = new DefaultAlipayClient(config.getAliyun().getGateway(), config.getAliyun().getAppId(),
+                config.getAliyun().getRsaPrivateKey(), config.getAliyun().getFormat(), config.getAliyun().getCharset(),
+                config.getAliyun().getPublicKey(), config.getAliyun().getSignType());
         AlipayTradeAppPayRequest request = new AlipayTradeAppPayRequest();
         AlipayTradeAppPayModel model = new AlipayTradeAppPayModel();
         model.setBody(body);
@@ -72,9 +100,9 @@ public class AliPayService {
      * @return
      */
     public String transfer(String orderNum, Double price, String account, String realname) {
-        AlipayClient alipayClient = new DefaultAlipayClient("https://openapi.alipay.com/gateway.do",
-                config.getAliyun().getAppId(), config.getAliyun().getRsaPrivateKey(), "json", "utf-8", config.getAliyun().getPublicKey(), "RSA");
-
+        AlipayClient alipayClient = new DefaultAlipayClient(config.getAliyun().getGateway(), config.getAliyun().getAppId(),
+                config.getAliyun().getRsaPrivateKey(), config.getAliyun().getFormat(), config.getAliyun().getCharset(),
+                config.getAliyun().getPublicKey(), config.getAliyun().getSignType());
         try {
             AlipayFundTransToaccountTransferRequest request = new AlipayFundTransToaccountTransferRequest();
             AlipayFundTransToaccountTransferModel model = new AlipayFundTransToaccountTransferModel();
@@ -107,9 +135,9 @@ public class AliPayService {
      * @return
      */
     public Boolean check(String orderNum, String thirdNum) {
-        AlipayClient alipayClient = new DefaultAlipayClient("https://openapi.alipay.com/gateway.do",
-                config.getAliyun().getAppId(), config.getAliyun().getRsaPrivateKey(), "json", "utf-8", config.getAliyun().getPublicKey(), "RSA");
-
+        AlipayClient alipayClient = new DefaultAlipayClient(config.getAliyun().getGateway(), config.getAliyun().getAppId(),
+                config.getAliyun().getRsaPrivateKey(), config.getAliyun().getFormat(), config.getAliyun().getCharset(),
+                config.getAliyun().getPublicKey(), config.getAliyun().getSignType());
         try {
             AlipayFundTransOrderQueryRequest request = new AlipayFundTransOrderQueryRequest();
             AlipayFundTransOrderQueryModel model = new AlipayFundTransOrderQueryModel();
@@ -137,17 +165,19 @@ public class AliPayService {
      * @return
      */
     public String refund(String orderNum, String thirdNum, Double price, String reason) {
-        AlipayClient alipayClient = new DefaultAlipayClient("https://openapi.alipay.com/gateway.do",
-                config.getAliyun().getAppId(), config.getAliyun().getRsaPrivateKey(), "json", "utf-8", config.getAliyun().getPublicKey(), "RSA");
-
+        AlipayClient alipayClient = new DefaultAlipayClient(config.getAliyun().getGateway(), config.getAliyun().getAppId(),
+                config.getAliyun().getRsaPrivateKey(), config.getAliyun().getFormat(), config.getAliyun().getCharset(),
+                config.getAliyun().getPublicKey(), config.getAliyun().getSignType());
         try {
             AlipayTradeRefundRequest request = new AlipayTradeRefundRequest();
             AlipayTradeRefundModel model = new AlipayTradeRefundModel();
-            model.setOutTradeNo(thirdNum);
-            model.setTradeNo(orderNum);
+            model.setOutTradeNo(orderNum);
+            model.setTradeNo(thirdNum);
             model.setRefundAmount(price + "");
             model.setRefundReason(reason);
+            request.setBizModel(model);
             AlipayTradeRefundResponse response = alipayClient.execute(request);
+            // code=10000 成功
             return response.getBody();
         } catch (AlipayApiException e) {
             e.printStackTrace();

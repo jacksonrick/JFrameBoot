@@ -1,5 +1,5 @@
 # JFrame
-##### JFrame - SpringBoot & Cloud Project `v4.2.1`
+##### JFrame - SpringBoot & Cloud Project `v4.2.2`
 `jackson-rick`   <br>
 `https://github.com/jacksonrick/JFrameBoot`
 
@@ -11,6 +11,7 @@
 * jframe-web-app `App端`
 * jframe-web-front `PC端`
 * jframe-web-manage `后台管理端`
+* jframe-web-shop `商家管理端`
 
 ### 集成
 * Spring/SpringMVC/MyBatis
@@ -30,8 +31,13 @@
     * 封装：Ajax/DataTables/CityPicker/Layer/DatePicker...
     * 其他：`jframe/public/static/library/plugins/`
     * Demo：`jframe-web-front/../WEB-INF/demo/`
+* ...
 
 ### 更新日志：
+* v4.2.2 `20180119`
+    * 1.优化日志服务
+    * 2.自动生成实体类工具现可以生成HTML
+    * 3.优化支付宝微信接口
 * v4.2.1 `20180116`
     * 1.集成Spring WebSocket并与Redis Session集成
     * 2.优化目录结构，暂时关闭不需要的组件服务

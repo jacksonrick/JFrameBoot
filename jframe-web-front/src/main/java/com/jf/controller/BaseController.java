@@ -26,7 +26,7 @@ import javax.servlet.http.HttpServletResponse;
 public class BaseController extends Constant {
 
     @Resource
-    private SystemService systemService;
+    private SysConfig config;
 
     /**
      * 获取当前用户
@@ -55,7 +55,7 @@ public class BaseController extends Constant {
     @ResponseBody
     public Object exceptionHandler(Exception exception, HttpServletRequest request, HttpServletResponse response) {
         // 跟踪错误信息
-        LogManager.error("front error log", exception);
+        LogManager.error("An exception happened in【Server ID：" + config.getServerId() + "】【URI：" + request.getRequestURI() + "】", exception);
         String requestType = request.getHeader("X-Requested-With");
         String appHeader = request.getHeader("Req-Type");
         if (appHeader != null && "APP".equals(appHeader)) {

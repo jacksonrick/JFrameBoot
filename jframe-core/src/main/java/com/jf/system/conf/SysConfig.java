@@ -39,6 +39,11 @@ public class SysConfig {
     private String staticPath;
     // 日志文件目录,以 / 结尾
     private String logPath;
+    // serverId
+    private String serverId;
+    // FastDFS Nginx服务器地址,以 / 结尾
+    private String fdfsNginx;
+
     // 支付宝
     private SysConfig.Aliyun aliyun;
     // 微信
@@ -78,6 +83,22 @@ public class SysConfig {
         this.logPath = logPath;
     }
 
+    public String getServerId() {
+        return serverId;
+    }
+
+    public void setServerId(String serverId) {
+        this.serverId = serverId;
+    }
+
+    public String getFdfsNginx() {
+        return fdfsNginx;
+    }
+
+    public void setFdfsNginx(String fdfsNginx) {
+        this.fdfsNginx = fdfsNginx;
+    }
+
     @Override
     public String toString() {
         return "SysConfig{" +
@@ -85,6 +106,11 @@ public class SysConfig {
                 ", staticHost='" + staticHost + '\'' +
                 ", staticPath='" + staticPath + '\'' +
                 ", logPath='" + logPath + '\'' +
+                ", serverId='" + serverId + '\'' +
+                ", fdfsNginx='" + fdfsNginx + '\'' +
+                ", aliyun=" + aliyun +
+                ", wechat=" + wechat +
+                ", geetest=" + geetest +
                 '}';
     }
 
@@ -123,10 +149,18 @@ public class SysConfig {
         private String seller;
         // 支付宝-接收通知的接口
         private String notifyUrl;
+        // 支付宝-通知页面跳转
+        private String returnUrl;
         // 支付宝-商户私钥,需要PKCS8格式,使用支付宝提供工具生成
         private String rsaPrivateKey;
         // 支付宝-公钥，使用支付宝提供工具生成后上传至开发者平台=>点击查看支付宝公钥=>复制
         private String publicKey;
+        // 支付宝网关-生产环境 | 沙箱环境
+        private String gateway;
+
+        private String charset = "utf-8";
+        private String signType = "RSA2";
+        private String format = "json";
 
         public String getPartner() {
             return partner;
@@ -160,6 +194,14 @@ public class SysConfig {
             this.notifyUrl = notifyUrl;
         }
 
+        public String getReturnUrl() {
+            return returnUrl;
+        }
+
+        public void setReturnUrl(String returnUrl) {
+            this.returnUrl = returnUrl;
+        }
+
         public String getRsaPrivateKey() {
             return rsaPrivateKey;
         }
@@ -176,6 +218,38 @@ public class SysConfig {
             this.publicKey = publicKey;
         }
 
+        public String getGateway() {
+            return gateway;
+        }
+
+        public void setGateway(String gateway) {
+            this.gateway = gateway;
+        }
+
+        public String getCharset() {
+            return charset;
+        }
+
+        public void setCharset(String charset) {
+            this.charset = charset;
+        }
+
+        public String getSignType() {
+            return signType;
+        }
+
+        public void setSignType(String signType) {
+            this.signType = signType;
+        }
+
+        public String getFormat() {
+            return format;
+        }
+
+        public void setFormat(String format) {
+            this.format = format;
+        }
+
         @Override
         public String toString() {
             return "Aliyun{" +
@@ -183,13 +257,15 @@ public class SysConfig {
                     ", appId='" + appId + '\'' +
                     ", seller='" + seller + '\'' +
                     ", notifyUrl='" + notifyUrl + '\'' +
+                    ", returnUrl='" + returnUrl + '\'' +
                     ", rsaPrivateKey='" + rsaPrivateKey + '\'' +
                     ", publicKey='" + publicKey + '\'' +
+                    ", gateway='" + gateway + '\'' +
                     '}';
         }
     }
 
-    public static class Wechat{
+    public static class Wechat {
         // 微信-在开发平台登记的app应用
         private String appid;
         // 微信-商户号
@@ -242,7 +318,7 @@ public class SysConfig {
         }
     }
 
-    public static class Geetest{
+    public static class Geetest {
         // geet验证-id
         private String id;
         // geet验证-key

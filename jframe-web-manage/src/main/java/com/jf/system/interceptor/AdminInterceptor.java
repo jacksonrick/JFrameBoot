@@ -47,23 +47,23 @@ public class AdminInterceptor extends HandlerInterceptorAdapter {
             AuthPassport authPassport = ((HandlerMethod) handler).getMethodAnnotation(AuthPassport.class);
             // 未指定【不检查登录和操作权限】
             if (authPassport == null) {
-                log("MANAGE", "Action", request);
+                log("Action", request);
                 return true;
             }
             // 指定【检查登录或操作权限】
             // 声明不验证
             if (authPassport.login() == false) {
-                log("MANAGE", "Action", request);
+                log("Action", request);
                 return true;
             }
             // 检查登陆
             if (checkLogin(requestType, admin, request, response)) {
                 // 检查操作权限
                 if (authPassport.right() == false) {
-                    log("MANAGE", "Check Login", request);
+                    log("Login", request);
                     return true;
                 }
-                log("MANAGE", "Check Permission", request);
+                log("Permission", request);
                 return checkRight(action, requestType, admin, request, response);
             }
             return false;
@@ -89,7 +89,7 @@ public class AdminInterceptor extends HandlerInterceptorAdapter {
         if (moduleService.checkHavingRight(admin.getRole().getId(), action)) {
             return true;
         }
-        output(new ResMsg(100, "拒绝访问"), requestType, "/refuse", response, request);
+        output(new ResMsg(100, "拒绝访问"), requestType, "/error/refuse", response, request);
         return false;
 
     }
@@ -112,11 +112,10 @@ public class AdminInterceptor extends HandlerInterceptorAdapter {
     }
 
     /**
-     * @param system
      * @param extra
      * @param request
      */
-    public void log(String system, String extra, HttpServletRequest request) {
+    public void log(String extra, HttpServletRequest request) {
         // Action
         String path = request.getRequestURI();
         // IP
@@ -133,7 +132,6 @@ public class AdminInterceptor extends HandlerInterceptorAdapter {
         } else {
             param = "None";
         }
-        LogManager.info("############" + extra + ":" + path + "###########", AdminInterceptor.class);
-        LogManager.visit(system, remote, path, param);
+        LogManager.visit(remote, extra, path, param);
     }
 }

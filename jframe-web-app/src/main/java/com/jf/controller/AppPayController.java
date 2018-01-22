@@ -2,9 +2,14 @@ package com.jf.controller;
 
 import com.alipay.api.internal.util.AlipaySignature;
 import com.jf.convert.Convert;
+import com.jf.entity.ResMsg;
+import com.jf.string.StringUtil;
 import com.jf.system.conf.SysConfig;
+import com.jf.system.third.alipay.AliPayService;
 import com.wechat.ResponseHandler;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -21,12 +26,38 @@ import java.util.SortedMap;
  * Alipay & Wechat
  * Created by xujunfei on 2017/3/25.
  */
-//@Controller
+@Controller
 //@RequestMapping("/app")
-public class AppPayController {
+public class AppPayController extends BaseController {
 
     @Resource
     private SysConfig config;
+
+    //*******************************支付宝*******************************//
+
+    @Resource
+    private AliPayService aliPayService;
+
+    @RequestMapping("/alipay")
+    @ResponseBody
+    public String alipay() {
+        String result = aliPayService.alipayWeb("测试", "商品", 100d, StringUtil.getOrderCode());
+        System.out.println(result);
+        return result;
+    }
+
+    @RequestMapping("/refund")
+    @ResponseBody
+    public ResMsg refund() {
+        String result = aliPayService.refund("2018011711333198018150", "2018011721001004630200410967", 100d, "退款");
+        return new ResMsg(0, SUCCESS, result);
+    }
+
+    @RequestMapping("/alipay_return")
+    public String alipay_return() {
+        return "pay/success";
+    }
+
 
     /**
      * Alipay Callback
@@ -37,18 +68,25 @@ public class AppPayController {
      */
     @RequestMapping("/alipay_callback")
     public void alipay_callback(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        System.out.println("支付回调");
+        // 获取支付宝POST过来反馈信息
         Map<String, String> params = new HashMap<String, String>();
-        Map requestParams = request.getParameterMap();
-        for (Iterator iter = requestParams.keySet().iterator(); iter.hasNext(); ) {
+        Map<String, String[]> requestParams = request.getParameterMap();
+        for (Iterator<String> iter = requestParams.keySet().iterator(); iter.hasNext(); ) {
             String name = (String) iter.next();
             String[] values = (String[]) requestParams.get(name);
             String valueStr = "";
             for (int i = 0; i < values.length; i++) {
                 valueStr = (i == values.length - 1) ? valueStr + values[i] : valueStr + values[i] + ",";
             }
+            // 乱码解决
+            valueStr = new String(valueStr.getBytes(), "utf-8");
             params.put(name, valueStr);
         }
-        boolean flag = AlipaySignature.rsaCheckV1(params, config.getAliyun().getPublicKey(), "utf-8", "RSA");
+        boolean flag = AlipaySignature.rsaCheckV1(params, config.getAliyun().getPublicKey(),
+                config.getAliyun().getCharset(), config.getAliyun().getSignType());
+        System.out.println("param:" + params);
+        System.out.println("flag:" + flag);
         if (flag) {
             String out_trade_no = request.getParameter("out_trade_no");
             String trade_status = request.getParameter("trade_status");
@@ -57,6 +95,8 @@ public class AppPayController {
             int type = Convert.stringToInt(param, -1);
             double total_amount = Double.parseDouble(tamount);
             if (trade_status.equals("TRADE_SUCCESS")) {
+                System.out.println("支付成功");
+                output(response, "success");
                 /*if (chargeService.callback(out_trade_no) == 0) {
                     log.info("###################wxpay_callback_shop charge_service callback success.");
                     output(response, "success");
@@ -68,6 +108,8 @@ public class AppPayController {
             output(response, "failure");
         }
     }
+
+    //*******************************微信*******************************//
 
     /**
      * Wechat Callback

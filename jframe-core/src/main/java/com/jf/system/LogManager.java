@@ -1,15 +1,30 @@
 package com.jf.system;
 
+import com.jf.system.conf.SysConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
+
+import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
 
 /**
  * LogManager
  * logback & slf4j
  */
+@Component
 public class LogManager {
 
-    private final static Logger log = LoggerFactory.getLogger("syslog");
+    @Resource
+    private SysConfig config;
+
+    private final static Logger log = LoggerFactory.getLogger(LogManager.class);
+    private static LogManager manager;
+
+    @PostConstruct
+    public void init() {
+        manager = this;
+    }
 
     /**
      * @param msg
@@ -50,15 +65,15 @@ public class LogManager {
     }
 
     /**
-     * @param type
+     * 访问信息
+     *
      * @param ip
+     * @param extra
      * @param action
      * @param params
      */
-    public static void visit(String type, String ip, String action, String params) {
-        /*log.info("########## " + type + " Interceptor ##########\r\n" +
-                "\tTarget IP\t" + ip + "\r\n\tAction\t\t" + action + "\r\n\tParams\t\t" + params);*/
-        log.info("【" + type + "】" + "【Target IP：" + ip + "】【Action：" + action + "】【Params：" + params + "】");
+    public static void visit(String ip, String extra, String action, String params) {
+        log.info("【Server ID：" + manager.config.getServerId() + "】" + "【Target IP：" + ip + "】【" + extra + "：" + action + "】【Params：" + params + "】");
     }
 
 }

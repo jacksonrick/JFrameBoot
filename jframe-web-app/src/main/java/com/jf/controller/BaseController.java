@@ -31,6 +31,8 @@ public class BaseController extends Constant {
     private SystemService systemService;
     @Resource
     private RedisClientTemplate template;
+    @Resource
+    private SysConfig config;
 
     protected ResMsg expLogin = new ResMsg(99, "登录已过期，请重新登录");
 
@@ -66,6 +68,7 @@ public class BaseController extends Constant {
 
     /**
      * 统一异常处理
+     * <p>APP请求均为JSON数据，无需判断请求类型</p>
      *
      * @param exception
      * @param request
@@ -75,20 +78,7 @@ public class BaseController extends Constant {
     @ExceptionHandler(value = {Exception.class})
     @ResponseBody
     public Object exceptionHandler(Exception exception, HttpServletRequest request, HttpServletResponse response) {
-        LogManager.info("An exception happened in [" + request.getRequestURI() + "], See the error log file.");
-        Map<String, String[]> parameters = request.getParameterMap();
-        String param = "";
-        if (!parameters.isEmpty()) {
-            Set<String> keys = parameters.keySet();
-            for (String key : keys) {
-                String[] params = parameters.get(key);
-                param += "|" + key + "=" + params[0];
-            }
-            param += "|";
-        } else {
-            param = "None";
-        }
-        LogManager.error("App Request Error!!! Params:" + param, exception);
+        LogManager.error("An exception happened in【Server ID：" + config.getServerId() + "】【URI：" + request.getRequestURI() + "】", exception);
         return new ResMsg(-1, SERVER_ERROR);
     }
 

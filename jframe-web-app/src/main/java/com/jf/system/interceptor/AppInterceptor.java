@@ -23,13 +23,14 @@ public class AppInterceptor extends HandlerInterceptorAdapter {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        log("APP", request);
+        log(request);
         // 验证header
         String appHeader = request.getHeader("Req-Type");
         if (appHeader == null || !"APP".equals(appHeader)) {
             output(97, "非法请求", response);
             return false;
         }
+        // 验证APPKEY
         return true;
     }
 
@@ -49,10 +50,9 @@ public class AppInterceptor extends HandlerInterceptorAdapter {
     }
 
     /**
-     * @param system
      * @param request
      */
-    public void log(String system, HttpServletRequest request) {
+    public void log(HttpServletRequest request) {
         // Action
         String path = request.getRequestURI();
         // IP
@@ -69,8 +69,7 @@ public class AppInterceptor extends HandlerInterceptorAdapter {
         } else {
             param = "None";
         }
-        LogManager.info("############" + path + "###########", AppInterceptor.class);
-        LogManager.visit(system, remote, path, param);
+        LogManager.visit(remote, "Action", path, param);
     }
 
 }

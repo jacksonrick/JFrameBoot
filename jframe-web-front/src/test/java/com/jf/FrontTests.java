@@ -2,6 +2,7 @@ package com.jf;
 
 import com.jf.model.Address;
 import com.jf.service.system.AddrService;
+import com.jf.system.conf.SysConfig;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,6 +20,15 @@ public class FrontTests {
 
     @Resource
     private AddrService addrService;
+
+    @Resource
+    private SysConfig config;
+
+    @Test
+    public void test0() {
+        System.out.println(config.getServerId());
+    }
+
 
     ///city-picker插件 JSON地址库///
     @Test

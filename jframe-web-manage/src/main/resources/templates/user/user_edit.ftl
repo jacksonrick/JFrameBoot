@@ -88,7 +88,7 @@
         <div class="form-group">
             <label class="col-sm-2 control-label">生日：</label>
             <div class="col-sm-9">
-                <input type="text" id="birthday" name="birthday" value="${user.birthday }" class="form-control" placeholder="生日" data-date-format="yyyy-mm-dd">
+                <input type="text" id="birthday" name="birthday" value="${user.birthday }" class="form-control" placeholder="生日">
             </div>
         </div>
         <div class="form-group">

@@ -27,6 +27,8 @@ public class BaseController extends Constant {
 
     @Resource
     private SystemService systemService;
+    @Resource
+    private SysConfig config;
 
     /**
      * 管理操作日志
@@ -67,7 +69,7 @@ public class BaseController extends Constant {
     @ResponseBody
     public Object exceptionHandler(Exception exception, HttpServletRequest request, HttpServletResponse response) {
         // 跟踪错误信息
-        LogManager.error("manage error log", exception);
+        LogManager.error("An exception happened in【Server ID：" + config.getServerId() + "】【URI：" + request.getRequestURI() + "】", exception);
         String requestType = request.getHeader("X-Requested-With");
         String appHeader = request.getHeader("Req-Type");
         if (appHeader != null && "APP".equals(appHeader)) {

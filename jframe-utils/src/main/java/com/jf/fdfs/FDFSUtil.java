@@ -8,6 +8,7 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 
 /**
+ * FDFS工具类【水印】
  * Created by xujunfei on 2017/6/7.
  */
 public class FDFSUtil {

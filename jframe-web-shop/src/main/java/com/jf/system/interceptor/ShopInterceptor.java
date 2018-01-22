@@ -43,17 +43,17 @@ public class ShopInterceptor extends HandlerInterceptorAdapter {
                 Login login = ((HandlerMethod) handler).getMethodAnnotation(Login.class);
                 // 未指定【不检查登录】
                 if (login == null) {
-                    log("Shop", "Action", request);
+                    log("Action", request);
                     return true;
                 }
                 // 指定
                 if (user == null) {
                     String rurl = request.getContextPath() + "/shop/login";
                     output(requestType, rurl, response, request);
-                    log("Shop", "Check Login", request);
+                    log("Login", request);
                     return false;
                 }
-                log("Shop", "Action", request);
+                log("Action", request);
                 return true;
             }
             return false;
@@ -79,11 +79,10 @@ public class ShopInterceptor extends HandlerInterceptorAdapter {
     }
 
     /**
-     * @param system
      * @param extra
      * @param request
      */
-    public void log(String system, String extra, HttpServletRequest request) {
+    public void log(String extra, HttpServletRequest request) {
         // Action
         String path = request.getRequestURI();
         // IP
@@ -100,7 +99,6 @@ public class ShopInterceptor extends HandlerInterceptorAdapter {
         } else {
             param = "None";
         }
-        LogManager.info("############" + extra + ":" + path + "###########", ShopInterceptor.class);
-        LogManager.visit(system, remote, path, param);
+        LogManager.visit(remote, extra, path, param);
     }
 }

@@ -89,34 +89,32 @@ spring:
     password: 12345678
     packages:
       trust-all: true
-fdfs: # fastDFS配置【暂无法使用ConfigurationProperties】
-  connect_timeout: 5
-  network_timeout: 30
-  charset: UTF-8
-  tracker_server: 192.168.1.199 # DFS服务器地址
-  tracker_server_port: 22122
-  nginx_server: http://192.168.1.199 # DFS Nginx代理服务器地址+端口
-  http:
-    tracker_http_port: 80
-    anti_steal_token: no
-    secret_key: FastDFS1234567890
+fdfs: # fastDFS配置
+  so-timeout: 3000
+  connect_timeout: 3000
+  tracker-list:
+    - 192.168.1.199:22122
 system: # 系统自定义配置
   appkey: 00056cb1d74435076a4c15a490798df4
   static_host: http://127.0.0.1:8080/ # 静态服务器地址
   static_path: /Users/xujunfei/Downloads/static/ # 静态文件目录
   log_path: /Users/xujunfei/Downloads/logs/ # 日志存放目录
+  server_id: ${spring.application.name}
+  fdfs_nginx: http://192.168.1.199/ # DFS Nginx代理服务器地址
   aliyun: # 支付宝
-    partner: partner
-    seller: seller@163.com
-    app_id: app_id
-    rsa_private_key: MIICdwIBADANBgkqhkiG9w0BAQEFAASCAmEwggJdAgEAAoGBAN80D1ZAR+ejvrDfo28ST88ZHVQnfSAtNQs4PijfHNw9PDjHNVgn+bk9XtCZafFVPU86DYJRLMfuwSGr0yroPLLDILsVIMjliN3fqz1mt1WdgyGO3bEO/fxHKOO0IrBBWunxu7p0YOXpgrWaQ99QGX4+ZTg7jxFEqswHi6glXELpAgMBAAECgYAc0A+axrmBgXXAR15FnEuJJGjQ0Dgqyyspw5zikcqb85uuiKiuNJrb+rwemW8/pA1CCPBtfiUVuhBcVF3yEAClpR6h8AIdkJ4JVomuR+3aHXQGgdR6wazLvzhFxz+1q9eDU7fu6kNAYtGPi5eI/XfS1t6cFIQD9Kg9Zv0IqUWOMQJBAPj0LGKAZiFtD+V7HoUr1N8vBwvGUb49zzOoigQ6T0JOVXlDv8UTiYG8nyg7OGHtxczgGvfqIeuiA7a72ZTp7OsCQQDlhU7zYaOuk1VIaN0bhOemDkO7CuMvHXR9SjcViVWhz/bHSciB97SUvegNWy8R+VvEJYY7iBz1p4ZfQ0oyksp7AkArYnn9rHyf5J65kiwubwYI4uwqbCRAsArU6NEsjXDUkEwq9tiLoqz69AEUhMV9o28uFfv9KktBAhn9lV0Eq4ODAkEAiAJ7SpZtnKIKQ6KAhDI545lIYaqN/fmCckxsYALGD+Fg56+9decHx6zRujhyqEAQNSfXZ6e9IYVoh0Mk0NtTyQJBAJy420ATl9ICccAAuUhqPAPj394DKMQY5hXT2B4SSgcPaKiqcYgjqMIOUUcZ5Cy/WEF+jbsrmXrEs0HVGViUiqo=
-    public_key: MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDDI6d306Q8fIfCOaTXyiUeJHkrIvYISRcc73s3vF1ZT7XN8RNPwJxo8pWaJMmvyTn9N4HQ632qJBVHf8sxHi/fEsraprwCtzvzQETrNRwVxLO5jVmRGi60j8Ue1efIlzPXV9je9mkjzOmdssymZkh2QhUrCmZYI/FCEa3/cNMW0QIDAQAB
-    notify_url: http://url/alipay_callback.do
+    partner: 2088102175363994
+    seller: nfnjqg2293@sandbox.com
+    app_id: 2016091200497607
+    rsa_private_key: MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCAbqwHTigw8Bs0czuAwy4Y8zyqdIhzVCMn9H4/oBF0J+t2eTxlAUCuXjX/vrf+X2bGVMiCym54s1IGQ3Himaon30thys4FxM7QVvH6UC6OefZLkaG1i4mpvYUK3gzsT+PHqbpK/lkQ6RoYwg3mHSHSl2Td/08SIJ326W8Ujs29YOID2OzUusupSly+acdHVwf/IRiuP9FkL/f0e9jwUzGTMhTuP2DXWU9frd0D2n9DHL+BL3kmQm2NToAJ+2xvhiqI5nPixQxe9ua38N2i3xMNY5N2/6nCmvpj7UZzVWdYkcmNQLPNvUeLNbohX4U/R+HYZ1SeTiIgIaog9nX6ctW3AgMBAAECggEAKOSUK8NL8sEQuHOUV5xN2i3gfBmctLPuebNUW2fZBtYLF+7kNvjeImbm5KZSKVExBSdLrLFN2WqnTE0/PrpUvltPwjRzwsx2WUnFxECxgjX9IPSeu5JRY9VvPhWToc6SJSm6olQ4AbVm1Mk86a8O7OG9gR3gjFIMWejbsH0Dry9qtsSD4byYuLXwQ/yy7CC9ZV/v76veCBwZxYiG1LzRLn82qCl5B3QwTj1K7wyGpYE2OHflTDBe05H82eUpnbUb1xKt8y7TdquJWheInDDxvt7OthHFwNVJhp7zui9s580WiXP6DtrEtmINaYYHDgOGR2SmleygXloNIUQ02xSZAQKBgQDhMMobbS67dqMQ5JzYvErj8xbhVhSk3wiKm7+MBpCtpM40HNLy5Z82JqlngN6CkJdHBybqWmvDjER07MvzKjX3VuyYM/jFkuyOCpBHzjbXSnFk7xn5UKqlQFKoW5v8XJB8qwksxpBlvHNmFedwVMU0mOfDD4uoF1axEt7cDs5+NwKBgQCSAPZrv07KVs/eEFU+nqGu9UpmQ0D6ZITgEiDoQwPecSO2uKovY8TsCKYgfTAntY2oJ51Jqf6lV8cKr6Fm6CoWm687BT4E5gljoyWj7iGgt/WPhki+ocWcQkGbkFGN7wNel56+3/TCrnKWcgNqoh8BqpaMERT23QCqLdaNy8akgQKBgBGCobSQQNoC15swq6GOwqQG+vh6oRBQ53Efuz1AJW/bKM2UkDKi+EZVq0aJFsRASgMT40rFzStfdNNCtnkqBxg8ghkzsVxrmElTOPTcbBdBip+2l+ZzB1HiNosw1GhDKlkHU6dPqVq/1JlTirOJY+w7F4prYwinB+6s8Pdbj2LxAoGANFXr/wuAbr9Xm743EE9EnbaHiMiqzhaiGr/k09zR0ja0GpdvSbV1rTYcdqDpVhKaSKCKnRE2moYwbwAt1vl5vMjpszpZ1N+wleqxX2XI4BeRCnWUNeE/OJf3dI/y6/G1P38SBFG7Jt3pbUxJNTwP6UUA2gx1e1gVGOt9cS6OcgECgYEAvxHdlmsyMWU0dZmXA6Pgs4Nl4JE7gVuVkuo9eXVIEtM7Er6uopkmvQItvb0Jp7aCDZi/eblGS7HiFoxh5YFIO9AGzWgMbDPjBbFcaD2+ucqG/0FYqi4pNV3NX4PuEEAyywH9L8G/pv/WwfYBMckwvwtqh6wdf7HgYuLXgVXuduA=
+    public_key: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA2F1OBxmr8/7Dd+uPMQoTzqJdldBG31c5YE8EpIdk+pxwyM0BGMXV1SETynt1br7Pw8MKOC+oJOTxD9hcqx7OOhsZhiqFH2iL5F4ejK9VNEPDxjwkZXjgYqnacK5cFRWq6iMn4tw5xTsxa1sSNtEoxjK4AZnpgTiTTT2hlB2TN6e78zW2ZMeyZ+ocb9jy5oa/xqMAv1Srgp2PIa1dQ5qDp52xxzs6PxjTZJwTh6v+Z2zJJaBu2lzkk/cY4LAYAkr2rxKRVseT4Xt5m8zRVA62rDlTd1/D7MoCS9ybGQ8IaGe/8XM+3FJtNjk1JKk6OQa2YWHgzqZz+BQQSZzeSGFn4QIDAQAB
+    notify_url: http://xjf.s1.natapp.cc/alipay_callback
+    return_url: http://xjf.s1.natapp.cc/alipay_return
+    gateway: https://openapi.alipaydev.com/gateway.do
   wechat: # 微信
     partner: partner
     appid: appid
     partner_key: ef0aa966db5bcd212
-    notify_url: http://url/wxpay_callback.do
+    notify_url: http://url/wxpay_callback
   geetest: # 极验验证
     id: a53178cc0f5a776e1c7acf9ba0cf1496
     key: 51dbc83635e623de97da576c3fb50070

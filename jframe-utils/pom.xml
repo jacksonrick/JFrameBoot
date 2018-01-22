@@ -66,6 +66,15 @@
             <artifactId>jpush-client</artifactId>
             <version>3.2.17</version>
         </dependency>
+
+        <!-- 本地Jar -->
+        <dependency>
+            <groupId>alipay-sdk-java</groupId>
+            <artifactId>alipay-sdk-java</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/../jframe/public/lib/alipay-sdk-java-1.0.jar</systemPath>
+        </dependency>
     </dependencies>
 
 </project>

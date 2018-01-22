@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.util.WebUtils;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
@@ -22,6 +23,9 @@ import java.util.Map;
  * @version 1.0
  */
 public class BaseController extends Constant {
+
+    @Resource
+    private SysConfig config;
 
     /**
      * 获取当前用户
@@ -50,7 +54,7 @@ public class BaseController extends Constant {
     @ResponseBody
     public Object exceptionHandler(Exception exception, HttpServletRequest request, HttpServletResponse response) {
         // 跟踪错误信息
-        LogManager.error("manage error log", exception);
+        LogManager.error("An exception happened in【Server ID：" + config.getServerId() + "】【URI：" + request.getRequestURI() + "】", exception);
         String requestType = request.getHeader("X-Requested-With");
         String appHeader = request.getHeader("Req-Type");
         if (appHeader != null && "APP".equals(appHeader)) {

@@ -3,11 +3,12 @@
           xsi:schemaLocation="http://maven.apache.org/ASSEMBLY/2.0.0 http://maven.apache.org/xsd/assembly-2.0.0.xsd">
     <id>package</id>
     <formats>
-        <!-- directory -->
+        <!-- type: directory -->
         <format>dir</format>
     </formats>
     <includeBaseDirectory>false</includeBaseDirectory>
     <fileSets>
+        <!-- 启动jar -->
         <fileSet>
             <directory>${project.build.directory}</directory>
             <outputDirectory>/</outputDirectory>
@@ -25,10 +26,20 @@
             <directory>../jframe/public/static</directory>
             <outputDirectory>/static</outputDirectory>
         </fileSet>
+        <fileSet>
+            <!-- public jar -->
+            <directory>../jframe/public/lib</directory>
+            <outputDirectory>/lib</outputDirectory>
+            <includes>
+                <include>*.jar</include>
+            </includes>
+        </fileSet>
     </fileSets>
+
+    <!-- 打包所有Maven依赖 -->
     <dependencySets>
         <dependencySet>
-            <!-- 打包所有Jar -->
+            <!-- 目标目录 -->
             <outputDirectory>lib</outputDirectory>
             <scope>runtime</scope>
             <excludes>

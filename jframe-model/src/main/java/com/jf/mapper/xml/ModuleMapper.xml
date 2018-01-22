@@ -24,6 +24,7 @@
                 AND FIND_IN_SET(id, (SELECT role_rights FROM s_role WHERE id = #{roleId}))
             </if>
 		</where>
+		ORDER BY mod_sort ASC
 	</select>
 
 	<update id="update" parameterType="module">

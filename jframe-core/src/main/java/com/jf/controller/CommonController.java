@@ -4,12 +4,11 @@ import com.jf.date.DateUtil;
 import com.jf.entity.ResMsg;
 import com.jf.entity.UploadRet;
 import com.jf.fdfs.FDFSUtil;
-import com.jf.fdfs.FastDFSFile;
-import com.jf.fdfs.FileManager;
-import com.jf.fdfs.common.NameValuePair;
 import com.jf.string.StringUtil;
 import com.jf.system.conf.SysConfig;
 import com.jf.system.third.geet.GeetestLib;
+import com.luhuiguo.fastdfs.domain.StorePath;
+import com.luhuiguo.fastdfs.service.FastFileStorageClient;
 import org.apache.commons.io.FileUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -50,6 +49,8 @@ public class CommonController {
 
     @Resource
     private SysConfig config;
+    @Resource
+    private FastFileStorageClient storageClient;
 
     /**
      * geetest验证
@@ -164,18 +165,10 @@ public class CommonController {
             FileUtils.copyInputStreamToFile(file.getInputStream(), new File(filePath, filename));
             return new UploadRet(0, config.getStaticPath() + "static/upload/" + basePathFormat + "/" + filename, "SUCCESS");
         } else {
-            FastDFSFile dfs = new FastDFSFile(FDFSUtil.waterMark(file, suffix), suffix);
-            // 参数数组
-            NameValuePair[] meta_list = new NameValuePair[3];
-            meta_list[0] = new NameValuePair("fileName", file.getOriginalFilename());
-            meta_list[1] = new NameValuePair("fileLength", String.valueOf(file.getSize()));
-            meta_list[2] = new NameValuePair("fileExt", suffix);
-            try {
-                String filePath = FileManager.upload(dfs, meta_list);
-                return new UploadRet(0, filePath, "SUCCESS");
-            } catch (Exception e) {
-                return new UploadRet(1, "", "ERROR");
-            }
+            // 添加水印：FDFSUtil.waterMark(file, suffix)
+            StorePath storePath = storageClient.uploadFile(file.getBytes(), suffix);
+            String filePath = config.getFdfsNginx() + storePath.getFullPath();
+            return new UploadRet(0, filePath, "SUCCESS");
         }
     }
 
@@ -229,24 +222,10 @@ public class CommonController {
             FileUtils.copyInputStreamToFile(file.getInputStream(), new File(filePath, filename));
             return new UploadRet(0, config.getStaticPath() + "static/" + dirPath + "/" + filename, "SUCCESS");
         } else {
-            FastDFSFile dfs;
-            if (t == 2) {
-                dfs = new FastDFSFile(file.getBytes(), suffix);
-            } else {
-                // 添加水印
-                dfs = new FastDFSFile(FDFSUtil.waterMark(file, suffix), suffix);
-            }
-            // 参数数组
-            NameValuePair[] meta_list = new NameValuePair[3];
-            meta_list[0] = new NameValuePair("fileName", file.getOriginalFilename());
-            meta_list[1] = new NameValuePair("fileLength", String.valueOf(file.getSize()));
-            meta_list[2] = new NameValuePair("fileExt", suffix);
-            try {
-                String filePath = FileManager.upload(dfs, meta_list);
-                return new UploadRet(0, filePath, "SUCCESS");
-            } catch (Exception e) {
-                return new UploadRet(1, "", "ERROR");
-            }
+            // 添加水印：FDFSUtil.waterMark(file, suffix)
+            StorePath storePath = storageClient.uploadFile(file.getBytes(), suffix);
+            String filePath = config.getFdfsNginx() + storePath.getFullPath();
+            return new UploadRet(0, filePath, "SUCCESS");
         }
     }
 

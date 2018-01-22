@@ -1,9 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <root>
 	<sys>
-		<lastest>v4.1</lastest>
+		<lastest>v4.0</lastest>
 		<sysname>JFrame</sysname>
 	</sys>
+	<upgrade>
+        <version>v4.0</version>
+        <date>20180104</date>
+        <content>
+            <li>后续更新日志在README.md文件</li>
+        </content>
+    </upgrade>
 	<upgrade>
         <version>v4.1</version>
         <date>20180104</date>
