@@ -268,9 +268,9 @@ public class SysConfig {
     public static class Wechat {
         // 微信-在开发平台登记的app应用
         private String appid;
-        // 微信-商户号
+        // 微信-商户号、MCH_ID
         private String partner;
-        // 微信-商户在微信平台设置的32位长度的api秘钥
+        // 微信-商户在微信平台设置的32位长度的api秘钥、API_KEY
         private String partnerKey;
         // 微信-异步通知地址
         private String notifyUrl;

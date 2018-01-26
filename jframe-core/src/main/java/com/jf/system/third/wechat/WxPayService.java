@@ -1,108 +1,261 @@
 package com.jf.system.third.wechat;
 
-import com.alibaba.fastjson.JSON;
-import com.jf.system.LogManager;
+import com.github.wxpay.sdk.WXPay;
+import com.github.wxpay.sdk.WXPayConfig;
+import com.jf.string.StringUtil;
 import com.jf.system.conf.SysConfig;
-import com.wechat.WXUtil;
-import com.wechat.util.HttpUtils;
-import com.wechat.util.XMLUtil;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.SortedMap;
-import java.util.TreeMap;
 
 /**
- * 微信
- * Created on 16/6/29.
+ * Created with IntelliJ IDEA.
+ * Description: 微信支付
+ * User: xujunfei
+ * Date: 2018-01-25
+ * Time: 14:02
  */
 @Component
-public class WxPayService {
+public class WxPayService implements WXPayConfig {
 
     @Resource
     private SysConfig config;
 
+    private byte[] certData;
+
+    public WxPayService() throws Exception {
+        // 证书读取 - 撤销、退款申请API中调用
+        File file = new File(WxPayService.class.getResource("/apiclient_cert.p12").getFile());
+        InputStream certStream = new FileInputStream(file);
+        this.certData = new byte[(int) file.length()];
+        certStream.read(this.certData);
+        certStream.close();
+    }
+
+    // 以下通过sysconfig配置
+
+    @Override
+    public String getAppID() {
+        return config.getWechat().getAppid();
+    }
+
+    @Override
+    public String getMchID() {
+        return config.getWechat().getPartner();
+    }
+
+    @Override
+    public String getKey() {
+        return config.getWechat().getPartnerKey();
+    }
+
+    @Override
+    public InputStream getCertStream() {
+        return new ByteArrayInputStream(this.certData);
+    }
+
+    @Override
+    public int getHttpConnectTimeoutMs() {
+        return 8000;
+    }
+
+    @Override
+    public int getHttpReadTimeoutMs() {
+        return 10000;
+    }
+
+
     /**
      * APP支付
      *
-     * @param ip       IP地址
+     * @param orderNum
      * @param body
-     * @param price    价格
-     * @param orderNum 订单编号
-     * @return
+     * @param orderPrice
+     * @param ip
+     * @return 微信返回的参数集
      */
-    public String wxPayApp(String ip, String body, Double price, String orderNum) {
-        //Map<Object, Object> resInfo = new HashMap<Object, Object>();
-        SortedMap<Object, Object> parameters = new TreeMap<Object, Object>();
-        int retcode;
-        String retmsg = "";
-        String xml_body = "";
-
-        //获取token值
-        //String token = AccessTokenRequestHandler.getAccessToken();
-
-        //设置package订单参数
-        //packageReqHandler.setParameter("bank_type", "WX");//银行渠道
-        parameters.put("body", body); //商品描述
-        parameters.put("notify_url", config.getWechat().getNotifyUrl()); //接收财付通通知的URL
-        parameters.put("mch_id", config.getWechat().getPartner()); //商户号
-        parameters.put("out_trade_no", orderNum); //商家订单号+随机数 = 支付流水号
-        parameters.put("total_fee", (int) (price * 100) + ""); //商品金额,以分为单位
-        //parameters.put("spbill_create_ip",HttpUtils.getIpAddr(request)); //订单生成的机器IP，指用户浏览器端IP
-        parameters.put("spbill_create_ip", ip); //订单生成的机器IP，指用户浏览器端IP
-        //parameters.put("fee_type", "1"); //币种，1人民币   66
-        parameters.put("trade_type", "APP"); //字符编码
-        // 随机字符串
-        String noncestr = WXUtil.getNonceStr();
-        ////设置获取prepayid支付参数
-        parameters.put("appid", config.getWechat().getAppid());
-        parameters.put("nonce_str", noncestr);
-        //生成获取预支付签名
-        String sign = WXUtil.createSign(parameters, config.getWechat().getPartner());
-        //增加非参与签名的额外参数
-        parameters.put("sign", sign);
-        //resInfo.put("retmsg", WXUtil.getXmlBody(parameters));
-
-        String xml = WXUtil.getXmlBody(parameters);
-        byte[] bytes = new byte[0];
-        String s = null;
+    public Map<String, String> order_app(String orderNum, String body, Double orderPrice, String ip) {
+        WXPay wxpay = new WXPay(this);
+        Map<String, String> data = new HashMap<String, String>();
+        data.put("body", body);
+        data.put("out_trade_no", orderNum);
+        data.put("fee_type", "CNY");
+        data.put("total_fee", (int) (orderPrice * 100) + "");
+        data.put("spbill_create_ip", ip);
+        data.put("notify_url", config.getWechat().getNotifyUrl());
+        data.put("trade_type", "APP");
+        //data.put("device_info", "");
+        //data.put("product_id", "1");
         try {
-            // 请求微信支付网关
-            bytes = HttpUtils.postXml("https://api.mch.weixin.qq.com/pay/unifiedorder", xml, "UTF-8");
-            s = new String(bytes, "UTF-8");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        SortedMap<Object, Object> finalpackage = new TreeMap<Object, Object>();
-        String timestamp = WXUtil.getTimeStamp();
-        finalpackage.put("appid", config.getWechat().getAppid());
-        finalpackage.put("timestamp", timestamp);
-        finalpackage.put("noncestr", noncestr);
-        finalpackage.put("partnerid", config.getWechat().getPartner());
-        finalpackage.put("package", "Sign=WXPay");
-        try {
-            Map map = XMLUtil.doXMLParse(s);
-            finalpackage.put("prepayid", map.get("prepay_id"));
-            if (map.get("return_code").equals("FAIL")) {
-                LogManager.error(map.toString(), WxPayService.class);
-                throw new Exception();
+            Map<String, String> resp = wxpay.unifiedOrder(data);
+            System.out.println(resp);
+            if ("SUCCESS".equals(resp.get("result_code"))) {
+                return resp;
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        String finalsign = WXUtil.createSign(finalpackage, config.getWechat().getPartner());
-        finalpackage.put("sign", finalsign);
-
-        return JSON.toJSONString(finalpackage);
+        return null;
     }
 
-    public String wxRefund(String out_trade_no, String refund_id, Double price, String orderNum) {
-
+    /**
+     * 原生扫码支付
+     *
+     * @param orderNum
+     * @param body
+     * @param orderPrice
+     * @param ip
+     * @return 二维码地址
+     */
+    public String order_qrcode(String orderNum, String body, Double orderPrice, String ip) {
+        WXPay wxpay = new WXPay(this);
+        Map<String, String> data = new HashMap<String, String>();
+        data.put("body", body);
+        data.put("out_trade_no", orderNum);
+        data.put("fee_type", "CNY");
+        data.put("total_fee", (int) (orderPrice * 100) + "");
+        data.put("spbill_create_ip", ip);
+        data.put("notify_url", config.getWechat().getNotifyUrl());
+        data.put("trade_type", "NATIVE");
+        try {
+            Map<String, String> resp = wxpay.unifiedOrder(data);
+            System.out.println(resp);
+            if ("SUCCESS".equals(resp.get("result_code"))) {
+                return resp.get("code_url");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return "";
     }
 
-    // 公众号支付需要使用WeixinJSBridge
+    /**
+     * 公众号支付
+     *
+     * @param orderNum
+     * @param body
+     * @param orderPrice
+     * @param ip
+     * @param openid
+     * @return
+     */
+    public Map<String, String> order_jsapi(String orderNum, String body, Double orderPrice, String ip, String openid) {
+        WXPay wxpay = new WXPay(this);
+        Map<String, String> data = new HashMap<String, String>();
+        data.put("body", body);
+        data.put("out_trade_no", orderNum);
+        data.put("fee_type", "CNY");
+        data.put("total_fee", (int) (orderPrice * 100) + "");
+        data.put("spbill_create_ip", ip);
+        data.put("notify_url", config.getWechat().getNotifyUrl());
+        data.put("openid", openid);
+        data.put("trade_type", "JSAPI");
+        try {
+            Map<String, String> resp = wxpay.unifiedOrder(data);
+            System.out.println(resp);
+            if ("SUCCESS".equals(resp.get("result_code"))) {
+                return resp;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * 查询订单
+     *
+     * @param outTradeNo
+     * @return
+     */
+    public Map<String, String> queryOrder(String outTradeNo) {
+        WXPay wxpay = new WXPay(this);
+        Map<String, String> data = new HashMap<String, String>();
+        data.put("out_trade_no", outTradeNo);
+        // 或 transaction_id
+        try {
+            Map<String, String> resp = wxpay.orderQuery(data);
+            System.out.println(resp);
+            return resp;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * 关闭订单
+     *
+     * @param outTradeNo
+     * @return
+     */
+    public Map<String, String> closeOrder(String outTradeNo) {
+        WXPay wxpay = new WXPay(this);
+        Map<String, String> data = new HashMap<String, String>();
+        data.put("out_trade_no", outTradeNo);
+        try {
+            Map<String, String> resp = wxpay.closeOrder(data);
+            System.out.println(resp);
+            return resp;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * 退款
+     *
+     * @param orderNum
+     * @param refundNum
+     * @param orderPrice
+     * @param refundPrice
+     * @return 失败或成功
+     */
+    public Boolean refund(String orderNum, String refundNum, Double orderPrice, Double refundPrice) {
+        WXPay wxpay = new WXPay(this);
+        Map<String, String> data = new HashMap<String, String>();
+        data.put("out_trade_no", orderNum);
+        data.put("out_refund_no", refundNum);
+        data.put("total_fee", (int) (orderPrice * 100) + "");
+        data.put("refund_fee", (int) (refundPrice * 100) + "");
+        try {
+            Map<String, String> resp = wxpay.refund(data);
+            System.out.println(resp);
+            if ("SUCCESS".equals(resp.get("result_code"))) {
+                return true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+
+    /**
+     * 查询退款
+     *
+     * @param outTradeNo
+     * @return
+     */
+    public Map<String, String> queryRefund(String outTradeNo) {
+        WXPay wxpay = new WXPay(this);
+        Map<String, String> data = new HashMap<String, String>();
+        data.put("out_trade_no", outTradeNo);
+        // 或 out_refund_no transaction_id refund_id
+        try {
+            Map<String, String> resp = wxpay.refundQuery(data);
+            System.out.println(resp);
+            return resp;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

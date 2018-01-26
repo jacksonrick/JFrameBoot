@@ -50,24 +50,67 @@
             <artifactId>mail</artifactId>
             <version>1.4.7</version>
         </dependency>
+        <!-- 二维码 -->
+        <dependency>
+            <groupId>com.google.zxing</groupId>
+            <artifactId>core</artifactId>
+            <version>3.3.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.zxing</groupId>
+            <artifactId>javase</artifactId>
+            <version>3.3.1</version>
+        </dependency>
 
+        <!-- 百度echarts -->
         <dependency>
             <groupId>com.github.abel533</groupId>
             <artifactId>ECharts</artifactId>
             <version>3.0.0.2</version>
         </dependency>
+        <!-- aliyun esc -->
         <dependency>
             <groupId>com.aliyun</groupId>
             <artifactId>aliyun-java-sdk-core</artifactId>
             <version>3.5.0</version>
         </dependency>
+        <!-- weixin pay -->
+        <dependency>
+            <groupId>com.github.wxpay</groupId>
+            <artifactId>wxpay-sdk</artifactId>
+            <version>0.0.3</version>
+        </dependency>
+        <!-- jpush -->
         <dependency>
             <groupId>cn.jpush.api</groupId>
             <artifactId>jpush-client</artifactId>
             <version>3.2.17</version>
         </dependency>
 
-        <!-- 本地Jar -->
+        <!-- openfire+smack即时通信 -->
+        <dependency>
+            <groupId>org.igniterealtime.smack</groupId>
+            <artifactId>smack-java7</artifactId>
+            <version>4.2.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.igniterealtime.smack</groupId>
+            <artifactId>smack-im</artifactId>
+            <version>4.2.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.igniterealtime.smack</groupId>
+            <artifactId>smack-tcp</artifactId>
+            <version>4.2.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.igniterealtime.smack</groupId>
+            <artifactId>smack-extensions</artifactId>
+            <version>4.2.2</version>
+        </dependency>
+
+
+        <!-- 本地Jar-支付宝SDK -->
         <dependency>
             <groupId>alipay-sdk-java</groupId>
             <artifactId>alipay-sdk-java</artifactId>
