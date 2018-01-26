@@ -1,5 +1,5 @@
 # JFrame
-##### JFrame - SpringBoot & Cloud Project `v4.2.2`
+##### JFrame - SpringBoot & Cloud Project `v4.3`
 `jackson-rick`   <br>
 `https://github.com/jacksonrick/JFrameBoot`
 
@@ -34,6 +34,9 @@
 * ...
 
 ### 更新日志：
+* v4.3 `20180126`
+    * 1.集成Openfire+Smack即时通信服务
+    * 2.集成微信支付SDK，新增多个接口
 * v4.2.2 `20180119`
     * 1.优化日志服务
     * 2.自动生成实体类工具现可以生成HTML
