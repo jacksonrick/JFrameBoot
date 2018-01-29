@@ -71,7 +71,7 @@
 
 <script type="text/javascript">
     $(function () {
-        datePicker('#startDate', "yyyy-mm-dd", 2);
+        datePicker('#startDate', "yyyy-mm-dd");
 
         $(".backup").click(function () {
             var mon = $(this).attr("mon");

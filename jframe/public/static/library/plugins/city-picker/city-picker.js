@@ -306,6 +306,10 @@
             this.$textspan.removeClass('open');
             if (blur) {
                 this.$textspan.removeClass('focus');
+            } else { // onClose callback
+                if (this.options.func) {
+                    this.options.func();
+                }
             }
         },
 
@@ -377,6 +381,7 @@
 
         feedVal: function () {
             this.$element.val(this.getVal());
+            this.$element.attr("value", this.getVal());
         },
 
         output: function (type) {
@@ -463,7 +468,7 @@
                         ' class="' +
                         (m.selected ? ' active' : '') +
                         '">' +
-                        ( simple ? $this.simplize(m.address, PROVINCE) : m.address) +
+                        (simple ? $this.simplize(m.address, PROVINCE) : m.address) +
                         '</a>');
                 });
                 list.push('</dd></dl>');
@@ -485,7 +490,7 @@
                     ' class="' +
                     (n.selected ? ' active' : '') +
                     '">' +
-                    ( simple ? $this.simplize(n.address, type) : n.address) +
+                    (simple ? $this.simplize(n.address, type) : n.address) +
                     '</a>');
             });
             list.push('</dd></dl>');
@@ -538,6 +543,7 @@
         city: '',
         district: '',
         street: '',
+        func: null,
         type: 'address' //or 'code'
     };
 

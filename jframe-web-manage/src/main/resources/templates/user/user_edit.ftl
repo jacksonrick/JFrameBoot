@@ -57,11 +57,11 @@
             <label class="col-sm-2 control-label">账号：</label>
             <div class="col-sm-9">
                 <div class="radio radio-info radio-inline">
-                    <input type="radio" name="isDelete" id="state1" value="0" ${user.isDelete?string('','checked') }>
+                    <input type="radio" name="isDelete" id="state1" value="0" ${(user.isDelete)!false?string('','checked') }>
                     <label for="state1">正常</label>
                 </div>
                 <div class="radio radio-info radio-inline">
-                    <input type="radio" name="isDelete" id="state2" value="1" ${user.isDelete?string('checked','') }>
+                    <input type="radio" name="isDelete" id="state2" value="1" ${(user.isDelete)!false?string('checked','') }>
                     <label for="state2">禁用</label>
                 </div>
             </div>
@@ -70,11 +70,11 @@
             <label class="col-sm-2 control-label">性别：</label>
             <div class="col-sm-9">
                 <div class="radio radio-info radio-inline">
-                    <input type="radio" name="gender" id="gender1" value="1" ${user.gender?string('checked','') }>
+                    <input type="radio" name="gender" id="gender1" value="1" ${(user.gender)!true?string('checked','') }>
                     <label for="gender1">男</label>
                 </div>
                 <div class="radio radio-info radio-inline">
-                    <input type="radio" name="gender" id="gender2" value="0" ${user.gender?string('','checked') }>
+                    <input type="radio" name="gender" id="gender2" value="0" ${(user.gender)!true?string('','checked') }>
                     <label for="gender2">女</label>
                 </div>
             </div>
@@ -94,7 +94,7 @@
         <div class="form-group">
             <label class="col-sm-2 control-label">其他信息：</label>
             <div class="col-sm-9">
-                <p class="form-control-static">注册时间：${user.createTime?string('yyyy-MM-dd HH:mm:ss') }</p>
+                <p class="form-control-static">注册时间：${(user.createTime?string('yyyy-MM-dd HH:mm:ss'))!'--' }</p>
                 <p class="form-control-static">最近登陆时间：${(user.lastLoginTime?string('yyyy-MM-dd HH:mm:ss'))!'--' }</p>
             </div>
         </div>
@@ -110,18 +110,24 @@
 <script type="text/javascript" src="/static/library/plugins/dropzone/dropzone.js"></script>
 <script type="text/javascript">
     $(function () {
-        datePicker("#birthday", "yyyy-mm-dd", 2);
-        cityPicker("#city-picker", "district", "code");
-        var index = parent.layer.getFrameIndex(window.name);
+        datePicker("#birthday", "yyyy-mm-dd", function () {
+            $('#userEditForm').bootstrapValidator('revalidateField', 'birthday');
+        });
+        cityPicker("#city-picker", "district", "code", function () {
+            $('#userEditForm').bootstrapValidator('revalidateField', 'address');
+        });
 
         $("#avatar").Uploader({
             limit: 1,
             default: '${user.avatar}',
-            type: 1
+            type: 1,
+            callback: function (o, data) {
+                $('#userEditForm').bootstrapValidator('revalidateField', 'avatar');
+            }
         });
 
         $("#userEditForm").bootstrapValidator({
-            excluded: [':disabled'],
+            excluded: [],
             fields: {
                 nickname: {
                     validators: {
@@ -178,6 +184,27 @@
                             message: '身份证号格式不正确'
                         }
                     }
+                },
+                birthday: {
+                    validators: {
+                        notEmpty: {
+                            message: '生日不能为空'
+                        }
+                    }
+                },
+                address: {
+                    validators: {
+                        notEmpty: {
+                            message: '地址不能为空'
+                        }
+                    }
+                },
+                avatar: {
+                    validators: {
+                        notEmpty: {
+                            message: '请上传头像'
+                        }
+                    }
                 }
             }
         }).on('success.form.bv', function (e) {
@@ -187,14 +214,7 @@
                 url: '/admin/user/userEdit',
                 params: $form.serialize(),
                 success: function (data) {
-                    if (data.code == 0) {
-                        showMsg(data.msg, 1, function () {
-                            parent.layer.close(index);
-                            parent.reload();
-                        });
-                    } else {
-                        showMsg(data.msg, 2);
-                    }
+                    ajaxBack(data);
                 }
             });
         });

@@ -355,8 +355,8 @@
             maximumSelectionLength: 10
         });
         // 时间
-        datePicker("#birthday", "yyyy-mm-dd", 2);
-        datePicker("#birthday2", "yyyy-mm-dd hh:ii", 1);
+        datePicker("#birthday", "yyyy-mm-dd");
+        datePicker("#birthday2", "yyyy-mm-dd hh:ii");
         // 编辑器
         var editor;
         KindEditor.ready(function (K) {

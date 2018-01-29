@@ -18,5 +18,6 @@ if [ -n "$PID" ];then
     kill -9 $PID
 fi
 
-exec $JAVAPATH/java -jar $APPATH/$APP_NAME.jar --spring.profiles.active=pro 5 > /opt/run.log &
+# java -Xms4g -Xmx4g -Xmn768m -server
+exec $JAVAPATH/java -server -jar $APPATH/$APP_NAME.jar --spring.profiles.active=pro 5 > /opt/run.log &
 echo -e "$APP_NAME is started."

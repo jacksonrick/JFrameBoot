@@ -347,7 +347,7 @@ public class GenerateBeansAndMybatisUtil {
         bw.write("\t$(function () {");
         bw.newLine();
         if (hasDate) {
-            bw.write("\t\tdatePicker(\"#" + dateName + "\", \"yyyy-mm-dd\", 2);");
+            bw.write("\t\tdatePicker(\"#" + dateName + "\", \"yyyy-mm-dd\");");
             bw.newLine();
         }
         bw.write("\t\tvar index = parent.layer.getFrameIndex(window.name);");
@@ -498,7 +498,7 @@ public class GenerateBeansAndMybatisUtil {
                 "            });\n" +
                 "        });\n" +
                 "\n" +
-                "        datePicker('#startDate,#endDate', \"yyyy-mm-dd\", 2);\n" +
+                "        datePicker('#startDate,#endDate', \"yyyy-mm-dd\");\n" +
                 "    });\n" +
                 "\n" +
                 "    function reload() {\n" +

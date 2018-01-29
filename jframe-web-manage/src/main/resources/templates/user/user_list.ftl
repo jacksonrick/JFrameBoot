@@ -72,7 +72,10 @@
             ajax: function (data, callback, settings) {
                 CONSTANT.AJAX("/admin/user/userListData", [[1, "u.id"], [2, "u.nickname"], [3, "u.phone"], [8, "u.id"], [9, "u.is_delete"]], data, callback, settings);
             },
-            columnDefs: [CONSTANT.BUTTON.CHECKBOXS],
+            columnDefs: [
+                CONSTANT.BUTTON.CHECKBOXS,
+                {"width": "5%", "targets": 1} // 列宽 | className:""
+            ],
             drawCallback: function (settings) {
                 $(":checkbox[name='check-all']").prop("checked", false);
             }
@@ -115,7 +118,7 @@
             });
         });
 
-        datePicker('#startDate,#endDate', "yyyy-mm-dd", 2);
+        datePicker('#startDate,#endDate', "yyyy-mm-dd");
     });
 
     // 不改变当前页

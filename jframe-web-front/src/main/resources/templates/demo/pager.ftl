@@ -39,7 +39,7 @@
 <script type="text/javascript" src="/static/library/bootstrap/bootstrap-datetimepicker.min.js"></script>
 <script type="text/javascript">
     $(function () {
-        datePicker('#datetimepicker', "yyyy-mm-dd", 2);
+        datePicker('#datetimepicker', "yyyy-mm-dd");
     })
 </script>
 </body>

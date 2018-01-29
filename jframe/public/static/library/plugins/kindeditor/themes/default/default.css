@@ -419,7 +419,7 @@
 	border: 1px solid #CCCCCC;
 	background-color: #FFF;
 	overflow: hidden;
-	margin: 0;
+	margin: 10px 0px;
 	padding: 0;
 }
 /* toolbar */
@@ -1149,6 +1149,5 @@
 	font-size: 13px;
     color: #666;
     text-align: right;
-    margin-top: -30px;
-    margin-right: 5px;
+	margin: -40px 2px 18px 0px;
 }

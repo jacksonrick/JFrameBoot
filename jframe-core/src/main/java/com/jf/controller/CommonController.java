@@ -3,7 +3,6 @@ package com.jf.controller;
 import com.jf.date.DateUtil;
 import com.jf.entity.ResMsg;
 import com.jf.entity.UploadRet;
-import com.jf.fdfs.FDFSUtil;
 import com.jf.string.StringUtil;
 import com.jf.system.conf.SysConfig;
 import com.jf.system.third.geet.GeetestLib;
@@ -37,7 +36,7 @@ import java.util.Random;
 public class CommonController {
 
     // 1-local 2-fastdfs 3-其他
-    private Integer upload = 2;
+    private Integer upload = 1;
     // 图片大小
     private Integer imageSize = 3;
     // 图片类型
@@ -163,7 +162,7 @@ public class CommonController {
                 filePath.mkdirs();
             }
             FileUtils.copyInputStreamToFile(file.getInputStream(), new File(filePath, filename));
-            return new UploadRet(0, config.getStaticPath() + "static/upload/" + basePathFormat + "/" + filename, "SUCCESS");
+            return new UploadRet(0, config.getStaticHost() + "static/upload/" + basePathFormat + "/" + filename, "SUCCESS");
         } else {
             // 添加水印：FDFSUtil.waterMark(file, suffix)
             StorePath storePath = storageClient.uploadFile(file.getBytes(), suffix);
@@ -220,7 +219,7 @@ public class CommonController {
                 filePath.mkdirs();
             }
             FileUtils.copyInputStreamToFile(file.getInputStream(), new File(filePath, filename));
-            return new UploadRet(0, config.getStaticPath() + "static/" + dirPath + "/" + filename, "SUCCESS");
+            return new UploadRet(0, config.getStaticHost() + "static/" + dirPath + "/" + filename, "SUCCESS");
         } else {
             // 添加水印：FDFSUtil.waterMark(file, suffix)
             StorePath storePath = storageClient.uploadFile(file.getBytes(), suffix);

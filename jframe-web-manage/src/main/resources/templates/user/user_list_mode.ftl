@@ -30,7 +30,7 @@
 
 <script type="text/javascript">
     $(function () {
-        datePicker('#startDate,#endDate', "yyyy-mm-dd", 2);
+        datePicker('#startDate,#endDate', "yyyy-mm-dd");
 
         var index = parent.layer.getFrameIndex(window.name);
         $("#closeWin").click(function () {

@@ -128,11 +128,10 @@ public class UserController extends BaseController {
     @RequestMapping("/userDetail")
     @AuthPassport
     public String userDetail(Long userId, ModelMap map) {
-        if (userId == null) {
-            return null;
+        if (userId != null) {
+            User user = userService.findUserById(userId);
+            map.addAttribute("user", user);
         }
-        User user = userService.findUserById(userId);
-        map.addAttribute("user", user);
         return "user/user_edit";
     }
 

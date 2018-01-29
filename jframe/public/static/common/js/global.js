@@ -219,6 +219,7 @@ var CONSTANT = {
         },
         ENUM: {
             // enums变量为enums.js
+            // 使用到常量，需引用 $.getScript("/static/common/js/enums.js");
             STATE: function (data) {
                 return CONSTANT.RENDER.BASE(data, enums.STATE);
             },
@@ -297,7 +298,7 @@ function layerConfirm(title, url, func) {
  * 显示提示层
  * @param msg
  * @param type 1-success 2-fail
- * @param fun
+ * @param func 结束后回调
  */
 function showMsg(msg, type, func) {
     if (func) {
@@ -358,7 +359,7 @@ function openLayerContent(title, width, height, $obj) {
  * 打开HTML窗口【HTML】
  * @param html HTML代码
  * @param width/height
- * @param func
+ * @param func 成功
  */
 function openLayerHTML(html, width, height, func) {
     var index = layer.open({
@@ -375,13 +376,41 @@ function openLayerHTML(html, width, height, func) {
 
 /**
  * 加载动画
- * @returns
+ * @returns index
  */
 function openLayerLoading() {
     var index = layer.load(2, {
         shade: [0.1, '#000'],
         time: 20000
     });
+    return index;
+}
+
+/**
+ * ajax success
+ * @returns index
+ */
+function ajaxBack(data) {
+    var index = parent.layer.getFrameIndex(window.name);
+    if (data.code == 0) {
+        showMsg(data.msg, 1, function () {
+            parent.layer.close(index);
+            parent.reload();
+        });
+    } else {
+        showMsg(data.msg, 2);
+    }
+    return index;
+}
+
+/**
+ * ajax success close&reload
+ * @returns index
+ */
+function ajaxBackCloseAndReload() {
+    var index = parent.layer.getFrameIndex(window.name);
+    parent.layer.close(index);
+    parent.reload();
     return index;
 }
 
@@ -452,8 +481,11 @@ function checkRE(sel, reExp) {
 /**
  * 地址联动选择器 cityPicker("#city-picker", "district", "code");
  * @param id
+ * @param level city|district|street
+ * @param type address|code
+ * @param func onClose callback
  */
-function cityPicker(id, level, type) {
+function cityPicker(id, level, type, func) {
     $.ajaxSetup({cache: true});
     addCSS("/static/library/plugins/city-picker/city-picker.css");
     // 如仅省市区，则引用city-picker.data.js
@@ -461,23 +493,37 @@ function cityPicker(id, level, type) {
         $.getScript("/static/library/plugins/city-picker/city-picker.js", function () {
             var $citypicker = $(id);
             $citypicker.citypicker({
-                level: level, // city|district|street
-                type: type // address|code
+                func: func,
+                level: level,
+                type: type
             });
         });
     });
 }
 
+//view    4       3       2           1
+//format  yyyy    yyyy-mm yyyy-mm-dd  yyyy-mm-dd hh:ii
+
 /**
  * 时间选择器 datePicker("#datetimepicker")
  * @param id
- * @param format    4       3       2           1
- * @param view      yyyy    yyyy-mm yyyy-mm-dd  yyyy-mm-dd hh:ii
+ * @param format
+ * @param func onClose callback
  */
-function datePicker(ids, format, view) {
+function datePicker(ids, format, func) {
     $.ajaxSetup({cache: true});
     $.getScript("/static/library/bootstrap/bootstrap-datetimepicker.min.js",
         function () {
+            var view = 2; // default `yyyy-mm-dd`
+            if (format == "yyyy") {
+                view = 4;
+            } else if (format == "yyyy-mm") {
+                view = 3;
+            } else if (format == "yyyy-mm-dd") {
+                view = 2;
+            } else if (format == "yyyy-mm-dd hh:ii") {
+                view = 1;
+            }
             $(ids).datetimepicker({
                 language: 'zh-CN',
                 minView: view,
@@ -485,6 +531,10 @@ function datePicker(ids, format, view) {
                 format: format,
                 todayBtn: true,
                 autoclose: true
+            }).on('hide', function (e) {
+                if (func) {
+                    func();
+                }
             });
         }
     );
