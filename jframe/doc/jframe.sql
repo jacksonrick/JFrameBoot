@@ -1,5 +1,5 @@
 /*
- Navicat Premium Data Transfer
+ Navicat MySQL Data Transfer
 
  Source Server         : localhost
  Source Server Type    : MySQL
@@ -11,7 +11,7 @@
  Target Server Version : 50716
  File Encoding         : 65001
 
- Date: 19/12/2017 14:29:35
+ Date: 30/01/2018 14:01:15
 */
 
 SET NAMES utf8mb4;
@@ -41,7 +41,7 @@ CREATE TABLE `s_admin` (
 -- Records of s_admin
 -- ----------------------------
 BEGIN;
-INSERT INTO `s_admin` VALUES (10000, 10000, 'admin', '超管', 'c4ca4238a0b923820dcc509a6f75849b', '17730215422', '2016-04-23 15:36:55', '2017-12-19 14:26:13', '127.0.0.1', 0, b'0');
+INSERT INTO `s_admin` VALUES (10000, 10000, 'admin', '超管', 'c4ca4238a0b923820dcc509a6f75849b', '17730215422', '2016-04-23 15:36:55', '2018-01-30 13:50:00', '127.0.0.1', 0, b'0');
 INSERT INTO `s_admin` VALUES (10001, 10001, 'huang', '老黄', 'c4ca4238a0b923820dcc509a6f75849b', '17732125421', '2016-05-13 10:58:17', '2016-05-21 09:50:49', NULL, 1, b'0');
 INSERT INTO `s_admin` VALUES (10002, 10002, 'zhang', '老张', 'c4ca4238a0b923820dcc509a6f75849b', '17730215512', '2016-05-13 11:37:13', NULL, NULL, 1, b'0');
 COMMIT;
@@ -58,7 +58,7 @@ CREATE TABLE `s_log` (
   `log_params` varchar(255) DEFAULT NULL COMMENT '参数',
   `log_create_time` datetime DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=531 DEFAULT CHARSET=utf8 COMMENT='日志表';
+) ENGINE=InnoDB AUTO_INCREMENT=554 DEFAULT CHARSET=utf8 COMMENT='日志表';
 
 -- ----------------------------
 -- Records of s_log
@@ -110,6 +110,29 @@ INSERT INTO `s_log` VALUES (527, 'admin', '管理员登录', '127.0.0.1', 'usern
 INSERT INTO `s_log` VALUES (528, 'admin', '管理员登录', '127.0.0.1', 'username=admin', '2017-12-19 14:20:56');
 INSERT INTO `s_log` VALUES (529, 'admin', '管理员登录', '127.0.0.1', 'username=admin', '2017-12-19 14:26:13');
 INSERT INTO `s_log` VALUES (530, 'admin', '执行查询SQL', '127.0.0.1', 'sql=select * from t_user;', '2017-12-19 14:26:25');
+INSERT INTO `s_log` VALUES (531, 'admin', '管理员登录', '127.0.0.1', 'username=admin', '2017-12-20 11:47:02');
+INSERT INTO `s_log` VALUES (532, 'admin', '管理员登录', '127.0.0.1', 'username=admin', '2017-12-20 11:54:05');
+INSERT INTO `s_log` VALUES (533, 'admin', '管理员登录', '127.0.0.1', 'username=admin', '2017-12-20 15:02:16');
+INSERT INTO `s_log` VALUES (534, 'admin', '管理员登录', '127.0.0.1', 'username=admin', '2017-12-20 15:12:07');
+INSERT INTO `s_log` VALUES (535, 'admin', '管理员登录', '127.0.0.1', 'username=admin', '2017-12-20 15:14:51');
+INSERT INTO `s_log` VALUES (536, 'admin', '管理员登录', '127.0.0.1', 'username=admin', '2017-12-25 10:56:21');
+INSERT INTO `s_log` VALUES (537, 'admin', '管理员登录', '127.0.0.1', 'username=admin', '2017-12-25 11:38:10');
+INSERT INTO `s_log` VALUES (538, 'admin', '管理员登录', '127.0.0.1', 'username=admin', '2017-12-25 13:07:45');
+INSERT INTO `s_log` VALUES (539, 'admin', '管理员登录', '127.0.0.1', 'username=admin', '2017-12-25 13:13:44');
+INSERT INTO `s_log` VALUES (540, 'admin', '管理员登录', '127.0.0.1', 'username=admin', '2017-12-25 16:42:44');
+INSERT INTO `s_log` VALUES (541, 'admin', '管理员登录', '127.0.0.1', 'username=admin', '2018-01-02 11:01:22');
+INSERT INTO `s_log` VALUES (542, 'admin', '编辑用户', '127.0.0.1', 'phone=17734901321', '2018-01-02 11:24:57');
+INSERT INTO `s_log` VALUES (543, 'admin', '管理员登录', '127.0.0.1', 'username=admin', '2018-01-09 14:05:36');
+INSERT INTO `s_log` VALUES (544, 'admin', '编辑用户', '127.0.0.1', 'phone=17734901321', '2018-01-09 14:12:22');
+INSERT INTO `s_log` VALUES (545, 'admin', '管理员登录', '127.0.0.1', 'username=admin', '2018-01-16 14:07:54');
+INSERT INTO `s_log` VALUES (546, 'admin', '管理员登录', '127.0.0.1', 'username=admin', '2018-01-29 11:31:52');
+INSERT INTO `s_log` VALUES (547, 'admin', '编辑用户', '127.0.0.1', 'phone=17734901321', '2018-01-29 11:32:10');
+INSERT INTO `s_log` VALUES (548, 'admin', '管理员登录', '127.0.0.1', 'username=admin', '2018-01-29 11:38:36');
+INSERT INTO `s_log` VALUES (549, 'admin', '管理员登录', '127.0.0.1', 'username=admin', '2018-01-29 12:30:19');
+INSERT INTO `s_log` VALUES (550, 'admin', '管理员登录', '127.0.0.1', 'username=admin', '2018-01-30 10:08:00');
+INSERT INTO `s_log` VALUES (551, 'admin', '管理员登录', '127.0.0.1', 'username=admin', '2018-01-30 13:45:40');
+INSERT INTO `s_log` VALUES (552, 'admin', '管理员登录', '127.0.0.1', 'username=admin', '2018-01-30 13:48:35');
+INSERT INTO `s_log` VALUES (553, 'admin', '管理员登录', '127.0.0.1', 'username=admin', '2018-01-30 13:50:01');
 COMMIT;
 
 -- ----------------------------
@@ -132,32 +155,32 @@ CREATE TABLE `s_module` (
 -- ----------------------------
 BEGIN;
 INSERT INTO `s_module` VALUES (1, 0, '用户管理', NULL, 'fa fa-user', 1, 1);
-INSERT INTO `s_module` VALUES (2, 0, '系统管理', NULL, 'fa fa-gear', 1, 2);
-INSERT INTO `s_module` VALUES (100, 1, '会员列表', '/admin/user/userList', 'fa fa-group', 2, NULL);
+INSERT INTO `s_module` VALUES (2, 0, '系统管理', NULL, 'fa fa-gear', 1, 10);
+INSERT INTO `s_module` VALUES (100, 1, '会员列表', '/admin/user/userList', 'fa fa-group', 2, 1);
 INSERT INTO `s_module` VALUES (101, 100, '用户数据', '/admin/user/userListData', NULL, 3, NULL);
 INSERT INTO `s_module` VALUES (102, 100, '用户编辑', '/admin/user/userEdit', NULL, 3, NULL);
 INSERT INTO `s_module` VALUES (103, 100, '用户禁用/解封', '/admin/user/userEnable', NULL, 3, NULL);
 INSERT INTO `s_module` VALUES (104, 100, '用户详情', '/admin/user/userDetail', NULL, 3, NULL);
 INSERT INTO `s_module` VALUES (105, 100, '导出用户Excel', '/admin/user/exportUserExcel', NULL, 3, NULL);
-INSERT INTO `s_module` VALUES (106, 2, '管理员列表', '/admin/system/adminList', 'fa fa-user', 2, NULL);
+INSERT INTO `s_module` VALUES (106, 2, '管理员列表', '/admin/system/adminList', 'fa fa-user', 2, 1);
 INSERT INTO `s_module` VALUES (107, 106, '管理员编辑', '/admin/system/adminEdit', NULL, 3, NULL);
 INSERT INTO `s_module` VALUES (108, 106, '管理员冻结', '/admin/system/adminEnable', NULL, 3, NULL);
-INSERT INTO `s_module` VALUES (109, 2, '权限管理', '/admin/system/rights', 'fa fa-delicious', 2, NULL);
+INSERT INTO `s_module` VALUES (109, 2, '权限管理', '/admin/system/rights', 'fa fa-delicious', 2, 2);
 INSERT INTO `s_module` VALUES (110, 109, '编辑组', '/admin/system/roleEdit', NULL, 3, NULL);
 INSERT INTO `s_module` VALUES (111, 109, '禁用/启用组', '/admin/system/roleEnable', NULL, 3, NULL);
 INSERT INTO `s_module` VALUES (112, 109, '查看权限', '/admin/system/rolePerm', NULL, 3, NULL);
 INSERT INTO `s_module` VALUES (113, 109, '授权组', '/admin/system/permit', NULL, 3, NULL);
-INSERT INTO `s_module` VALUES (114, 2, '日志管理', '/admin/system/logList', 'fa fa-laptop', 2, NULL);
+INSERT INTO `s_module` VALUES (114, 2, '日志管理', '/admin/system/logList', 'fa fa-laptop', 2, 3);
 INSERT INTO `s_module` VALUES (115, 114, '日志备份', '/admin/system/backupLog', NULL, 3, NULL);
-INSERT INTO `s_module` VALUES (116, 2, '文件管理', '/admin/system/file', 'fa fa-archive', 2, NULL);
+INSERT INTO `s_module` VALUES (116, 2, '文件管理', '/admin/system/file', 'fa fa-archive', 2, 4);
 INSERT INTO `s_module` VALUES (117, 116, '获取目录', '/admin/system/getDirectory', NULL, 3, NULL);
-INSERT INTO `s_module` VALUES (118, 2, '系统工具', '/admin/system/tools', 'fa fa-crop', 2, NULL);
+INSERT INTO `s_module` VALUES (118, 2, '系统工具', '/admin/system/tools', 'fa fa-crop', 2, 5);
 INSERT INTO `s_module` VALUES (119, 118, 'SQL编辑', '/admin/system/executeUpdate', NULL, 3, NULL);
 INSERT INTO `s_module` VALUES (120, 118, 'SQL查询', '/admin/system/executeQuery', NULL, 3, NULL);
-INSERT INTO `s_module` VALUES (121, 2, '地址管理', '/admin/system/address', 'fa fa-map', 2, NULL);
+INSERT INTO `s_module` VALUES (121, 2, '地址管理', '/admin/system/address', 'fa fa-map', 2, 6);
 INSERT INTO `s_module` VALUES (122, 121, '编辑地址', '/admin/system/addrEdit', NULL, 3, NULL);
 INSERT INTO `s_module` VALUES (123, 121, '删除地址', '/admin/system/addrDel', NULL, 3, NULL);
-INSERT INTO `s_module` VALUES (124, 2, '模块管理', '/admin/system/module', 'fa fa-desktop', 2, NULL);
+INSERT INTO `s_module` VALUES (124, 2, '模块管理', '/admin/system/module', 'fa fa-desktop', 2, 7);
 INSERT INTO `s_module` VALUES (125, 124, '模块编辑', '/admin/system/moduleEdit', '', 3, NULL);
 COMMIT;
 
@@ -215,6 +238,7 @@ CREATE TABLE `t_user` (
   `email` varchar(32) DEFAULT NULL COMMENT '邮箱',
   `password` varchar(32) DEFAULT NULL COMMENT '密码',
   `avatar` varchar(128) DEFAULT NULL COMMENT '头像',
+  `money` decimal(15,2) DEFAULT '0.00',
   `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '注册时间',
   `last_login_time` datetime DEFAULT NULL COMMENT '最近登陆时间',
   `realname` varchar(16) DEFAULT NULL COMMENT '真实姓名',
@@ -231,19 +255,19 @@ CREATE TABLE `t_user` (
 -- Records of t_user
 -- ----------------------------
 BEGIN;
-INSERT INTO `t_user` VALUES (10000, 'fei', '15515556993', '11@qq.com', 'c4ca4238a0b923820dcc509a6f75849b', '/static/theme/images/avatar.jpg', '2016-09-27 17:53:50', '2016-12-21 13:29:21', '11', '340123199311012774', b'0', '安徽省/合肥市/瑶海区', '2016-12-21', b'1');
-INSERT INTO `t_user` VALUES (10001, 'feifei', '17730215423', '22@qq.com', 'c4ca4238a0b923820dcc509a6f75849b', '/static/theme/images/avatar.jpg', '2016-09-27 11:04:17', NULL, '22', '340123199311012774', b'1', NULL, NULL, b'0');
-INSERT INTO `t_user` VALUES (10002, 'feifeifei', '17734901234', '33@qq.com', 'c4ca4238a0b923820dcc509a6f75849b', '/static/theme/images/avatar.jpg', '2016-10-14 15:04:06', NULL, '22', '340123199311012774', b'1', '安徽省/合肥市/瑶海区', NULL, b'1');
-INSERT INTO `t_user` VALUES (10003, 'test1', '17734901231', '44@qq.com', 'c4ca4238a0b923820dcc509a6f75849b', '/static/theme/images/avatar.jpg', '2017-04-20 16:35:11', NULL, '44', '340123199311012774', b'1', NULL, '2016-12-21', b'0');
-INSERT INTO `t_user` VALUES (10004, 'test2', '17734901232', '55@qq.com', 'c4ca4238a0b923820dcc509a6f75849b', '/static/theme/images/avatar.jpg', '2017-06-07 16:13:24', NULL, '55', '340123199311012774', b'1', '安徽省/合肥市/瑶海区', NULL, b'0');
-INSERT INTO `t_user` VALUES (10005, 'test3', '17734901233', '66@qq.com', 'c4ca4238a0b923820dcc509a6f75849b', '/static/theme/images/avatar.jpg', '2017-06-07 16:13:27', NULL, '22', '340123199311012774', b'1', NULL, NULL, b'0');
-INSERT INTO `t_user` VALUES (10006, 'test4', '17734901235', '77@qq.com', 'c4ca4238a0b923820dcc509a6f75849b', '/static/theme/images/avatar.jpg', '2017-06-07 16:13:29', NULL, '66', '340123199311012774', b'1', NULL, '2016-12-21', b'0');
-INSERT INTO `t_user` VALUES (10007, 'test5', '17734901236', '88@qq.com', 'c4ca4238a0b923820dcc509a6f75849b', '/static/theme/images/avatar.jpg', '2017-06-07 16:13:32', NULL, '33', '340123199311012774', b'1', '安徽省/合肥市/瑶海区', NULL, b'1');
-INSERT INTO `t_user` VALUES (10008, 'test6', '17734901237', '99@qq.com', 'c4ca4238a0b923820dcc509a6f75849b', '/static/theme/images/avatar.jpg', '2017-06-07 16:13:34', NULL, '33', '340123199311012774', b'1', NULL, '2016-12-21', b'1');
-INSERT INTO `t_user` VALUES (10009, 'test7', '17734901238', '00@qq.com', 'c4ca4238a0b923820dcc509a6f75849b', '/static/theme/images/avatar.jpg', '2017-06-07 16:13:37', NULL, '77', '340123199311012774', b'1', '安徽省/合肥市/瑶海区', NULL, b'1');
-INSERT INTO `t_user` VALUES (10010, 'test8', '17734901239', '111@qq.com', 'c4ca4238a0b923820dcc509a6f75849b', '/static/theme/images/avatar.jpg', '2017-06-07 16:13:39', NULL, '44', '340123199311012774', b'1', NULL, '2016-12-21', b'1');
-INSERT INTO `t_user` VALUES (10011, 'test9', '17734901200', '222@qq.com', 'c4ca4238a0b923820dcc509a6f75849b', '/static/theme/images/avatar.jpg', '2017-06-07 16:13:42', NULL, '88', '340123199311012774', b'1', '安徽省/合肥市/瑶海区', NULL, b'0');
-INSERT INTO `t_user` VALUES (10012, 'test10', '17734901321', '333@qq.com', 'c4ca4238a0b923820dcc509a6f75849b', '/static/theme/images/avatar.jpg', '2017-06-07 16:13:44', NULL, '55', '340123199311012774', b'1', NULL, '2016-12-21', b'0');
+INSERT INTO `t_user` VALUES (10000, 'test', '15515556993', '11@qq.com', '5d24bbbe2fe58aba66827aa870004c79', '/static/theme/images/avatar.jpg', 999.00, '2016-09-27 17:53:50', '2016-12-21 13:29:21', '1', '340123199311012774', b'0', '安徽省/合肥市/瑶海区', '2016-12-21', b'1');
+INSERT INTO `t_user` VALUES (10001, 'test0', '17730215423', '22@qq.com', 'c4ca4238a0b923820dcc509a6f75849b', '/static/theme/images/avatar.jpg', 0.00, '2016-09-27 11:04:17', NULL, '22', '340123199311012774', b'1', NULL, NULL, b'0');
+INSERT INTO `t_user` VALUES (10002, 'test0', '17734901234', '33@qq.com', 'c4ca4238a0b923820dcc509a6f75849b', '/static/theme/images/avatar.jpg', 0.00, '2016-10-14 15:04:06', NULL, '22', '340123199311012774', b'1', '安徽省/合肥市/瑶海区', NULL, b'1');
+INSERT INTO `t_user` VALUES (10003, 'test1', '17734901231', '44@qq.com', 'c4ca4238a0b923820dcc509a6f75849b', '/static/theme/images/avatar.jpg', 0.00, '2017-04-20 16:35:11', NULL, '44', '340123199311012774', b'1', NULL, '2016-12-21', b'0');
+INSERT INTO `t_user` VALUES (10004, 'test2', '17734901232', '55@qq.com', 'c4ca4238a0b923820dcc509a6f75849b', '/static/theme/images/avatar.jpg', 0.00, '2017-06-07 16:13:24', NULL, '55', '340123199311012774', b'1', '安徽省/合肥市/瑶海区', NULL, b'0');
+INSERT INTO `t_user` VALUES (10005, 'test3', '17734901233', '66@qq.com', 'c4ca4238a0b923820dcc509a6f75849b', '/static/theme/images/avatar.jpg', 0.00, '2017-06-07 16:13:27', NULL, '22', '340123199311012774', b'1', NULL, NULL, b'0');
+INSERT INTO `t_user` VALUES (10006, 'test4', '17734901235', '77@qq.com', 'c4ca4238a0b923820dcc509a6f75849b', '/static/theme/images/avatar.jpg', 0.00, '2017-06-07 16:13:29', NULL, '66', '340123199311012774', b'1', NULL, '2016-12-21', b'0');
+INSERT INTO `t_user` VALUES (10007, 'test5', '17734901236', '88@qq.com', 'c4ca4238a0b923820dcc509a6f75849b', '/static/theme/images/avatar.jpg', 0.00, '2017-06-07 16:13:32', NULL, '33', '340123199311012774', b'1', '安徽省/合肥市/瑶海区', NULL, b'1');
+INSERT INTO `t_user` VALUES (10008, 'test6', '17734901237', '99@qq.com', 'c4ca4238a0b923820dcc509a6f75849b', '/static/theme/images/avatar.jpg', 0.00, '2017-06-07 16:13:34', NULL, '33', '340123199311012774', b'1', NULL, '2016-12-21', b'1');
+INSERT INTO `t_user` VALUES (10009, 'test7', '17734901238', '00@qq.com', 'c4ca4238a0b923820dcc509a6f75849b', '/static/theme/images/avatar.jpg', 0.00, '2017-06-07 16:13:37', NULL, '77', '340123199311012774', b'1', '安徽省/合肥市/瑶海区', NULL, b'1');
+INSERT INTO `t_user` VALUES (10010, 'test8', '17734901239', '111@qq.com', 'c4ca4238a0b923820dcc509a6f75849b', '/static/theme/images/avatar.jpg', 0.00, '2017-06-07 16:13:39', NULL, '44', '340123199311012774', b'1', NULL, '2016-12-21', b'1');
+INSERT INTO `t_user` VALUES (10011, 'test9', '17734901200', '222@qq.com', 'c4ca4238a0b923820dcc509a6f75849b', '/static/theme/images/avatar.jpg', 0.00, '2017-06-07 16:13:42', NULL, '88', '340123199311012774', b'1', '安徽省/合肥市/瑶海区', NULL, b'0');
+INSERT INTO `t_user` VALUES (10012, 'test10', '17734901321', '3333333@qq.com', 'c4ca4238a0b923820dcc509a6f75849b', '/static/theme/images/avatar.jpg', 0.00, '2017-06-07 16:13:44', NULL, '55', '340123199311012774', b'1', '340000/340100/340103', '2016-12-21', b'0');
 COMMIT;
 
 SET FOREIGN_KEY_CHECKS = 1;

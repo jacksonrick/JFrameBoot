@@ -3,9 +3,17 @@ logging:
 server:
   session:
     timeout: 1800 # session过期时间
-  tomcat: # tomcat设置
-    max-threads: 800
-    uri-encoding: UTF-8
+  tomcat: # tomcat设置及优化
+      uri-encoding: UTF-8
+      max-threads: 800
+      min-spare-threads: 20
+      max-connections: 10000
+  connection-timeout: 5000
+#  ssl:
+#    key-store: classpath:.keystore
+#    key-store-type: jks
+#    key-password: 111111
+#    key-alias: tomcat
 spring:
   mvc:
     static-path-pattern: /static/** # 静态地址映射
@@ -20,7 +28,7 @@ spring:
     default-property-inclusion: non_null # json空不输出
   freemarker:
     template-loader-path: classpath:/templates # 模板文件目录
-    cache: false # 不缓存
+    cache: true # 缓存
     charset: UTF-8
     settings: # 数据格式设置
       template_update_delay: 0
@@ -35,24 +43,46 @@ spring:
       classic_compatible: true
       whitespace_stripping: true
   datasource:
-    type: com.alibaba.druid.pool.DruidDataSource # 连接池类型 druid
-    driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/jframe?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true
-    username: root
-    password: 12345678
-    initialSize: 5 # ↓↓连接池设置
-    minIdle: 5
-    maxActive: 20
-    maxWait: 60000
-    timeBetweenEvictionRunsMillis: 60000
-    minEvictableIdleTimeMillis: 300000
-    validationQuery: SELECT 1 FROM DUAL
-    testWhileIdle: true
-    testOnBorrow: false
-    testOnReturn: false
-    maxOpenPreparedStatements: 20
-    removeAbandoned: true
-    removeAbandonedTimeout: 1800
+    druid: # Druid数据源配置
+      driver-class-name: com.mysql.jdbc.Driver
+      master:
+        url: jdbc:mysql://127.0.0.1:3306/jframe?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false
+        username: root
+        password: 12345678
+      cluster:
+        url: jdbc:mysql://127.0.0.1:3306/test?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false
+        username: root
+        password: 12345678
+      initial-size: 5
+      max-active: 20
+      max-wait: 60000
+      min-idle: 5
+      time-between-eviction-runs-millis: 60000
+      min-evictable-idle-time-millis: 300000
+      validation-query: SELECT 1 FROM DUAL
+      max-open-prepared-statements: 20
+      remove-abandoned: true
+      remove-abandoned-timeout-millis: 1800
+      test-on-borrow: false
+      test-on-return: false
+      test-while-idle: true
+      filter: # 自定义StatFilter配置
+        stat:
+          db-type: mysql
+          log-slow-sql: true
+          slow-sql-millis: 2000
+      stat-view-servlet: # Druid监控配置
+        enabled: true
+        url-pattern: /druid/*
+        reset-enable: true
+        login-username: admin
+        login-password: 123456
+        allow: 127.0.0.1
+      web-stat-filter:
+        enabled: true
+        url-pattern: /*
+        exclusions: "*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*"
+      #aop-patterns: com.jf.service.* # Spring监控AOP切入点
   task: # 线程池设置
     corePoolSize: 10
     maxPoolSize: 30
@@ -102,19 +132,19 @@ system: # 系统自定义配置
   server_id: ${spring.application.name}
   fdfs_nginx: http://192.168.1.199/ # DFS Nginx代理服务器地址
   aliyun: # 支付宝
-    partner: 2088102175363994
-    seller: nfnjqg2293@sandbox.com
-    app_id: 2016091200497607
+    partner: 2088
+    seller: nf@sandbox.com
+    app_id: 2016
     rsa_private_key: MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCAbqwHTigw8Bs0czuAwy4Y8zyqdIhzVCMn9H4/oBF0J+t2eTxlAUCuXjX/vrf+X2bGVMiCym54s1IGQ3Himaon30thys4FxM7QVvH6UC6OefZLkaG1i4mpvYUK3gzsT+PHqbpK/lkQ6RoYwg3mHSHSl2Td/08SIJ326W8Ujs29YOID2OzUusupSly+acdHVwf/IRiuP9FkL/f0e9jwUzGTMhTuP2DXWU9frd0D2n9DHL+BL3kmQm2NToAJ+2xvhiqI5nPixQxe9ua38N2i3xMNY5N2/6nCmvpj7UZzVWdYkcmNQLPNvUeLNbohX4U/R+HYZ1SeTiIgIaog9nX6ctW3AgMBAAECggEAKOSUK8NL8sEQuHOUV5xN2i3gfBmctLPuebNUW2fZBtYLF+7kNvjeImbm5KZSKVExBSdLrLFN2WqnTE0/PrpUvltPwjRzwsx2WUnFxECxgjX9IPSeu5JRY9VvPhWToc6SJSm6olQ4AbVm1Mk86a8O7OG9gR3gjFIMWejbsH0Dry9qtsSD4byYuLXwQ/yy7CC9ZV/v76veCBwZxYiG1LzRLn82qCl5B3QwTj1K7wyGpYE2OHflTDBe05H82eUpnbUb1xKt8y7TdquJWheInDDxvt7OthHFwNVJhp7zui9s580WiXP6DtrEtmINaYYHDgOGR2SmleygXloNIUQ02xSZAQKBgQDhMMobbS67dqMQ5JzYvErj8xbhVhSk3wiKm7+MBpCtpM40HNLy5Z82JqlngN6CkJdHBybqWmvDjER07MvzKjX3VuyYM/jFkuyOCpBHzjbXSnFk7xn5UKqlQFKoW5v8XJB8qwksxpBlvHNmFedwVMU0mOfDD4uoF1axEt7cDs5+NwKBgQCSAPZrv07KVs/eEFU+nqGu9UpmQ0D6ZITgEiDoQwPecSO2uKovY8TsCKYgfTAntY2oJ51Jqf6lV8cKr6Fm6CoWm687BT4E5gljoyWj7iGgt/WPhki+ocWcQkGbkFGN7wNel56+3/TCrnKWcgNqoh8BqpaMERT23QCqLdaNy8akgQKBgBGCobSQQNoC15swq6GOwqQG+vh6oRBQ53Efuz1AJW/bKM2UkDKi+EZVq0aJFsRASgMT40rFzStfdNNCtnkqBxg8ghkzsVxrmElTOPTcbBdBip+2l+ZzB1HiNosw1GhDKlkHU6dPqVq/1JlTirOJY+w7F4prYwinB+6s8Pdbj2LxAoGANFXr/wuAbr9Xm743EE9EnbaHiMiqzhaiGr/k09zR0ja0GpdvSbV1rTYcdqDpVhKaSKCKnRE2moYwbwAt1vl5vMjpszpZ1N+wleqxX2XI4BeRCnWUNeE/OJf3dI/y6/G1P38SBFG7Jt3pbUxJNTwP6UUA2gx1e1gVGOt9cS6OcgECgYEAvxHdlmsyMWU0dZmXA6Pgs4Nl4JE7gVuVkuo9eXVIEtM7Er6uopkmvQItvb0Jp7aCDZi/eblGS7HiFoxh5YFIO9AGzWgMbDPjBbFcaD2+ucqG/0FYqi4pNV3NX4PuEEAyywH9L8G/pv/WwfYBMckwvwtqh6wdf7HgYuLXgVXuduA=
     public_key: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA2F1OBxmr8/7Dd+uPMQoTzqJdldBG31c5YE8EpIdk+pxwyM0BGMXV1SETynt1br7Pw8MKOC+oJOTxD9hcqx7OOhsZhiqFH2iL5F4ejK9VNEPDxjwkZXjgYqnacK5cFRWq6iMn4tw5xTsxa1sSNtEoxjK4AZnpgTiTTT2hlB2TN6e78zW2ZMeyZ+ocb9jy5oa/xqMAv1Srgp2PIa1dQ5qDp52xxzs6PxjTZJwTh6v+Z2zJJaBu2lzkk/cY4LAYAkr2rxKRVseT4Xt5m8zRVA62rDlTd1/D7MoCS9ybGQ8IaGe/8XM+3FJtNjk1JKk6OQa2YWHgzqZz+BQQSZzeSGFn4QIDAQAB
     notify_url: http://xjf.s1.natapp.cc/alipay_callback
     return_url: http://xjf.s1.natapp.cc/alipay_return
     gateway: https://openapi.alipaydev.com/gateway.do
   wechat: # 微信
-    partner: partner
-    appid: appid
-    partner_key: ef0aa966db5bcd212
-    notify_url: http://url/wxpay_callback
+    appid: wx47
+    partner: 1482
+    partner_key: ad8b6
+    notify_url: http://xjf.s1.natapp.cc/wxpay_callback
   geetest: # 极验验证
-    id: a53178cc0f5a776e1c7acf9ba0cf1496
-    key: 51dbc83635e623de97da576c3fb50070
+    id: a53178
+    key: 51dbc8
