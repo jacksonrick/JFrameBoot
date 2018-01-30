@@ -747,7 +747,7 @@ public class SystemBackController extends BaseController {
         if (!path.startsWith("/")) {
             return new ResMsg(2, "路径必须以斜杠/开头", null);
         }
-        List<Directory> list = FileUtil.getDirectory(path, config.getStaticHost());
+        List<Directory> list = FileUtil.getDirectory(path, config.getStaticPath());
         if (list == null) {
             return new ResMsg(3, "路径不存在", null);
         }

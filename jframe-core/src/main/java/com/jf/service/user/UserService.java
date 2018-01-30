@@ -1,12 +1,12 @@
 package com.jf.service.user;
 
 import com.github.pagehelper.PageInfo;
+import com.jf.cluster.User2Mapper;
 import com.jf.mapper.UserMapper;
 import com.jf.model.User;
 import com.jf.model.custom.IdText;
 import com.jf.string.StringUtil;
 import com.jf.system.cache.lock.AquiredLockWorker;
-import com.jf.system.cache.lock.RedisLocker;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -25,15 +25,20 @@ public class UserService {
 
     @Resource
     private UserMapper userMapper;
+    //@Resource
+    //private User2Mapper user2Mapper;
+
+
+    //RedisLocker
 
     /**
      * 测试Redisson分布式锁
      *
      * @param userId
      */
-    /*public void testLock(Long userId) {
+    public void testLock(Long userId) {
         try {
-            locker.lock("user_" + userId + "_lock", new AquiredLockWorker<Object>() {
+            /*locker.lock("user_" + userId + "_lock", new AquiredLockWorker<Object>() {
                 @Override
                 public Object invokeAfterLockAquire() throws Exception {
 
@@ -43,11 +48,53 @@ public class UserService {
 
                     return null;
                 }
-            });
+            });*/
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }*/
+    }
+
+    /**
+     * 测试事务回滚
+     */
+    @Transactional(value = "masterTransactionManager")
+    public void testRollbackA() {
+        User user = userMapper.findById(10000l);
+        user.setNickname("master_rollback");
+        userMapper.update(user);
+        System.out.println(1 / 0); // error
+        user = new User(10001l);
+        user.setNickname("master_rollback2");
+        userMapper.update(user);
+    }
+
+    @Transactional(value = "clusterTransactionManager")
+    public void testRollbackB() {
+        /*User user = user2Mapper.findById(10000l);
+        user.setNickname("cluster_rollback");
+        user2Mapper.update(user);
+        System.out.println(1 / 0);
+        user = new User(10001l);
+        user.setNickname("cluster_rollback2");
+        user2Mapper.update(user);*/
+    }
+
+    /**
+     * 测试多数据源
+     *
+     * @param source
+     * @return
+     */
+    public User testMutilSource(String source) {
+        User user = null;
+        if ("master".equals(source)) {
+            user = userMapper.findById(10000l);
+        }
+        if ("cluster".equals(source)) {
+            //user = user2Mapper.findById(10000l);
+        }
+        return user;
+    }
 
     /**
      * 按id查询用户

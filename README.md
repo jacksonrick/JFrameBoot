@@ -1,5 +1,5 @@
 # JFrame
-##### JFrame - SpringBoot & Cloud Project `v4.3.1`
+##### JFrame - SpringBoot & Cloud Project `v4.4`
 `jackson-rick`   <br>
 `https://github.com/jacksonrick/JFrameBoot`
 
@@ -34,6 +34,11 @@
 * ...
 
 ### 更新日志：
+* v4.4 `20180130`
+    * 1.更新springboot-druid-starter
+    * 2.新增druid数据源监控
+    * 3.多数据源配置和自动切换及事务
+    * 4.修复了部分名称和变量引起的BUG
 * v4.3.1 `20180129`
     * 1.修复若干问题
     * 2.新增对上传、富文本、Select2等插件的BS验证
@@ -112,4 +117,6 @@
     * 2.优化封装的JS插件
 * v1.x `20160601`
     * JFrame项目Start
+    
+`*注：项目中的Demo可能需要去除相关注释后方可正常运行`
     

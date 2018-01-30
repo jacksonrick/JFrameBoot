@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  *
  * @author rick
  */
+@Deprecated
 public class BaseQuery {
 
     /**

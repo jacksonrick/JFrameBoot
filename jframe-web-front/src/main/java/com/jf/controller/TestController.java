@@ -42,6 +42,28 @@ public class TestController extends BaseController {
     @Resource
     private SysConfig sysConfig;
 
+    @RequestMapping("/testRollback")
+    @ResponseBody
+    public ResMsg testRollback(String source) {
+        if ("master".equals(source)) {
+            userService.testRollbackA();
+        }
+        if ("cluster".equals(source)) {
+            userService.testRollbackB();
+        }
+        return new ResMsg(0, "");
+    }
+
+    @RequestMapping("/testMutilSource")
+    @ResponseBody
+    public ResMsg testMutilSource(String source) {
+        if (StringUtil.isBlank(source)) {
+            return new ResMsg(-1, "source is empty");
+        }
+        User user = userService.testMutilSource(source);
+        return new ResMsg(0, SUCCESS, user);
+    }
+
     /*@Autowired
     private SimpMessagingTemplate template;
     @Autowired
@@ -116,22 +138,6 @@ public class TestController extends BaseController {
     @RequestMapping("/chartData")
     @ResponseBody
     public List<Object> chartData() {
-        /*List<KChart> list = new ArrayList<KChart>();
-        KChart chart0 = new KChart("2013/1/24", 2320.26,2320.26,2287.3,2362.94);
-        KChart chart1 = new KChart("2013/1/25", 2300.2,2291.3,2288.26,2308.38);
-        KChart chart2 = new KChart("2013/1/30", 2360.75,2382.48,2347.89,2383.76);
-        KChart chart3 = new KChart("2013/2/1", 2377.41,2419.02,2369.57,2421.15);
-        KChart chart4 = new KChart("2013/2/4", 2425.92,2428.15,2417.58,2440.38);
-        KChart chart5 = new KChart("2013/2/5", 2411.3,2433.13,2403.3,2437.42);
-        KChart chart6 = new KChart("2013/3/1", 2364.54,2359.51,2330.86,2369.65);
-        list.add(chart0);
-        list.add(chart1);
-        list.add(chart2);
-        list.add(chart3);
-        list.add(chart4);
-        list.add(chart5);
-        list.add(chart6);*/
-
         List<Object> list = new ArrayList<Object>();
         Object[] obj = new Object[]{"2013/1/24", 2320.26, 2320.26, 2287.3, 2362.94};
         Object[] obj1 = new Object[]{"2013/1/25", 2300.2, 2291.3, 2288.26, 2308.38};
