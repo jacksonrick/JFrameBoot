@@ -5,8 +5,6 @@ import com.jf.date.DateUtil;
 import com.jf.system.PathUtil;
 import org.apache.tools.zip.ZipEntry;
 import org.apache.tools.zip.ZipFile;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import java.io.*;
 import java.net.HttpURLConnection;

@@ -1,5 +1,5 @@
 # JFrame
-##### JFrame - SpringBoot & Cloud Project `v4.4`
+##### JFrame - SpringBoot & Cloud Project `v4.4.1`
 `jackson-rick`   <br>
 `https://github.com/jacksonrick/JFrameBoot`
 
@@ -14,26 +14,26 @@
 * jframe-web-shop `商家管理端`
 
 ### 集成
-* Spring/SpringMVC/MyBatis
-* Spring Redis/Redis Session/Redisson
-* 拦截器/AppToken/FastDFS
-* 后台管理：自定义权限、模块、地址、文件等
-* 线程池、日志服务、分布式日志Flume、异常管理
+* Spring/SpringMVC/MyBatis/SpringBoot/SpringCloud
+* Spring Redis/Redis Session/Redisson/FastDFS
+* 拦截器/AppToken/自定义权限
+* 后台管理功能：权限管理、模块管理、地址、文件、工具等
+* 线程池、日志服务、分布式日志Flume、异常管理、多数据源、分布式事务
 * PageHelper分页、封装分页组件
 * Freemarker模板、封装函数和指令
 * Quartz(单点/集群)、管理器
-* 第三方：微信/支付宝/推送/高德/阿里云/短信/邮件
-* 测试：Spring-WebSocket
-* Util包：
-    * 字符、时间、数字转换/JSON/Http/PDF+Excel/分页/文件/对象/验证器...
-    * 其他：`jframe-utils/`
-* JS插件：
-    * 封装：Ajax/DataTables/CityPicker/Layer/DatePicker...
-    * 其他：`jframe/public/static/library/plugins/`
-    * Demo：`jframe-web-front/../WEB-INF/demo/`
+* 第三方：微信SDK/支付宝SDK/推送/高德/阿里云/短信/邮件
+* Spring-WebSocket、Openfire、Actuator健康监控、数据源监控
+* Util包：字符、时间、数字转换/JSON/Http/PDF+Excel/分页/文件/对象/验证器...
+* JS插件：封装：Ajax/DataTables/CityPicker/Layer/DatePicker...
+* Demo：jframe-web-front/./demo/
 * ...
 
 ### 更新日志：
+* v4.4.1 `20180202`
+    * 1.新增模块删除和地址导出功能
+    * 2.更新fa图标库，优化CSS效果
+    * 3.服务监控中心[Test]
 * v4.4 `20180130`
     * 1.更新springboot-druid-starter
     * 2.新增druid数据源监控
@@ -54,7 +54,7 @@
 * v4.2.1 `20180116`
     * 1.集成Spring WebSocket并与Redis Session集成
     * 2.优化目录结构，暂时关闭不需要的组件服务
-    * 3.通过ConfigurationProperties进行配置[FastDFS暂未支持]
+    * 3.通过ConfigurationProperties进行配置
 * v4.2 `20180109`
     * 1.集成spring activemq
     * 2.集成boot-admin服务监控[front]
@@ -119,4 +119,17 @@
     * JFrame项目Start
     
 `*注：项目中的Demo可能需要去除相关注释后方可正常运行`
-    
+
+### 环境与配置
+* Jdk 1.8
+* MySQL 5.6 +
+* Maven 3.3.9
+* Redis 2.8.9
+* Linux CentOS 7
+* IDEA 2017
+
+
+* 数据库脚本：`jframe/doc/jframe.sql`
+* 操作手册说明：`jframe/doc/操作手册、插件、Util包说明、开发规范.docx`
+* 开发配置：`jframe-core/src/main/resources/application-dev.yml`
+* Eureka服务端：`cloud-server`

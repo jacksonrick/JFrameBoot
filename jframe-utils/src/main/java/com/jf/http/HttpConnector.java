@@ -25,7 +25,7 @@ public class HttpConnector {
     private String url;
 
     /**
-     * 传入参数<br/>
+     * 传入参数
      * 例如：param1=123&param2=456
      */
     private String paramStr;

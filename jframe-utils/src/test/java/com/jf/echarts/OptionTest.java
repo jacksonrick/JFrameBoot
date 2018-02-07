@@ -31,7 +31,6 @@ import com.github.abel533.echarts.code.Tool;
 import com.github.abel533.echarts.code.Trigger;
 import com.github.abel533.echarts.data.LineData;
 import com.github.abel533.echarts.series.Line;
-import org.junit.Test;
 
 /**
  * Description: OptionTest
@@ -41,7 +40,6 @@ import org.junit.Test;
  */
 public class OptionTest {
 
-    @Test
     public void basicOption() {
         EnhancedOption option = new EnhancedOption();
         option.legend().padding(5).itemGap(10).data("ios7", "android4");

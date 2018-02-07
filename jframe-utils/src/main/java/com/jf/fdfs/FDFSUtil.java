@@ -1,11 +1,11 @@
 package com.jf.fdfs;
 
-import org.springframework.web.multipart.MultipartFile;
-
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.InputStream;
 
 /**
  * FDFS工具类【水印】
@@ -16,16 +16,16 @@ public class FDFSUtil {
     /**
      * 添加图片水印
      *
-     * @param file
+     * @param stream
      * @param ext
      * @return
      */
-    public static byte[] waterMark(MultipartFile file, String ext) {
+    public static byte[] waterMark(InputStream stream, String ext) {
         String logoFile = "/logo.png";
         byte[] b = null;
         try {
             // 读取原图片信息
-            Image srcImg = ImageIO.read(file.getInputStream());
+            Image srcImg = ImageIO.read(stream);
             int width = srcImg.getWidth(null);
             int height = srcImg.getHeight(null);
             // 加水印
@@ -66,16 +66,16 @@ public class FDFSUtil {
     /**
      * 添加文字水印
      *
-     * @param file
+     * @param stream
      * @param content
      * @param ext
      * @return
      */
-    public static byte[] waterMark(MultipartFile file, String content, String ext) {
+    public static byte[] waterMark(InputStream stream, String content, String ext) {
         byte[] b = null;
         try {
             // 读取原图片信息
-            Image srcImg = ImageIO.read(file.getInputStream());
+            Image srcImg = ImageIO.read(stream);
             int width = srcImg.getWidth(null);
             int height = srcImg.getHeight(null);
             // 加水印

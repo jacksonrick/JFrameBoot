@@ -1,4 +1,4 @@
-package com.jf.view;
+package com.jf.controller.view;
 
 import com.lowagie.text.*;
 import com.lowagie.text.pdf.BaseFont;

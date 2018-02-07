@@ -83,7 +83,7 @@ public class ExcelRead {
 	/**
 	 * 读取Excel数据内容
 	 * 
-	 * @param InputStream
+	 * @param is
 	 * @return Map 包含单元格数据内容的Map对象
 	 */
 	public Map<Integer, String> readExcelContent(InputStream is) {

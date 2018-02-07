@@ -74,6 +74,7 @@
     <ul>
         <li id="m_add" onclick="addTreeNode();"><i class="fa fa-pencil-square"></i>添加模块</li>
         <li id="m_edit" onclick="editTreeNode();"><i class="fa fa-pencil-square"></i>编辑模块</li>
+        <li id="m_del" onclick="delTreeNode();"><i class="fa fa-pencil-square"></i>删除模块</li>
     </ul>
 </div>
 
@@ -105,15 +106,14 @@
         if (treeNode && !treeNode.noR) {
             if (treeNode.flag == 1) {
                 // 一级模块不可编辑 [或treeNode.level]
-                $("#m_edit").hide();
+                $("#m_edit,#m_del").hide();
                 $("#m_add").show();
             }
             if (treeNode.flag == 2) {
-                $("#m_edit").show();
-                $("#m_add").show();
+                $("#m_edit,#m_add,#m_del").show();
             }
             if (treeNode.flag == 3) {
-                $("#m_edit").show();
+                $("#m_edit,#m_del").show();
                 $("#m_add").hide();
             }
             zTree.selectNode(treeNode); // 选中该节点
@@ -161,6 +161,16 @@
             $("#action").val(zTree.getSelectedNodes()[0].path);
             $("#icon").val(zTree.getSelectedNodes()[0].icon);
             $("#flag").val('');
+        }
+    }
+
+    function delTreeNode() {
+        hideRMenu();
+        if (zTree.getSelectedNodes()[0]) { //获取选择的节点属性
+            var moduleId = zTree.getSelectedNodes()[0].id;
+            layerConfirm('确定要删除该模块吗', "/admin/system/moduleDel?moduleId=" + moduleId, function () {
+                getModule();
+            });
         }
     }
 

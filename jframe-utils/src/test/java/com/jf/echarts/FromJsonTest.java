@@ -26,14 +26,12 @@ package com.jf.echarts;
 
 import com.github.abel533.echarts.json.GsonUtil;
 import com.github.abel533.echarts.series.Bar;
-import org.junit.Test;
 
 /**
  * @author liuzh
  */
 public class FromJsonTest {
 
-    @Test
     public void testFromJson() {
         String json = "{\n" +
                 "    tooltip : {\n" +
@@ -106,7 +104,6 @@ public class FromJsonTest {
         option.view();
     }
 
-    @Test
     public void testAxisFromJson() {
         String json = "{\"xAxis\": [{\"splitNumber\":10, \"type\": \"time\"}]}";
         EnhancedOption option = GsonUtil.fromJSON(json, EnhancedOption.class);

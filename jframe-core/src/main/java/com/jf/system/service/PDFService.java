@@ -1,4 +1,4 @@
-package com.jf.view;
+package com.jf.system.service;
 
 import com.jf.string.StringUtil;
 import com.jf.system.PathUtil;

@@ -3,6 +3,7 @@ package com.jf.controller;
 import com.jf.date.DateUtil;
 import com.jf.entity.ResMsg;
 import com.jf.entity.UploadRet;
+import com.jf.fdfs.FDFSUtil;
 import com.jf.string.StringUtil;
 import com.jf.system.conf.SysConfig;
 import com.jf.system.third.geet.GeetestLib;
@@ -164,7 +165,7 @@ public class CommonController {
             FileUtils.copyInputStreamToFile(file.getInputStream(), new File(filePath, filename));
             return new UploadRet(0, config.getStaticHost() + "static/upload/" + basePathFormat + "/" + filename, "SUCCESS");
         } else {
-            // 添加水印：FDFSUtil.waterMark(file, suffix)
+            // 添加水印：FDFSUtil.waterMark(file.getInputStream(), suffix)
             StorePath storePath = storageClient.uploadFile(file.getBytes(), suffix);
             String filePath = config.getFdfsNginx() + storePath.getFullPath();
             return new UploadRet(0, filePath, "SUCCESS");
@@ -221,7 +222,7 @@ public class CommonController {
             FileUtils.copyInputStreamToFile(file.getInputStream(), new File(filePath, filename));
             return new UploadRet(0, config.getStaticHost() + "static/" + dirPath + "/" + filename, "SUCCESS");
         } else {
-            // 添加水印：FDFSUtil.waterMark(file, suffix)
+            // 添加水印：FDFSUtil.waterMark(file.getInputStream(), suffix)
             StorePath storePath = storageClient.uploadFile(file.getBytes(), suffix);
             String filePath = config.getFdfsNginx() + storePath.getFullPath();
             return new UploadRet(0, filePath, "SUCCESS");

@@ -33,12 +33,16 @@ import java.util.Properties;
  */
 //@Configuration
 //@EnableTransactionManagement
-//@MapperScan(basePackages = "com.jf.cluster", sqlSessionFactoryRef = "clusterSqlSessionFactory")
+//@MapperScan(basePackages = DbClusterConfig.mapperPackage, sqlSessionFactoryRef = "clusterSqlSessionFactory")
 public class DbClusterConfig {
 
     private Logger logger = LoggerFactory.getLogger(DbClusterConfig.class);
 
-    @Bean
+    public final static String mapperPackage = "com.jf.cluster";
+    public final static String xmlMapperLocation = "classpath:com/jf/cluster/xml/*.xml";
+    public final static String modelPackage = "com.jf.model";
+
+    @Bean(name = "clusterDataSource")
     @ConfigurationProperties("spring.datasource.druid.cluster")
     public DataSource clusterDataSource() {
         return DruidDataSourceBuilder.create().build();
@@ -52,9 +56,9 @@ public class DbClusterConfig {
             // we MUST set the 'VFS' if you use jar
             bean.setVfs(SpringBootVFS.class);
             // 实体类位置
-            bean.setTypeAliasesPackage("com.jf.model");
+            bean.setTypeAliasesPackage(modelPackage);
             // 设置mapper.xml文件所在位置
-            org.springframework.core.io.Resource[] resources = new PathMatchingResourcePatternResolver().getResources("classpath:com/jf/cluster/xml/*.xml");
+            org.springframework.core.io.Resource[] resources = new PathMatchingResourcePatternResolver().getResources(xmlMapperLocation);
             bean.setMapperLocations(resources);
 
             // 添加分页插件
@@ -74,7 +78,7 @@ public class DbClusterConfig {
         }
     }
 
-    @Bean
+    @Bean(name = "clusterSqlSessionTemplate")
     public SqlSessionTemplate sqlSessionTemplate(@Qualifier("clusterSqlSessionFactory") SqlSessionFactory sqlSessionFactory) {
         return new SqlSessionTemplate(sqlSessionFactory);
     }
@@ -84,7 +88,7 @@ public class DbClusterConfig {
      *
      * @return
      */
-    @Bean
+    @Bean(name = "clusterTransactionManager")
     public PlatformTransactionManager clusterTransactionManager(@Qualifier("clusterDataSource") DataSource clusterDataSource) {
         return new DataSourceTransactionManager(clusterDataSource);
     }

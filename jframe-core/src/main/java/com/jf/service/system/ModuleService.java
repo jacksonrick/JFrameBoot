@@ -68,6 +68,14 @@ public class ModuleService {
         return moduleMapper.update(module);
     }
 
+    /**
+     * @param id
+     * @return
+     */
+    public int deleteModule(Integer id) {
+        return moduleMapper.delete(id);
+    }
+
     /**************************************************/
 
     /**

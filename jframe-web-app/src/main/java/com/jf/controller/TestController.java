@@ -1,11 +1,10 @@
 package com.jf.controller;
 
-import com.jf.email.EmailService;
+import com.jf.system.service.EmailService;
 import com.jf.entity.ResMsg;
 import com.jf.model.User;
 import com.jf.service.user.UserService;
-import com.jf.sms.SMService;
-import com.jf.system.LogManager;
+import com.jf.system.service.SMService;
 import com.jf.system.annotation.Token;
 import org.springframework.web.bind.annotation.*;
 

@@ -53,5 +53,10 @@
 			#{modFlag}
 		)
 	</insert>
-	
+
+    <delete id="delete" parameterType="int">
+		DELETE FROM s_module
+		WHERE id = #{id}
+    </delete>
+
 </mapper>

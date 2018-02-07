@@ -15,6 +15,7 @@
         </div>
         <div class="alert alert-warning mb0">
             <p><i class="fa fa-exclamation-circle"></i>右键可编辑或添加地址，不可添加一级；二、三、四级分类可拖动。</p>
+            <p><i class="fa fa-exclamation-circle"></i>系统内置的地址选择器使用的是JS文件，<a id="genAddr" href="/admin/system/addrGenc">点我生成</a>。</p>
         </div>
         <div class="ibox-content">
             <div class="row">
@@ -225,6 +226,15 @@
     };
 
     $(function () {
+        $("#genAddr").click(function () {
+            layer.msg('生成中，时间会比较长，生成完毕会自动下载', {
+                icon: 16,
+                shade: 0.4,
+                time: 60000,
+                shadeClose: true
+            });
+        });
+
         zTree = $.fn.zTree.init($("#tree"), setting);
         rMenu = $("#rMenu");
 

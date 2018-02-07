@@ -47,8 +47,34 @@ function autoHeight() {
     $("#content-main").css("height", $(window).height() - 107);
 }
 
+function newTab(name, url) {
+    var flag = false;
+    $(".J_menuTab").each(function () {
+        if ($(this).data("id") == url) {
+            $(this).addClass("active").siblings(".J_menuTab").removeClass("active")
+            $(".J_mainContent .J_iframe").each(function () {
+                if ($(this).data("id") == url) {
+                    $(this).show().siblings(".J_iframe").hide()
+                    return false;
+                }
+            });
+            flag = true;
+            return false;
+        }
+    })
+    if (flag) return;
+    var index = Math.floor(Math.random() * 10000);
+    var s = '<a href="javascript:;" class="active J_menuTab" data-id="' + url + '">' + name + ' <i class="b-re fa fa-repeat"></i> <i class="b-cl fa fa-times-circle"></i></a>';
+    $(".J_menuTab").removeClass("active");
+    var r = '<iframe class="J_iframe" name="iframe' + index + '" width="100%" height="100%" src="' + url + '?v=' + Math.floor(Math.random() * 10000) + '" frameborder="0" data-id="' + url + '" seamless></iframe>';
+    $(".J_mainContent").find("iframe.J_iframe").hide().parents(".J_mainContent").append(r);
+    var o = layer.load(0, {time: 5000});
+    $(".J_mainContent iframe:visible").load(function () {
+        layer.close(o)
+    }), $(".J_menuTabs .page-tabs-content").append(s)
+}
+
 $(function () {
-    /** *tabs start** */
     function t(t) {
         var e = 0;
         return $(t).each(function () {
@@ -85,7 +111,7 @@ $(function () {
             a = t($(".content-tabs").children().not(".J_menuTabs")), i = $(".content-tabs").outerWidth(!0) - a, n = 0;
         if ($(".page-tabs-content").width() < i) return !1;
         for (var s = $(".J_menuTab:first"), r = 0; r + $(s).outerWidth(!0) <= e;) r += $(s).outerWidth(!0), s = $(s).next();
-        for (r = 0; r + $(s).outerWidth(!0) < i && s.length > 0;) r += $(s).outerWidth(!0), s = $(s).next();
+        for (r = 0; r + $(s).outerWidth(!0) < i && s.length > 0;) r += $(s).outerWidth(!0), s = $(s).next()
         n = t($(s).prevAll()), n > 0 && $(".page-tabs-content").animate({marginLeft: 0 - n + "px"}, "fast")
     }
 
@@ -101,7 +127,7 @@ $(function () {
             $(".J_menuTab").removeClass("active");
             var r = '<iframe class="J_iframe" name="iframe' + a + '" width="100%" height="100%" src="' + t + '?v=' + Math.floor(Math.random() * 10000) + '" frameborder="0" data-id="' + t + '" seamless></iframe>';
             $(".J_mainContent").find("iframe.J_iframe").hide().parents(".J_mainContent").append(r);
-            var o = layer.load(0, {time: 5 * 1000});
+            var o = layer.load(0, {time: 5000});
             $(".J_mainContent iframe:visible").load(function () {
                 layer.close(o)
             }), $(".J_menuTabs .page-tabs-content").append(s), e($(".J_menuTab.active"))
@@ -164,13 +190,21 @@ $(function () {
 
     $(".J_menuItem").each(function (t) {
         $(this).attr("data-index") || $(this).attr("data-index", t)
-    }), $(".J_menuItem").on("click", n), $(".J_menuTabs").on("click", ".J_menuTab i.b-cl", s), $(".J_tabCloseOther").on("click", r), $(".J_tabShowActive").on("click", o), $(".J_menuTabs").on("click", ".J_menuTab", d), $(".J_menuTabs").on("click", ".J_menuTab i.b-re", c), $(".J_tabLeft").on("click", a), $(".J_tabRight").on("click", i), $(".J_tabCloseAll").on("click", function () {
-        $(".page-tabs-content").children("[data-id]").not(":first").each(function () {
-            $('.J_iframe[data-id="' + $(this).data("id") + '"]').remove(), $(this).remove()
-        }), $(".page-tabs-content").children("[data-id]:first").each(function () {
-            $('.J_iframe[data-id="' + $(this).data("id") + '"]').show(), $(this).addClass("active")
-        }), $(".page-tabs-content").css("margin-left", "0")
-    });
+    }), $(".J_menuItem").on("click", n),
+        $(".J_tabCloseOther").on("click", r),
+        $(".J_tabShowActive").on("click", o),
+        $(".J_menuTabs").on("click", ".J_menuTab", d),
+        $(".J_menuTabs").on("click", ".J_menuTab i.b-re", c),
+        $(".J_menuTabs").on("click", ".J_menuTab i.b-cl", s),
+        $(".J_tabLeft").on("click", a),
+        $(".J_tabRight").on("click", i),
+        $(".J_tabCloseAll").on("click", function () {
+            $(".page-tabs-content").children("[data-id]").not(":first").each(function () {
+                $('.J_iframe[data-id="' + $(this).data("id") + '"]').remove(), $(this).remove()
+            }), $(".page-tabs-content").children("[data-id]:first").each(function () {
+                $('.J_iframe[data-id="' + $(this).data("id") + '"]').show(), $(this).addClass("active")
+            }), $(".page-tabs-content").css("margin-left", "0")
+        });
 
 
     if (!window.applicationCache) {

@@ -8,7 +8,6 @@ import java.util.List;
  * @author rick
  * @version 1.1
  */
-@SuppressWarnings("rawtypes")
 public class Pagination {
 
 	private List list; // 分页数据

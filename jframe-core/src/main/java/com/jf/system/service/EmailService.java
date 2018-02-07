@@ -1,4 +1,4 @@
-package com.jf.email;
+package com.jf.system.service;
 
 import freemarker.template.Template;
 import org.springframework.beans.factory.annotation.Autowired;

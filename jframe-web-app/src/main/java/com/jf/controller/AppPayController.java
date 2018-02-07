@@ -14,7 +14,6 @@ import com.jf.string.StringUtil;
 import com.jf.system.conf.SysConfig;
 import com.jf.system.third.alipay.AliPayService;
 import com.jf.system.third.wechat.WxPayService;
-import com.wechat.ResponseHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -212,14 +211,7 @@ public class AppPayController extends BaseController {
         }
     }
 
-    /**
-     * Wechat Callback
-     *
-     * @param request
-     * @param response
-     * @throws Exception
-     */
-    @RequestMapping("/wxpay_callback_old")
+    /*@RequestMapping("/wxpay_callback_old")
     public void wxpay_callback_old(HttpServletRequest request, HttpServletResponse response) throws Exception {
         // 创建支付应答对象
         ResponseHandler resHandler = new ResponseHandler(request, response, config.getWechat().getPartner());
@@ -234,17 +226,17 @@ public class AppPayController extends BaseController {
                 String tfee = queryRes.get("total_fee");
                 int type = Convert.stringToInt(attach, -1);
                 double total_fee = Double.parseDouble(tfee);
-                /*if (chargeService.callback(queryRes.get("out_trade_no")) == 0) {
+                *//*if (chargeService.callback(queryRes.get("out_trade_no")) == 0) {
                     log.info("###################wxpay_callback_shop charge_service callback success.");
                     resHandler.sendBack("SUCCESS");
-                }*/
+                }*//*
             } else {
                 resHandler.sendBack("FAIL");
             }
         } else {
             resHandler.sendBack("FAIL");
         }
-    }
+    }*/
 
     @RequestMapping("/wx_login")
     @ResponseBody

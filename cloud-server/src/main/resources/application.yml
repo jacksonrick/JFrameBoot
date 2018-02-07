@@ -3,21 +3,26 @@ server:
 spring:
   application:
     name: CLOUD-SERVER
-  boot: # 监控服务器
-    admin:
+  boot:
+    admin: # 监控服务器
       context-path: /sba # 配置访问路径
-eureka: # eureka服务端
-  instance:
-    hostname: 127.0.0.1
-    prefer-ip-address: true
-  client:
-    registerWithEureka: false
-    fetchRegistry: false
-    serviceUrl: # 注册地址
-      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
 security: # 开启spring安全
   basic:
     enabled: true
   user: # 设置用户名和密码
     name: eureka
     password: eureka1234
+endpoints:
+  enabled: false
+eureka: # eureka服务端
+  instance:
+    hostname: 127.0.0.1
+    prefer-ip-address: true
+    metadata-map:
+      user.name: ${security.user.name}
+      user.password: ${security.user.password}
+  client:
+    registerWithEureka: false
+    fetchRegistry: false
+    serviceUrl: # 注册地址
+      defaultZone: http://${security.user.name}:${security.user.password}@${eureka.instance.hostname}:${server.port}/eureka/

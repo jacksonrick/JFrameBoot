@@ -16,7 +16,6 @@ import java.util.*;
  * @author rick
  * @version 1.0
  */
-@SuppressWarnings(value = {"rawtypes", "unchecked", "deprecation"})
 public class JSONUtils {
 
     /***

@@ -93,6 +93,8 @@ spring:
     properties:
       mail:
         smtp:
+          ssl:
+            enable: true
           auth: true
           timeout: 25000
   redis: # redis设置

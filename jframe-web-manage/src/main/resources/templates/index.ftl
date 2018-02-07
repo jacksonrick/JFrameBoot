@@ -39,7 +39,8 @@
                                 <#list modules as module2>
                                     <#if module2.modFlag ==2 && module2.parentId == parent>
                                         <li class="animated fadeInDown">
-                                            <a class="J_menuItem" href="${module2.modPath}"><i class="${module2.modIcon }"></i>${module2.modName }</a>
+                                            <a class="J_menuItem" href="${module2.modPath}"><i class="${module2.modIcon }"></i>${module2.modName }
+                                            </a>
                                         </li>
                                     </#if>
                                 </#list>
@@ -55,14 +56,25 @@
         <div class="row border-bottom">
             <nav class="navbar navbar-static-top mb0" role="navigation">
                 <div class="navbar-header">
-                    <a class="minimalize-styl-2 btn btn-info navbar-minimalize" title="收起菜单" data-toggle="tooltip" data-placement="bottom"><i class="fa fa-bars"></i></a>
-                    <a class="minimalize-styl-2 btn btn-info" id="goBack" title="返回上一级" data-toggle="tooltip" data-placement="bottom"><i class="fa fa-arrow-left"></i></a>
-                    <#--<a class="navbar-chat minimalize-styl-2 btn btn-warning" title="即时通讯" data-toggle="tooltip" data-placement="bottom"><i class="fa fa-comments"></i></a>-->
+                    <a class="minimalize-styl-2 btn btn-default navbar-minimalize tp" title="收起菜单"><i class="fa fa-bars"></i></a>
+                    <a class="minimalize-styl-2 btn btn-default tp" id="goBack" title="返回上一级"><i class="fa fa-arrow-left"></i></a>
+                <#--<a class="navbar-chat minimalize-styl-2 btn btn-warning" title="即时通讯" data-toggle="tooltip" data-placement="bottom"><i class="fa fa-comments"></i></a>-->
                 </div>
                 <ul class="nav navbar-top-links navbar-right">
-                    <!-- dropdown1 -->
+                    <!-- 监控 -->
                     <li class="dropdown">
-                        <a class="dropdown-toggle count-info" data-toggle="dropdown" title="系统消息">
+                        <a class="tp" onclick="newTab('云服务器监控', 'http://127.0.0.1:10000/sba')" title="云服务器监控">
+                            <i class="fa fa-server fa-lg"></i>
+                        </a>
+                    </li>
+                    <li class="dropdown">
+                        <a class="tp" onclick="newTab('数据源监控', '/druid/index.html')" title="数据源监控">
+                            <i class="fa fa-database fa-lg"></i>
+                        </a>
+                    </li>
+                    <!-- 系统消息 -->
+                    <li class="dropdown">
+                        <a class="dropdown-toggle count-info tp" data-toggle="dropdown" title="系统消息">
                             <i class="fa fa-envelope fa-lg"></i> <span class="badge badge-info">${size }</span>
                         </a>
                         <ul class="dropdown-menu dropdown-messages">
@@ -81,25 +93,26 @@
                                 </li>
                                 <li class="divider"></li>
                             </#list>
-                            <#--<li>
-                                <div class="text-center link-block">
-                                    <a class="J_menuItem" href="admin/msgList">
-                                        <i class="fa fa-envelope"></i> <strong> 查看所有消息</strong>
-                                    </a>
-                                </div>
-                            </li>-->
+                        <#--<li>
+                            <div class="text-center link-block">
+                                <a class="J_menuItem" href="admin/msgList">
+                                    <i class="fa fa-envelope"></i> <strong> 查看所有消息</strong>
+                                </a>
+                            </div>
+                        </li>-->
                         </ul>
                     </li>
-                    <!-- dropdown2 -->
+                    <!-- 更新日志 -->
                     <li class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" title="更新日志">
+                        <a class="dropdown-toggle tp" data-toggle="dropdown" title="更新日志">
                             <i class="fa fa-cloud-upload fa-lg"></i>
                         </a>
                         <div class="dropdown-menu m-t-xs">
                             <div class="float-e-margins">
                                 <div class="ibox-title">
                                     <h5>
-                                        更新日志<small>&nbsp;当前版本:${version}</small>
+                                        更新日志
+                                        <small>&nbsp;当前版本:${version}</small>
                                     </h5>
                                 </div>
                                 <div class="ibox-content no-padding">
@@ -110,9 +123,9 @@
                             </div>
                         </div>
                     </li>
-                    <!-- dropdown3 -->
+                    <!-- 设置 -->
                     <li class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" title="设置">
+                        <a class="dropdown-toggle tp" data-toggle="dropdown" title="设置">
                             <i class="fa fa-cogs fa-lg"></i>
                         </a>
                         <ul class="dropdown-menu m-t-xs">
@@ -144,10 +157,10 @@
                 <li class="J_tabCloseAll"><a>关闭全部选项卡</a></li>
                 <li class="J_tabCloseOther"><a>关闭其他选项卡</a></li>
             </ul>
-            <a href="javascript:;" class="roll-nav roll-right J_tabExit logout"><i class="fa fa-sign-out"></i> 退出</a>
+        <#--<a href="javascript:;" class="roll-nav roll-right J_tabExit logout"><i class="fa fa-sign-out"></i> 退出</a>-->
         </div>
         <div class="row J_mainContent" id="content-main">
-            <iframe class="J_iframe" name="iframe0" width="100%" height="100%" data-id="/admin/home" src="/admin/home" frameborder="0" seamless></iframe>
+            <iframe class="J_iframe" name="iframe_home" width="100%" height="100%" data-id="/admin/home" src="/admin/home" frameborder="0" seamless></iframe>
         </div>
     </div>
 </div>
@@ -163,6 +176,13 @@
                 jumpUrl("/admin/logout");
             });
         });
+
+        $(".navbar-header,.nav").tooltip({
+            placement: "bottom",
+            selector: ".tp",
+            container: "html"
+        });
+
     });
 </script>
 </body>

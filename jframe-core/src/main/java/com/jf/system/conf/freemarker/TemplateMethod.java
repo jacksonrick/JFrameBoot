@@ -1,4 +1,4 @@
-package com.jf.freemarker;
+package com.jf.system.conf.freemarker;
 
 import freemarker.template.TemplateMethodModel;
 import freemarker.template.TemplateModelException;

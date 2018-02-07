@@ -1,6 +1,5 @@
-package com.jf.sms;
+package com.jf.system.service;
 
-import com.jf.sms.aliyun.SmsApi;
 import freemarker.template.Template;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

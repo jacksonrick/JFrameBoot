@@ -3,9 +3,6 @@ package com.jf.system.third.wechat;
 import com.alibaba.fastjson.JSON;
 import com.jf.system.LogManager;
 import com.jf.system.conf.SysConfig;
-import com.wechat.WXUtil;
-import com.wechat.util.HttpUtils;
-import com.wechat.util.XMLUtil;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -32,7 +29,7 @@ public class WxPayServiceOld {
      * @param orderNum 订单编号
      * @return
      */
-    public String wxPayApp(String ip, String body, Double price, String orderNum) {
+    /*public String wxPayApp(String ip, String body, Double price, String orderNum) {
         //Map<Object, Object> resInfo = new HashMap<Object, Object>();
         SortedMap<Object, Object> parameters = new TreeMap<Object, Object>();
         int retcode;
@@ -96,12 +93,6 @@ public class WxPayServiceOld {
         finalpackage.put("sign", finalsign);
 
         return JSON.toJSONString(finalpackage);
-    }
+    }*/
 
-    public String wxRefund(String out_trade_no, String refund_id, Double price, String orderNum) {
-
-        return "";
-    }
-
-    // 公众号支付需要使用WeixinJSBridge
 }

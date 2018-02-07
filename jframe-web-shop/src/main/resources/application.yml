@@ -7,20 +7,6 @@ spring:
     store-type: none
   application:
     name: JFRAME-WEB-SHOP
-management:
-  security:
-    enabled: true
-  #port: 9090
-  context-path: /monitor
-security:
-  user:
-    name: cloud
-    password: cloud1234
-  basic:
-    path: /monitor
-endpoints:
-  health:
-    enabled: false
 info:
   app:
     name: ${spring.application.name}

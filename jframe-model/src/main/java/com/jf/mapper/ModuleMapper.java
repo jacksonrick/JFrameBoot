@@ -18,4 +18,6 @@ public interface ModuleMapper {
 
 	int insert(Module bean);
 
+	int delete(Integer id);
+
 }

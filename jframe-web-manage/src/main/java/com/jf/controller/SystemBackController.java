@@ -16,7 +16,7 @@ import com.jf.service.system.SystemService;
 import com.jf.string.StringUtil;
 import com.jf.system.annotation.AuthPassport;
 import com.jf.system.conf.SysConfig;
-import com.jf.view.ViewExcel;
+import com.jf.controller.view.ViewExcel;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -30,6 +30,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.io.*;
+import java.nio.charset.Charset;
 import java.util.*;
 
 /**
@@ -207,6 +208,7 @@ public class SystemBackController extends BaseController {
      */
     @RequestMapping("/moduleEdit")
     @ResponseBody
+    @AuthPassport
     public ResMsg moduleEdit(Integer moduleId, Integer parentId, Integer flag, String name, String path, String icon, HttpServletRequest request) {
         if (StringUtil.isBlank(name)) {
             return new ResMsg(1, "模块名不能为空");
@@ -230,6 +232,25 @@ public class SystemBackController extends BaseController {
             }
             return new ResMsg(-1, FAIL);
         }
+    }
+
+    /**
+     * 删除模块
+     *
+     * @param moduleId
+     * @return
+     */
+    @RequestMapping("/moduleDel")
+    @ResponseBody
+    @AuthPassport
+    public ResMsg moduleDel(Integer moduleId) {
+        if (moduleId == null) {
+            return new ResMsg(1, INVALID_ID);
+        }
+        if (moduleService.deleteModule(moduleId) > 0) {
+            return new ResMsg(0, DELETE_SUCCESS);
+        }
+        return new ResMsg(-1, DELETE_FAIL);
     }
 
     /**
@@ -451,6 +472,27 @@ public class SystemBackController extends BaseController {
             return new ResMsg(0, DELETE_SUCCESS);
         }
         return new ResMsg(2, DELETE_FAIL);
+    }
+
+    /**
+     * 下载地址JS文件
+     *
+     * @param response
+     */
+    @RequestMapping("/addrGenc")
+    @AuthPassport(right = false)
+    public void addrGenc(HttpServletResponse response) {
+        response.setCharacterEncoding("utf-8");
+        response.setContentType("multipart/form-data");
+        response.setHeader("Content-Disposition", "attachment;fileName=city-picker.data.all.js");
+        String addr = addrService.genAddr();
+        try {
+            OutputStream os = response.getOutputStream();
+            os.write(addr.getBytes(Charset.forName("UTF-8")));
+            os.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**

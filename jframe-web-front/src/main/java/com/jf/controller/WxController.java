@@ -83,7 +83,7 @@ public class WxController extends BaseController {
                 "       }]\n" +
                 " }";
         try {
-            String result = HttpUtil.postMethod(url, menu);
+            String result = HttpUtil.post(url, menu);
             Map<String, String> map = JSONUtils.toHashMap(result);
             System.out.println(map);
         } catch (Exception e) {
@@ -95,7 +95,7 @@ public class WxController extends BaseController {
 
     private String getAccessToken() {
         String url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wxfe9a8aecbd3506b5&secret=512dce03bb3305162632e1bdc9fc0e8f";
-        String result = HttpUtil.getMethod(url);
+        String result = HttpUtil.get(url);
         Map<String, String> map = JSONUtils.toHashMap(result);
         return map.get("access_token");
     }

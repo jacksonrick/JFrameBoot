@@ -11,6 +11,7 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
+import sun.misc.BASE64Encoder;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -31,7 +32,7 @@ public class HttpUtil {
         Map<String, String> paramsMap = new HashMap<String, String>();
         paramsMap.put("", "");
         paramsMap.put("", "");
-        System.out.println(HttpUtil.postMethod("http://localhost:8080/get", paramsMap));
+        System.out.println(HttpUtil.post("http://localhost:8080/get", paramsMap));
         // System.out.println(HttpUtil.getMethod("http://localhost:8080/post?code=17730215423&uname=feifei"));
     }
 
@@ -43,7 +44,7 @@ public class HttpUtil {
      * @param apikey  apikey
      * @return
      */
-    public static String request(String httpUrl, String httpArg, String apikey) {
+    public static String apiRequest(String httpUrl, String httpArg, String apikey) {
         BufferedReader reader = null;
         String result = null;
         StringBuffer sbf = new StringBuffer();
@@ -77,7 +78,7 @@ public class HttpUtil {
      * @param url
      * @return
      */
-    public static String getMethod(String url) {
+    public static String get(String url) {
         String result = "";
         HttpClient client = HttpClients.createDefault();
         HttpGet get = new HttpGet(url);
@@ -92,14 +93,36 @@ public class HttpUtil {
     }
 
     /**
+     * get方式提交Http请求
+     * Authorization
+     *
+     * @param url
+     * @return
+     */
+    public static String getWithAuthorization(String url, String namepwd) {
+        String result = "";
+        HttpClient client = HttpClients.createDefault();
+        HttpGet get = new HttpGet(url);
+        get.setHeader("Authorization", "Basic " + new BASE64Encoder().encode(namepwd.getBytes()));
+        try {
+            HttpResponse response = client.execute(get);
+            HttpEntity entity = response.getEntity();
+            result = EntityUtils.toString(entity, "UTF-8");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    /**
      * post方式提交Http请求
      *
-     * @param url       请求地址格式"http://localhost/Test";
+     * @param url
      * @param paramsMap
      * @return
      * @throws Exception
      */
-    public static String postMethod(String url, Map<String, String> paramsMap) throws Exception {
+    public static String post(String url, Map<String, String> paramsMap) throws Exception {
         String result = "";
         HttpClient client = HttpClients.createDefault();
         HttpPost post = new HttpPost(url);
@@ -119,18 +142,47 @@ public class HttpUtil {
 
     /**
      * post方式提交Http请求
+     * Authorization
+     *
+     * @param url
+     * @param paramsMap
+     * @return
+     * @throws Exception
+     */
+    public static String postWithAuthorization(String url, Map<String, String> paramsMap, String namepwd) throws Exception {
+        String result = "";
+        HttpClient client = HttpClients.createDefault();
+        HttpPost post = new HttpPost(url);
+        post.setHeader("Authorization", "Basic " + new BASE64Encoder().encode(namepwd.getBytes()));
+        // 创建参数队列
+        List<NameValuePair> formparams = getParamsList(paramsMap);
+        if (formparams != null) {
+            UrlEncodedFormEntity uefEntity = new UrlEncodedFormEntity(formparams, "UTF-8");
+            post.setEntity(uefEntity);
+        }
+        HttpResponse response = client.execute(post);
+        HttpEntity entity = response.getEntity();
+        if (entity != null) {
+            result = EntityUtils.toString(entity, "GB2312");
+        }
+        return result;
+    }
+
+    /**
+     * post方式提交Http请求
+     * 无参数名，只是参数内容
      *
      * @param url
      * @param param 无参数名的参数
      * @return
      * @throws Exception
      */
-    public static String postMethod(String url, String param) throws Exception {
+    public static String post(String url, String param) throws Exception {
         String result = "";
         HttpClient client = HttpClients.createDefault();
         HttpPost post = new HttpPost(url);
         // 创建无参数名的参数
-        StringEntity paramEntity = new StringEntity(param);//无参数名，只是参数内容
+        StringEntity paramEntity = new StringEntity(param);// 无参数名，只是参数内容
         post.setEntity(paramEntity);
         HttpResponse response = client.execute(post);
         HttpEntity entity = response.getEntity();
@@ -140,8 +192,7 @@ public class HttpUtil {
         return result;
     }
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
-    public static List<NameValuePair> getParamsList(Map paramsMap) {
+    private static List<NameValuePair> getParamsList(Map paramsMap) {
         if (paramsMap == null || paramsMap.size() == 0) {
             return null;
         }

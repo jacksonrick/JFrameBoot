@@ -1,15 +1,15 @@
 package com.jf.system.conf;
 
-import com.jf.freemarker.TemplateDirectivePage;
-import com.jf.freemarker.TemplateMethod;
+import com.jf.system.conf.freemarker.TemplateDirectivePage;
+import com.jf.system.conf.freemarker.TemplateMethod;
 import freemarker.template.TemplateModelException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
 import java.util.Map;
 
 /**
@@ -22,9 +22,9 @@ import java.util.Map;
 @Configuration
 public class FreemarkerConfig {
 
-    @Autowired
+    @Resource
     private freemarker.template.Configuration configuration;
-    @Autowired
+    @Resource
     private TemplateDirectivePage directivePage;
 
     @PostConstruct

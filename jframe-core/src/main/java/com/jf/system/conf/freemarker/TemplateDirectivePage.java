@@ -1,4 +1,4 @@
-package com.jf.freemarker;
+package com.jf.system.conf.freemarker;
 
 import com.github.pagehelper.PageInfo;
 import com.jf.page.DoTag;

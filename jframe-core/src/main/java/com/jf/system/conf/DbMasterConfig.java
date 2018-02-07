@@ -35,12 +35,16 @@ import java.util.Properties;
  */
 @Configuration
 @EnableTransactionManagement
-@MapperScan(basePackages = "com.jf.mapper", sqlSessionFactoryRef = "masterSqlSessionFactory")
+@MapperScan(basePackages = DbMasterConfig.mapperPackage, sqlSessionFactoryRef = "masterSqlSessionFactory")
 public class DbMasterConfig {
 
     private Logger logger = LoggerFactory.getLogger(DbMasterConfig.class);
 
-    @Bean
+    public final static String mapperPackage = "com.jf.mapper";
+    public final static String xmlMapperLocation = "classpath:com/jf/mapper/xml/*.xml";
+    public final static String modelPackage = "com.jf.model";
+
+    @Bean(name = "masterDataSource")
     @Primary
     @ConfigurationProperties("spring.datasource.druid.master")
     public DataSource masterDataSource() {
@@ -56,9 +60,9 @@ public class DbMasterConfig {
             // we MUST set the 'VFS' if you use jar
             bean.setVfs(SpringBootVFS.class);
             // 实体类位置
-            bean.setTypeAliasesPackage("com.jf.model");
+            bean.setTypeAliasesPackage(modelPackage);
             // 设置mapper.xml文件所在位置
-            org.springframework.core.io.Resource[] resources = new PathMatchingResourcePatternResolver().getResources("classpath:com/jf/mapper/xml/*.xml");
+            org.springframework.core.io.Resource[] resources = new PathMatchingResourcePatternResolver().getResources(xmlMapperLocation);
             bean.setMapperLocations(resources);
 
             // 添加分页插件
@@ -78,7 +82,7 @@ public class DbMasterConfig {
         }
     }
 
-    @Bean
+    @Bean(name = "masterSqlSessionTemplate")
     @Primary
     public SqlSessionTemplate sqlSessionTemplate(@Qualifier("masterSqlSessionFactory") SqlSessionFactory sqlSessionFactory) {
         return new SqlSessionTemplate(sqlSessionFactory);
@@ -89,7 +93,7 @@ public class DbMasterConfig {
      *
      * @return
      */
-    @Bean
+    @Bean(name = "masterTransactionManager")
     @Primary
     public PlatformTransactionManager masterTransactionManager(@Qualifier("masterDataSource") DataSource masterDataSource) {
         return new DataSourceTransactionManager(masterDataSource);

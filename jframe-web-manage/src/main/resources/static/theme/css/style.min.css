@@ -5934,11 +5934,11 @@ nav.page-tabs .page-tabs-content {
 }
 
 .roll-right.J_tabRight {
-    right: 140px
+    right: 80px
 }
 
 .roll-right.J_tabClose {
-    right: 60px;
+    right: 0px;
     width: 80px
 }
 
@@ -9289,10 +9289,6 @@ div#rMenu ul li {
     border: solid 1px #e7eaec;
     cursor: pointer;
     background-color: #ffffff
-}
-
-div#rMenu #m_add {
-    border-bottom: none
 }
 
 div#rMenu ul li:hover {

@@ -10,22 +10,22 @@ spring:
 management:
   security:
     enabled: true
-  #port: 9090
+  port: 9090
   context-path: /monitor
-security:
-  user:
+security: # spring安全设置
+  basic:
+    enabled: true
+    path: /monitor # 需要配置安全的路径
+  user: # 用户名和密码
     name: cloud
     password: cloud1234
-  basic:
-    path: /monitor
-endpoints:
-  health:
-    enabled: false
+endpoints: # Actuator监控，可自定义端点的开关-enabled
+  enabled: false
 info:
   app:
     name: ${spring.application.name}
     version: 1.0
-#eureka:
-  #client:
-    #serviceUrl:
-      #defaultZone: http://eureka:eureka1234@127.0.0.1:10000/eureka/
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://eureka:eureka1234@127.0.0.1:10000/eureka/
