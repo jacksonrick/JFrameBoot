@@ -119,7 +119,7 @@
         </tbody>
     </table>
 
-    <footer>JFrame® Copyright 2018</footer>
+    <#include "footer.ftl">
 </div>
 </body>
 </html>

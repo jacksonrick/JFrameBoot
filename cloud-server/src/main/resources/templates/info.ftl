@@ -32,8 +32,10 @@
     </ul>
 
     <div class="panel panel-default" style="border-top-left-radius: unset;border-top-right-radius: unset;">
-        <div class="panel-body" id="content"></div>
+        <div class="panel-body" id="content">加载中...</div>
     </div>
+
+    <#include "footer.ftl">
 </div>
 
 <script src="/static/js/jquery-2.1.1.min.js"></script>
@@ -131,6 +133,8 @@
 
                     } else if (k == "hystrix") {
 
+                    } else if (k == "configServer") {
+                        bodys += '<p class="text-muted"><b class="text-info">propertySources: </b>' + v.propertySources.join(",") + '</p>';
                     }
                     bodys += '</div>';
                     html += bodys + '</div>';
@@ -232,6 +236,7 @@
                 contentType: 'application/json',
                 dataType: "json",
                 success: function (data) {
+                    $("#content").html('');
                     config.callback(data);
                 }
             });

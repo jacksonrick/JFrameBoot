@@ -35,6 +35,8 @@
         </#list>
         </tbody>
     </table>
+
+    <#include "footer.ftl">
 </div>
 </body>
 </html>

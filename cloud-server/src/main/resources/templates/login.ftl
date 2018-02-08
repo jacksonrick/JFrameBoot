@@ -57,6 +57,8 @@
         </div>
         <input type="submit" class="btn btn-success" value="Login"></input>
     </form>
+
+    <#include "footer.ftl">
 </div>
 
 </body>
