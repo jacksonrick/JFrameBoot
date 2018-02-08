@@ -5,17 +5,19 @@ import com.jf.entity.ResMsg;
 import com.jf.model.User;
 import com.jf.model.custom.IdText;
 import com.jf.service.user.UserService;
-import com.jf.system.service.SMService;
 import com.jf.string.StringUtil;
 import com.jf.system.conf.SysConfig;
 import com.jf.system.job.QuartzManager;
 import com.jf.system.job.TestQuartz;
-import com.jf.system.socket.SocketMessage;
 import com.jf.system.service.PDFService;
+import com.jf.system.service.SMService;
+import com.jf.system.socket.SocketMessage;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.quartz.SchedulerFactory;
 import org.quartz.impl.StdSchedulerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,6 +33,7 @@ import java.util.*;
  * Created by xujunfei on 2016/12/21.
  */
 @Controller
+@RefreshScope
 public class TestController extends BaseController {
 
     @Resource
@@ -41,6 +44,15 @@ public class TestController extends BaseController {
     private PDFService pdfService;
     @Resource
     private SysConfig sysConfig;
+
+    @Value("${a}")
+    public String a;
+
+    @RequestMapping("/test")
+    @ResponseBody
+    public ResMsg test() {
+        return new ResMsg(0, SUCCESS, a);
+    }
 
     @RequestMapping("/testRollback")
     @ResponseBody

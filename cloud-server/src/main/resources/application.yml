@@ -3,9 +3,34 @@ server:
 spring:
   application:
     name: CLOUD-SERVER
-  boot:
-    admin: # 监控服务器
-      context-path: /sba # 配置访问路径
+  freemarker:
+    template-loader-path: classpath:/templates/
+    settings: # 数据格式设置
+      template_update_delay: 0
+      default_encoding: UTF-8
+      locale: zh_CN
+      url_escaping_charset: zh_CN
+      date_format: yyyy-MM-dd
+      time_format: HH:mm:ss
+      datetime_format: yyyy-MM-dd HH:mm:ss
+      number_format: 0.##
+      boolean_format: true,false
+      classic_compatible: true
+      whitespace_stripping: true
+  mvc:
+    static-path-pattern: /static/**
+  resources:
+    static-locations: classpath:/static/
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+  profiles:
+    active: native
+  cloud: # springcloud配置
+    config:
+      server:
+        native:
+          search-locations: classpath:/configs/
+        prefix: /cfg # 配置地址前缀
 security: # 开启spring安全
   basic:
     enabled: true
@@ -15,12 +40,11 @@ security: # 开启spring安全
 endpoints:
   enabled: false
 eureka: # eureka服务端
+  dashboard:
+    enabled: false
   instance:
     hostname: 127.0.0.1
     prefer-ip-address: true
-    metadata-map:
-      user.name: ${security.user.name}
-      user.password: ${security.user.password}
   client:
     registerWithEureka: false
     fetchRegistry: false

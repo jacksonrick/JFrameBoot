@@ -1,0 +1,6 @@
+spring:
+  cloud:
+    config:
+      uri: http://eureka:eureka1234@127.0.0.1:10000/cfg
+      name: sys
+      profile: dev

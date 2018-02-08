@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8"/>
     <title>Info</title>
-    <link type="text/css" href="/bootstrap.min.css" rel="stylesheet">
+    <link type="text/css" href="/static/css/bootstrap.min.css" rel="stylesheet">
     <style type="text/css">
         #content .panel-body, .popover-content {
             overflow: scroll;
@@ -13,7 +13,7 @@
 <body>
 
 <div class="container">
-    <#include "top.ftl">
+    <#include "header.ftl">
 
     <h1 style="margin-top: 30px;" id="info-id">id</h1>
     <h4>
@@ -36,8 +36,8 @@
     </div>
 </div>
 
-<script src="/jquery-2.1.1.min.js"></script>
-<script src="/bootstrap.min.js"></script>
+<script src="/static/js/jquery-2.1.1.min.js"></script>
+<script src="/static/js/bootstrap.min.js"></script>
 <script>
     var monitor = getQueryString("instance");
     monitor = monitor.substring(0, monitor.lastIndexOf('/'));
@@ -227,7 +227,7 @@
     Ajax = {
         ajax: function (config) {
             $.ajax({
-                url: "/sba/info?monitor=" + monitor + config.operate,
+                url: "/info?monitor=" + monitor + config.operate,
                 type: "post",
                 contentType: 'application/json',
                 dataType: "json",

@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8"/>
     <title>Index</title>
-    <link type="text/css" href="/bootstrap.min.css" rel="stylesheet">
+    <link type="text/css" href="/static/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
 <div class="container">
-    <#include "top.ftl">
+    <#include "header.ftl">
 
     <h1 style="margin-top: 30px;">Registered clients</h1>
     <table class="table table-hover table-bordered table-striped">
@@ -27,7 +27,7 @@
                         <span class="badge">${instance.status}</span>
                         <a href="${instance.healthCheckUrl}" target="_blank" title="${instance.appName}">${instance.hostName}
                             - ${instance.IPAddr}:${instance.port?string.computer}</a>
-                        <a class="label label-danger" href="/sba/infos?instance=${instance.healthCheckUrl}" target="_self">>_Operate</a>
+                        <a class="label label-danger" href="/infos?instance=${instance.healthCheckUrl}" target="_self">>_Operate</a>
                     </div>
                 </#list>
             </td>

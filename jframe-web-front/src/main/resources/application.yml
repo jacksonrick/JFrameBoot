@@ -7,21 +7,9 @@ spring:
     store-type: HASH_MAP
   application:
     name: JFRAME-WEB-FRONT
-  boot:
-    admin:
-      client:
-        enabled: true
-        prefer-ip: true # 解决windows下运行时无法识别主机名的问题
-        metadata:
-          user.name: ${security.user.name}
-          user.password: ${security.user.password}
-      url: http://127.0.0.1:10000
-      api-path: sba/api/applications # 服务端注册的ip和地址
-      username: eureka
-      password: eureka1234
 management:
   security:
-    enabled: true # 与spring security进行安全验证
+    enabled: false # 与spring security进行安全验证
   port: 9091 # 监控端口
   context-path: /monitor
   health: # 指定不监控服务
@@ -29,7 +17,7 @@ management:
       enabled: false
 security: # spring security安全设置
   basic:
-    enabled: true
+    enabled: false
     path: /monitor
   user:
     name: spring

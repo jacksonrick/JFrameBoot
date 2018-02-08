@@ -2,12 +2,12 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8"/>
-    <title>Index</title>
-    <link type="text/css" href="/bootstrap.min.css" rel="stylesheet">
+    <title>SpringCloud Eureka Monitor</title>
+    <link type="text/css" href="/static/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
 <div class="container">
-    <#include "top.ftl">
+    <#include "header.ftl">
 
     <h1 style="margin-top: 30px;">System Status</h1>
     <table class="table table-hover table-bordered table-striped">
