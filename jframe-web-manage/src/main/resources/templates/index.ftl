@@ -63,7 +63,7 @@
                 <ul class="nav navbar-top-links navbar-right">
                     <!-- 监控 -->
                     <li class="dropdown">
-                        <a class="tp" onclick="newTab('云服务器监控', 'http://127.0.0.1:10000/sba')" title="云服务器监控">
+                        <a class="tp" onclick="newTab('云服务器监控', 'http://127.0.0.1:10000')" title="云服务器监控">
                             <i class="fa fa-server fa-lg"></i>
                         </a>
                     </li>

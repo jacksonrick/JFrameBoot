@@ -22,6 +22,7 @@
         <small>desc:</small>
         <small id="info-desc">desc</small>
     </h4>
+    <a class="label label-danger" id="refresh">Refresh cloud config</a>
 
     <ul class="nav nav-tabs" style="margin-top: 10px;margin-bottom: -1px;">
         <li data-id="1" class="active"><a href="javascript:;">health</a></li>
@@ -29,10 +30,25 @@
         <li data-id="3"><a href="javascript:;">dump</a></li>
         <li data-id="4"><a href="javascript:;">metrics</a></li>
         <li data-id="5"><a href="javascript:;">trace</a></li>
+        <li data-id="6"><a href="javascript:;">features</a></li>
     </ul>
 
     <div class="panel panel-default" style="border-top-left-radius: unset;border-top-right-radius: unset;">
         <div class="panel-body" id="content">加载中...</div>
+    </div>
+
+    <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" id="modal">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title">Message</h4>
+                </div>
+                <div class="modal-body" id="modal-content">
+                </div>
+            </div>
+        </div>
     </div>
 
     <#include "footer.ftl">
@@ -68,22 +84,22 @@
                 case 5:
                     getTrace();
                     break;
+                case 6:
+                    getFeatures();
+                    break;
                 default:
                     alert("error");
             }
         });
 
+        $("#refresh").click(function () {
+            Ajax.refresh();
+        });
+
     });
 
     function getInfo() {
-        Ajax.ajax({
-            operate: "/info",
-            callback: function (data) {
-                $("#info-id").html(data.app.name);
-                $("#info-ver").html(data.app.version);
-                $("#info-desc").html(data.app.description);
-            }
-        });
+        Ajax.info();
     }
 
     function getHealth() {
@@ -228,7 +244,34 @@
         });
     }
 
+    function getFeatures() {
+        Ajax.ajax({
+            operate: "/features",
+            callback: function (data) {
+                var table = '<table class="table table-hover table-bordered table-striped"><thead><tr><th>name</th><th>type</th><th>version</th></tr></thead><tbody>';
+                $.each(data.enabled, function (k, v) {
+                    table += '<tr><td>' + v.name + '</td><td>' + v.type + '</td><td>' + v.version + '</td></tr>';
+                });
+                table += '</tbody></table>';
+                $("#content").append(table);
+            }
+        });
+    }
+
     Ajax = {
+        info: function () {
+            $.ajax({
+                url: "/info?monitor=" + monitor + "/info",
+                type: "post",
+                contentType: 'application/json',
+                dataType: "json",
+                success: function (data) {
+                    $("#info-id").html(data.app.name);
+                    $("#info-ver").html(data.app.version);
+                    $("#info-desc").html(data.app.description);
+                }
+            });
+        },
         ajax: function (config) {
             $.ajax({
                 url: "/info?monitor=" + monitor + config.operate,
@@ -238,6 +281,22 @@
                 success: function (data) {
                     $("#content").html('');
                     config.callback(data);
+                }
+            });
+        },
+        refresh: function () {
+            $.ajax({
+                url: "/info/refresh?monitor=" + monitor + "/refresh",
+                type: "post",
+                contentType: 'application/json',
+                dataType: "json",
+                success: function (data) {
+                    if (data.length > 0) {
+                        $("#modal-content").html(data.join('<br>'));
+                    } else {
+                        $("#modal-content").html("no keys changed");
+                    }
+                    $("#modal").modal('show');
                 }
             });
         }

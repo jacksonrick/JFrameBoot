@@ -10,20 +10,7 @@
     <#include "header.ftl">
 
     <h1 style="margin-top: 30px;">Config Server</h1>
-    <a class="label label-danger">Refresh all config client</a>
-    <a class="label label-primary">Add new key/value</a>
-
-    <table class="table table-hover table-bordered table-striped" style="margin-top: 20px;">
-        <thead>
-        <tr>
-            <th>name</th>
-            <th>infos</th>
-        </tr>
-        </thead>
-        <tbody>
-
-        </tbody>
-    </table>
+    <div id="content"></div>
 
     <#include "footer.ftl">
 </div>
@@ -31,6 +18,24 @@
 <script src="/static/js/jquery-2.1.1.min.js"></script>
 <script>
     $(function () {
+        var configs = ["sys-dev", "sys-pro"];
+        $.each(configs, function (k, v) {
+            $.ajax({
+                async: false,
+                url: "/cfg/" + v + ".json",
+                type: "get",
+                contentType: 'application/json',
+                dataType: "json",
+                success: function (data) {
+                    var table = '<h3 style="margin-top: 20px;">' + v + '.properties</h3><table class="table table-hover table-bordered table-striped" style="width: 50%;"><thead><tr><th>key</th><th>value</th></tr></thead><tbody>';
+                    $.each(data, function (k2, v2) {
+                        table += '<tr><td>' + k2 + '</td><td>' + v2 + '</td></tr>';
+                    });
+                    table += '</tbody></table>';
+                    $("#content").append(table);
+                }
+            });
+        });
 
     });
 </script>

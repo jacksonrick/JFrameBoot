@@ -9,23 +9,32 @@ spring:
     name: JFRAME-WEB-MANAGE
 management:
   security:
-    enabled: true
+    enabled: false
   port: 9090
   context-path: /monitor
-security: # spring安全设置
+security:
   basic:
-    enabled: true
-    path: /monitor # 需要配置安全的路径
-  user: # 用户名和密码
+    enabled: false
+    path: /monitor
+  user:
     name: cloud
     password: cloud1234
-endpoints: # Actuator监控，可自定义端点的开关-enabled
+endpoints:
   enabled: false
 info:
   app:
     name: ${spring.application.name}
     version: 1.0
+    description: "manage"
 eureka:
   client:
+    enabled: false
     serviceUrl:
       defaultZone: http://eureka:eureka1234@127.0.0.1:10000/eureka/
+app:
+  pro:
+    appkey: ""
+    path: /data/wwwroot/manage/static/
+    host: http://192.168.1.199:${server.port}/
+  scheduler:
+    enabled: true

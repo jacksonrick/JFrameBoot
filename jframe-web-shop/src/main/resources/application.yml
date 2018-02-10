@@ -11,3 +11,11 @@ info:
   app:
     name: ${spring.application.name}
     version: 1.0
+    description: "shop"
+app:
+  pro:
+    appkey: ""
+    path: /data/wwwroot/shop/static/
+    host: http://192.168.1.199:${server.port}/
+  scheduler:
+    enabled: false

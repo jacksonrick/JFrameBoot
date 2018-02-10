@@ -2,14 +2,14 @@ package com.jf.system.third.wechat;
 
 import com.github.wxpay.sdk.WXPay;
 import com.github.wxpay.sdk.WXPayConfig;
-import com.jf.string.StringUtil;
+import com.jf.system.LogManager;
 import com.jf.system.conf.SysConfig;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
+import org.springframework.util.FileCopyUtils;
 
 import javax.annotation.Resource;
 import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
@@ -31,11 +31,8 @@ public class WxPayService implements WXPayConfig {
 
     public WxPayService() throws Exception {
         // 证书读取 - 撤销、退款申请API中调用
-        File file = new File(WxPayService.class.getResource("/apiclient_cert.p12").getFile());
-        InputStream certStream = new FileInputStream(file);
-        this.certData = new byte[(int) file.length()];
-        certStream.read(this.certData);
-        certStream.close();
+        ClassPathResource resource = new ClassPathResource("apiclient_cert.p12");
+        this.certData = FileCopyUtils.copyToByteArray(resource.getInputStream());
     }
 
     // 以下通过sysconfig配置

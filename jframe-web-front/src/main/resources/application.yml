@@ -9,17 +9,17 @@ spring:
     name: JFRAME-WEB-FRONT
 management:
   security:
-    enabled: false # 与spring security进行安全验证
+    enabled: true # 与spring security进行安全验证
   port: 9091 # 监控端口
-  context-path: /monitor
-  health: # 指定不监控服务
+  context-path: /monitor # 需要配置安全的路径
+  health: # 指定不监控的服务
     mail:
       enabled: false
 security: # spring security安全设置
   basic:
-    enabled: false
+    enabled: true
     path: /monitor
-  user:
+  user: # 用户名和密码
     name: spring
     password: spring1234
 endpoints: # Actuator监控，可自定义端点的开关-enabled
@@ -34,8 +34,8 @@ endpoints: # Actuator监控，可自定义端点的开关-enabled
     enabled: false
   configprops:
     enabled: false
-  logfile:
-    enabled: true
+  loggers:
+    enabled: false
 info: # 定义各种额外的详情给服务端显示
   app:
     name: ${spring.application.name}
@@ -43,6 +43,13 @@ info: # 定义各种额外的详情给服务端显示
     description: "pc"
 eureka: # eureka客户端注册
   client:
-    enabled: true
+    enabled: false
     serviceUrl:
       defaultZone: http://eureka:eureka1234@127.0.0.1:10000/eureka/ # eureka服务端地址
+app: # app单独配置
+  pro: # 生产环境专用
+    appkey: ""
+    path: /data/wwwroot/front/static/
+    host: http://192.168.1.199:${server.port}/
+  scheduler: # 定时任务
+    enabled: false

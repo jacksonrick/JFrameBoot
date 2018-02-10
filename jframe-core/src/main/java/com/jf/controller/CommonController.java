@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
@@ -35,17 +36,6 @@ import java.util.Random;
  */
 @Controller
 public class CommonController {
-
-    // 1-local 2-fastdfs 3-其他
-    private Integer upload = 1;
-    // 图片大小
-    private Integer imageSize = 3;
-    // 图片类型
-    private String[] imgType = new String[]{"jpg", "jpeg", "png"};
-    // 文件大小【非图片】
-    private Integer fileSize = 10;
-    // 文件类型
-    private String[] fileType = new String[]{"zip", "rar", "txt"};
 
     @Resource
     private SysConfig config;
@@ -143,17 +133,17 @@ public class CommonController {
     @ResponseBody
     public UploadRet uploadwithKE(@RequestParam("imgFile") MultipartFile file, HttpServletRequest request) throws IOException {
         // 文件限制
-        long imgSize = imageSize * 1024 * 1024;
+        long imgSize = config.getUpload().getImgSize() * 1024 * 1024;
         if (file.getSize() > imgSize) {
-            return new UploadRet(1, "", "单个文件最大" + imageSize + "M");
+            return new UploadRet(1, "", "单个文件最大" + config.getUpload().getImgSize() + "M");
         }
         // 文件后缀
         String suffix = StringUtil.getFileType(file.getOriginalFilename());
-        if (!Arrays.asList(imgType).contains(suffix.toLowerCase())) {
+        if (!Arrays.asList(config.getUpload().getImgType()).contains(suffix.toLowerCase())) {
             return new UploadRet(1, "", "文件格式不支持");
         }
 
-        if (upload == 1) {
+        if ("local".equals(config.getUpload().getType())) {
             String basePathFormat = DateUtil.getYearAndMonth(false);
             String uploadPath = config.getStaticPath() + "upload/" + basePathFormat;
             String filename = StringUtil.randomFilename(file.getOriginalFilename());
@@ -191,11 +181,11 @@ public class CommonController {
 
         if (t == null) t = 1;
         if (t == 2) { // 文件
-            type = fileType;
-            size = fileSize;
+            type = config.getUpload().getFileType();
+            size = config.getUpload().getFileSize();
         } else { //图片
-            type = imgType;
-            size = imageSize;
+            type = config.getUpload().getImgType();
+            size = config.getUpload().getImgSize();
         }
         // 文件大小
         if (file.getSize() > size * 1024 * 1024) {
@@ -206,7 +196,7 @@ public class CommonController {
             return new UploadRet(1, "", "文件格式不支持");
         }
 
-        if (upload == 1) {
+        if ("local".equals(config.getUpload().getType())) {
             String basePathFormat = DateUtil.getYearAndMonth(false);
             String dirPath = "upload/" + basePathFormat;
             if (t == 2) { // 文件
@@ -220,6 +210,8 @@ public class CommonController {
                 filePath.mkdirs();
             }
             FileUtils.copyInputStreamToFile(file.getInputStream(), new File(filePath, filename));
+            // 添加水印
+            // FileUtils.copyInputStreamToFile(new ByteArrayInputStream(FDFSUtil.waterMark(file.getInputStream(), suffix)), new File(filePath, filename));
             return new UploadRet(0, config.getStaticHost() + "static/" + dirPath + "/" + filename, "SUCCESS");
         } else {
             // 添加水印：FDFSUtil.waterMark(file.getInputStream(), suffix)

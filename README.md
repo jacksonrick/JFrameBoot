@@ -30,6 +30,10 @@
 * ...
 
 ### 更新日志：
+* v4.4.2 `20180208`
+    * 1.服务监控中心和配置中心(cloud-server)
+    * 2.优化日志、上传、定时任务配置
+    * 3.修复Maven打包后程序出现文件找不到的问题
 * v4.4.1 `20180202`
     * 1.新增模块删除和地址导出功能
     * 2.更新fa图标库，优化CSS效果
@@ -128,7 +132,14 @@
 * Linux CentOS 7
 * IDEA 2017
 
+### 打包到服务器
+* 修改生产环境配置
+* 运行 `clean install -DskipTests`进行打包
+* 将target目录下的打包文件上传到服务器目录
+* 运行`jframe/build/run`命令或直接运行`java -jar`命令
+* 注意：运行脚本需要按照一定的命名方式
 
+### 其他
 * 数据库脚本：`jframe/doc/jframe.sql`
 * 操作手册说明：`jframe/doc/操作手册、插件、Util包说明、开发规范.docx`
 * 开发配置：`jframe-core/src/main/resources/application-dev.yml`

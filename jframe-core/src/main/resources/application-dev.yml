@@ -82,7 +82,9 @@ spring:
         enabled: true
         url-pattern: /*
         exclusions: "*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*"
-      #aop-patterns: com.jf.service.* # Spring监控AOP切入点
+      aop-patterns: com.jf.service.* # Spring监控AOP切入点
+  aop:
+    proxy-target-class: true
   task: # 线程池设置
     corePoolSize: 10
     maxPoolSize: 30
@@ -150,3 +152,9 @@ system: # 系统自定义配置
   geetest: # 极验验证
     id: a53178
     key: 51dbc8
+  upload:
+    type: local
+    img_size: 3
+    img_type: jpg,jpeg,png
+    file_size: 10
+    file_type: zip,rar,txt

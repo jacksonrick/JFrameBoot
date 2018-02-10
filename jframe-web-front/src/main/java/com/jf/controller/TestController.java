@@ -45,7 +45,7 @@ public class TestController extends BaseController {
     @Resource
     private SysConfig sysConfig;
 
-    @Value("${a}")
+    @Value("${s1:0}")
     public String a;
 
     @RequestMapping("/test")

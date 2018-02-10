@@ -1,6 +1,7 @@
 spring:
   cloud:
-    config:
+    config: # spring cloud config 配置
+      enabled: false # 关闭/启用
       uri: http://eureka:eureka1234@127.0.0.1:10000/cfg
       name: sys
       profile: dev

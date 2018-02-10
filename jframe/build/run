@@ -4,7 +4,7 @@
 
 JARNAME=$1
 JAVAPATH=/usr/local/jdk/bin
-APPATH=/data/wwwroot/app
+APPATH=/data/wwwroot
 
 if  [ ! -n "$JARNAME" ] ;then
     echo "Usage: $0 appname"
@@ -18,6 +18,12 @@ if [ -n "$PID" ];then
     kill -9 $PID
 fi
 
-# java -Xms4g -Xmx4g -Xmn768m -server
-exec $JAVAPATH/java -server -jar $APPATH/$APP_NAME.jar --spring.profiles.active=pro 5 > /opt/run.log &
+exec $JAVAPATH/java -Dapp.name=$APP_NAME -server -jar $APPATH/$JARNAME/$APP_NAME.jar --spring.profiles.active=pro 5 > /data/wwwlogs/$APP_NAME.run.log &
 echo -e "$APP_NAME is started."
+
+# exec java -server -jar -Dapp.name=jframe-web-manage jframe-web-manage.jar --spring.profiles.active=pro 5 > run.log &
+
+# -server user server mode.
+# -Dapp.name specify app name and use to logback's filename.
+# --spring.profiles.active specify dev or product profile.
+# we can specify java properties: java -Xms4g -Xmx4g -Xmn768m

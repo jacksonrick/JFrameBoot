@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
 
-    <!-- 日志目录-PRO -->
-    <!--<property name="LOG_HOME" value="/data/wwwlogs"></property>-->
+    <!-- 日志目录/PRO -->
     <property name="LOG_HOME" value="/Users/xujunfei/Downloads/logs"></property>
+    <property name="LOG_HOME_PRO" value="/data/wwwlogs"></property>
     <!-- 若使用分布式，则选择flume appender -->
     <!-- 日志显示格式 -->
     <property name="PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS} %highlight(%-5level) %cyan(%logger{40}.%M:%L) - %msg%n"></property>
     <!-- 日志文件名称 -->
-    <property name="FILE_NAME" value="jframe"></property>
-    <property name="ERROR_NAME" value="jframe_error"></property>
+    <property name="FILE_NAME" value="${app.name}"></property>
+    <property name="ERROR_NAME" value="${app.name}.error"></property>
 
-    <!-- 开发环境 -->
+    <!-- 开发环境/不写入日志文件 -->
     <springProfile name="dev">
         <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
             <encoder>
@@ -35,14 +35,15 @@
 
         <!-- 记录INFO日志-按时间和大小分割 -->
         <appender name="syslog" class="ch.qos.logback.core.rolling.RollingFileAppender">
-            <file>${LOG_HOME}/${FILE_NAME}.log</file>
+            <file>${LOG_HOME_PRO}/${FILE_NAME}.log</file>
             <filter class="ch.qos.logback.classic.filter.LevelFilter">
                 <level>ERROR</level>
                 <onMatch>DENY</onMatch>
                 <onMismatch>ACCEPT</onMismatch>
             </filter>
+            <!-- 每日生成一个文件 -->
             <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
-                <fileNamePattern>${LOG_HOME}/${FILE_NAME}.%d{yyyy-MM-dd}.%i.log.zip</fileNamePattern>
+                <fileNamePattern>${LOG_HOME_PRO}/${FILE_NAME}.%d{yyyy-MM-dd}.%i.log.zip</fileNamePattern>
                 <minIndex>1</minIndex>
                 <maxIndex>5</maxIndex>
             </rollingPolicy>
@@ -62,7 +63,7 @@
                 <onMismatch>DENY</onMismatch>
             </filter>
             <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-                <fileNamePattern>${LOG_HOME}/${ERROR_NAME}.%d{yyyy-MM-dd}.log</fileNamePattern>
+                <fileNamePattern>${LOG_HOME_PRO}/${ERROR_NAME}.%d{yyyy-MM-dd}.log</fileNamePattern>
                 <MaxHistory>10</MaxHistory>
             </rollingPolicy>
             <encoder>

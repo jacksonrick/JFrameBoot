@@ -1,6 +1,6 @@
 <nav class="navbar navbar-default">
     <div class="navbar-header">
-        <a class="navbar-brand" href="/">SpringCloud Eureka Monitor</a>
+        <a class="navbar-brand" href="/">SpringCloud Monitor</a>
     </div>
     <div class="collapse navbar-collapse">
         <ul class="nav navbar-nav">

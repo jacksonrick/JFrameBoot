@@ -1,17 +1,30 @@
 package com.jf.fdfs;
 
+import org.apache.commons.io.FileUtils;
+
 import javax.imageio.ImageIO;
+import javax.imageio.stream.FileImageOutputStream;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.InputStream;
+import java.io.*;
 
 /**
  * FDFS工具类【水印】
  * Created by xujunfei on 2017/6/7.
  */
 public class FDFSUtil {
+
+    public static void main(String[] args) {
+        File file = new File("/Users/xujunfei/Downloads/static/test/2.png");
+        File out = new File("/Users/xujunfei/Downloads/static/test/2-1.png");
+        InputStream is = null;
+        try {
+            is = new FileInputStream(file);
+            FileUtils.copyInputStreamToFile(new ByteArrayInputStream(FDFSUtil.waterMark(is, "JFrame", "png")), out);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     /**
      * 添加图片水印
@@ -21,7 +34,6 @@ public class FDFSUtil {
      * @return
      */
     public static byte[] waterMark(InputStream stream, String ext) {
-        String logoFile = "/logo.png";
         byte[] b = null;
         try {
             // 读取原图片信息
@@ -33,22 +45,19 @@ public class FDFSUtil {
             Graphics2D g = bufImg.createGraphics();
             g.drawImage(srcImg, 0, 0, width, height, null);
             // Logo
-            Image imageLogo = ImageIO.read(FDFSUtil.class.getResourceAsStream(logoFile));
+            Image imageLogo = ImageIO.read(FDFSUtil.class.getClassLoader().getResourceAsStream("logo.png"));
             int width1 = imageLogo.getWidth(null);
             int height1 = imageLogo.getHeight(null);
-            int widthDiff = width - width1;
-            int heightDiff = height - height1;
-            int x = 10;
-            int y = 10;
-            if (x > widthDiff) {
-                x = widthDiff;
-            }
-            if (y > heightDiff) {
-                y = heightDiff;
-            }
+
+            // 最小
+            if (width <= 150) width1 = 40;
+            if (height <= 150) height1 = 16;
+
+            int x = width - width1 - 5;
+            int y = height - height1 - 5;
 
             g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_ATOP, 0.8F));
-            g.drawImage(imageLogo, x, y, null);
+            g.drawImage(imageLogo, x, y, width1, height1, null);
             g.dispose();
             // 输出图片
             ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -86,8 +95,8 @@ public class FDFSUtil {
             Font font = new Font("Default", Font.PLAIN, 50);
             g.setColor(Color.WHITE);
             g.setFont(font);
-            int x = width - getWatermarkLength(content, g) - 3;
-            int y = height - 3;
+            int x = width - getWatermarkLength(content, g) - 8;
+            int y = height - 8;
             g.drawString(content, x, y);
             g.dispose();
             // 输出图片

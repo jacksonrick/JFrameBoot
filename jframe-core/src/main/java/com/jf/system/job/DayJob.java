@@ -3,10 +3,13 @@ package com.jf.system.job;
 import com.jf.service.job.JobService;
 import com.jf.service.system.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Conditional;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+
+import javax.annotation.Resource;
 
 /**
  * 日任务
@@ -14,14 +17,14 @@ import org.springframework.stereotype.Component;
  * @author rick
  * @date
  */
-@EnableScheduling
-@Component
-@Lazy(value = false)
+@Configuration
+//@Lazy(value = false)
+@Conditional(SchedulerCondition.class)
 public class DayJob {
 
-    @Autowired
+    @Resource
     private JobService jobService;
-    @Autowired
+    @Resource
     private AdminService adminService;
 
     @Scheduled(cron = "0 0 23 * * ?")
@@ -32,6 +35,16 @@ public class DayJob {
             adminService.addMsg(new Long(10000), "任务计划已执行完毕【日任务】，用时 : " + (System.currentTimeMillis() - start) + "毫秒");
         } catch (Exception e) {
             adminService.addMsg(new Long(10000), "任务计划【日任务】执行异常");
+            e.printStackTrace();
+        }
+    }
+
+    @Scheduled(cron = "0 */1 * * * ?")
+    protected void test2() {
+        long start = System.currentTimeMillis();
+        try {
+            jobService.test();
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

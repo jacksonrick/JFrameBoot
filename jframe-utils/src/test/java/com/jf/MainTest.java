@@ -13,16 +13,16 @@ public class MainTest {
         test02();
     }
 
-    public static void test01(){
-        User user=new User();
+    public static void test01() {
+        User user = new User();
         user.setAge(1);
         user.setFlag(true);
         Map<String, Object> map = BeanUtil.beanToMap(user);
         System.out.println(map);
     }
 
-    public static void test02(){
-        System.out.println(MainTest.class.getResource("/").toString());
+    public static void test02() {
+        System.out.println(MainTest.class.getClassLoader().getResource("logo.png").toString());
     }
 
 }

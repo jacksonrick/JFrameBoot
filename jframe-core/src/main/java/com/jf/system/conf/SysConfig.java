@@ -4,6 +4,8 @@ import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.Arrays;
+
 /**
  * Created with IntelliJ IDEA.
  * Description: 系统自定义全局配置变量
@@ -50,6 +52,8 @@ public class SysConfig {
     private SysConfig.Wechat wechat;
     // 极验验证
     private SysConfig.Geetest geetest;
+    // 上传
+    private SysConfig.Upload upload;
 
     public String getAppkey() {
         return appkey;
@@ -111,6 +115,7 @@ public class SysConfig {
                 ", aliyun=" + aliyun +
                 ", wechat=" + wechat +
                 ", geetest=" + geetest +
+                ", upload=" + upload +
                 '}';
     }
 
@@ -138,6 +143,14 @@ public class SysConfig {
 
     public void setGeetest(SysConfig.Geetest geetest) {
         this.geetest = geetest;
+    }
+
+    public SysConfig.Upload getUpload() {
+        return upload;
+    }
+
+    public void setUpload(SysConfig.Upload upload) {
+        this.upload = upload;
     }
 
     public static class Aliyun {
@@ -345,6 +358,70 @@ public class SysConfig {
             return "Geetest{" +
                     "id='" + id + '\'' +
                     ", key='" + key + '\'' +
+                    '}';
+        }
+    }
+
+    public static class Upload {
+        // 1-local 2-fastdfs
+        private String type;
+        // 图片大小
+        private Integer imgSize;
+        // 图片类型
+        private String[] imgType;
+        // 文件大小【非图片】
+        private Integer fileSize;
+        // 文件类型
+        private String[] fileType;
+
+        public String getType() {
+            return type;
+        }
+
+        public void setType(String type) {
+            this.type = type;
+        }
+
+        public Integer getImgSize() {
+            return imgSize;
+        }
+
+        public void setImgSize(Integer imgSize) {
+            this.imgSize = imgSize;
+        }
+
+        public String[] getImgType() {
+            return imgType;
+        }
+
+        public void setImgType(String[] imgType) {
+            this.imgType = imgType;
+        }
+
+        public Integer getFileSize() {
+            return fileSize;
+        }
+
+        public void setFileSize(Integer fileSize) {
+            this.fileSize = fileSize;
+        }
+
+        public String[] getFileType() {
+            return fileType;
+        }
+
+        public void setFileType(String[] fileType) {
+            this.fileType = fileType;
+        }
+
+        @Override
+        public String toString() {
+            return "Upload{" +
+                    "type='" + type + '\'' +
+                    ", imgSize=" + imgSize +
+                    ", imgType=" + Arrays.toString(imgType) +
+                    ", fileSize=" + fileSize +
+                    ", fileType=" + Arrays.toString(fileType) +
                     '}';
         }
     }

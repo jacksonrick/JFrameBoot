@@ -12,9 +12,10 @@ import com.netflix.eureka.EurekaServerContextHolder;
 import com.netflix.eureka.cluster.PeerEurekaNode;
 import com.netflix.eureka.util.StatusInfo;
 import com.netflix.eureka.util.StatusUtil;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.ConfigurableEnvironment;
+import org.springframework.core.env.MutablePropertySources;
+import org.springframework.core.env.PropertySource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,8 +24,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -39,6 +39,9 @@ public class EurekaServerController {
 
     @Resource
     private ApplicationInfoManager manager;
+
+    @Autowired
+    private ConfigurableEnvironment environment;
 
     /**
      * 登录
@@ -147,10 +150,34 @@ public class EurekaServerController {
         }
     }
 
+    /**
+     * 配置刷新
+     *
+     * @param monitor
+     * @return
+     */
+    @RequestMapping(value = "/info/refresh", method = RequestMethod.POST)
+    @ResponseBody
+    public Object refresh(String monitor) {
+        if (StringUtil.isBlank(monitor)) return null;
+        String json = "";
+        try {
+            json = HttpUtil.postWithAuthorization(monitor, null, "spring:spring1234");
+            return json;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 
+
+    /**
+     * 配置
+     *
+     * @return
+     */
     @RequestMapping("/configs")
     public String configs() {
-
         return "configs";
     }
 
