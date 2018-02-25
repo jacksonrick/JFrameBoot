@@ -1,6 +1,0 @@
-system: # 系统自定义配置
-  appkey: ${app.pro.appkey} # 来自application-app-pro
-  static_host: ${app.pro.host} # 静态服务器地址
-  static_path: ${app.pro.path} # 静态文件目录
-  log_path: "" # 日志存放目录
-  server_id: ${spring.application.name}
