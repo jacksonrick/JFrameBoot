@@ -1,5 +1,5 @@
 # JFrame
-##### JFrame - SpringBoot & Cloud Project `v4.4.1`
+##### JFrame - SpringBoot & Cloud Project `v4.4.3`
 `jackson-rick`   <br>
 `https://github.com/jacksonrick/JFrameBoot`
 
@@ -30,6 +30,9 @@
 * ...
 
 ### 更新日志：
+* v4.4.3 `20180225`
+    * 1.优化服务端启动脚本
+    * 2.删除支付宝SDK本地Jar，替换为Maven
 * v4.4.2 `20180208`
     * 1.服务监控中心和配置中心(cloud-server)
     * 2.优化日志、上传、定时任务配置
