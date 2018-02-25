@@ -13,17 +13,25 @@ fi
 
 APP_NAME="jframe-web-$JARNAME"
 PID=$(ps -aux | grep ${APP_NAME} | grep -v grep | awk '{print $2}' )
-
 if [ -n "$PID" ];then
-    kill -9 $PID
+    #kill -9 $PID
+    echo -e "$APP_NAME has started already at PID:$PID."
+    exit 1;
 fi
 
-exec $JAVAPATH/java -Dapp.name=$APP_NAME -server -jar $APPATH/$JARNAME/$APP_NAME.jar --spring.profiles.active=pro 5 > /data/wwwlogs/$APP_NAME.run.log &
-echo -e "$APP_NAME is started."
+$JAVAPATH/java -Dapp.name=$APP_NAME -server -jar $APPATH/$JARNAME/$APP_NAME.jar --spring.profiles.active=pro >/dev/null 2>&1
 
-# exec java -server -jar -Dapp.name=jframe-web-manage jframe-web-manage.jar --spring.profiles.active=pro 5 > run.log &
+PID=$(ps -aux | grep ${APP_NAME} | grep -v grep | awk '{print $2}' )
+if [ -n "$PID" ];then
+    echo -e "$APP_NAME is started at PID:$PID."
+else
+    echo -e "$APP_NAME start failed."
+fi
 
-# -server user server mode.
-# -Dapp.name specify app name and use to logback's filename.
-# --spring.profiles.active specify dev or product profile.
+# nohup java -server -jar -Dapp.name=jframe-web-manage jframe-web-manage.jar --spring.profiles.active=pro >run.log &
+
+# -server                   use server mode.
+# -Dapp.name                specify app name and use to logback's filename.
+# --server.port             specify server port.
+# --spring.profiles.active  specify dev or product profile.
 # we can specify java properties: java -Xms4g -Xmx4g -Xmn768m
