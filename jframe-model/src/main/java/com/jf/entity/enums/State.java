@@ -51,4 +51,13 @@ public enum State {
 		return desc;
 	}
 
+    public static String get(Integer type) {
+        for (State s : State.values()) {
+            if (s.value().equals(type)) {
+                return s.desc();
+            }
+        }
+        return "--";
+    }
+
 }

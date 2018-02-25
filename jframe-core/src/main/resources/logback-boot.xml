@@ -8,8 +8,8 @@
     <!-- 日志显示格式 -->
     <property name="PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS} %highlight(%-5level) %cyan(%logger{40}.%M:%L) - %msg%n"></property>
     <!-- 日志文件名称 -->
-    <property name="FILE_NAME" value="${app.name}"></property>
-    <property name="ERROR_NAME" value="${app.name}.error"></property>
+    <property name="FILE_NAME" value="${app.name:-jframe}"></property>
+    <property name="ERROR_NAME" value="${app.name:-jframe}.error"></property>
 
     <!-- 开发环境/不写入日志文件 -->
     <springProfile name="dev">
