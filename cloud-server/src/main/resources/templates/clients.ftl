@@ -27,7 +27,7 @@
                         <span class="badge">${instance.status}</span>
                         <a href="${instance.healthCheckUrl}" target="_blank" title="${instance.appName}">${instance.hostName}
                             - ${instance.IPAddr}:${instance.port?string.computer}</a>
-                        <a class="label label-danger" href="/infos?instance=${instance.healthCheckUrl}" target="_self">>_Operate</a>
+                        <a class="label label-danger" href="/infos?instance=${instance.IPAddr}:${instance.port?string.computer}" target="_self">>_Operate</a>
                     </div>
                 </#list>
             </td>

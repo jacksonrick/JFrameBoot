@@ -3,39 +3,11 @@ server:
 spring:
   profiles:
     active: dev
+    include: monitor # 使用监控配置
   session: # session存储类型 NONE | REDIS | HASH_MAP
     store-type: HASH_MAP
   application:
     name: JFRAME-WEB-FRONT
-management:
-  security:
-    enabled: true # 与spring security进行安全验证
-  port: 9091 # 监控端口
-  context-path: /monitor # 需要配置安全的路径
-  health: # 指定不监控的服务
-    mail:
-      enabled: false
-security: # spring security安全设置
-  basic:
-    enabled: true
-    path: /monitor
-  user: # 用户名和密码
-    name: spring
-    password: spring1234
-endpoints: # Actuator监控，可自定义端点的开关-enabled
-  enabled: true
-  jmx:
-    enabled: false
-  beans:
-    enabled: false
-  mappings:
-    enabled: false
-  autoconfig:
-    enabled: false
-  configprops:
-    enabled: false
-  loggers:
-    enabled: false
 info: # 定义各种额外的详情给服务端显示
   app:
     name: ${spring.application.name}
@@ -43,13 +15,16 @@ info: # 定义各种额外的详情给服务端显示
     description: "pc"
 eureka: # eureka客户端注册
   client:
-    enabled: false
+    enabled: true
     serviceUrl:
       defaultZone: http://eureka:eureka1234@127.0.0.1:10000/eureka/ # eureka服务端地址
-app: # app单独配置
+feign: # 断路器
+  hystrix:
+    enabled: true
+app: # 独立应用配置
   pro: # 生产环境专用
     appkey: ""
     path: /data/wwwroot/front/static/
     host: http://192.168.1.199:${server.port}/
-  scheduler: # 定时任务
+  scheduler: # 定时任务开关
     enabled: false

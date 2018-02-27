@@ -140,14 +140,11 @@ public class EurekaServerController {
     @ResponseBody
     public Object info(String monitor) {
         if (StringUtil.isBlank(monitor)) return null;
-        String json = "";
-        try {
-            json = HttpUtil.getWithAuthorization(monitor, "spring:spring1234");
-            return json;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
+        String json = HttpUtil.getWithAuthorization(monitor, "spring:spring1234");
+        if (StringUtil.isBlank(json)) {
+            return "error";
         }
+        return json;
     }
 
     /**

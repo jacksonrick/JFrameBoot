@@ -1,0 +1,31 @@
+# 此配置文件为被监控端配置
+management:
+  add-application-context-header: false # 隐藏http头
+  security:
+    enabled: false # 与spring security进行安全验证
+  #port: 0 # 监控端口
+  context-path: /monitor # 需要配置安全的路径
+  health: # 指定不监控的服务
+    mail:
+      enabled: false
+security: # spring security安全设置
+  basic:
+    enabled: true
+    path: /monitor
+  user: # 用户名和密码
+    name: spring
+    password: spring1234
+endpoints: # Actuator监控，可自定义端点的开关-enabled
+  enabled: true
+  jmx:
+    enabled: true
+  beans:
+    enabled: false
+  mappings:
+    enabled: false
+  autoconfig:
+    enabled: false
+  configprops:
+    enabled: false
+  loggers:
+    enabled: false

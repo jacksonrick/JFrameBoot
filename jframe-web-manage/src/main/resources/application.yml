@@ -3,24 +3,11 @@ server:
 spring:
   profiles:
     active: dev
+    include: monitor
   session:
     store-type: none
   application:
     name: JFRAME-WEB-MANAGE
-management:
-  security:
-    enabled: false
-  port: 9090
-  context-path: /monitor
-security:
-  basic:
-    enabled: false
-    path: /monitor
-  user:
-    name: cloud
-    password: cloud1234
-endpoints:
-  enabled: false
 info:
   app:
     name: ${spring.application.name}

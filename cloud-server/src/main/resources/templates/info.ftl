@@ -57,9 +57,12 @@
 <script src="/static/js/jquery-2.1.1.min.js"></script>
 <script src="/static/js/bootstrap.min.js"></script>
 <script>
-    var monitor = getQueryString("instance");
-    monitor = monitor.substring(0, monitor.lastIndexOf('/'));
+    var monitor = "http://" + getQueryString("instance") + "/monitor";
     $(function () {
+        if (!/(http|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&:/~\+#]*[\w\-\@?^=%&/~\+#])?/.test(monitor)) {
+            alert("Error url!");
+            return;
+        }
         getInfo();
         getHealth();
 

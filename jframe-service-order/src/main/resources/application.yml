@@ -1,0 +1,19 @@
+server:
+  port: 10002
+spring:
+  profiles:
+    active: dev
+  session:
+    store-type: none
+  application:
+    name: JFRAME-SERVICE-ORDER
+info:
+  app:
+    name: ${spring.application.name}
+    version: "1.0"
+    description: "service-order"
+eureka:
+  client:
+    enabled: true
+    serviceUrl:
+      defaultZone: http://eureka:eureka1234@127.0.0.1:10000/eureka/

@@ -4,11 +4,13 @@ import com.github.pagehelper.PageInfo;
 import com.jf.entity.ResMsg;
 import com.jf.model.User;
 import com.jf.model.custom.IdText;
+import com.jf.restapi.OrderRestService;
 import com.jf.service.user.UserService;
 import com.jf.string.StringUtil;
 import com.jf.system.conf.SysConfig;
 import com.jf.system.job.QuartzManager;
 import com.jf.system.job.TestQuartz;
+import com.jf.system.service.EmailService;
 import com.jf.system.service.PDFService;
 import com.jf.system.service.SMService;
 import com.jf.system.socket.SocketMessage;
@@ -20,6 +22,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -30,6 +33,19 @@ import java.security.Principal;
 import java.util.*;
 
 /**
+ * 测试DEMO
+ * <p>
+ * 服务消费
+ * SpringCloud分布式配置
+ * 多数据源
+ * 分布式事务
+ * websocket
+ * redis session
+ * cache
+ * activemq
+ * email + sms
+ * js demo
+ * <p>
  * Created by xujunfei on 2016/12/21.
  */
 @Controller
@@ -41,17 +57,38 @@ public class TestController extends BaseController {
     @Resource
     private SMService smService;
     @Resource
+    private EmailService emailService;
+    @Resource
     private PDFService pdfService;
     @Resource
     private SysConfig sysConfig;
 
+    @Resource
+    private OrderRestService orderRestService;
+
     @Value("${s1:0}")
     public String a;
 
+    /**
+     * ↑↓ SpringCloud Config
+     *
+     * @return
+     */
     @RequestMapping("/test")
     @ResponseBody
     public ResMsg test() {
         return new ResMsg(0, SUCCESS, a);
+    }
+
+    /**
+     * 测试服务消费
+     *
+     * @return
+     */
+    @RequestMapping("/order")
+    @ResponseBody
+    public String order() {
+        return orderRestService.order(10000l, 100l);
     }
 
     @RequestMapping("/testRollback")
@@ -111,6 +148,40 @@ public class TestController extends BaseController {
     }
 
 
+    @GetMapping("/testSetSession")
+    public ResMsg testSetSession(HttpSession session) {
+        session.setAttribute("name", "xujunfei");
+        return new ResMsg(0, SUCCESS);
+    }
+
+    @GetMapping("/testGetSession")
+    public ResMsg testGetSession(HttpSession session) {
+        return new ResMsg(0, SUCCESS, session.getAttribute("name"));
+    }
+
+    @GetMapping("/testLock")
+    public ResMsg testLock() {
+        //userService.testLock(10000l);
+        return new ResMsg(0, SUCCESS);
+    }
+
+    @GetMapping("/testCache1")
+    public ResMsg testCache1() {
+        User user = userService.findUserById(10000l);
+        return new ResMsg(0, SUCCESS, user);
+    }
+
+    @GetMapping("/testCache2")
+    public ResMsg testCache2() {
+        User user = new User(10000l);
+        user.setMoney(1000d);
+        userService.updateUser(user);
+        return new ResMsg(0, SUCCESS);
+    }
+
+
+    ////////////////////////
+
     @RequestMapping("/demo/{path}")
     public String demo(@PathVariable("path") String path) {
         return "demo/" + path;
@@ -142,11 +213,6 @@ public class TestController extends BaseController {
         return userService.findUserLikePhone(phone);
     }
 
-    @RequestMapping("/testChart")
-    public String testChart() {
-        return "demo/chart";
-    }
-
     @RequestMapping("/chartData")
     @ResponseBody
     public List<Object> chartData() {
@@ -168,11 +234,20 @@ public class TestController extends BaseController {
         return list;
     }
 
-    @RequestMapping("/sms")
-    @ResponseBody
-    public ResMsg sms() {
-        smService.send("123456", "17730215423");
-        return new ResMsg(0, "SUCCESS");
+    @GetMapping("/testSms")
+    public ResMsg testSms() {
+        smService.send("1", "17730215423");
+        smService.send("2", "17730215423");
+        smService.send("3", "17730215423");
+        smService.send("4", "17730215423");
+        smService.send("5", "17730215423");
+        return new ResMsg(0, SUCCESS);
+    }
+
+    @GetMapping("/testEmail")
+    public ResMsg testEmail() {
+        emailService.sendTemplateMail(null, "80222@qq.com", "123", "email_register");
+        return new ResMsg(0, SUCCESS);
     }
 
     @RequestMapping("/htmltopdf")
