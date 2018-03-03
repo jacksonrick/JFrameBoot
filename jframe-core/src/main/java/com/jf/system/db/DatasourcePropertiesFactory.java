@@ -9,7 +9,7 @@ import org.springframework.beans.factory.FactoryBean;
  * 
  * @author rick
  */
-@SuppressWarnings("rawtypes")
+@Deprecated
 public class DatasourcePropertiesFactory implements FactoryBean {
 
 	private Properties properties;

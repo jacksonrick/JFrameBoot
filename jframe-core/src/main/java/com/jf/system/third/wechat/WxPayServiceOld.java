@@ -1,14 +1,6 @@
 package com.jf.system.third.wechat;
 
-import com.alibaba.fastjson.JSON;
-import com.jf.system.LogManager;
 import com.jf.system.conf.SysConfig;
-import org.springframework.stereotype.Component;
-
-import javax.annotation.Resource;
-import java.util.Map;
-import java.util.SortedMap;
-import java.util.TreeMap;
 
 /**
  * 微信

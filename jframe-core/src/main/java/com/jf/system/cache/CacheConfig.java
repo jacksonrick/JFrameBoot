@@ -1,9 +1,9 @@
-package com.jf.system.conf;
+package com.jf.system.cache;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CachingConfigurerSupport;
 import org.springframework.cache.annotation.EnableCaching;
@@ -17,13 +17,14 @@ import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 
 /**
  * Created with IntelliJ IDEA.
- * Description: 启用Spring Redis缓存
+ * Description: Spring Redis
  * User: xujunfei
  * Date: 2018-01-03
  * Time: 10:38
  */
-//@Configuration
-//@EnableCaching
+@Configuration
+@ConditionalOnProperty(name = "app.cache.springcache.enabled", havingValue = "true")
+@EnableCaching
 public class CacheConfig extends CachingConfigurerSupport {
 
     /**
@@ -40,6 +41,12 @@ public class CacheConfig extends CachingConfigurerSupport {
         return cacheManager;
     }
 
+    /**
+     * 缓存模板
+     *
+     * @param factory
+     * @return
+     */
     @Bean
     public RedisTemplate<String, String> redisTemplate(RedisConnectionFactory factory) {
         StringRedisTemplate template = new StringRedisTemplate(factory);

@@ -3,11 +3,20 @@ server:
 spring:
   profiles:
     active: dev
-    include: monitor # 使用监控配置
-  session: # session存储类型 NONE | REDIS | HASH_MAP
-    store-type: HASH_MAP
+    #include: monitor # 使用监控配置
   application:
     name: JFRAME-WEB-FRONT
+  session: # session存储类型 NONE | REDIS
+    store-type: NONE
+  datasource: # druid数据源监控
+    druid:
+      web-stat-filter:
+        enabled: false
+      stat-view-servlet:
+        enabled: false
+      filter:
+        stat:
+          enabled: false
 info: # 定义各种额外的详情给服务端显示
   app:
     name: ${spring.application.name}
@@ -15,16 +24,38 @@ info: # 定义各种额外的详情给服务端显示
     description: "pc"
 eureka: # eureka客户端注册
   client:
-    enabled: true
+    enabled: false
     serviceUrl:
       defaultZone: http://eureka:eureka1234@127.0.0.1:10000/eureka/ # eureka服务端地址
-feign: # 断路器
+feign: # 断路器|监控 需配合注解使用*
   hystrix:
-    enabled: true
-app: # 独立应用配置
+    enabled: false
+# ↓↓↓↓↓↓独立应用配置
+app:
   pro: # 生产环境专用
     appkey: ""
-    path: /data/wwwroot/front/static/
-    host: http://192.168.1.199:${server.port}/
-  scheduler: # 定时任务开关
+    static_path: /data/wwwroot/front/static/
+    static_host: http://192.168.1.199:${server.port}/
+  monitor: # 监控端点 为true需引用monitor配置*
+    enabled: true
+  db: # 数据库 master|cluster -可同时启用,但必须启用一个*
+    master:
+      enabled: true
+    cluster:
+      enabled: false
+  scheduler: # 任务调度  -不可同时启用*
+    quartz:
+      enabled: false
+    springsch:
+      enabled: false
+  cache: # 缓存 SpringCache|分布式事务
+    springcache:
+      enabled: false
+    redisson:
+      enabled: false
+  activemq: # ActiveMQ
+    enabled: false
+  socket: # Socket
+    enabled: false
+  fdfs: # fastDFS
     enabled: false

@@ -2,6 +2,7 @@ package com.jf.system.conf;
 
 import com.luhuiguo.fastdfs.conn.*;
 import com.luhuiguo.fastdfs.service.*;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,6 +18,7 @@ import java.util.List;
  * Time: 14:20
  */
 @Configuration
+@ConditionalOnProperty(name = "app.fdfs.enabled", havingValue = "true")
 @ConfigurationProperties(prefix = "fdfs")
 public class FdfsConfig {
 

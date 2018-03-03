@@ -1,4 +1,4 @@
-package com.jf.system.conf;
+package com.jf.system.db;
 
 import com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceBuilder;
 import com.github.pagehelper.PageInterceptor;
@@ -11,6 +11,7 @@ import org.mybatis.spring.boot.autoconfigure.SpringBootVFS;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -31,9 +32,10 @@ import java.util.Properties;
  *
  * @version 2.0
  */
-//@Configuration
-//@EnableTransactionManagement
-//@MapperScan(basePackages = DbClusterConfig.mapperPackage, sqlSessionFactoryRef = "clusterSqlSessionFactory")
+@Configuration
+@ConditionalOnProperty(name = "app.db.cluster.enabled", havingValue = "true")
+@MapperScan(basePackages = DbClusterConfig.mapperPackage, sqlSessionFactoryRef = "clusterSqlSessionFactory")
+@EnableTransactionManagement
 public class DbClusterConfig {
 
     private Logger logger = LoggerFactory.getLogger(DbClusterConfig.class);

@@ -1,41 +1,41 @@
-package com.jf.system.conf;
+package com.jf.system.schedule;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler;
-import org.springframework.boot.autoconfigure.AutoConfigureAfter;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.AsyncConfigurer;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
-import javax.annotation.Resource;
 import java.lang.reflect.Method;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ThreadPoolExecutor;
 
 /**
  * Created with IntelliJ IDEA.
- * Description: Spring线程池
+ * Description: 异步任务
  * User: xujunfei
  * Date: 2017-11-28
  * Time: 11:03
  */
-@EnableAsync
 @Configuration
-@AutoConfigureAfter(TaskThreadPoolConfig.class)
-public class AsyncTaskExecutePool implements AsyncConfigurer {
+@ConfigurationProperties(prefix = "spring.task")
+@EnableAsync
+public class TaskExecutePool implements AsyncConfigurer {
 
-    private Logger logger = LoggerFactory.getLogger(AsyncTaskExecutePool.class);
+    private Logger logger = LoggerFactory.getLogger(TaskExecutePool.class);
 
-    @Resource
-    private TaskThreadPoolConfig config;
+    private int corePoolSize;
+    private int maxPoolSize;
 
     @Override
     public Executor getAsyncExecutor() {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-        executor.setCorePoolSize(config.getCorePoolSize());
-        executor.setMaxPoolSize(config.getMaxPoolSize());
+        executor.setCorePoolSize(corePoolSize);
+        executor.setMaxPoolSize(maxPoolSize);
+        // 任务前缀
         executor.setThreadNamePrefix("taskExecutor-");
 
         // rejection-policy：当pool已经达到max size的时候，如何处理新任务
@@ -53,5 +53,21 @@ public class AsyncTaskExecutePool implements AsyncConfigurer {
                 logger.error("AsyncTaskExecutePool Exception Method:" + arg1.getName());
             }
         };
+    }
+
+    public int getCorePoolSize() {
+        return corePoolSize;
+    }
+
+    public void setCorePoolSize(int corePoolSize) {
+        this.corePoolSize = corePoolSize;
+    }
+
+    public int getMaxPoolSize() {
+        return maxPoolSize;
+    }
+
+    public void setMaxPoolSize(int maxPoolSize) {
+        this.maxPoolSize = maxPoolSize;
     }
 }

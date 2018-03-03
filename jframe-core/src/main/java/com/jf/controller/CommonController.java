@@ -10,6 +10,7 @@ import com.jf.system.third.geet.GeetestLib;
 import com.luhuiguo.fastdfs.domain.StorePath;
 import com.luhuiguo.fastdfs.service.FastFileStorageClient;
 import org.apache.commons.io.FileUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -39,7 +40,8 @@ public class CommonController {
 
     @Resource
     private SysConfig config;
-    @Resource
+
+    @Autowired(required = false)
     private FastFileStorageClient storageClient;
 
     /**
@@ -143,7 +145,7 @@ public class CommonController {
             return new UploadRet(1, "", "文件格式不支持");
         }
 
-        if ("local".equals(config.getUpload().getType())) {
+        if (!config.getUpload().getFdfs()) {
             String basePathFormat = DateUtil.getYearAndMonth(false);
             String uploadPath = config.getStaticPath() + "upload/" + basePathFormat;
             String filename = StringUtil.randomFilename(file.getOriginalFilename());
@@ -196,7 +198,7 @@ public class CommonController {
             return new UploadRet(1, "", "文件格式不支持");
         }
 
-        if ("local".equals(config.getUpload().getType())) {
+        if (!config.getUpload().getFdfs()) {
             String basePathFormat = DateUtil.getYearAndMonth(false);
             String dirPath = "upload/" + basePathFormat;
             if (t == 2) { // 文件

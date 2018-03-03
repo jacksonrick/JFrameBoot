@@ -363,8 +363,8 @@ public class SysConfig {
     }
 
     public static class Upload {
-        // 1-local 2-fastdfs
-        private String type;
+        // fdfs enable
+        private Boolean fdfs;
         // 图片大小
         private Integer imgSize;
         // 图片类型
@@ -374,12 +374,12 @@ public class SysConfig {
         // 文件类型
         private String[] fileType;
 
-        public String getType() {
-            return type;
+        public Boolean getFdfs() {
+            return fdfs;
         }
 
-        public void setType(String type) {
-            this.type = type;
+        public void setFdfs(Boolean fdfs) {
+            this.fdfs = fdfs;
         }
 
         public Integer getImgSize() {
@@ -417,7 +417,7 @@ public class SysConfig {
         @Override
         public String toString() {
             return "Upload{" +
-                    "type='" + type + '\'' +
+                    "fdfs='" + fdfs + '\'' +
                     ", imgSize=" + imgSize +
                     ", imgType=" + Arrays.toString(imgType) +
                     ", fileSize=" + fileSize +

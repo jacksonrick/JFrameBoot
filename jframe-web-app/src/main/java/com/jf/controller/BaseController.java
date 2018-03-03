@@ -5,10 +5,11 @@ import com.jf.model.User;
 import com.jf.service.system.SystemService;
 import com.jf.string.StringUtil;
 import com.jf.system.Constant;
-import com.jf.system.LogManager;
-import com.jf.system.cache.RedisClientTemplate;
+import com.jf.system.conf.LogManager;
 import com.jf.system.conf.SysConfig;
-import com.jf.system.exception.UserException;
+import com.jf.system.conf.UserException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.util.WebUtils;
@@ -16,8 +17,6 @@ import org.springframework.web.util.WebUtils;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * controller基类
@@ -30,9 +29,10 @@ public class BaseController extends Constant {
     @Resource
     private SystemService systemService;
     @Resource
-    private RedisClientTemplate template;
-    @Resource
     private SysConfig config;
+
+    @Autowired(required = false)
+    private RedisTemplate redisTemplate;
 
     protected ResMsg expLogin = new ResMsg(99, "登录已过期，请重新登录");
 
@@ -58,11 +58,11 @@ public class BaseController extends Constant {
      */
     public String putUser(Long userId) {
         String newToken = StringUtil.getTokenId();
-        String oldToken = (String) template.getSet(PREFIX + userId, newToken);
+        String oldToken = (String) redisTemplate.opsForValue().getAndSet(PREFIX + userId, newToken);
         if (oldToken != null) {
-            template.del(oldToken); // 删除旧token
+            redisTemplate.delete(oldToken); // 删除旧token
         }
-        template.set(newToken, userId + ""); // 绑定用户唯一token
+        redisTemplate.opsForValue().set(newToken, userId + ""); // 绑定用户唯一token
         return newToken;
     }
 

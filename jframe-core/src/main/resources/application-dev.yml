@@ -25,6 +25,7 @@ spring:
     static-locations: classpath:/static/,file:${system.static_path} # 静态文件目录
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss # json时间转换
+    time-zone: GMT+8
     default-property-inclusion: non_null # json空不输出
   freemarker:
     template-loader-path: classpath:/templates # 模板文件目录
@@ -72,14 +73,12 @@ spring:
           log-slow-sql: true
           slow-sql-millis: 2000
       stat-view-servlet: # Druid监控配置
-        enabled: true
         url-pattern: /druid/*
         reset-enable: true
         login-username: admin
         login-password: 123456
         allow: 127.0.0.1
       web-stat-filter:
-        enabled: true
         url-pattern: /*
         exclusions: "*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*"
       aop-patterns: com.jf.service.* # Spring监控AOP切入点
@@ -99,21 +98,15 @@ spring:
             enable: true
           auth: true
           timeout: 25000
-  redis: # redis设置
+  redis: # spring redis
     host: 192.168.1.199
     port: 6379
     password:
     timeout: 3000
-    pool: # ↓↓用于spring redis
+    pool:
       max-idle: 50
       min-idle: 10
       max-active: 10
-    maxIdle: 50 # ↓↓连接池设置，用于jedis
-    minIdle: 10
-    maxTotal: 500
-    maxWaitMillis: 50
-    testOnBorrow: true
-    testOnReturn: false
   activemq: # activemq
     broker-url: tcp://192.168.1.199:61616 # 服务器地址
     in-memory: true
@@ -153,7 +146,7 @@ system: # 系统自定义配置
     id: a53178
     key: 51dbc8
   upload:
-    type: local
+    fdfs: ${app.fdfs.enabled:false}
     img_size: 3
     img_type: jpg,jpeg,png
     file_size: 10

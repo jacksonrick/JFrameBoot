@@ -1,9 +1,8 @@
 package com.jf.controller.view;
 
 import com.jf.date.DateUtil;
-import com.jf.entity.enums.UserType;
 import com.jf.model.User;
-import com.jf.system.LogManager;
+import com.jf.system.conf.LogManager;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;

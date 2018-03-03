@@ -3,7 +3,7 @@ package com.jf.system.interceptor;
 import com.jf.entity.ResMsg;
 import com.jf.json.JSONUtils;
 import com.jf.model.User;
-import com.jf.system.LogManager;
+import com.jf.system.conf.LogManager;
 import com.jf.system.annotation.Login;
 import com.jf.system.conf.SysConfig;
 import org.springframework.web.method.HandlerMethod;

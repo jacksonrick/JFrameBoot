@@ -1,4 +1,4 @@
-package com.jf.system.job;
+package com.jf.system.schedule;
 
 import org.quartz.*;
 import org.quartz.impl.JobDetailImpl;

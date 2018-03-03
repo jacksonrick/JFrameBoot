@@ -3,6 +3,7 @@ server:
 spring:
   profiles:
     active: dev
+    include: monitor
   session:
     store-type: none
   application:
@@ -17,3 +18,9 @@ eureka:
     enabled: true
     serviceUrl:
       defaultZone: http://eureka:eureka1234@127.0.0.1:10000/eureka/
+app:
+  db:
+    master:
+      enabled: true
+  monitor:
+    enabled: true

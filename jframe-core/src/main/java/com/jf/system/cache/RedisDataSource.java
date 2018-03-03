@@ -5,6 +5,7 @@ import redis.clients.jedis.ShardedJedis;
 /**
  * Created by xujunfei on 2017/8/1.
  */
+@Deprecated
 public interface RedisDataSource {
 
     /**

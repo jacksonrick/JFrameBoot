@@ -31,6 +31,7 @@
         <li data-id="4"><a href="javascript:;">metrics</a></li>
         <li data-id="5"><a href="javascript:;">trace</a></li>
         <li data-id="6"><a href="javascript:;">features</a></li>
+        <li data-id=""><a href="javascript:;">developing...</a></li>
     </ul>
 
     <div class="panel panel-default" style="border-top-left-radius: unset;border-top-right-radius: unset;">
@@ -71,6 +72,7 @@
             var t = $(this);
             t.addClass("active").siblings("li").removeClass("active");
             var id = t.data("id");
+            if (id == "") return;
             switch (id) {
                 case 1:
                     getHealth();
@@ -153,7 +155,11 @@
                     } else if (k == "hystrix") {
 
                     } else if (k == "configServer") {
-                        bodys += '<p class="text-muted"><b class="text-info">propertySources: </b>' + v.propertySources.join(",") + '</p>';
+                        if (v.status == "UNKNOWN") {
+                            bodys += '<p class="text-muted"><b class="text-info">error: </b>' + v.error + '</p>';
+                        } else {
+                            bodys += '<p class="text-muted"><b class="text-info">propertySources: </b>' + v.propertySources.join(",") + '</p>';
+                        }
                     }
                     bodys += '</div>';
                     html += bodys + '</div>';
@@ -207,12 +213,69 @@
         Ajax.ajax({
             operate: "/metrics",
             callback: function (data) {
-                var html = '<ul class="list-group">';
+                var metrics = {
+                    uptime: new Array(),
+                    mem: new Array(),
+                    heap: new Array(),
+                    gc: new Array(),
+                    httpsessions: new Array(),
+                    datasource: new Array(),
+                    threads: new Array(),
+                    classes: new Array(),
+                    normalized: new Array(),
+                    counter: new Array(),
+                    gauge: new Array(),
+                    other: new Array()
+                };
                 $.each(data, function (k, v) {
-                    var bodys = '<li class="list-group-item">' + k + ': ' + v + '</li>'
-                    html += bodys;
+                    if (k.indexOf("mem") > -1) {
+                        metrics.mem.push({key: k, value: v});
+                    }
+                    else if (k.indexOf("heap") > -1) {
+                        metrics.heap.push({key: k, value: v});
+                    }
+                    else if (k.indexOf("gc") > -1) {
+                        metrics.gc.push({key: k, value: v});
+                    }
+                    else if (k.indexOf("httpsessions") > -1) {
+                        metrics.httpsessions.push({key: k, value: v});
+                    }
+                    else if (k.indexOf("threads") > -1) {
+                        metrics.threads.push({key: k, value: v});
+                    }
+                    else if (k.indexOf("uptime") > -1) {
+                        metrics.uptime.push({key: k, value: v});
+                    }
+                    else if (k.indexOf("classes") > -1) {
+                        metrics.classes.push({key: k, value: v});
+                    }
+                    else if (k.indexOf("datasource") > -1) {
+                        metrics.datasource.push({key: k, value: v});
+                    }
+                    else if (k.indexOf("normalized") > -1) {
+                        metrics.normalized.push({key: k, value: v});
+                    }
+                    else if (k.indexOf("counter") > -1) {
+                        metrics.counter.push({key: k, value: v});
+                    }
+                    else if (k.indexOf("gauge") > -1) {
+                        metrics.gauge.push({key: k, value: v});
+                    }
+                    else {
+                        metrics.other.push({key: k, value: v});
+                    }
                 });
-                $("#content").append(html + '</ul>');
+
+                var t = "";
+                $.each(metrics, function (k, v) {
+                    var html = '<ul class="list-group">';
+                    $.each(v, function (k2, v2) {
+                        var bodys = '<li class="list-group-item ' + (k2 % 2 == 0 ? 'list-group-item-success' : '') + '"><b>' + v2.key + '</b><span class="pull-right">' + v2.value + '</span></li>'
+                        html += bodys;
+                    });
+                    t += html + '</ul>';
+                });
+                $("#content").append(t);
             }
         });
     }

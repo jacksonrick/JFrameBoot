@@ -2,8 +2,7 @@ package com.jf.system.interceptor;
 
 import com.jf.entity.ResMsg;
 import com.jf.json.JSONUtils;
-import com.jf.system.LogManager;
-import org.springframework.beans.factory.annotation.Value;
+import com.jf.system.conf.LogManager;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import javax.servlet.http.HttpServletRequest;
@@ -11,7 +10,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Map;
-import java.util.Properties;
 import java.util.Set;
 
 /**

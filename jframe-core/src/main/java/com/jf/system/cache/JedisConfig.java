@@ -1,4 +1,4 @@
-package com.jf.system.conf;
+package com.jf.system.cache;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -17,8 +17,9 @@ import java.util.List;
  * Date: 2017-12-12
  * Time: 14:28
  */
-@Configuration
-@ConfigurationProperties(prefix = "spring.redis")
+//@Configuration
+//@ConfigurationProperties(prefix = "spring.redis")
+@Deprecated
 public class JedisConfig {
 
     // 主机

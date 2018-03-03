@@ -1,7 +1,6 @@
 package com.jf.system.cache;
 
-import com.jf.system.LogManager;
-import org.springframework.stereotype.Service;
+import com.jf.system.conf.LogManager;
 import redis.clients.jedis.ShardedJedis;
 
 import javax.annotation.Resource;
@@ -12,7 +11,8 @@ import java.util.Set;
 /**
  * Redis Template
  */
-@Service("redisClientTemplate")
+//@Service("redisClientTemplate")
+@Deprecated
 public class RedisClientTemplateImpl implements RedisClientTemplate {
 
     @Resource

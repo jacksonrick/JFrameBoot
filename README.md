@@ -1,5 +1,5 @@
 # JFrame
-##### JFrame - SpringBoot & Cloud Project `v4.4.4`
+##### JFrame - SpringBoot & Cloud Project `v4.5`
 `jackson-rick`   <br>
 `https://github.com/jacksonrick/JFrameBoot`
 
@@ -27,9 +27,14 @@
 * Util包：字符、时间、数字转换/JSON/Http/PDF+Excel/分页/文件/对象/验证器...
 * JS插件：封装：Ajax/DataTables/CityPicker/Layer/DatePicker...
 * Demo：jframe-web-front/./demo/
-* ...
+* 可开关服务：db、scheduler[springsch|quartz]、cache[springcache|redisson]、activemq、socket、fdfs、endpoint、eureka、feign...
 
 ### 更新日志：
+* v4.5 `20180303`
+    * 1.服务组件条件化加载，可单独启用或关闭
+    * 2.优化SpringBoot配置、监控服务端UI
+    * 3.新增Quartz，可动态管理任务[原SpringSchedule]
+    * 4.移除Jedis，使用Spring Template
 * v4.4.4 `20180227`
     * 1.添加了服务消费示例[service-order]
     * 2.分离监控配置文件
@@ -153,3 +158,4 @@
 * 操作手册说明：`jframe/doc/操作手册、插件、Util包说明、开发规范.docx`
 * 开发配置：`jframe-core/src/main/resources/application-dev.yml`
 * Eureka服务端：`cloud-server`
+* 测试代码均在 front模块下进行

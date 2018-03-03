@@ -1,6 +1,6 @@
 package com.jf.service.job;
 
-import com.jf.system.LogManager;
+import com.jf.system.conf.LogManager;
 import org.springframework.stereotype.Service;
 
 /**
@@ -11,8 +11,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class JobService {
 
-    public void test() {
-        LogManager.info("任务计划测试", this.getClass());
+    public void test(String name) {
+        LogManager.info(name + "任务计划测试", this.getClass());
     }
 
 }

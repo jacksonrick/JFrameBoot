@@ -4,7 +4,7 @@ import com.jf.entity.ResMsg;
 import com.jf.model.Admin;
 import com.jf.service.system.SystemService;
 import com.jf.system.Constant;
-import com.jf.system.LogManager;
+import com.jf.system.conf.LogManager;
 import com.jf.system.conf.SysConfig;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;

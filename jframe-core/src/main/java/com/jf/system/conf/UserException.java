@@ -1,4 +1,4 @@
-package com.jf.system.exception;
+package com.jf.system.conf;
 
 /**
  * 异常类
@@ -7,7 +7,7 @@ package com.jf.system.exception;
 public class UserException extends RuntimeException {
 
     public UserException(String message) {
-        super(message);
+        LogManager.error(message);
     }
 
     public UserException(String message, Throwable cause) {
@@ -15,6 +15,7 @@ public class UserException extends RuntimeException {
     }
 
     public UserException() {
+        LogManager.error("Error");
     }
 
 }

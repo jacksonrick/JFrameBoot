@@ -2,17 +2,17 @@ package com.jf.system.interceptor;
 
 import com.jf.string.StringUtil;
 import com.jf.system.annotation.Token;
-import com.jf.system.cache.RedisClientTemplate;
 import com.jf.system.conf.SysConfig;
-import com.jf.system.exception.UserException;
+import com.jf.system.conf.UserException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.MethodParameter;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 import org.springframework.web.util.WebUtils;
 
-import javax.annotation.Resource;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import java.lang.annotation.Annotation;
@@ -22,8 +22,8 @@ import java.lang.annotation.Annotation;
  */
 public class ApiArgumentsResolver implements HandlerMethodArgumentResolver {
 
-    @Resource
-    private RedisClientTemplate template;
+    @Autowired(required = false)
+    private RedisTemplate redisTemplate;
 
     private String expMsg = "登录已过期，请重新登录";
 
@@ -62,7 +62,7 @@ public class ApiArgumentsResolver implements HandlerMethodArgumentResolver {
                         if (StringUtil.isBlank(token)) {
                             return null;
                         } else {
-                            String uid = template.get(token);
+                            String uid = (String) redisTemplate.opsForValue().get(token);
                             if (uid != null) {
                                 return Long.parseLong(uid);
                             } else {
@@ -87,7 +87,7 @@ public class ApiArgumentsResolver implements HandlerMethodArgumentResolver {
                             if (StringUtil.isBlank(token)) {
                                 return null;
                             }
-                            String uid = template.get(token);
+                            String uid = (String) redisTemplate.opsForValue().get(token);
                             if (uid != null) {
                                 return Long.parseLong(uid);
                             } else {
@@ -118,7 +118,7 @@ public class ApiArgumentsResolver implements HandlerMethodArgumentResolver {
         if (token == null || token.length() < 1) {
             throw new UserException(expMsg);
         }
-        String uid = template.get(token);
+        String uid = (String) redisTemplate.opsForValue().get(token);
         if (uid != null) {
             return Long.parseLong(uid);
         } else {

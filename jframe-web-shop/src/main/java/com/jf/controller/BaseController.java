@@ -3,7 +3,7 @@ package com.jf.controller;
 import com.jf.entity.ResMsg;
 import com.jf.model.User;
 import com.jf.system.Constant;
-import com.jf.system.LogManager;
+import com.jf.system.conf.LogManager;
 import com.jf.system.conf.SysConfig;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;

@@ -1,18 +1,20 @@
-package com.jf.system.mq;
+package com.jf.system.jms.activemq;
 
 import com.jf.model.User;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.jms.annotation.JmsListener;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Component;
 
 /**
  * Created with IntelliJ IDEA.
- * Description:消息消费者
+ * Description: 消息消费者
  * User: xujunfei
  * Date: 2018-01-09
  * Time: 11:26
  */
-//@Component
+@Component
+@ConditionalOnProperty(name = "app.activemq.enabled", havingValue = "true")
 public class Consumer {
 
     /**

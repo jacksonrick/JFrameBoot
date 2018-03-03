@@ -1,8 +1,5 @@
 package com.jf.system.cache;
 
-import com.jf.system.conf.JedisConfig;
-import org.springframework.boot.autoconfigure.AutoConfigureAfter;
-import org.springframework.context.annotation.Configuration;
 import redis.clients.jedis.ShardedJedis;
 import redis.clients.jedis.ShardedJedisPool;
 
@@ -11,8 +8,9 @@ import javax.annotation.Resource;
 /**
  * Created by xujunfei on 2017/8/1.
  */
-@Configuration("redisDataSource")
-@AutoConfigureAfter(JedisConfig.class)
+//@Configuration("redisDataSource")
+//@AutoConfigureAfter(JedisConfig.class)
+@Deprecated
 public class RedisDataSourceImpl implements RedisDataSource {
 
     @Resource

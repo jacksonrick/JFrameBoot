@@ -1,26 +1,23 @@
-package com.jf.system.job;
+package com.jf.system.schedule;
 
 import com.jf.service.job.JobService;
 import com.jf.service.system.AdminService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Conditional;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 
 /**
- * 日任务
- *
- * @author rick
- * @date
+ * Created with IntelliJ IDEA.
+ * Description: Spring定时器
+ * User: xujunfei
+ * Date: 2017-11-28
+ * Time: 11:03
  */
 @Configuration
-//@Lazy(value = false)
-@Conditional(SchedulerCondition.class)
-public class DayJob {
+@ConditionalOnProperty(name = "app.scheduler.springsch.enabled", havingValue = "true")
+public class ScheduleConfig {
 
     @Resource
     private JobService jobService;
@@ -31,7 +28,7 @@ public class DayJob {
     protected void test() {
         long start = System.currentTimeMillis();
         try {
-            jobService.test();
+            jobService.test("Spring Schedule ");
             adminService.addMsg(new Long(10000), "任务计划已执行完毕【日任务】，用时 : " + (System.currentTimeMillis() - start) + "毫秒");
         } catch (Exception e) {
             adminService.addMsg(new Long(10000), "任务计划【日任务】执行异常");
@@ -43,7 +40,7 @@ public class DayJob {
     protected void test2() {
         long start = System.currentTimeMillis();
         try {
-            jobService.test();
+            jobService.test("Spring Schedule ");
         } catch (Exception e) {
             e.printStackTrace();
         }

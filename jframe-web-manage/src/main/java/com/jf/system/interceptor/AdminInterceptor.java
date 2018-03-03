@@ -4,7 +4,7 @@ import com.jf.entity.ResMsg;
 import com.jf.json.JSONUtils;
 import com.jf.model.Admin;
 import com.jf.service.system.ModuleService;
-import com.jf.system.LogManager;
+import com.jf.system.conf.LogManager;
 import com.jf.system.annotation.AuthPassport;
 import com.jf.system.conf.SysConfig;
 import org.springframework.beans.factory.annotation.Autowired;

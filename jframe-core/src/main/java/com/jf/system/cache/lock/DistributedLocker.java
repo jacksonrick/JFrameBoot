@@ -1,6 +1,6 @@
 package com.jf.system.cache.lock;
 
-import com.jf.system.exception.UserException;
+import com.jf.system.conf.UserException;
 
 /**
  * Created with IntelliJ IDEA.

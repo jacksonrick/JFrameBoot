@@ -1,6 +1,5 @@
-package com.jf.system;
+package com.jf.system.conf;
 
-import com.jf.system.conf.SysConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -73,7 +72,11 @@ public class LogManager {
      * @param params
      */
     public static void visit(String ip, String extra, String action, String params) {
-        log.info("【Server ID：" + manager.config.getServerId() + "】" + "【Target IP：" + ip + "】【" + extra + "：" + action + "】【Params：" + params + "】");
+        StringBuilder sb = new StringBuilder("【Server ID：")
+                .append(manager.config.getServerId()).append("】").append("【Target IP：")
+                .append(ip).append("】【").append(extra).append("：").append(action)
+                .append("】【Params：").append(params).append("】");
+        log.info(sb.toString());
     }
 
 }

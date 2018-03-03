@@ -3,7 +3,7 @@ package com.jf.system.cache.lock;
 import org.redisson.Redisson;
 import org.redisson.api.RedissonClient;
 import org.redisson.config.Config;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
@@ -11,13 +11,14 @@ import javax.annotation.PostConstruct;
 
 /**
  * Created with IntelliJ IDEA.
- * Description:获取RedissonClient连接类
+ * Description: 获取RedissonClient连接类
  * User: xujunfei
  * Date: 2018-01-03
  * Time: 09:54
  */
-//@Configuration
-//@ConfigurationProperties(prefix = "spring.redis")
+@Configuration
+@ConditionalOnProperty(name = "app.cache.redisson.enabled", havingValue = "true")
+@ConfigurationProperties(prefix = "spring.redis")
 public class RedissonConnector {
 
     private String host;
@@ -26,7 +27,7 @@ public class RedissonConnector {
 
     private RedissonClient redisson;
 
-    //@PostConstruct
+    @PostConstruct
     public void init() {
         Config config = new Config();
         config.useSingleServer().setAddress(host + ":" + port).setTimeout(timeout);
