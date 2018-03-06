@@ -10,7 +10,7 @@ management:
       enabled: false
 security: # spring security安全设置
   basic:
-    enabled: true
+    enabled: ${app.monitor.enabled}
     path: /monitor/**
   user: # 用户名和密码
     name: spring

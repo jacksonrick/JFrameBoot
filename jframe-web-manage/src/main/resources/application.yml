@@ -4,24 +4,57 @@ spring:
   profiles:
     active: dev
     include: monitor
-  session:
-    store-type: none
   application:
     name: JFRAME-WEB-MANAGE
+  session:
+    store-type: NONE
+  datasource:
+    druid:
+      web-stat-filter:
+        enabled: false
+      stat-view-servlet:
+        enabled: false
+      filter:
+        stat:
+          enabled: false
 info:
   app:
     name: ${spring.application.name}
-    version: 1.0
+    version: "1.0"
     description: "manage"
 eureka:
   client:
     enabled: false
     serviceUrl:
       defaultZone: http://eureka:eureka1234@127.0.0.1:10000/eureka/
+feign:
+  hystrix:
+    enabled: false
 app:
   pro:
     appkey: ""
-    path: /data/wwwroot/manage/static/
-    host: http://192.168.1.199:${server.port}/
+    static_path: /data/wwwroot/manage/static/
+    static_host: http://192.168.1.199:${server.port}/
+  monitor:
+    enabled: false
+  db:
+    master:
+      enabled: true
+    cluster:
+      enabled: false
   scheduler:
-    enabled: true
+    quartz:
+      enabled: false
+    springsch:
+      enabled: false
+  cache:
+    springcache:
+      enabled: false
+    redisson:
+      enabled: false
+  activemq:
+    enabled: false
+  socket:
+    enabled: false
+  fdfs:
+    enabled: false
