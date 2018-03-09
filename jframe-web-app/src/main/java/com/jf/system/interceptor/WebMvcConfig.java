@@ -23,7 +23,7 @@ import java.util.List;
 public class WebMvcConfig extends WebMvcConfigurerAdapter {
 
     @Bean
-    public AppInterceptor myInterceptor() {
+    public AppInterceptor interceptor() {
         return new AppInterceptor();
     }
 
@@ -34,7 +34,7 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(myInterceptor()).addPathPatterns("/app/**");
+        registry.addInterceptor(interceptor());
         super.addInterceptors(registry);
     }
 

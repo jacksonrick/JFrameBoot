@@ -1,5 +1,5 @@
 # JFrame
-##### JFrame - SpringBoot & Cloud Project `v4.5`
+##### JFrame - SpringBoot & Cloud Project `v4.5.1`
 `jackson-rick`   <br>
 `https://github.com/jacksonrick/JFrameBoot`
 
@@ -30,6 +30,10 @@
 * 可开关服务：db、scheduler[springsch|quartz]、cache[springcache|redisson]、activemq、socket、fdfs、endpoint、eureka、feign...
 
 ### 更新日志：
+* v4.5.1 `20180309`
+    * 1.优化日志输出、拦截器、支付、run脚本
+    * 2.新增二维码生成工具
+    * 3.新增JenkinsAPI管理，可自动部署
 * v4.5 `20180303`
     * 1.服务组件条件化加载，可单独启用或关闭
     * 2.优化SpringBoot配置、监控服务端UI
@@ -159,3 +163,4 @@
 * 开发配置：`jframe-core/src/main/resources/application-dev.yml`
 * Eureka服务端：`cloud-server`
 * 测试代码均在 front模块下进行
+* 如在开发或测试过程中遇到任何问题，可联系QQ：`809573150`

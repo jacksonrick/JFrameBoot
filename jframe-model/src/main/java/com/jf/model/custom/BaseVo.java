@@ -20,7 +20,7 @@ public class BaseVo {
      * 每页数量
      */
     @JsonIgnore
-    private Integer pageSize = 20;
+    private Integer pageSize;
 
     /**
      * 页码
@@ -68,9 +68,12 @@ public class BaseVo {
      */
     public void setPage(Boolean page) {
         this.page = page;
-        if (page) {
+        if (page) { // page = true，分页
             if (this.pageNo == null) {
                 this.pageNo = 1;
+            }
+            if (this.pageSize == null) {
+                this.pageSize = 20;
             }
         }
     }

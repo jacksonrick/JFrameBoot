@@ -10,10 +10,13 @@ import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
 import com.jf.convert.Convert;
 import com.jf.entity.ResMsg;
+import com.jf.file.Qrcode;
+import com.jf.json.JSONUtils;
 import com.jf.string.StringUtil;
 import com.jf.system.conf.SysConfig;
 import com.jf.system.third.alipay.AliPayService;
 import com.jf.system.third.wechat.WxPayService;
+import net.sf.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -25,7 +28,10 @@ import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.Map;
 
 /**
  * APP支付接口回调
@@ -44,6 +50,20 @@ public class AppPayController extends BaseController {
     private WxPayService wxPayService;
 
     //*******************************支付宝*******************************//
+
+    @RequestMapping("/alipay_qr")
+    public String alipay_qr() {
+        return "pay/alipay_qr";
+    }
+
+    @RequestMapping("/alipay_qrcode")
+    public void alipay_qrcode(HttpServletResponse response) throws Exception {
+        String result = aliPayService.qrcode("商品", 0.01, StringUtil.getOrderCode());
+        JSONObject object = JSONUtils.toJSONObject(result);
+        String qr = object.getJSONObject("alipay_trade_precreate_response").getString("qr_code");
+        // 生成二维码
+        Qrcode.write(qr, response);
+    }
 
     /**
      * 支付宝网页支付
@@ -153,17 +173,8 @@ public class AppPayController extends BaseController {
     @RequestMapping("/wx_qrcode")
     public void wx_qrcode(HttpServletResponse response) throws Exception {
         String code_url = wxPayService.order_qrcode(StringUtil.getOrderCode(), "商品", 0.01, "114.114.114.114");
-        int width = 200;
-        int height = 200;
-        String format = "png";
-        Hashtable hints = new Hashtable();
-        hints.put(EncodeHintType.CHARACTER_SET, "utf-8");
-        BitMatrix bitMatrix = new MultiFormatWriter().encode(code_url, BarcodeFormat.QR_CODE, width, height, hints);
-        OutputStream out = null;
-        out = response.getOutputStream();
-        MatrixToImageWriter.writeToStream(bitMatrix, format, out);
-        out.flush();
-        out.close();
+        // 生成二维码
+        Qrcode.write(code_url, response);
     }
 
     /**

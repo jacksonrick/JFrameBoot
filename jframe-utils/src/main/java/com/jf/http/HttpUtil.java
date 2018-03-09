@@ -1,5 +1,6 @@
 package com.jf.http;
 
+import com.jf.system.Log;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -78,17 +79,16 @@ public class HttpUtil {
      * @param url
      * @return
      */
-    public static String get(String url) {
+    public static String get(String url) throws Exception {
         String result = "";
         HttpClient client = HttpClients.createDefault();
         HttpGet get = new HttpGet(url);
-        try {
-            HttpResponse response = client.execute(get);
-            HttpEntity entity = response.getEntity();
+        HttpResponse response = client.execute(get);
+        HttpEntity entity = response.getEntity();
+        if (entity != null) {
             result = EntityUtils.toString(entity, "UTF-8");
-        } catch (IOException e) {
-            e.printStackTrace();
         }
+        Log.info(new StringBuilder().append("HttpClient: method 【GET】,url【").append(url).append("】").toString());
         return result;
     }
 
@@ -99,18 +99,17 @@ public class HttpUtil {
      * @param url
      * @return
      */
-    public static String getWithAuthorization(String url, String namepwd) {
+    public static String getWithAuthorization(String url, String namepwd) throws Exception {
         String result = "";
         HttpClient client = HttpClients.createDefault();
         HttpGet get = new HttpGet(url);
         get.setHeader("Authorization", "Basic " + new BASE64Encoder().encode(namepwd.getBytes()));
-        try {
-            HttpResponse response = client.execute(get);
-            HttpEntity entity = response.getEntity();
+        HttpResponse response = client.execute(get);
+        HttpEntity entity = response.getEntity();
+        if (entity != null) {
             result = EntityUtils.toString(entity, "UTF-8");
-        } catch (IOException e) {
-            e.printStackTrace();
         }
+        Log.info(new StringBuilder().append("HttpClient: method 【GET】,url【").append(url).append("】").append(",auth【true】").toString());
         return result;
     }
 
@@ -137,6 +136,7 @@ public class HttpUtil {
         if (entity != null) {
             result = EntityUtils.toString(entity, "GB2312");
         }
+        Log.info(new StringBuilder().append("HttpClient: method 【POST】,url【").append(url).append("】").toString());
         return result;
     }
 
@@ -165,6 +165,8 @@ public class HttpUtil {
         if (entity != null) {
             result = EntityUtils.toString(entity, "GB2312");
         }
+        System.out.println("####" + post.getEntity());
+        Log.info(new StringBuilder().append("HttpClient: method 【POST】,url【").append(url).append("】").append(",auth【true】").toString());
         return result;
     }
 

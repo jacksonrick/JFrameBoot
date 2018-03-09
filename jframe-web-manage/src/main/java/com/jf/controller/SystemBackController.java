@@ -1,12 +1,14 @@
 package com.jf.controller;
 
 import com.github.pagehelper.PageInfo;
+import com.jf.controller.view.ViewExcel;
 import com.jf.convert.Convert;
 import com.jf.date.DateUtil;
 import com.jf.entity.ResMsg;
 import com.jf.entity.Tree;
 import com.jf.file.Directory;
 import com.jf.file.FileUtil;
+import com.jf.http.HttpUtil;
 import com.jf.model.*;
 import com.jf.obj.BeanUtil;
 import com.jf.service.system.AddrService;
@@ -16,11 +18,11 @@ import com.jf.service.system.SystemService;
 import com.jf.string.StringUtil;
 import com.jf.system.annotation.AuthPassport;
 import com.jf.system.conf.SysConfig;
-import com.jf.controller.view.ViewExcel;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -31,7 +33,10 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.io.*;
 import java.nio.charset.Charset;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 系统管理模块
@@ -70,6 +75,48 @@ public class SystemBackController extends BaseController {
     @AuthPassport(right = false)
     public String formBuilder() {
         return "system/tools";
+    }
+
+    @RequestMapping("/jenkins")
+    @AuthPassport(right = false)
+    public String jenkins(HttpServletRequest request) {
+        if (getAdmin(request).getAdminFlag() != 0) {
+            return "error/refuse";
+        }
+        return "system/jenkins";
+    }
+
+    /**
+     * jenkins自动化部署
+     *
+     * @param ip
+     * @param type
+     * @param auth
+     * @param request
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value = "/jenkins_opt", method = RequestMethod.POST)
+    @ResponseBody
+    @AuthPassport(right = false)
+    public ResMsg jenkins(String ip, String type, String auth, HttpServletRequest request) throws Exception {
+        if (StringUtil.isBlank(ip) || StringUtil.isBlank(type) || StringUtil.isBlank(auth)) {
+            return new ResMsg(1, "invalid param");
+        }
+        if (getAdmin(request).getAdminFlag() != 0) {
+            return new ResMsg(1, "no auth only superadmin");
+        }
+
+        String json = "";
+        if ("post".equals(type)) {
+            json = HttpUtil.postWithAuthorization(ip, null, auth);
+        } else if ("get".equals(type)) {
+            json = HttpUtil.getWithAuthorization(ip, auth);
+        }
+        if (json != null && json.startsWith("<html>")) {
+            return new ResMsg(-1, "FAIL", json);
+        }
+        return new ResMsg(0, "SUCCESS", json);
     }
 
     /**

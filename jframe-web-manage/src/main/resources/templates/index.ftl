@@ -61,6 +61,14 @@
                 <#--<a class="navbar-chat minimalize-styl-2 btn btn-warning" title="即时通讯" data-toggle="tooltip" data-placement="bottom"><i class="fa fa-comments"></i></a>-->
                 </div>
                 <ul class="nav navbar-top-links navbar-right">
+                    <!-- 自动化部署 -->
+                    <#if admin.adminFlag == 0>
+                        <li class="dropdown">
+                            <a class="tp" onclick="newTab('自动化部署', '/admin/system/jenkins')" title="自动化部署">
+                                <i class="fa fa-sitemap fa-lg"></i>
+                            </a>
+                        </li>
+                    </#if>
                     <!-- 监控 -->
                     <li class="dropdown">
                         <a class="tp" onclick="newTab('云服务器监控', 'http://127.0.0.1:10000')" title="云服务器监控">

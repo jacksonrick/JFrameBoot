@@ -2,6 +2,7 @@ package com.jf.cloud;
 
 import com.jf.http.HttpUtil;
 import com.jf.string.StringUtil;
+import com.jf.system.Result;
 import com.netflix.appinfo.ApplicationInfoManager;
 import com.netflix.appinfo.EurekaInstanceConfig;
 import com.netflix.appinfo.InstanceInfo;
@@ -14,8 +15,6 @@ import com.netflix.eureka.util.StatusInfo;
 import com.netflix.eureka.util.StatusUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.ConfigurableEnvironment;
-import org.springframework.core.env.MutablePropertySources;
-import org.springframework.core.env.PropertySource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,7 +23,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -134,37 +132,34 @@ public class EurekaServerController {
      * 通过http(Auth) 获取实例的健康状态
      *
      * @param monitor http://ip:port/monitor/health
+     * @param auth    username:password
      * @return json
      */
     @RequestMapping(value = "/info", method = RequestMethod.POST)
     @ResponseBody
-    public Object info(String monitor) {
-        if (StringUtil.isBlank(monitor)) return null;
-        String json = HttpUtil.getWithAuthorization(monitor, "spring:spring1234");
-        if (StringUtil.isBlank(json)) {
-            return "error";
+    public Result info(String monitor, String auth) throws Exception {
+        if (StringUtil.isBlank(monitor) || StringUtil.isBlank(auth)) {
+            return new Result(1, "invalid param");
         }
-        return json;
+        String json = HttpUtil.getWithAuthorization(monitor, auth);
+        return new Result(0, "SUCCESS", json);
     }
 
     /**
      * 配置刷新
      *
-     * @param monitor
+     * @param monitor http://ip:port/monitor/health
+     * @param auth    username:password
      * @return
      */
     @RequestMapping(value = "/info/refresh", method = RequestMethod.POST)
     @ResponseBody
-    public Object refresh(String monitor) {
-        if (StringUtil.isBlank(monitor)) return null;
-        String json = "";
-        try {
-            json = HttpUtil.postWithAuthorization(monitor, null, "spring:spring1234");
-            return json;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
+    public Result refresh(String monitor, String auth) throws Exception {
+        if (StringUtil.isBlank(monitor) || StringUtil.isBlank(auth)) {
+            return new Result(1, "invalid param");
         }
+        String json = HttpUtil.postWithAuthorization(monitor, null, auth);
+        return new Result(0, "SUCCESS", json);
     }
 
 

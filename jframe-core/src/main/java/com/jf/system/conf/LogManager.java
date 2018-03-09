@@ -6,6 +6,9 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * LogManager
@@ -18,11 +21,11 @@ public class LogManager {
     private SysConfig config;
 
     private final static Logger log = LoggerFactory.getLogger(LogManager.class);
-    private static LogManager manager;
+    private static String serverId = "";
 
     @PostConstruct
     public void init() {
-        manager = this;
+        serverId = config.getServerId();
     }
 
     /**
@@ -64,18 +67,30 @@ public class LogManager {
     }
 
     /**
-     * 访问信息
+     * 访问记录
      *
-     * @param ip
-     * @param extra
-     * @param action
-     * @param params
+     * @param request
      */
-    public static void visit(String ip, String extra, String action, String params) {
+    public static void visit(HttpServletRequest request) {
+        // Action
+        String path = request.getRequestURI();
+        // IP
+        String remote = request.getHeader("x-forwarded-for") == null ? request.getRemoteAddr() : request.getHeader("x-forwarded-for");
+        Map<String, String[]> parameters = request.getParameterMap();
+        String param = "";
+        if (!parameters.isEmpty()) {
+            Set<String> keys = parameters.keySet();
+            for (String key : keys) {
+                String[] params = parameters.get(key);
+                param += "|" + key + "=" + params[0];
+            }
+            param += "|";
+        } else {
+            param = "None";
+        }
         StringBuilder sb = new StringBuilder("【Server ID：")
-                .append(manager.config.getServerId()).append("】").append("【Target IP：")
-                .append(ip).append("】【").append(extra).append("：").append(action)
-                .append("】【Params：").append(params).append("】");
+                .append(serverId).append("】").append("【Target IP：").append(remote).append("】【")
+                .append(path).append("】【Params：").append(param).append("】");
         log.info(sb.toString());
     }
 

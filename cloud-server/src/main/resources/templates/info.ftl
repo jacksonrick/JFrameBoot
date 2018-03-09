@@ -8,6 +8,10 @@
         #content .panel-body, .popover-content {
             overflow: scroll;
         }
+
+        .form-control {
+            display: inline;
+        }
     </style>
 </head>
 <body>
@@ -15,14 +19,27 @@
 <div class="container">
     <#include "header.ftl">
 
-    <h1 style="margin-top: 30px;" id="info-id">id</h1>
+    <h1 style="margin-top: 30px;">
+        <span id="info-id">id</span>
+        <div class="btn-group pull-right">
+            <button type="button" class="btn btn-info btn-sm">Settings</button>
+            <button type="button" class="btn btn-info btn-sm dropdown-toggle" data-toggle="dropdown">
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+                <li><a href="javascript:;">user: <input class="form-control" type="text" id="username" value="spring" style="width: 150px"/></a></li>
+                <li><a href="javascript:;">pwd: <input class="form-control" type="password" id="password" value="spring1234" style="width: 150px"/></a></li>
+                <li role="separator" class="divider"></li>
+                <li><a href="javascript:;" id="refresh">Refresh Cloud Configs</a></li>
+            </ul>
+        </div>
+    </h1>
     <h4>
         <small>version:</small>
         <small id="info-ver">ver</small>
         <small>desc:</small>
         <small id="info-desc">desc</small>
     </h4>
-    <a class="label label-danger" id="refresh">Refresh cloud config</a>
 
     <ul class="nav nav-tabs" style="margin-top: 10px;margin-bottom: -1px;">
         <li data-id="1" class="active"><a href="javascript:;">health</a></li>
@@ -327,42 +344,61 @@
     Ajax = {
         info: function () {
             $.ajax({
-                url: "/info?monitor=" + monitor + "/info",
+                url: "/info?auth=" + $("#username").val() + ":" + $("#password").val() + "&monitor=" + monitor + "/info",
                 type: "post",
                 contentType: 'application/json',
                 dataType: "json",
                 success: function (data) {
-                    $("#info-id").html(data.app.name);
-                    $("#info-ver").html(data.app.version);
-                    $("#info-desc").html(data.app.description);
+                    if (data.code == 0) {
+                        var json = $.parseJSON(data.data);
+                        $("#info-id").html(json.app.name);
+                        $("#info-ver").html(json.app.version);
+                        $("#info-desc").html(json.app.description);
+                    } else {
+                        alert(data.msg);
+                    }
                 }
             });
         },
         ajax: function (config) {
             $.ajax({
-                url: "/info?monitor=" + monitor + config.operate,
+                url: "/info?auth=" + $("#username").val() + ":" + $("#password").val() + "&monitor=" + monitor + config.operate,
                 type: "post",
                 contentType: 'application/json',
                 dataType: "json",
                 success: function (data) {
                     $("#content").html('');
-                    config.callback(data);
+                    if (data.code == 0) {
+                        var json = $.parseJSON(data.data);
+                        if (json.error) {
+                            alert(json.message);
+                        } else {
+                            config.callback(json);
+                        }
+                    } else {
+                        alert(data.msg);
+                    }
                 }
             });
         },
         refresh: function () {
             $.ajax({
-                url: "/info/refresh?monitor=" + monitor + "/refresh",
+                url: "/info/refresh?auth=" + $("#username").val() + ":" + $("#password").val() + "&monitor=" + monitor + "/refresh",
                 type: "post",
                 contentType: 'application/json',
                 dataType: "json",
                 success: function (data) {
-                    if (data.length > 0) {
-                        $("#modal-content").html(data.join('<br>'));
+                    if (data.code == 0) {
+                        var json = $.parseJSON(data.data);
+                        if (json.length > 0) {
+                            $("#modal-content").html(json.join('<br>'));
+                        } else {
+                            $("#modal-content").html("no keys changed");
+                        }
+                        $("#modal").modal('show');
                     } else {
-                        $("#modal-content").html("no keys changed");
+                        alert(data.msg);
                     }
-                    $("#modal").modal('show');
                 }
             });
         }

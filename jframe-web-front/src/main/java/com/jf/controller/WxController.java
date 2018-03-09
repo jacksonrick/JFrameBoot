@@ -47,7 +47,7 @@ public class WxController extends BaseController {
 
     @RequestMapping("/createMenu")
     @ResponseBody
-    public ResMsg createMenu() {
+    public ResMsg createMenu() throws Exception {
         String token = getAccessToken();
         if (StringUtil.isBlank(token)) {
             return new ResMsg(-1, "获取Token失败");
@@ -93,7 +93,7 @@ public class WxController extends BaseController {
     }
 
 
-    private String getAccessToken() {
+    private String getAccessToken() throws Exception {
         String url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wxfe9a8aecbd3506b5&secret=512dce03bb3305162632e1bdc9fc0e8f";
         String result = HttpUtil.get(url);
         Map<String, String> map = JSONUtils.toHashMap(result);

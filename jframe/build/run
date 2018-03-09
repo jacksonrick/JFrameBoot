@@ -3,10 +3,11 @@
 # author: jackson rick
 
 JARNAME=$1
+PORT=$2
 JAVAPATH=/usr/local/jdk/bin
 APPATH=/data/wwwroot
 
-if  [ ! -n "$JARNAME" ] ;then
+if [ ! -n "$JARNAME" ];then
     echo "Usage: $0 appname"
     exit 1;
 fi
@@ -14,12 +15,16 @@ fi
 APP_NAME="jframe-web-$JARNAME"
 PID=$(ps -aux | grep ${APP_NAME} | grep -v grep | awk '{print $2}' )
 if [ -n "$PID" ];then
-    #kill -9 $PID
-    echo -e "$APP_NAME has started already at PID:$PID."
-    exit 1;
+    echo -e "$APP_NAME has started already at PID:$PID.Will kill!"
+    kill -9 $PID
 fi
 
-$JAVAPATH/java -Dapp.name=$APP_NAME -server -jar $APPATH/$JARNAME/$APP_NAME.jar --spring.profiles.active=pro >/dev/null 2>&1
+if [ -n "$PORT" ];then
+    nohup $JAVAPATH/java -Dapp.name=$APP_NAME -server -jar $APPATH/$JARNAME/$APP_NAME.jar --server.port=$PORT --spring.profiles.active=pro >/dev/null 2>&1 &
+else
+    nohup $JAVAPATH/java -Dapp.name=$APP_NAME -server -jar $APPATH/$JARNAME/$APP_NAME.jar --spring.profiles.active=pro >/dev/null 2>&1 &
+fi
+
 
 PID=$(ps -aux | grep ${APP_NAME} | grep -v grep | awk '{print $2}' )
 if [ -n "$PID" ];then
