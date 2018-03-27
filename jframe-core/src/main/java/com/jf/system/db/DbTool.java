@@ -3,12 +3,13 @@ package com.jf.system.db;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
-import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
 
+/**
+ *
+ */
 @Configuration
 @ConfigurationProperties(prefix = "spring.datasource")
 public class DbTool {

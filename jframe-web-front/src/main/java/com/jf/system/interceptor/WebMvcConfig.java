@@ -1,5 +1,6 @@
 package com.jf.system.interceptor;
 
+import com.jf.system.Constant;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -22,7 +23,7 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(interceptor());
+        registry.addInterceptor(interceptor()).excludePathPatterns(Constant.excludePathPatterns);
         super.addInterceptors(registry);
     }
 

@@ -1,6 +1,6 @@
 package com.jf.system.cache.lock;
 
-import com.jf.system.conf.UserException;
+import com.jf.system.exception.SysException;
 
 /**
  * Created with IntelliJ IDEA.
@@ -19,8 +19,8 @@ public interface DistributedLocker {
      * @param <T>
      * @return 处理完具体的业务逻辑要返回的数据
      */
-    <T> T lock(String resourceName, AquiredLockWorker<T> worker) throws UserException, Exception;
+    <T> T lock(String resourceName, AquiredLockWorker<T> worker) throws SysException, Exception;
 
-    <T> T lock(String resourceName, AquiredLockWorker<T> worker, int lockTime) throws UserException, Exception;
+    <T> T lock(String resourceName, AquiredLockWorker<T> worker, int lockTime) throws SysException, Exception;
 
 }

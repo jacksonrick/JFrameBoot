@@ -1,6 +1,5 @@
 package com.jf.system.third.alipay;
 
-import com.alipay.api.AlipayApiException;
 import com.alipay.api.AlipayClient;
 import com.alipay.api.AlipayResponse;
 import com.alipay.api.DefaultAlipayClient;
@@ -14,7 +13,6 @@ import com.jf.system.conf.SysConfig;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 
 /**
@@ -27,14 +25,16 @@ public class AliPayService {
     @Resource
     private SysConfig config;
 
-    AlipayClient alipayClient = null;
-
-    @PostConstruct
-    public void init() {
-        alipayClient = new DefaultAlipayClient(config.getAliyun().getGateway(), config.getAliyun().getAppId(),
+    @Bean
+    public AlipayClient alipayClient() {
+        AlipayClient client = new DefaultAlipayClient(config.getAliyun().getGateway(), config.getAliyun().getAppId(),
                 config.getAliyun().getRsaPrivateKey(), config.getAliyun().getFormat(), config.getAliyun().getCharset(),
                 config.getAliyun().getPublicKey(), config.getAliyun().getSignType());
+        return client;
     }
+
+    @Resource
+    private AlipayClient alipayClient;
 
     /**
      * 扫码支付
@@ -44,7 +44,7 @@ public class AliPayService {
      * @param orderNum
      * @return
      */
-    public String qrcode(String subject, Double price, String orderNum) {
+    public String qrcode(String subject, Double price, String orderNum) throws Exception {
         AlipayTradePrecreateRequest request = new AlipayTradePrecreateRequest();
         AlipayTradePrecreateModel model = new AlipayTradePrecreateModel();
         model.setSubject(subject);
@@ -52,13 +52,8 @@ public class AliPayService {
         model.setTotalAmount(price + "");
         request.setBizModel(model);
         request.setNotifyUrl(config.getAliyun().getNotifyUrl());
-        try {
-            AlipayResponse response = alipayClient.execute(request);
-            return response.getBody();
-        } catch (AlipayApiException e) {
-            e.printStackTrace();
-            return null;
-        }
+        AlipayResponse response = alipayClient.execute(request);
+        return response.getBody();
     }
 
     /**
@@ -70,7 +65,7 @@ public class AliPayService {
      * @param orderNum
      * @return
      */
-    public String alipayWeb(String body, String subject, Double price, String orderNum) {
+    public String alipayWeb(String body, String subject, Double price, String orderNum) throws Exception {
         AlipayTradePagePayRequest request = new AlipayTradePagePayRequest();
         AlipayTradePagePayModel model = new AlipayTradePagePayModel();
         model.setBody(body);
@@ -82,13 +77,8 @@ public class AliPayService {
         request.setBizModel(model);
         request.setNotifyUrl(config.getAliyun().getNotifyUrl());
         request.setReturnUrl(config.getAliyun().getReturnUrl());
-        try {
-            AlipayResponse response = alipayClient.pageExecute(request);
-            return response.getBody();
-        } catch (AlipayApiException e) {
-            e.printStackTrace();
-            return null;
-        }
+        AlipayResponse response = alipayClient.pageExecute(request);
+        return response.getBody();
     }
 
     /**
@@ -100,7 +90,7 @@ public class AliPayService {
      * @param orderNum
      * @return
      */
-    public String alipayApp(String body, String subject, Double price, String orderNum) {
+    public String alipayApp(String body, String subject, Double price, String orderNum) throws Exception {
         AlipayTradeAppPayRequest request = new AlipayTradeAppPayRequest();
         AlipayTradeAppPayModel model = new AlipayTradeAppPayModel();
         model.setBody(body);
@@ -111,13 +101,8 @@ public class AliPayService {
         model.setProductCode("QUICK_MSECURITY_PAY");
         request.setBizModel(model);
         request.setNotifyUrl(config.getAliyun().getNotifyUrl());
-        try {
-            AlipayTradeAppPayResponse response = alipayClient.sdkExecute(request);
-            return response.getBody();
-        } catch (AlipayApiException e) {
-            e.printStackTrace();
-            return null;
-        }
+        AlipayTradeAppPayResponse response = alipayClient.sdkExecute(request);
+        return response.getBody();
     }
 
     /**
@@ -129,7 +114,7 @@ public class AliPayService {
      * @param realname
      * @return
      */
-    public String transfer(String orderNum, Double price, String account, String realname) {
+    public String transfer(String orderNum, Double price, String account, String realname) throws Exception {
 
         AlipayFundTransToaccountTransferRequest request = new AlipayFundTransToaccountTransferRequest();
         AlipayFundTransToaccountTransferModel model = new AlipayFundTransToaccountTransferModel();
@@ -141,16 +126,10 @@ public class AliPayService {
         model.setPayerShowName("");
         model.setRemark("提现到支付宝");
         request.setBizModel(model);
-        try {
-            AlipayFundTransToaccountTransferResponse response = alipayClient.execute(request);
-            if (response.isSuccess()) {
-                System.out.println("orderId:" + response.getOrderId());
-                return response.getOrderId();
-            } else {
-                return null;
-            }
-        } catch (AlipayApiException e) {
-            e.printStackTrace();
+        AlipayFundTransToaccountTransferResponse response = alipayClient.execute(request);
+        if (response.isSuccess()) {
+            return response.getOrderId();
+        } else {
             return null;
         }
     }
@@ -162,22 +141,17 @@ public class AliPayService {
      * @param thirdNum
      * @return
      */
-    public Boolean check(String orderNum, String thirdNum) {
+    public Boolean check(String orderNum, String thirdNum) throws Exception {
         AlipayFundTransOrderQueryRequest request = new AlipayFundTransOrderQueryRequest();
         AlipayFundTransOrderQueryModel model = new AlipayFundTransOrderQueryModel();
         model.setOutBizNo(orderNum);
         model.setOrderId(thirdNum);
         request.setBizModel(model);
-        try {
-            AlipayFundTransOrderQueryResponse response = alipayClient.execute(request);
-            if (response.isSuccess()) {
-                return true;
-            }
-            return false;
-        } catch (AlipayApiException e) {
-            e.printStackTrace();
-            return false;
+        AlipayFundTransOrderQueryResponse response = alipayClient.execute(request);
+        if (response.isSuccess()) {
+            return true;
         }
+        return false;
     }
 
     /**
@@ -189,7 +163,7 @@ public class AliPayService {
      * @param reason
      * @return
      */
-    public String refund(String orderNum, String thirdNum, Double price, String reason) {
+    public String refund(String orderNum, String thirdNum, Double price, String reason) throws Exception {
         AlipayTradeRefundRequest request = new AlipayTradeRefundRequest();
         AlipayTradeRefundModel model = new AlipayTradeRefundModel();
         model.setOutTradeNo(orderNum);
@@ -197,14 +171,9 @@ public class AliPayService {
         model.setRefundAmount(price + "");
         model.setRefundReason(reason);
         request.setBizModel(model);
-        try {
-            AlipayTradeRefundResponse response = alipayClient.execute(request);
-            // code=10000 成功
-            return response.getBody();
-        } catch (AlipayApiException e) {
-            e.printStackTrace();
-            return null;
-        }
+        AlipayTradeRefundResponse response = alipayClient.execute(request);
+        // code=10000 成功
+        return response.getBody();
     }
 
 

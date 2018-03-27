@@ -3,7 +3,8 @@ package com.jf.system.interceptor;
 import com.jf.string.StringUtil;
 import com.jf.system.annotation.Token;
 import com.jf.system.conf.SysConfig;
-import com.jf.system.conf.UserException;
+import com.jf.system.exception.AppLoginException;
+import com.jf.system.exception.SysException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.MethodParameter;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -30,7 +31,6 @@ public class ApiArgumentsResolver implements HandlerMethodArgumentResolver {
     /**
      * 解析器是否支持当前参数
      */
-    @Override
     public boolean supportsParameter(MethodParameter parameter) {
         return parameter.hasParameterAnnotation(Token.class);
     }
@@ -44,7 +44,6 @@ public class ApiArgumentsResolver implements HandlerMethodArgumentResolver {
      * @param binderFactory 生成WebDataBinder实例的工厂
      * @return 解析后的Controller参数
      */
-    @Override
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
                                   NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
         //String parameterName = parameter.getParameterName();
@@ -71,7 +70,7 @@ public class ApiArgumentsResolver implements HandlerMethodArgumentResolver {
                         }
                     } else {
                         if (StringUtil.isBlank(token)) {
-                            throw new UserException(expMsg);
+                            throw new AppLoginException(expMsg);
                         } else {
                             System.out.println(SysConfig.TOKEN_HEADER + " token:" + token);
                             return dealToken(token);
@@ -96,18 +95,18 @@ public class ApiArgumentsResolver implements HandlerMethodArgumentResolver {
                         }
                     } else {
                         if (cookieValue == null) {
-                            throw new UserException(expMsg);
+                            throw new AppLoginException(expMsg);
                         }
                         String token = cookieValue.getValue();
                         if (StringUtil.isNotBlank(token)) {
                             System.out.println(SysConfig.TOKEN_COOKIE + " token:" + token);
                             return dealToken(token);
                         } else {
-                            throw new UserException(expMsg);
+                            throw new AppLoginException(expMsg);
                         }
                     }
                 } else {
-                    throw new UserException("接口异常");
+                    throw new SysException("APP接口异常");
                 }
             }
         }
@@ -116,13 +115,13 @@ public class ApiArgumentsResolver implements HandlerMethodArgumentResolver {
 
     public Long dealToken(String token) {
         if (token == null || token.length() < 1) {
-            throw new UserException(expMsg);
+            throw new AppLoginException(expMsg);
         }
         String uid = (String) redisTemplate.opsForValue().get(token);
         if (uid != null) {
             return Long.parseLong(uid);
         } else {
-            throw new UserException(expMsg);
+            throw new AppLoginException(expMsg);
         }
     }
 

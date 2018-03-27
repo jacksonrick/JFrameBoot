@@ -3,7 +3,6 @@ package com.jf.obj;
 import org.apache.commons.beanutils.PropertyUtilsBean;
 
 import java.beans.PropertyDescriptor;
-import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 

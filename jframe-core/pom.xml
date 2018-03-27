@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
     <parent>
-        <artifactId>jframe</artifactId>
         <groupId>com.jf</groupId>
+        <artifactId>jframe</artifactId>
         <version>4.0</version>
         <relativePath>../jframe/pom.xml</relativePath>
     </parent>
 
-    <modelVersion>4.0.0</modelVersion>
     <artifactId>jframe-core</artifactId>
     <version>1.0</version>
     <packaging>jar</packaging>
@@ -24,6 +25,33 @@
             <groupId>com.jf</groupId>
             <artifactId>jframe-utils</artifactId>
             <version>2.0</version>
+        </dependency>
+
+        <!-- 以下组件只提供运行测试，不打包 -->
+        <!-- quartz -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-quartz</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <!-- mq -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-activemq</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <!-- websocket -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-websocket</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <!-- flume -->
+        <dependency>
+            <groupId>org.apache.flume</groupId>
+            <artifactId>flume-ng-sdk</artifactId>
+            <version>1.5.0.1</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 

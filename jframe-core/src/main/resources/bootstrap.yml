@@ -1,7 +1,9 @@
+# spring cloud config 配置
+# 可以单独放置某个端下
 spring:
   cloud:
-    config: # spring cloud config 配置
+    config:
       enabled: false # 关闭/启用
       uri: http://eureka:eureka1234@127.0.0.1:10000/cfg
-      name: sys
+      name: sys # 获取config server的sys-dev.properties
       profile: dev

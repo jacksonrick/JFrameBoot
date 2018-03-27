@@ -3,7 +3,6 @@ package com.jf.controller;
 import com.jf.date.DateUtil;
 import com.jf.entity.ResMsg;
 import com.jf.entity.UploadRet;
-import com.jf.fdfs.FDFSUtil;
 import com.jf.string.StringUtil;
 import com.jf.system.conf.SysConfig;
 import com.jf.system.third.geet.GeetestLib;
@@ -21,7 +20,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
@@ -88,7 +86,7 @@ public class CommonController {
             g.fillRect(0, 0, width, height);
             g.setFont(new Font("Default", Font.PLAIN, 24));
             Random random = new Random();
-            g.setColor(Color.BLACK);
+            // g.setColor(Color.BLACK);
             int red = 0, green = 0, blue = 0;
             for (int i = 0; i < 20; i++) {
                 int xs = random.nextInt(width);
@@ -118,6 +116,7 @@ public class CommonController {
             }
             request.getSession().setAttribute(SysConfig.SESSION_RAND, sb.toString());
             ImageIO.write(bi, "JPG", response.getOutputStream());
+            g.dispose();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -238,8 +237,7 @@ public class CommonController {
         }
         String filename = StringUtil.randomFilename(file.getOriginalFilename());
         String basePathFormat = DateUtil.getYearAndMonth(false);
-        String realPath = request.getSession().getServletContext().getRealPath("/static/upload/images/" +
-                basePathFormat);
+        String realPath = request.getSession().getServletContext().getRealPath("/static/upload/images/" + basePathFormat);
         File filePath = new File(realPath);
         if (!filePath.exists()) {
             filePath.mkdirs();

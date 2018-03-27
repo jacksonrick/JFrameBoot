@@ -28,4 +28,7 @@ public class Constant {
 
     protected String PREFIX = "UID";
 
+    public static String[] excludePathPatterns = new String[]
+            {"/static/**", "/images/**", "/js/**", "/css/**", "/error/**"};
+
 }

@@ -3,9 +3,6 @@ server:
 spring:
   profiles:
     active: dev
-    include: monitor
-  session:
-    store-type: none
   application:
     name: JFRAME-SERVICE-ORDER
 info:
@@ -13,14 +10,11 @@ info:
     name: ${spring.application.name}
     version: "1.0"
     description: "service-order"
-eureka:
-  client:
-    enabled: true
-    serviceUrl:
-      defaultZone: http://eureka:eureka1234@127.0.0.1:10000/eureka/
 app:
-  db:
-    master:
-      enabled: true
+  eureka:
+    enabled: true
   monitor:
     enabled: true
+  db:
+    db1:
+      enabled: true

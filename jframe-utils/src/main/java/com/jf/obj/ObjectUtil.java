@@ -113,7 +113,7 @@ public class ObjectUtil {
         Class<?> clazz = c;
 
         do {
-            Field originFields[] = clazz.getDeclaredFields();
+            Field[] originFields = clazz.getDeclaredFields();
             for (int i = 0; i < originFields.length; i++) {
                 list.add(originFields[i]);
             }

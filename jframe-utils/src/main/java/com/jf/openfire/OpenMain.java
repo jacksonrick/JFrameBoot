@@ -2,14 +2,10 @@ package com.jf.openfire;
 
 import org.jivesoftware.smack.AbstractXMPPConnection;
 import org.jivesoftware.smack.ConnectionConfiguration;
-import org.jivesoftware.smack.SmackException;
-import org.jivesoftware.smack.StanzaListener;
 import org.jivesoftware.smack.chat2.Chat;
 import org.jivesoftware.smack.chat2.ChatManager;
 import org.jivesoftware.smack.chat2.IncomingChatMessageListener;
-import org.jivesoftware.smack.filter.StanzaFilter;
 import org.jivesoftware.smack.packet.Message;
-import org.jivesoftware.smack.packet.Stanza;
 import org.jivesoftware.smack.tcp.XMPPTCPConnection;
 import org.jivesoftware.smack.tcp.XMPPTCPConnectionConfiguration;
 import org.jxmpp.jid.EntityBareJid;
@@ -146,7 +142,6 @@ public class OpenMain extends JFrame implements ActionListener, KeyListener {
 
         chatmanager = ChatManager.getInstanceFor(connection);
         chatmanager.addIncomingListener(new IncomingChatMessageListener() {
-            @Override
             public void newIncomingMessage(EntityBareJid entityBareJid, Message message, Chat chat) {
                 if (null != message.getBody()) {
                     area.append(message.getFrom() + "：" + message.getBody() + "\n");
@@ -155,7 +150,6 @@ public class OpenMain extends JFrame implements ActionListener, KeyListener {
         });
     }
 
-    @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == conn) {
             try {
@@ -204,17 +198,14 @@ public class OpenMain extends JFrame implements ActionListener, KeyListener {
         }
     }
 
-    @Override
     public void keyTyped(KeyEvent e) {
 
     }
 
-    @Override
     public void keyPressed(KeyEvent e) {
 
     }
 
-    @Override
     public void keyReleased(KeyEvent e) {
 
     }

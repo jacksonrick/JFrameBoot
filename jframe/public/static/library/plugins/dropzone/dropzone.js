@@ -1792,7 +1792,7 @@
                 content: dropzone,
                 success: function () {
                     var myDropzone = new Dropzone("#uploads", {
-                        url: "/upload.do?t=" + type,
+                        url: "/upload?t=" + type,
                         paramName: "file",
                         maxFiles: limit,
                         maxFilesize: size,
@@ -1904,7 +1904,7 @@
             content: dropzone,
             success: function () {
                 var myDropzone = new Dropzone("#uploads", {
-                    url: "/upload.do?t=1",
+                    url: "/upload?t=1",
                     paramName: "file",
                     maxFiles: 1,
                     maxFilesize: 2,

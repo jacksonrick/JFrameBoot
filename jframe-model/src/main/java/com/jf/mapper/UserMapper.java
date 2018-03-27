@@ -6,7 +6,6 @@ import com.jf.model.custom.IdText;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * UserMapper Interface

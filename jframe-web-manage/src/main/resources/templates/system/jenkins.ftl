@@ -16,15 +16,21 @@
     <div class="ibox-content">
         <h3 style="margin-top: 30px;">Jenkins自动化部署</h3>
         <h5>
-            Jenkins服务器IP：<input class="form-control" type="text" id="serverIP" value="http://120.79.56.97:9999" style="width: 200px"/>
-            工程名称：<input class="form-control" type="text" id="serverProj" value="JFrame" style="width: 80px"/>
+            Jenkins服务器IP：
+            <select id="serverIP" class="form-control" style="width: 200px">
+                <option value="http://120.79.56.97:9999" selected>http://120.79.56.97:9999</option>
+            </select>
+            工程名称：
+            <select id="serverProj" class="form-control" style="width: 180px">
+                <option value="JFrame-All-Projects" selected>JFrame-All-Projects</option>
+            </select>
             <br><br>
             用户名/密码：
             <input class="form-control" type="text" id="username" value="zhigui" style="width: 100px"/>
             <input class="form-control" type="password" id="password" value="zhigui1688," style="width: 100px"/>
 
-            <button class="btn btn-danger" id="start">开始自动部署</button>
-            <button class="btn btn-info" onclick="getInfo()"><i class="fa fa-refresh"></i></button>
+            <button class="btn btn-danger" id="start"><i class="fa fa-plus"></i>开始自动部署</button>
+            <button class="btn btn-info" onclick="getInfo()"><i class="fa fa-refresh"></i>刷新状态</button>
         </h5>
 
         <div id="content" style="margin-top: 20px">加载中...</div>
@@ -71,7 +77,7 @@
                     html += "<p><b>类：</b>" + json._class + "</p>";
                     html += "<p><b>当前编号：</b>" + json.lastBuild.number + "</p>";
                     html += "<p><b>最近一次成功部署：</b>" + json.lastSuccessfulBuild.number + "</p>";
-                    html += "<p><b>最近一次失败部署：</b>" + json.lastUnsuccessfulBuild.number + "</p>";
+                    html += "<p><b>最近一次失败部署：</b>" + ((json.lastUnsuccessfulBuild == null) ? "--" : json.lastUnsuccessfulBuild.number) + "</p>";
                     html += "<p><b>模块：</b><br>";
                     var modules = "";
                     $.each(json.modules, function (k, v) {

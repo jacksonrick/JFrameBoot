@@ -36,7 +36,6 @@ public class JSONUtils {
         JsonConfig jsonConfig = new JsonConfig();
         // 空不输出
         jsonConfig.setJsonPropertyFilter(new PropertyFilter() {
-            @Override
             public boolean apply(Object source, String name, Object value) {
                 return value == null;
             }

@@ -22,7 +22,7 @@ import org.apache.poi.poifs.filesystem.POIFSFileSystem;
  */
 public class ExcelRead {
 
-	public static void main(String[] args) {
+	/*public static void main(String[] args) {
 		try {
 			// 读取Excel表格标题
 			InputStream is = new FileInputStream("d:\\test.xls");
@@ -47,7 +47,7 @@ public class ExcelRead {
 			System.out.println("未找到指定路径的文件!");
 			e.printStackTrace();
 		}
-	}
+	}*/
 
 	private POIFSFileSystem fs;
 	private HSSFWorkbook wb;

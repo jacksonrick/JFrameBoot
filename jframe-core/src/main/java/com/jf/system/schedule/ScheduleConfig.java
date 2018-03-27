@@ -16,7 +16,7 @@ import javax.annotation.Resource;
  * Time: 11:03
  */
 @Configuration
-@ConditionalOnProperty(name = "app.scheduler.springsch.enabled", havingValue = "true")
+@ConditionalOnProperty(name = "app.springsch.enabled", havingValue = "true")
 public class ScheduleConfig {
 
     @Resource

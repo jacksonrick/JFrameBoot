@@ -1,13 +1,14 @@
 package com.jf.service.user;
 
 import com.github.pagehelper.PageInfo;
-import com.jf.cluster.User2Mapper;
+import com.jf.db2.User2Mapper;
+import com.jf.mapper.TestMapper;
 import com.jf.mapper.UserMapper;
 import com.jf.model.User;
 import com.jf.model.custom.IdText;
 import com.jf.string.StringUtil;
+import com.jf.system.cache.RedisLocker;
 import com.jf.system.cache.lock.AquiredLockWorker;
-import com.jf.system.cache.lock.RedisLocker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -27,8 +28,11 @@ public class UserService {
 
     @Resource
     private UserMapper userMapper;
-    //@Resource
-    //private User2Mapper user2Mapper;
+    @Autowired(required = false)
+    private User2Mapper user2Mapper;
+
+    @Resource
+    private TestMapper testMapper;
 
 
     // RedisLocker
@@ -40,47 +44,53 @@ public class UserService {
      *
      * @param userId
      */
-    public void testLock(Long userId) {
-        try {
-            locker.lock("user_" + userId + "_lock", new AquiredLockWorker<Object>() {
-                @Override
-                public Object invokeAfterLockAquire() throws Exception {
+    public void testLock(Long userId) throws Exception {
+        locker.lock("user_" + userId + "_lock", new AquiredLockWorker<Object>() {
+            @Override
+            public Object invokeAfterLockAquire() throws Exception {
 
-                    User user = userMapper.findSimpleById(userId);
-                    user.setMoney(user.getMoney() - 1);
-                    userMapper.update(user);
+                User user = userMapper.findSimpleById(userId);
+                user.setMoney(user.getMoney() - 1);
+                userMapper.update(user);
 
-                    return null;
-                }
-            });
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+                return null;
+            }
+        });
     }
 
     /**
-     * 测试事务回滚
+     * 测试msyql cluster集群
+     * <p>已安装集群环境</p>
+     *
+     * @return
      */
-    @Transactional(value = "masterTransactionManager")
+    public List<IdText> testMysqlCluster() {
+        return testMapper.findAll();
+    }
+
+    /**
+     * 测试事务回滚 testRollbackA & testRollbackB
+     */
+    @Transactional(value = "dbTransactionManager")
     public void testRollbackA() {
         User user = userMapper.findById(10000l);
-        user.setNickname("master_rollback");
+        user.setNickname("db1_rollback");
         userMapper.update(user);
         System.out.println(1 / 0); // error
         user = new User(10001l);
-        user.setNickname("master_rollback2");
+        user.setNickname("db2_rollback2");
         userMapper.update(user);
     }
 
-    @Transactional(value = "clusterTransactionManager")
+    @Transactional(value = "db2TransactionManager")
     public void testRollbackB() {
-        /*User user = user2Mapper.findById(10000l);
-        user.setNickname("cluster_rollback");
+        User user = user2Mapper.findById(10000l);
+        user.setNickname("db2_rollback");
         user2Mapper.update(user);
-        System.out.println(1 / 0);
+        System.out.println(1 / 0); // error
         user = new User(10001l);
-        user.setNickname("cluster_rollback2");
-        user2Mapper.update(user);*/
+        user.setNickname("db1_rollback2");
+        user2Mapper.update(user);
     }
 
     /**
@@ -91,11 +101,11 @@ public class UserService {
      */
     public User testMutilSource(String source) {
         User user = null;
-        if ("master".equals(source)) {
+        if ("db1".equals(source)) {
             user = userMapper.findById(10000l);
         }
-        if ("cluster".equals(source)) {
-            //user = user2Mapper.findById(10000l);
+        if ("db2".equals(source)) {
+            user = user2Mapper.findById(10000l);
         }
         return user;
     }
@@ -107,7 +117,7 @@ public class UserService {
      * @param id
      * @return
      */
-    @Cacheable(value = "common", key = "'findUserById'+#id")
+    @Cacheable(value = "user", key = "'findUserById'+#id")
     public User findUserById(Long id) {
         return userMapper.findById(id);
     }
@@ -115,12 +125,12 @@ public class UserService {
 
     /**
      * 用户更新信息
-     * <p>测试Redis缓存</p>
+     * <p>测试Redis缓存-更新会直接删除老数据</p>
      *
      * @param user
      * @return
      */
-    @CacheEvict(value = "common", key = "'findUserById'+#user.id")
+    @CacheEvict(value = "user", key = "'findUserById'+#user.id")
     public int updateUser(User user) {
         if (StringUtil.isNotBlank(user.getPassword())) {
             user.setPassword(StringUtil.MD5Encode(user.getPassword()));

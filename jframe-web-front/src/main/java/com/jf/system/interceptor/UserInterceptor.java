@@ -1,7 +1,5 @@
 package com.jf.system.interceptor;
 
-import com.jf.entity.ResMsg;
-import com.jf.json.JSONUtils;
 import com.jf.model.User;
 import com.jf.system.PathUtil;
 import com.jf.system.conf.LogManager;
@@ -12,8 +10,6 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.net.URLEncoder;
 import java.util.Map;
 import java.util.Set;
@@ -28,42 +24,40 @@ public class UserInterceptor extends HandlerInterceptorAdapter {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         LogManager.visit(request);
-        try {
-            User user = (User) request.getSession().getAttribute(SysConfig.SESSION_USER);
-            if (handler.getClass().isAssignableFrom(HandlerMethod.class)) {
-                Login login = ((HandlerMethod) handler).getMethodAnnotation(Login.class);
-                // 未指定【不检查登录】
-                if (login == null) {
-                    return true;
-                }
-                // 指定
-                if (user == null) {
-                    String url = request.getRequestURL().toString();
-                    Map<String, String[]> parameters = request.getParameterMap();
-                    String para_URL = "";
-                    if (parameters.isEmpty()) {
-                        para_URL = URLEncoder.encode(url, "UTF-8");
-                    } else {
-                        Set<String> keys = parameters.keySet();
-                        String _para = "";
-                        for (String key : keys) {
-                            String[] params = parameters.get(key);
-                            _para += "&" + key + "=" + params[0];
-                        }
-                        para_URL = URLEncoder.encode(url + "?" + _para.substring(1), "UTF-8");
-                    }
-                    // para_URL记录登录前的URL
-                    String rurl = request.getContextPath() + "/login.do?redirectURL=" + para_URL;
 
-                    PathUtil.nologin(rurl, response, request);
-                    return false;
-                }
+        if (handler.getClass().isAssignableFrom(HandlerMethod.class)) {
+            Login login = ((HandlerMethod) handler).getMethodAnnotation(Login.class);
+            // 未指定【不检查登录】
+            if (login == null) {
                 return true;
             }
-            return false;
-        } catch (Exception e) {
-            return false;
+            // 指定
+            User user = (User) request.getSession().getAttribute(SysConfig.SESSION_USER);
+            if (user == null) {
+                String url = request.getRequestURL().toString();
+                Map<String, String[]> parameters = request.getParameterMap();
+                String para_URL = "";
+                if (parameters.isEmpty()) {
+                    para_URL = URLEncoder.encode(url, "UTF-8");
+                } else {
+                    Set<String> keys = parameters.keySet();
+                    String _para = "";
+                    for (String key : keys) {
+                        String[] params = parameters.get(key);
+                        _para += "&" + key + "=" + params[0];
+                    }
+                    para_URL = URLEncoder.encode(url + "?" + _para.substring(1), "UTF-8");
+                }
+                // para_URL记录登录前的URL
+                String rurl = request.getContextPath() + "/login.do?redirectURL=" + para_URL;
+
+                PathUtil.nologin(rurl, response, request);
+                return false;
+            }
+            return true;
         }
+        return false;
+
     }
 
 }

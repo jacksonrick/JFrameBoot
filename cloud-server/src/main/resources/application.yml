@@ -25,7 +25,7 @@ spring:
     static-locations: classpath:/static/
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
-  profiles:
+  profiles: # 本地配置
     active: native
   cloud: # springcloud配置
     config:
@@ -33,22 +33,20 @@ spring:
         native:
           search-locations: classpath:/configs/
         prefix: /cfg # 配置地址前缀
-security: # 开启spring安全
-  basic:
-    enabled: true
-  user: # 设置用户名和密码
-    name: eureka
-    password: eureka1234
-endpoints:
-  enabled: false
+management:
+  endpoints:
+    enabled-by-default: false
 eureka: # eureka服务端
   dashboard:
     enabled: false
   instance:
     hostname: 127.0.0.1
     prefer-ip-address: true
+  security: # 登录用户名密码
+    username: eureka
+    password: eureka1234
   client:
     registerWithEureka: false
     fetchRegistry: false
     serviceUrl: # 注册地址
-      defaultZone: http://${security.user.name}:${security.user.password}@${eureka.instance.hostname}:${server.port}/eureka/
+      defaultZone: http://${eureka.security.username}:${eureka.security.password}@${eureka.instance.hostname}:${server.port}/eureka/

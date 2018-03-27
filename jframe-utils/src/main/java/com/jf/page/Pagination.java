@@ -20,7 +20,7 @@ public class Pagination {
 	private int startIndex; // 开始索引
 	private int endIndex; // 结束索引
 
-	private int indexCount = 5;// 显示的索引数目,如10的话， 则显示1-10， 2-11
+	private int indexCount = 5; // 显示的索引数目,如10的话， 则显示1-10， 2-11
 
 	public Pagination(List list, int total, int pageNo, int pageSize) {
 		this.list = list;

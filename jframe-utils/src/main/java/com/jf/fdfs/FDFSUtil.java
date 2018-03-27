@@ -3,7 +3,6 @@ package com.jf.fdfs;
 import org.apache.commons.io.FileUtils;
 
 import javax.imageio.ImageIO;
-import javax.imageio.stream.FileImageOutputStream;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;

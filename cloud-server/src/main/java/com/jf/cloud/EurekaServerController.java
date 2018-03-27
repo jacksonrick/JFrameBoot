@@ -13,8 +13,6 @@ import com.netflix.eureka.EurekaServerContextHolder;
 import com.netflix.eureka.cluster.PeerEurekaNode;
 import com.netflix.eureka.util.StatusInfo;
 import com.netflix.eureka.util.StatusUtil;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,9 +35,6 @@ public class EurekaServerController {
 
     @Resource
     private ApplicationInfoManager manager;
-
-    @Autowired
-    private ConfigurableEnvironment environment;
 
     /**
      * 登录

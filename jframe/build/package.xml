@@ -11,7 +11,7 @@
         <!-- 启动jar -->
         <fileSet>
             <directory>${project.build.directory}</directory>
-            <outputDirectory>/</outputDirectory>
+            <outputDirectory/>
             <includes>
                 <include>*.jar</include>
             </includes>
@@ -19,12 +19,12 @@
         <fileSet>
             <!-- module static resources -->
             <directory>target/classes/static/</directory>
-            <outputDirectory>/static/</outputDirectory>
+            <outputDirectory>static/</outputDirectory>
         </fileSet>
         <fileSet>
             <!-- public static resources -->
             <directory>../jframe/public/static/</directory>
-            <outputDirectory>/static/</outputDirectory>
+            <outputDirectory>static/</outputDirectory>
         </fileSet>
     </fileSets>
 

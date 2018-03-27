@@ -19,21 +19,30 @@
             </encoder>
         </appender>
 
+        <appender name="devlog" class="ch.qos.logback.core.rolling.RollingFileAppender">
+            <file>${LOG_HOME}/${FILE_NAME}.log</file>
+            <!-- 按大小滚动日志，最大5M，保留最近10个文件，总大小10GB -->
+            <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+                <fileNamePattern>${LOG_HOME}/%d{yyyy-MM-dd}/${FILE_NAME}.%i.log.zip</fileNamePattern>
+                <maxFileSize>5MB</maxFileSize>
+                <maxHistory>10</maxHistory>
+                <totalSizeCap>10GB</totalSizeCap>
+            </rollingPolicy>
+            <encoder>
+                <pattern>${PATTERN}</pattern>
+            </encoder>
+        </appender>
+
         <root level="info">
             <appender-ref ref="console"/>
+            <appender-ref ref="devlog"/>
         </root>
         <logger name="com.jf.mapper" level="DEBUG"></logger>
     </springProfile>
 
     <!-- 生产环境 -->
     <springProfile name="pro">
-        <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
-            <encoder>
-                <pattern>${PATTERN}</pattern>
-            </encoder>
-        </appender>
-
-        <!-- 记录INFO日志-按时间和大小分割 -->
+        <!-- 记录INFO日志 -->
         <appender name="syslog" class="ch.qos.logback.core.rolling.RollingFileAppender">
             <file>${LOG_HOME_PRO}/${FILE_NAME}.log</file>
             <filter class="ch.qos.logback.classic.filter.LevelFilter">
@@ -41,30 +50,30 @@
                 <onMatch>DENY</onMatch>
                 <onMismatch>ACCEPT</onMismatch>
             </filter>
-            <!-- 每日生成一个文件 -->
-            <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
-                <fileNamePattern>${LOG_HOME_PRO}/${FILE_NAME}.%d{yyyy-MM-dd}.%i.log.zip</fileNamePattern>
-                <minIndex>1</minIndex>
-                <maxIndex>5</maxIndex>
-            </rollingPolicy>
-            <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+            <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+                <fileNamePattern>${LOG_HOME_PRO}/%d{yyyy-MM-dd}/${FILE_NAME}.%i.log.zip</fileNamePattern>
                 <maxFileSize>5MB</maxFileSize>
-            </triggeringPolicy>
+                <maxHistory>30</maxHistory>
+                <totalSizeCap>10GB</totalSizeCap>
+            </rollingPolicy>
             <encoder>
                 <pattern>${PATTERN}</pattern>
             </encoder>
         </appender>
 
-        <!-- 错误日志-最多记录10个 -->
+        <!-- 记录日志 -->
         <appender name="errorlog" class="ch.qos.logback.core.rolling.RollingFileAppender">
+            <file>${LOG_HOME_PRO}/${FILE_NAME}.error.log</file>
             <filter class="ch.qos.logback.classic.filter.LevelFilter">
                 <level>ERROR</level>
                 <onMatch>ACCEPT</onMatch>
                 <onMismatch>DENY</onMismatch>
             </filter>
-            <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-                <fileNamePattern>${LOG_HOME_PRO}/${ERROR_NAME}.%d{yyyy-MM-dd}.log</fileNamePattern>
-                <MaxHistory>10</MaxHistory>
+            <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+                <fileNamePattern>${LOG_HOME_PRO}/%d{yyyy-MM-dd}/${FILE_NAME}.%i.error.log.zip</fileNamePattern>
+                <maxFileSize>2MB</maxFileSize>
+                <maxHistory>30</maxHistory>
+                <totalSizeCap>1GB</totalSizeCap>
             </rollingPolicy>
             <encoder>
                 <pattern>${PATTERN}</pattern>
@@ -72,7 +81,7 @@
         </appender>
 
         <!-- 分布式flume日志 -->
-        <appender name="flume" class="com.jf.system.flume.FlumeLogstashV1Appender">
+        <!--<appender name="flume" class="com.jf.system.flume.FlumeLogstashV1Appender">
             <flumeAgents>
                 192.168.1.199:8888,
             </flumeAgents>
@@ -89,10 +98,9 @@
             <layout class="ch.qos.logback.classic.PatternLayout">
                 <pattern>${PATTERN}</pattern>
             </layout>
-        </appender>
+        </appender>-->
 
         <root level="INFO">
-            <appender-ref ref="console"/>
             <appender-ref ref="syslog"/>
             <appender-ref ref="errorlog"/>
             <!--<appender-ref ref="flume"/>-->

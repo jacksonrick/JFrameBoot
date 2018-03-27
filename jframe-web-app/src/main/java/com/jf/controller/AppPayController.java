@@ -3,11 +3,6 @@ package com.jf.controller;
 import com.alipay.api.internal.util.AlipaySignature;
 import com.github.wxpay.sdk.WXPay;
 import com.github.wxpay.sdk.WXPayUtil;
-import com.google.zxing.BarcodeFormat;
-import com.google.zxing.EncodeHintType;
-import com.google.zxing.MultiFormatWriter;
-import com.google.zxing.client.j2se.MatrixToImageWriter;
-import com.google.zxing.common.BitMatrix;
 import com.jf.convert.Convert;
 import com.jf.entity.ResMsg;
 import com.jf.file.Qrcode;
@@ -26,20 +21,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.DataInputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.util.HashMap;
-import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Map;
 
 /**
- * APP支付接口回调
+ * 支付接口
  * Alipay & Wechat
  * Created by xujunfei on 2017/3/25.
  */
 @Controller
-//@RequestMapping("/app")
 public class AppPayController extends BaseController {
 
     @Resource
@@ -59,8 +51,12 @@ public class AppPayController extends BaseController {
     @RequestMapping("/alipay_qrcode")
     public void alipay_qrcode(HttpServletResponse response) throws Exception {
         String result = aliPayService.qrcode("商品", 0.01, StringUtil.getOrderCode());
-        JSONObject object = JSONUtils.toJSONObject(result);
-        String qr = object.getJSONObject("alipay_trade_precreate_response").getString("qr_code");
+        JSONObject object = JSONUtils.toJSONObject(result).getJSONObject("alipay_trade_precreate_response");
+        if (object.get("code") != null) {
+            System.out.println(object.get("sub_msg"));
+            return;
+        }
+        String qr = object.getString("qr_code");
         // 生成二维码
         Qrcode.write(qr, response);
     }
@@ -73,7 +69,7 @@ public class AppPayController extends BaseController {
      */
     @RequestMapping("/alipay")
     @ResponseBody
-    public String alipay() {
+    public String alipay() throws Exception {
         String result = aliPayService.alipayWeb("测试", "商品", 100d, StringUtil.getOrderCode());
         System.out.println(result);
         return result;
@@ -86,7 +82,7 @@ public class AppPayController extends BaseController {
      */
     @RequestMapping("/ali_refund")
     @ResponseBody
-    public ResMsg ali_refund() {
+    public ResMsg ali_refund() throws Exception {
         String result = aliPayService.refund("2018011711333198018150", "2018011721001004630200410967", 100d, "退款");
         return new ResMsg(0, SUCCESS, result);
     }

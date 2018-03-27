@@ -1,5 +1,5 @@
 # JFrame
-##### JFrame - SpringBoot & Cloud Project `v4.5.1`
+##### JFrame - SpringBoot & Cloud Project `v4.6 beta2`
 `jackson-rick`   <br>
 `https://github.com/jacksonrick/JFrameBoot`
 
@@ -11,25 +11,34 @@
 * jframe-web-app `App端`
 * jframe-web-front `PC端`
 * jframe-web-manage `后台管理端`
-* jframe-web-shop `商家管理端`
 
 ### 集成
 * Spring/SpringMVC/MyBatis/SpringBoot/SpringCloud
 * Spring Redis/Redis Session/Redisson/FastDFS
-* 拦截器/AppToken/自定义权限
+* 拦截器/AppToken/自定义权限/SpringSecurity
 * 后台管理功能：权限管理、模块管理、地址、文件、工具等
 * 线程池、日志服务、分布式日志Flume、异常管理、多数据源、分布式事务
 * PageHelper分页、封装分页组件
 * Freemarker模板、封装函数和指令
-* Quartz(单点/集群)、管理器
+* Quartz(单点/集群)、管理器、异步任务
 * 第三方：微信SDK/支付宝SDK/推送/高德/阿里云/短信/邮件
 * Spring-WebSocket、Openfire、Actuator健康监控、数据源监控
 * Util包：字符、时间、数字转换/JSON/Http/PDF+Excel/分页/文件/对象/验证器...
 * JS插件：封装：Ajax/DataTables/CityPicker/Layer/DatePicker...
-* Demo：jframe-web-front/./demo/
-* 可开关服务：db、scheduler[springsch|quartz]、cache[springcache|redisson]、activemq、socket、fdfs、endpoint、eureka、feign...
+* 可开关服务：db、scheduler[springsch|quartz]、cache、activemq、socket、fdfs、endpoint、eureka、feign...
+* 测试模块：[jframe-web-test]DEMO、组件等测试
+* Jenkins自动化部署、脚本
 
 ### 更新日志：
+* v4.6 beta2 `20180327`
+    * 1.增强系统稳定性
+    * 2.修复BUG
+* v4.6 beta1 `20180315`
+    * 1.升级核心框架：SpringBoot 2.0/SpringCloud Finchley.M7
+    * 2.优化各种组件的兼容性问题
+    * 3.优化并简化yml配置
+    * 4.新增测试模块，测试DEMO
+    * 5.其他优化：日志、配置、监控等
 * v4.5.1 `20180309`
     * 1.优化日志输出、拦截器、支付、run脚本
     * 2.新增二维码生成工具
@@ -140,8 +149,6 @@
 * v1.x `20160601`
     * JFrame项目Start
     
-`*注：项目中的Demo可能需要去除相关注释后方可正常运行`
-
 ### 环境与配置
 * Jdk 1.8
 * MySQL 5.6 +
@@ -158,9 +165,18 @@
 * 注意：运行脚本需要按照一定的命名方式
 
 ### 其他
+* 使用maven下载Jar包时，请先在`maven-.../conf/setting.xml`的mirrors标签内加入以下：
+    ```
+    <mirror>
+        <id>alimaven</id>
+        <name>aliyun maven</name>
+        <url>http://maven.aliyun.com/nexus/content/groups/public/</url>
+        <mirrorOf>central</mirrorOf>
+    </mirror>
+    ```
 * 数据库脚本：`jframe/doc/jframe.sql`
 * 操作手册说明：`jframe/doc/操作手册、插件、Util包说明、开发规范.docx`
 * 开发配置：`jframe-core/src/main/resources/application-dev.yml`
-* Eureka服务端：`cloud-server`
-* 测试代码均在 front模块下进行
 * 如在开发或测试过程中遇到任何问题，可联系QQ：`809573150`
+
+`*注：项目中的Demo可能需要去除相关注释后方可正常运行`

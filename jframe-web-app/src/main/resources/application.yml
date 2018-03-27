@@ -3,58 +3,18 @@ server:
 spring:
   profiles:
     active: dev
-    include: monitor
   application:
     name: JFRAME-WEB-APP
-  session:
-    store-type: NONE
-  datasource:
-    druid:
-      web-stat-filter:
-        enabled: false
-      stat-view-servlet:
-        enabled: false
-      filter:
-        stat:
-          enabled: false
 info:
   app:
     name: ${spring.application.name}
     version: "1.0"
     description: "app"
-eureka:
-  client:
-    enabled: false
-    serviceUrl:
-      defaultZone: http://eureka:eureka1234@127.0.0.1:10000/eureka/
-feign:
-  hystrix:
-    enabled: false
 app:
   pro:
     appkey: 00056cb1d74435076a4c15a490798df4
     static_path: /data/wwwroot/app/static/
     static_host: http://192.168.1.199:${server.port}/
-  monitor:
-    enabled: false
   db:
-    master:
+    db1:
       enabled: true
-    cluster:
-      enabled: false
-  scheduler:
-    quartz:
-      enabled: false
-    springsch:
-      enabled: false
-  cache:
-    springcache:
-      enabled: false
-    redisson:
-      enabled: false
-  activemq:
-    enabled: false
-  socket:
-    enabled: false
-  fdfs:
-    enabled: false

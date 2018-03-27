@@ -15,7 +15,6 @@ import org.apache.http.util.EntityUtils;
 import sun.misc.BASE64Encoder;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -165,7 +164,6 @@ public class HttpUtil {
         if (entity != null) {
             result = EntityUtils.toString(entity, "GB2312");
         }
-        System.out.println("####" + post.getEntity());
         Log.info(new StringBuilder().append("HttpClient: method 【POST】,url【").append(url).append("】").append(",auth【true】").toString());
         return result;
     }
@@ -184,7 +182,7 @@ public class HttpUtil {
         HttpClient client = HttpClients.createDefault();
         HttpPost post = new HttpPost(url);
         // 创建无参数名的参数
-        StringEntity paramEntity = new StringEntity(param);// 无参数名，只是参数内容
+        StringEntity paramEntity = new StringEntity(param); // 无参数名，只是参数内容
         post.setEntity(paramEntity);
         HttpResponse response = client.execute(post);
         HttpEntity entity = response.getEntity();

@@ -27,8 +27,10 @@
                 <span class="caret"></span>
             </button>
             <ul class="dropdown-menu">
-                <li><a href="javascript:;">user: <input class="form-control" type="text" id="username" value="spring" style="width: 150px"/></a></li>
-                <li><a href="javascript:;">pwd: <input class="form-control" type="password" id="password" value="spring1234" style="width: 150px"/></a></li>
+                <li><a href="javascript:;">user: <input class="form-control" type="text" id="username" value="spring" style="width: 150px"/></a>
+                </li>
+                <li><a href="javascript:;">pwd:
+                    <input class="form-control" type="password" id="password" value="spring1234" style="width: 150px"/></a></li>
                 <li role="separator" class="divider"></li>
                 <li><a href="javascript:;" id="refresh">Refresh Cloud Configs</a></li>
             </ul>
@@ -47,7 +49,7 @@
         <li data-id="3"><a href="javascript:;">dump</a></li>
         <li data-id="4"><a href="javascript:;">metrics</a></li>
         <li data-id="5"><a href="javascript:;">trace</a></li>
-        <li data-id="6"><a href="javascript:;">features</a></li>
+        <li data-id="6"><a href="javascript:;">logfile</a></li>
         <li data-id=""><a href="javascript:;">developing...</a></li>
     </ul>
 
@@ -107,7 +109,7 @@
                     getTrace();
                     break;
                 case 6:
-                    getFeatures();
+                    getLog();
                     break;
                 default:
                     alert("error");
@@ -129,53 +131,57 @@
             operate: "/health",
             callback: function (data) {
                 var html = '<div class="row">';
-                $.each(data, function (k, v) {
-                    if (k == "description") {
-                        return true;
-                    }
+                html += '<div class="panel panel-success col-md-7" style="margin-left: 20px;padding: 0px;">'
+                        + '<div class="panel-heading">status</div><div class="panel-body">'
+                        + lablest(data.status) + '</div></div>';
+
+                $.each(data.details, function (k, v) {
                     html += '<div class="panel panel-success col-md-7" style="margin-left: 20px;padding: 0px;">';
                     var bodys = '<div class="panel-heading">' + k + '</div><div class="panel-body">';
                     bodys += lablest(v.status ? v.status : v);
-                    if (k == "status") {
-                        bodys += '<p class="text-muted"><b class="text-info">description: </b>' + data.description + '</p>';
-                    } else if (k == "discoveryComposite") {
-                        bodys += '<p class="text-muted"><b class="text-info">description: </b>' + v.description + '</p>';
-                        bodys += '<p class="text-muted"><b class="text-info">discoveryClient STATUS: </b>' + lable(v.discoveryClient.status) + '</p>';
-                        bodys += '<p class="text-muted"><b class="text-info">discoveryClient-services: </b>' + v.discoveryClient.services + '</p>';
-                        bodys += '<p class="text-muted"><b class="text-info">eureka STATUS: </b>' + lable(v.eureka.status) + '</p>';
+                    if (k == "discoveryComposite") {
+                        bodys += '<p class="text-muted"><b class="text-info">discoveryComposite STATUS: </b>' + lable(v.status) + '</p>';
+                        bodys += '<p class="text-muted"><b class="text-info">discoveryClient STATUS: </b>' + lable(v.details.discoveryClient.status) + '</p>';
+                        bodys += '<p class="text-muted"><b class="text-info">discoveryClient SERVs: </b>' + v.details.discoveryClient.details.services.join(", ") + '</p>';
+                        bodys += '<p class="text-muted"><b class="text-info">eureka STATUS: </b>' + lable(v.details.eureka.status) + '</p>';
+                        var aa = new Array();
+                        $.each(v.details.eureka.details.applications, function (kk, vv) {
+                            aa.push(kk + "[ " + vv + " ]");
+                        });
+                        bodys += '<p class="text-muted"><b class="text-info">eureka APPs: </b>' + aa.join(", ") + '</p>';
                     } else if (k == "jms") {
                         if (v.status == "DOWN") {
-                            bodys += '<p class="text-muted"><b class="text-info">error: </b>' + v.error + '</p>';
+                            bodys += '<p class="text-muted"><b class="text-info">error: </b>' + v.details.error + '</p>';
                         } else {
-                            bodys += '<p class="text-muted"><b class="text-info">provider: </b>' + v.provider + '</p>';
+                            bodys += '<p class="text-muted"><b class="text-info">provider: </b>' + v.details.provider + '</p>';
                         }
                     } else if (k == "mail") {
-                        bodys += '<p class="text-muted"><b class="text-info">location: </b>' + v.location + '</p>';
+                        bodys += '<p class="text-muted"><b class="text-info">location: </b>' + v.details.location + '</p>';
                         if (v.status == "DOWN") {
-                            bodys += '<p class="text-muted"><b class="text-info">error: </b>' + v.error + '</p>';
+                            bodys += '<p class="text-muted"><b class="text-info">error: </b>' + v.details.error + '</p>';
                         }
                     } else if (k == "diskSpace") {
-                        bodys += '<p class="text-muted"><b class="text-info">free: </b>' + disk(v.free) + '</p>';
-                        bodys += '<p class="text-muted"><b class="text-info">total: </b>' + disk(v.total) + '</p>';
-                        bodys += '<p class="text-muted"><b class="text-info">threshold: </b>' + disk(v.threshold) + '</p>';
+                        bodys += '<p class="text-muted"><b class="text-info">free: </b>' + disk(v.details.free) + '</p>';
+                        bodys += '<p class="text-muted"><b class="text-info">total: </b>' + disk(v.details.total) + '</p>';
+                        bodys += '<p class="text-muted"><b class="text-info">threshold: </b>' + disk(v.details.threshold) + '</p>';
                     } else if (k == "redis") {
                         if (v.status == "DOWN") {
-                            bodys += '<p class="text-muted"><b class="text-info">error: </b>' + v.error + '</p>';
+                            bodys += '<p class="text-muted"><b class="text-info">error: </b>' + v.details.error + '</p>';
                         } else {
-                            bodys += '<p class="text-muted"><b class="text-info">version: </b>' + v.version + '</p>';
+                            bodys += '<p class="text-muted"><b class="text-info">version: </b>' + v.details.version + '</p>';
                         }
                     } else if (k == "db") {
-                        bodys += '<p class="text-muted"><b class="text-info">database: </b>' + v.database + '</p>';
-                        bodys += '<p class="text-muted"><b class="text-info">hello: </b>' + v.hello + '</p>';
+                        bodys += '<p class="text-muted"><b class="text-info">database: </b>' + v.details.database + '</p>';
+                        bodys += '<p class="text-muted"><b class="text-info">hello: </b>' + v.details.hello + '</p>';
                     } else if (k == "refreshScope") {
 
                     } else if (k == "hystrix") {
 
                     } else if (k == "configServer") {
                         if (v.status == "UNKNOWN") {
-                            bodys += '<p class="text-muted"><b class="text-info">error: </b>' + v.error + '</p>';
+                            bodys += '<p class="text-muted"><b class="text-info">error: </b>' + v.details.error + '</p>';
                         } else {
-                            bodys += '<p class="text-muted"><b class="text-info">propertySources: </b>' + v.propertySources.join(",") + '</p>';
+                            bodys += '<p class="text-muted"><b class="text-info">propertySources: </b>' + v.details.propertySources.join(",") + '</p>';
                         }
                     }
                     bodys += '</div>';
@@ -190,12 +196,18 @@
         Ajax.ajax({
             operate: "/env",
             callback: function (data) {
-                $.each(data, function (k, v) {
+                var html = '<h5>activeProfiles: ';
+                $.each(data.activeProfiles, function (k, v) {
+                    html += '<span class="label label-default">' + v + '</span>   '
+                });
+                $("#content").append('</h5>' + html);
+
+                $.each(data.propertySources, function (k, v) {
                     var html = '<div class="panel panel-success">';
-                    var bodys = '<div class="panel-heading">' + k + '</div><div class="panel-body"><table class="table table-hover table-bordered table-striped"><tbody>';
-                    $.each(v, function (k2, v2) {
-                        if (k2 == 0) k2 = k;
-                        bodys += '<tr><td>' + k2 + '</td><td>' + v2 + '</td></tr>';
+                    var bodys = '<div class="panel-heading">' + v.name + '</div><div class="panel-body"><table class="table table-hover table-bordered table-striped"><tbody>';
+                    $.each(v.properties, function (k2, v2) {
+                        //if (k2 == 0) k2 = k;
+                        bodys += '<tr><td>' + k2 + '</td><td>' + v2.value + '</td></tr>';
                     });
                     bodys += '</tbody></table></div>';
                     html += bodys + '</div>';
@@ -207,10 +219,10 @@
 
     function getDump() {
         Ajax.ajax({
-            operate: "/dump",
+            operate: "/threaddump",
             callback: function (data) {
                 var html = '<ul class="list-group">';
-                $.each(data, function (k, v) {
+                $.each(data.threads, function (k, v) {
                     var bodys = '<li class="list-group-item">' + v.threadName +
                             ' <span class="pull-right"><span class="label label-default">' + v.threadState + '</span>' +
                             ' <a tabindex="0" class="label label-info pop" data-toggle="popover" title="Details" data-content="lockName: ' + v.lockName + '<br>threadId: ' + v.threadId + '<br>waitedCount: ' + v.waitedCount + '<br>blockedCount: ' + v.blockedCount + '<br>suspended: ' + v.suspended + '<br>inNative: ' + v.inNative + '">Details</a></span></li>'
@@ -231,52 +243,32 @@
             operate: "/metrics",
             callback: function (data) {
                 var metrics = {
-                    uptime: new Array(),
-                    mem: new Array(),
-                    heap: new Array(),
-                    gc: new Array(),
-                    httpsessions: new Array(),
-                    datasource: new Array(),
-                    threads: new Array(),
-                    classes: new Array(),
-                    normalized: new Array(),
-                    counter: new Array(),
-                    gauge: new Array(),
-                    other: new Array()
+                    jvm: new Array(),
+                    system: new Array(),
+                    process: new Array(),
+                    tomcat: new Array(),
+                    logback: new Array(),
+                    http: new Array()
                 };
-                $.each(data, function (k, v) {
-                    if (k.indexOf("mem") > -1) {
-                        metrics.mem.push({key: k, value: v});
+                $.each(data.names, function (kk, k) {
+                    var v = '<a href="javascript:;" class="label label-info get">get</a>';
+                    if (k.indexOf("jvm") > -1) {
+                        metrics.jvm.push({key: k, value: v});
                     }
-                    else if (k.indexOf("heap") > -1) {
-                        metrics.heap.push({key: k, value: v});
+                    else if (k.indexOf("system") > -1) {
+                        metrics.system.push({key: k, value: v});
                     }
-                    else if (k.indexOf("gc") > -1) {
-                        metrics.gc.push({key: k, value: v});
+                    else if (k.indexOf("process") > -1) {
+                        metrics.process.push({key: k, value: v});
                     }
-                    else if (k.indexOf("httpsessions") > -1) {
-                        metrics.httpsessions.push({key: k, value: v});
+                    else if (k.indexOf("tomcat") > -1) {
+                        metrics.tomcat.push({key: k, value: v});
                     }
-                    else if (k.indexOf("threads") > -1) {
-                        metrics.threads.push({key: k, value: v});
+                    else if (k.indexOf("logback") > -1) {
+                        metrics.logback.push({key: k, value: v});
                     }
-                    else if (k.indexOf("uptime") > -1) {
-                        metrics.uptime.push({key: k, value: v});
-                    }
-                    else if (k.indexOf("classes") > -1) {
-                        metrics.classes.push({key: k, value: v});
-                    }
-                    else if (k.indexOf("datasource") > -1) {
-                        metrics.datasource.push({key: k, value: v});
-                    }
-                    else if (k.indexOf("normalized") > -1) {
-                        metrics.normalized.push({key: k, value: v});
-                    }
-                    else if (k.indexOf("counter") > -1) {
-                        metrics.counter.push({key: k, value: v});
-                    }
-                    else if (k.indexOf("gauge") > -1) {
-                        metrics.gauge.push({key: k, value: v});
+                    else if (k.indexOf("http") > -1) {
+                        metrics.http.push({key: k, value: v});
                     }
                     else {
                         metrics.other.push({key: k, value: v});
@@ -287,32 +279,61 @@
                 $.each(metrics, function (k, v) {
                     var html = '<ul class="list-group">';
                     $.each(v, function (k2, v2) {
-                        var bodys = '<li class="list-group-item ' + (k2 % 2 == 0 ? 'list-group-item-success' : '') + '"><b>' + v2.key + '</b><span class="pull-right">' + v2.value + '</span></li>'
+                        var bodys = '<li class="list-group-item"><b>' + v2.key + '</b><span class="pull-right">' + v2.value + '</span></li>'
                         html += bodys;
                     });
                     t += html + '</ul>';
                 });
                 $("#content").append(t);
+
+                $(".get").click(function () {
+                    var t = $(this);
+                    var v = t.parent().prev('b').html();
+                    Ajax.ajax({
+                        operate: "/metrics/" + v,
+                        type: 1,
+                        callback: function (data) {
+                            var h = "";
+                            $.each(data.measurements, function (k, v) {
+                                h += v.statistic + ": " + v.value + "  ";
+                            })
+                            t.html(h);
+                        }
+                    });
+                });
             }
         });
     }
 
     function getTrace() {
         Ajax.ajax({
-            operate: "/trace",
+            operate: "/httptrace",
             callback: function (data) {
                 var html = '<ul class="list-group">';
-                $.each(data, function (k, v) {
+                $.each(data.traces, function (k, v) {
                     var requests = '';
-                    $.each(v.info.headers.request, function (k1, v1) {
-                        requests += k1 + ': ' + v1 + '<br>';
+                    $.each(v.request, function (k1, v1) {
+                        if (k1 == "headers") {
+                            $.each(v1, function (k2, v2) {
+                                requests += k2 + ': ' + v2 + '<br>';
+                            });
+                        } else {
+                            requests += k1 + ': ' + v1 + '<br>';
+                        }
                     });
+
                     var responses = '';
-                    $.each(v.info.headers.response, function (k2, v2) {
-                        responses += k2 + ': ' + v2 + '<br>';
+                    $.each(v.response, function (k2, v2) {
+                        if (k2 == "headers") {
+                            $.each(v2, function (k3, v3) {
+                                responses += k3 + ': ' + v3 + '<br>';
+                            });
+                        } else {
+                            responses += k2 + ': ' + v2 + '<br>';
+                        }
                     });
-                    var bodys = '<li class="list-group-item">' + v.info.path + ' <small>' + v.timestamp + '</small>' +
-                            ' <span class="pull-right"><span class="label label-default">' + v.info.method + '</span>' +
+                    var bodys = '<li class="list-group-item">' + v.request.uri + '  <small> ' + v.timestamp + '</small>' +
+                            ' <span class="pull-right"><span class="label label-default">' + v.request.method + '</span>' +
                             ' <a tabindex="0" class="label label-info pop" data-toggle="popover" title="request" data-content="' + requests + '">request</a>' +
                             ' <a tabindex="0" class="label label-info pop" data-toggle="popover" title="response" data-content="' + responses + '">response</a></span></li>'
                     html += bodys;
@@ -327,16 +348,11 @@
         });
     }
 
-    function getFeatures() {
+    function getLog() {
         Ajax.ajax({
-            operate: "/features",
+            operate: "/logfile",
             callback: function (data) {
-                var table = '<table class="table table-hover table-bordered table-striped"><thead><tr><th>name</th><th>type</th><th>version</th></tr></thead><tbody>';
-                $.each(data.enabled, function (k, v) {
-                    table += '<tr><td>' + v.name + '</td><td>' + v.type + '</td><td>' + v.version + '</td></tr>';
-                });
-                table += '</tbody></table>';
-                $("#content").append(table);
+                $("#content").html(data.data);
             }
         });
     }
@@ -367,13 +383,20 @@
                 contentType: 'application/json',
                 dataType: "json",
                 success: function (data) {
-                    $("#content").html('');
+                    if (config.type != 1) {
+                        $("#content").html('');
+                    }
                     if (data.code == 0) {
-                        var json = $.parseJSON(data.data);
-                        if (json.error) {
-                            alert(json.message);
+                        if (config.operate == "/logfile") {
+                            config.callback(data);
                         } else {
-                            config.callback(json);
+                            var json = $.parseJSON(data.data);
+                            console.log(json);
+                            if (json.error) {
+                                alert(json.message);
+                            } else {
+                                config.callback(json);
+                            }
                         }
                     } else {
                         alert(data.msg);
@@ -391,9 +414,9 @@
                     if (data.code == 0) {
                         var json = $.parseJSON(data.data);
                         if (json.length > 0) {
-                            $("#modal-content").html(json.join('<br>'));
+                            $("#modal-content").html(json.join('<br>') + " changed.");
                         } else {
-                            $("#modal-content").html("no keys changed");
+                            $("#modal-content").html("no keys changed.");
                         }
                         $("#modal").modal('show');
                     } else {

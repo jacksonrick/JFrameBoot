@@ -12,7 +12,7 @@ import org.slf4j.LoggerFactory;
  */
 public class Log {
 
-    private final static Logger log = LoggerFactory.getLogger(Log.class);
+    private static final Logger log = LoggerFactory.getLogger(Log.class);
 
     /**
      * @param msg

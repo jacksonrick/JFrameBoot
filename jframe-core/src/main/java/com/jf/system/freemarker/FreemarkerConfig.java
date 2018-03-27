@@ -1,7 +1,5 @@
 package com.jf.system.freemarker;
 
-import com.jf.system.freemarker.TemplateDirectivePage;
-import com.jf.system.freemarker.TemplateMethod;
 import freemarker.template.TemplateModelException;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;

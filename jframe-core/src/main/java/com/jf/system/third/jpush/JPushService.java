@@ -68,7 +68,7 @@ public class JPushService {
             client.sendRequest(HttpMethod.POST, payload.toString(), uri, new NettyHttpClient.BaseCallback() {
                 @Override
                 public void onSucceed(ResponseWrapper responseWrapper) {
-                    LogManager.info(responseWrapper.toString());
+                    LogManager.info(responseWrapper.toString(), JPushService.class);
                 }
             });
         } catch (URISyntaxException e) {
@@ -101,7 +101,7 @@ public class JPushService {
             client.sendRequest(HttpMethod.POST, payload2.toString(), uri, new NettyHttpClient.BaseCallback() {
                 @Override
                 public void onSucceed(ResponseWrapper responseWrapper) {
-                    LogManager.info(responseWrapper.toString());
+                    LogManager.info(responseWrapper.toString(), JPushService.class);
                 }
             });
         } catch (URISyntaxException e) {

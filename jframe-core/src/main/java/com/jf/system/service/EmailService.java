@@ -2,7 +2,6 @@ package com.jf.system.service;
 
 import freemarker.template.Template;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
@@ -10,7 +9,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 
-import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.util.Map;
 

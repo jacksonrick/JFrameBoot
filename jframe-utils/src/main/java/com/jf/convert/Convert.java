@@ -12,9 +12,6 @@ import java.text.DecimalFormat;
  */
 public class Convert {
 
-    public static void main(String[] args) {
-    }
-
     /**
      * 浮点数相加
      *

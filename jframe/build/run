@@ -40,3 +40,5 @@ fi
 # --server.port             specify server port.
 # --spring.profiles.active  specify dev or product profile.
 # we can specify java properties: java -Xms4g -Xmx4g -Xmn768m
+
+# cloud server: nohup java -jar cloud-server-1.0.jar -server >/dev/null 2>&1 &

@@ -1,23 +1,31 @@
 logging:
   config: classpath:logback-boot.xml # 日志配置文件
+  file: ${system.log_path}${app.name:jframe}.log # 当前日志位置
 server:
-  session:
-    timeout: 1800 # session过期时间
   tomcat: # tomcat设置及优化
-      uri-encoding: UTF-8
-      max-threads: 800
-      min-spare-threads: 20
-      max-connections: 10000
-  connection-timeout: 5000
+    uri-encoding: UTF-8
+    max-threads: 800
+    min-spare-threads: 20
+    max-connections: 2000
+  servlet:
+    session:
+      timeout: 30m # session过期时间
 #  ssl:
 #    key-store: classpath:.keystore
 #    key-store-type: jks
 #    key-password: 111111
 #    key-alias: tomcat
 spring:
+  cache: # 缓存设置
+    type: REDIS # 缓存类型 NONE | REDIS
+    cache-names: user,order # 缓存的名称(多个)
+    redis:
+      time-to-live: 20m
+  session: # session存储类型 NONE | REDIS
+    store-type: REDIS
   mvc:
     static-path-pattern: /static/** # 静态地址映射
-  http:
+  servlet:
     multipart: # 文件上传限制
       max-file-size: 50MB
       max-request-size: 10MB
@@ -46,12 +54,16 @@ spring:
   datasource:
     druid: # Druid数据源配置
       driver-class-name: com.mysql.jdbc.Driver
-      master:
+      db1: # 库1
         url: jdbc:mysql://127.0.0.1:3306/jframe?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false
         username: root
         password: 12345678
-      cluster:
+      db2: # 库2
         url: jdbc:mysql://127.0.0.1:3306/test?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false
+        username: root
+        password: 12345678
+      loadbalance: # 集群[需要请替换到以上配置]
+        url: jdbc:mysql:loadbalance://192.168.1.191:3306,192.168.1.192:3306/test?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&roundRobinLoadBalance=true
         username: root
         password: 12345678
       initial-size: 5
@@ -69,16 +81,19 @@ spring:
       test-while-idle: true
       filter: # 自定义StatFilter配置
         stat:
+          enabled: ${app.druid.enabled:false}
           db-type: mysql
           log-slow-sql: true
           slow-sql-millis: 2000
       stat-view-servlet: # Druid监控配置
+        enabled: ${app.druid.enabled:false}
         url-pattern: /druid/*
         reset-enable: true
         login-username: admin
         login-password: 123456
         allow: 127.0.0.1
       web-stat-filter:
+        enabled: ${app.druid.enabled:false}
         url-pattern: /*
         exclusions: "*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*"
       aop-patterns: com.jf.service.* # Spring监控AOP切入点
@@ -101,12 +116,18 @@ spring:
   redis: # spring redis
     host: 192.168.1.199
     port: 6379
-    password:
-    timeout: 3000
-    pool:
-      max-idle: 50
-      min-idle: 10
-      max-active: 10
+    password: zhigui
+    timeout: 5s
+    lettuce: # 使用lettuce或者jedis
+      pool:
+        max-idle: 50
+        min-idle: 10
+        max-active: 10
+#    sentinel: # 集群
+#      master: mymaster
+#      nodes:
+#        - 192.168.1.199:26379
+#        - 192.168.1.199:26380
   activemq: # activemq
     broker-url: tcp://192.168.1.199:61616 # 服务器地址
     in-memory: true
@@ -119,8 +140,36 @@ spring:
 fdfs: # fastDFS配置
   so-timeout: 3000
   connect_timeout: 3000
-  tracker-list:
+  tracker-list: # 可设置多个
     - 192.168.1.199:22122
+eureka: # eureka客户端注册
+  client:
+    enabled: ${app.eureka.enabled:false}
+    serviceUrl:
+      defaultZone: http://eureka:eureka1234@127.0.0.1:10000/eureka/ # eureka服务端地址
+feign: # 断路器|监控 需配合注解使用*
+  hystrix:
+    enabled: ${app.eureka.enabled:false}
+management:
+  endpoints: # Actuator监控
+    enabled-by-default: ${app.monitor.enabled:false}
+    web:
+      base-path: /monitor # 监控主路径
+      exposure: # 暴露的接口
+        include: info, health, env, httptrace, metrics, threaddump, logfile, refresh
+    jmx:
+      exposure:
+        include: info, health, mappings, beans
+  server:
+    add-application-context-header: false # 隐藏http头
+  endpoint:
+    health: # 显示详细
+      show-details: WHEN_AUTHORIZED
+  health: # 指定不监控的服务
+    mail:
+      enabled: false
+    jms:
+      enabled: false
 system: # 系统自定义配置
   appkey: 00056cb1d74435076a4c15a490798df4
   static_host: http://127.0.0.1:8080/ # 静态服务器地址

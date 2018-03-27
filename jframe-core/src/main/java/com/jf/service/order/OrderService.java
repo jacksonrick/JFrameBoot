@@ -1,6 +1,5 @@
 package com.jf.service.order;
 
-import com.jf.entity.ResMsg;
 import com.jf.string.StringUtil;
 import org.springframework.stereotype.Service;
 

@@ -1,7 +1,6 @@
 package com.jf.system.service;
 
 import com.jf.string.StringUtil;
-import com.jf.system.PathUtil;
 import com.lowagie.text.pdf.BaseFont;
 import freemarker.template.Template;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -11,14 +11,12 @@ public class EmptyPatternValidator implements ConstraintValidator<EmptyPattern, 
 
     private String regexp;
 
-    @Override
     public void initialize(EmptyPattern emptyPattern) {
         this.regexp = emptyPattern.regexp();
     }
 
-    @Override
     public boolean isValid(String value, ConstraintValidatorContext context) {
-        if (value == null || value == "") {
+        if (value == null || "".equals(value)) {
             return true;
         }
         if (value.matches(regexp)) {
