@@ -17,12 +17,12 @@ server:
 #    key-alias: tomcat
 spring:
   cache: # 缓存设置
-    type: REDIS # 缓存类型 NONE | REDIS
+    type: NONE # 缓存类型 NONE | REDIS
     cache-names: user,order # 缓存的名称(多个)
     redis:
       time-to-live: 20m
   session: # session存储类型 NONE | REDIS
-    store-type: REDIS
+    store-type: NONE
   mvc:
     static-path-pattern: /static/** # 静态地址映射
   servlet:
@@ -102,6 +102,10 @@ spring:
   task: # 线程池设置
     corePoolSize: 10
     maxPoolSize: 30
+    queueCapacity: 200
+    keepAliveSeconds: 60
+    waitOnShutdown: true
+    awaitTerminationSeconds: 60
   mail: # 邮件服务器设置
     host: smtp.qq.com
     username: 1@qq.com
@@ -116,7 +120,7 @@ spring:
   redis: # spring redis
     host: 192.168.1.199
     port: 6379
-    password: zhigui
+    password: 12345678 # 密码
     timeout: 5s
     lettuce: # 使用lettuce或者jedis
       pool:
@@ -160,6 +164,7 @@ management:
     jmx:
       exposure:
         include: info, health, mappings, beans
+        # exclude: * # 不暴露jmx
   server:
     add-application-context-header: false # 隐藏http头
   endpoint:
@@ -172,7 +177,7 @@ management:
       enabled: false
 system: # 系统自定义配置
   appkey: 00056cb1d74435076a4c15a490798df4
-  static_host: http://127.0.0.1:8080/ # 静态服务器地址
+  static_host: http://127.0.0.1:${server.port}/ # 静态服务器地址
   static_path: /Users/xujunfei/Downloads/static/ # 静态文件目录
   log_path: /Users/xujunfei/Downloads/logs/ # 日志存放目录
   server_id: ${spring.application.name}

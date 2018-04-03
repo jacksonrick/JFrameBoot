@@ -11,7 +11,8 @@
     <property name="FILE_NAME" value="${app.name:-jframe}"></property>
     <property name="ERROR_NAME" value="${app.name:-jframe}.error"></property>
 
-    <!-- 开发环境/不写入日志文件 -->
+    <!-- 开发环境 -->
+    <!-- 控制台打印+写入日志文件 -->
     <springProfile name="dev">
         <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
             <encoder>
@@ -38,9 +39,12 @@
             <appender-ref ref="devlog"/>
         </root>
         <logger name="com.jf.mapper" level="DEBUG"></logger>
+        <logger name="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping" level="ERROR"></logger>
+        <logger name="org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver" level="ERROR"></logger>
     </springProfile>
 
     <!-- 生产环境 -->
+    <!-- INFO+ERROR -->
     <springProfile name="pro">
         <!-- 记录INFO日志 -->
         <appender name="syslog" class="ch.qos.logback.core.rolling.RollingFileAppender">

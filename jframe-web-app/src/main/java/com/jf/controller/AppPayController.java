@@ -180,7 +180,7 @@ public class AppPayController extends BaseController {
      */
     @RequestMapping("/wx_refund")
     @ResponseBody
-    public ResMsg wx_refund() {
+    public ResMsg wx_refund() throws Exception {
         wxPayService.refund("2018012515533680990396", StringUtil.getOrderCode(), 0.01, 0.01);
         return new ResMsg(0, SUCCESS);
     }

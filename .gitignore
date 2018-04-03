@@ -8,7 +8,6 @@ jframe-core/target/
 jframe-web-manage/target/
 jframe-web-front/target/
 jframe-web-app/target/
-jframe-web-shop/target/
 cloud-server/target/
 .DS_Store
 /jframe-core/src/main/resources/application-pro.yml

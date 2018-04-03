@@ -33,22 +33,25 @@
             <artifactId>mysql-connector-java</artifactId>
             <version>5.1.45</version>
         </dependency>
-        <!-- poi pdf excel -->
+
+        <!-- poi -->
         <dependency>
             <groupId>org.apache.poi</groupId>
             <artifactId>poi</artifactId>
-            <version>3.9</version>
+            <version>3.17</version>
         </dependency>
         <dependency>
             <groupId>org.apache.poi</groupId>
             <artifactId>poi-ooxml</artifactId>
-            <version>3.9</version>
+            <version>3.17</version>
         </dependency>
         <dependency>
             <groupId>org.apache.poi</groupId>
             <artifactId>poi-ooxml-schemas</artifactId>
-            <version>3.9</version>
+            <version>3.17</version>
         </dependency>
+
+        <!-- pdf -->
         <dependency>
             <groupId>org.xhtmlrenderer</groupId>
             <artifactId>core-renderer</artifactId>
@@ -64,6 +67,7 @@
             <artifactId>itext-asian</artifactId>
             <version>5.2.0</version>
         </dependency>
+
         <!-- json -->
         <dependency>
             <groupId>com.alibaba</groupId>
@@ -76,12 +80,19 @@
             <version>2.4</version>
             <classifier>jdk15</classifier>
         </dependency>
-        <!-- jdom -->
+
+        <!-- jdom & dom4j -->
         <dependency>
             <groupId>org.jdom</groupId>
             <artifactId>jdom</artifactId>
             <version>1.1</version>
         </dependency>
+        <dependency>
+            <groupId>dom4j</groupId>
+            <artifactId>dom4j</artifactId>
+            <version>1.6.1</version>
+        </dependency>
+
         <dependency>
             <groupId>axis</groupId>
             <artifactId>axis</artifactId>
@@ -97,6 +108,7 @@
             <artifactId>ant</artifactId>
             <version>1.7.0</version>
         </dependency>
+
         <!-- commons -->
         <dependency>
             <groupId>commons-io</groupId>
@@ -113,36 +125,40 @@
             <artifactId>commons-lang3</artifactId>
             <version>3.4</version>
         </dependency>
+
         <!-- xml -->
         <dependency>
             <groupId>com.thoughtworks.xstream</groupId>
             <artifactId>xstream</artifactId>
             <version>1.4.8</version>
         </dependency>
+
         <!-- httpclient -->
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>
             <version>4.5.2</version>
         </dependency>
-        <!-- http xml -->
         <dependency>
             <groupId>commons-httpclient</groupId>
             <artifactId>commons-httpclient</artifactId>
             <version>3.1</version>
         </dependency>
-        <!-- joda util -->
+
+        <!-- joda time -->
         <dependency>
             <groupId>joda-time</groupId>
             <artifactId>joda-time</artifactId>
             <version>2.9.9</version>
         </dependency>
+
         <!-- java mail -->
         <dependency>
             <groupId>javax.mail</groupId>
             <artifactId>mail</artifactId>
             <version>1.4.7</version>
         </dependency>
+
         <!-- qrcode -->
         <dependency>
             <groupId>com.google.zxing</groupId>
@@ -161,13 +177,15 @@
             <artifactId>ECharts</artifactId>
             <version>3.0.0.2</version>
         </dependency>
+
         <!-- aliyun esc -->
         <dependency>
             <groupId>com.aliyun</groupId>
             <artifactId>aliyun-java-sdk-core</artifactId>
             <version>3.5.0</version>
         </dependency>
-        <!-- weixin pay -->
+
+        <!-- weixin & alipay -->
         <dependency>
             <groupId>com.github.wxpay</groupId>
             <artifactId>wxpay-sdk</artifactId>
@@ -178,12 +196,14 @@
             <artifactId>k12-alipay-sdk</artifactId>
             <version>0.0.1-beta</version>
         </dependency>
+
         <!-- jpush -->
         <dependency>
             <groupId>cn.jpush.api</groupId>
             <artifactId>jpush-client</artifactId>
             <version>3.2.17</version>
         </dependency>
+
         <!-- pagehelper -->
         <dependency>
             <groupId>com.github.pagehelper</groupId>

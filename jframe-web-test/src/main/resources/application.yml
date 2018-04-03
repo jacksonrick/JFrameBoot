@@ -15,10 +15,10 @@ info: # 定义各种额外的详情给服务端显示
 # 在dev/pro环境有调用，有默认值
 # *注：springcloud相关的jar在各个端的pom下
 app:
-  pro: # 生产环境专用
-    appkey: ""
-    static_path: /data/wwwroot/test/static/
-    static_host: http://192.168.1.199:${server.port}/
+  host: 192.168.1.199
+  appkey: "------"
+  static_path: /data/wwwroot/test/static/ # 静态文件目录
+  static_host: http://${app.host}:${server.port}/ # 静态文件地址
   db: # 多数据库 -可同时启用,但必须启用一个*
     db1:
       enabled: true
@@ -40,3 +40,7 @@ app:
     enabled: false
   fdfs: # FastDFS,false则使用本地上传
     enabled: false
+rmi: # 启用rmi监控
+  enabled: true
+  host: 127.0.0.1
+  port: 1${server.port}

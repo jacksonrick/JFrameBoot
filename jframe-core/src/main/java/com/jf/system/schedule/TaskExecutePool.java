@@ -1,7 +1,6 @@
 package com.jf.system.schedule;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.jf.system.conf.LogManager;
 import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
@@ -25,16 +24,22 @@ import java.util.concurrent.ThreadPoolExecutor;
 @EnableAsync
 public class TaskExecutePool implements AsyncConfigurer {
 
-    private Logger logger = LoggerFactory.getLogger(TaskExecutePool.class);
-
     private int corePoolSize;
     private int maxPoolSize;
+    private int queueCapacity;
+    private int keepAliveSeconds;
+    private boolean waitOnShutdown;
+    private int awaitTerminationSeconds;
 
     @Override
     public Executor getAsyncExecutor() {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
         executor.setCorePoolSize(corePoolSize);
         executor.setMaxPoolSize(maxPoolSize);
+        executor.setQueueCapacity(queueCapacity);
+        executor.setKeepAliveSeconds(keepAliveSeconds);
+        executor.setWaitForTasksToCompleteOnShutdown(waitOnShutdown);
+        executor.setAwaitTerminationSeconds(awaitTerminationSeconds);
         // 任务前缀
         executor.setThreadNamePrefix("taskExecutor-");
 
@@ -50,7 +55,7 @@ public class TaskExecutePool implements AsyncConfigurer {
         return new AsyncUncaughtExceptionHandler() {
             @Override
             public void handleUncaughtException(Throwable arg0, Method arg1, Object... arg2) {
-                logger.error("AsyncTaskExecutePool Exception Method:" + arg1.getName());
+                LogManager.error("AsyncTaskExecutePool Exception Method:" + arg1.getName());
             }
         };
     }
@@ -69,5 +74,37 @@ public class TaskExecutePool implements AsyncConfigurer {
 
     public void setMaxPoolSize(int maxPoolSize) {
         this.maxPoolSize = maxPoolSize;
+    }
+
+    public int getQueueCapacity() {
+        return queueCapacity;
+    }
+
+    public void setQueueCapacity(int queueCapacity) {
+        this.queueCapacity = queueCapacity;
+    }
+
+    public int getKeepAliveSeconds() {
+        return keepAliveSeconds;
+    }
+
+    public void setKeepAliveSeconds(int keepAliveSeconds) {
+        this.keepAliveSeconds = keepAliveSeconds;
+    }
+
+    public boolean isWaitOnShutdown() {
+        return waitOnShutdown;
+    }
+
+    public void setWaitOnShutdown(boolean waitOnShutdown) {
+        this.waitOnShutdown = waitOnShutdown;
+    }
+
+    public int getAwaitTerminationSeconds() {
+        return awaitTerminationSeconds;
+    }
+
+    public void setAwaitTerminationSeconds(int awaitTerminationSeconds) {
+        this.awaitTerminationSeconds = awaitTerminationSeconds;
     }
 }

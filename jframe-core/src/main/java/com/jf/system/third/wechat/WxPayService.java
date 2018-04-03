@@ -2,6 +2,7 @@ package com.jf.system.third.wechat;
 
 import com.github.wxpay.sdk.WXPay;
 import com.github.wxpay.sdk.WXPayConfig;
+import com.jf.system.conf.LogManager;
 import com.jf.system.conf.SysConfig;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
@@ -76,7 +77,7 @@ public class WxPayService implements WXPayConfig {
      * @param ip
      * @return 微信返回的参数集
      */
-    public Map<String, String> order_app(String orderNum, String body, Double orderPrice, String ip) {
+    public Map<String, String> order_app(String orderNum, String body, Double orderPrice, String ip) throws Exception {
         WXPay wxpay = new WXPay(this);
         Map<String, String> data = new HashMap<String, String>();
         data.put("body", body);
@@ -88,14 +89,11 @@ public class WxPayService implements WXPayConfig {
         data.put("trade_type", "APP");
         //data.put("device_info", "");
         //data.put("product_id", "1");
-        try {
-            Map<String, String> resp = wxpay.unifiedOrder(data);
-            System.out.println(resp);
-            if ("SUCCESS".equals(resp.get("result_code"))) {
-                return resp;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+
+        Map<String, String> resp = wxpay.unifiedOrder(data);
+        LogManager.info(resp.toString());
+        if ("SUCCESS".equals(resp.get("result_code"))) {
+            return resp;
         }
         return null;
     }
@@ -109,7 +107,7 @@ public class WxPayService implements WXPayConfig {
      * @param ip
      * @return 二维码地址
      */
-    public String order_qrcode(String orderNum, String body, Double orderPrice, String ip) {
+    public String order_qrcode(String orderNum, String body, Double orderPrice, String ip) throws Exception {
         WXPay wxpay = new WXPay(this);
         Map<String, String> data = new HashMap<String, String>();
         data.put("body", body);
@@ -119,14 +117,11 @@ public class WxPayService implements WXPayConfig {
         data.put("spbill_create_ip", ip);
         data.put("notify_url", config.getWechat().getNotifyUrl());
         data.put("trade_type", "NATIVE");
-        try {
-            Map<String, String> resp = wxpay.unifiedOrder(data);
-            System.out.println(resp);
-            if ("SUCCESS".equals(resp.get("result_code"))) {
-                return resp.get("code_url");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+
+        Map<String, String> resp = wxpay.unifiedOrder(data);
+        LogManager.info(resp.toString());
+        if ("SUCCESS".equals(resp.get("result_code"))) {
+            return resp.get("code_url");
         }
         return "";
     }
@@ -141,7 +136,7 @@ public class WxPayService implements WXPayConfig {
      * @param openid
      * @return
      */
-    public Map<String, String> order_jsapi(String orderNum, String body, Double orderPrice, String ip, String openid) {
+    public Map<String, String> order_jsapi(String orderNum, String body, Double orderPrice, String ip, String openid) throws Exception {
         WXPay wxpay = new WXPay(this);
         Map<String, String> data = new HashMap<String, String>();
         data.put("body", body);
@@ -152,14 +147,11 @@ public class WxPayService implements WXPayConfig {
         data.put("notify_url", config.getWechat().getNotifyUrl());
         data.put("openid", openid);
         data.put("trade_type", "JSAPI");
-        try {
-            Map<String, String> resp = wxpay.unifiedOrder(data);
-            System.out.println(resp);
-            if ("SUCCESS".equals(resp.get("result_code"))) {
-                return resp;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+
+        Map<String, String> resp = wxpay.unifiedOrder(data);
+        LogManager.info(resp.toString());
+        if ("SUCCESS".equals(resp.get("result_code"))) {
+            return resp;
         }
         return null;
     }
@@ -170,19 +162,14 @@ public class WxPayService implements WXPayConfig {
      * @param outTradeNo
      * @return
      */
-    public Map<String, String> queryOrder(String outTradeNo) {
+    public Map<String, String> queryOrder(String outTradeNo) throws Exception {
         WXPay wxpay = new WXPay(this);
         Map<String, String> data = new HashMap<String, String>();
         data.put("out_trade_no", outTradeNo);
         // 或 transaction_id
-        try {
-            Map<String, String> resp = wxpay.orderQuery(data);
-            System.out.println(resp);
-            return resp;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
+        Map<String, String> resp = wxpay.orderQuery(data);
+        LogManager.info(resp.toString());
+        return resp;
     }
 
     /**
@@ -191,18 +178,13 @@ public class WxPayService implements WXPayConfig {
      * @param outTradeNo
      * @return
      */
-    public Map<String, String> closeOrder(String outTradeNo) {
+    public Map<String, String> closeOrder(String outTradeNo) throws Exception {
         WXPay wxpay = new WXPay(this);
         Map<String, String> data = new HashMap<String, String>();
         data.put("out_trade_no", outTradeNo);
-        try {
-            Map<String, String> resp = wxpay.closeOrder(data);
-            System.out.println(resp);
-            return resp;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
+        Map<String, String> resp = wxpay.closeOrder(data);
+        LogManager.info(resp.toString());
+        return resp;
     }
 
     /**
@@ -214,21 +196,18 @@ public class WxPayService implements WXPayConfig {
      * @param refundPrice
      * @return 失败或成功
      */
-    public Boolean refund(String orderNum, String refundNum, Double orderPrice, Double refundPrice) {
+    public Boolean refund(String orderNum, String refundNum, Double orderPrice, Double refundPrice) throws Exception {
         WXPay wxpay = new WXPay(this);
         Map<String, String> data = new HashMap<String, String>();
         data.put("out_trade_no", orderNum);
         data.put("out_refund_no", refundNum);
         data.put("total_fee", (int) (orderPrice * 100) + "");
         data.put("refund_fee", (int) (refundPrice * 100) + "");
-        try {
-            Map<String, String> resp = wxpay.refund(data);
-            System.out.println(resp);
-            if ("SUCCESS".equals(resp.get("result_code"))) {
-                return true;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+
+        Map<String, String> resp = wxpay.refund(data);
+        LogManager.info(resp.toString());
+        if ("SUCCESS".equals(resp.get("result_code"))) {
+            return true;
         }
         return false;
     }
@@ -240,18 +219,14 @@ public class WxPayService implements WXPayConfig {
      * @param outTradeNo
      * @return
      */
-    public Map<String, String> queryRefund(String outTradeNo) {
+    public Map<String, String> queryRefund(String outTradeNo) throws Exception {
         WXPay wxpay = new WXPay(this);
         Map<String, String> data = new HashMap<String, String>();
         data.put("out_trade_no", outTradeNo);
         // 或 out_refund_no transaction_id refund_id
-        try {
-            Map<String, String> resp = wxpay.refundQuery(data);
-            System.out.println(resp);
-            return resp;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
+
+        Map<String, String> resp = wxpay.refundQuery(data);
+        LogManager.info(resp.toString());
+        return resp;
     }
 }
