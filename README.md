@@ -1,5 +1,5 @@
 # JFrame
-##### JFrame - SpringBoot & Cloud Project `v4.7`
+##### JFrame - SpringBoot & Cloud Project `v4.7.1`
 `jackson-rick`   <br>
 `https://github.com/jacksonrick/JFrameBoot`
 
@@ -30,6 +30,9 @@
 * Jenkins自动化部署、脚本
 
 ### 更新日志：
+* v4.7.1 `20180423`
+    * 1.完善系统架构文档说明
+    * 2.优化日志、Sys、Redisson等服务的配置
 * v4.7 `20180403`
     * 1.修复BUG
     * 2.优化参数和部署脚本
@@ -162,10 +165,10 @@
 
 ### 打包到服务器
 * 修改生产环境配置
-* 运行 `clean install -DskipTests`进行打包
+* 运行 `clean package -DskipTests`进行打包
 * 将target目录下的打包文件上传到服务器目录
 * 运行`jframe/build/run`命令或直接运行`java -jar`命令
-* 注意：运行脚本需要按照一定的命名方式
+* 注意：运行脚本前，请先查看注释，需要按照指定的命名方式
 
 ### 其他
 * 使用maven下载Jar包时，请先在`maven-.../conf/setting.xml`的mirrors标签内加入以下：
@@ -178,8 +181,6 @@
     </mirror>
     ```
 * 数据库脚本：`jframe/doc/jframe.sql`
-* 操作手册说明：`jframe/doc/操作手册、插件、Util包说明、开发规范.docx`
-* 开发配置：`jframe-core/src/main/resources/application-dev.yml`
-* 如在开发或测试过程中遇到任何问题，可联系QQ：`809573150`
+* 操作手册说明：`jframe/doc/系统架构.docx`
 
 `*注：项目中的Demo可能需要去除相关注释后方可正常运行`

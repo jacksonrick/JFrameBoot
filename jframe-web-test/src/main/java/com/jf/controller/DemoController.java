@@ -59,6 +59,14 @@ public class DemoController extends BaseController {
         return userService.findUserByPage(condition);
     }
 
+    @RequestMapping("/users2")
+    @ResponseBody
+    public ResMsg users2() {
+        User condition = new User();
+        List<User> list = userService.findByCondition(condition);
+        return new ResMsg(0, SUCCESS, list);
+    }
+
     @RequestMapping("/findUsers")
     @ResponseBody
     public List<IdText> findUsers(String phone) {

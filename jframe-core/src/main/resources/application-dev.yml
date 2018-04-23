@@ -2,11 +2,15 @@ logging:
   config: classpath:logback-boot.xml # 日志配置文件
   file: ${system.log_path}${app.name:jframe}.log # 当前日志位置
 server:
-  tomcat: # tomcat设置及优化
+  tomcat: # tomcat容器
     uri-encoding: UTF-8
     max-threads: 800
     min-spare-threads: 20
     max-connections: 2000
+  undertow: # undertow容器
+    io-threads: 4
+    worker-threads: 20
+    buffer-size: 1024
   servlet:
     session:
       timeout: 30m # session过期时间
@@ -127,11 +131,19 @@ spring:
         max-idle: 50
         min-idle: 10
         max-active: 10
-#    sentinel: # 集群
+#    sentinel: # Sentinel集群
 #      master: mymaster
 #      nodes:
 #        - 192.168.1.199:26379
 #        - 192.168.1.199:26380
+#    cluster: # Cluster集群
+#      nodes:
+#        - 192.168.1.199:7001
+#        - 192.168.1.199:7002
+#        - 192.168.1.199:7003
+#        - 192.168.1.199:7004
+#        - 192.168.1.199:7005
+#        - 192.168.1.199:7006
   activemq: # activemq
     broker-url: tcp://192.168.1.199:61616 # 服务器地址
     in-memory: true
@@ -163,8 +175,7 @@ management:
         include: info, health, env, httptrace, metrics, threaddump, logfile, refresh
     jmx:
       exposure:
-        include: info, health, mappings, beans
-        # exclude: * # 不暴露jmx
+        include: info, health, mappings, beans # 不暴露jmx: exclude: '*'
   server:
     add-application-context-header: false # 隐藏http头
   endpoint:
@@ -199,6 +210,9 @@ system: # 系统自定义配置
   geetest: # 极验验证
     id: a53178
     key: 51dbc8
+  jpush: # jpush推送
+    appkey1: appkey
+    secret1: secret
   upload:
     fdfs: ${app.fdfs.enabled:false}
     img_size: 3

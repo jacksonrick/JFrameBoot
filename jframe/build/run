@@ -1,31 +1,54 @@
 #!/bin/bash
 # description: start app
 # author: jackson rick
+# version: 1.1.0
 
 JARNAME=$1
 PORT=$2
+JPARAM=$3
 JAVAPATH=/usr/local/jdk/bin
 APPATH=/data/wwwroot
 
 if [ ! -n "$JARNAME" ];then
-    echo "Usage: $0 appname"
+    echo "Usage: $0 appname [port]"
+    exit 1;
+fi
+
+if [ ! -d "$JAVAPATH" ];then
+    echo "Java path doesn't exist"
     exit 1;
 fi
 
 APP_NAME="jframe-web-$JARNAME"
-PID=$(ps -aux | grep ${APP_NAME} | grep -v grep | awk '{print $2}' )
+
+if [ ! -f "$APPATH/$JARNAME/$APP_NAME.jar" ];then
+    echo "$APP_NAME jarfile doesn't exist"
+    exit 1;
+fi
+
+PID=$(ps -ef | grep ${APP_NAME} | grep -v grep | awk '{print $2}' )
 if [ -n "$PID" ];then
     echo -e "$APP_NAME has started already at PID:$PID.Will kill!"
-    kill -9 $PID
+    kill $PID
+    sleep 3
 fi
+
 if [ -n "$PORT" ];then
+    SP=$PORT
     PORT="--server.port=$PORT"
 fi
 
-nohup $JAVAPATH/java -Dapp.name=$APP_NAME -server -jar $APPATH/$JARNAME/$APP_NAME.jar $PORT --spring.profiles.active=pro >/dev/null 2>&1 &
+echo Java path: $JAVAPATH
+echo App Home: $APPATH
+echo App Name: $APP_NAME
+echo Server port: ${SP:-'Default'}
 
+nohup $JAVAPATH/java -server $JPARAM -Dapp.name=$APP_NAME -jar $APPATH/$JARNAME/$APP_NAME.jar $PORT --spring.profiles.active=pro >/dev/null 2>&1 &
+
+echo starting...
 sleep 5
-PID=$(ps -aux | grep ${APP_NAME} | grep -v grep | awk '{print $2}' )
+
+PID=$(ps -ef | grep ${APP_NAME} | grep -v grep | awk '{print $2}' )
 if [ -n "$PID" ];then
     echo -e "$APP_NAME is started at PID:$PID."
 else
@@ -34,7 +57,7 @@ fi
 
 # nohup java -server -jar -Dapp.name=jframe-web-manage jframe-web-manage.jar --spring.profiles.active=pro >run.log &
 
-# -server                   use server mode.
+# -server                   use server [C2] mode.
 # -Dapp.name                specify app name and use to logback's filename.
 # --server.port             specify server port.
 # --spring.profiles.active  specify dev or product profile.

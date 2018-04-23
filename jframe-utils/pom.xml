@@ -19,6 +19,11 @@
         </resources>
     </build>
 
+    <properties>
+        <smack.scope>provided</smack.scope>
+        <echarts.scope>provided</echarts.scope>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>javax.servlet</groupId>
@@ -176,13 +181,14 @@
             <groupId>com.github.abel533</groupId>
             <artifactId>ECharts</artifactId>
             <version>3.0.0.2</version>
+            <scope>${echarts.scope}</scope>
         </dependency>
 
         <!-- aliyun esc -->
         <dependency>
             <groupId>com.aliyun</groupId>
             <artifactId>aliyun-java-sdk-core</artifactId>
-            <version>3.5.0</version>
+            <version>3.6.0</version>
         </dependency>
 
         <!-- weixin & alipay -->
@@ -216,21 +222,25 @@
             <groupId>org.igniterealtime.smack</groupId>
             <artifactId>smack-java7</artifactId>
             <version>4.2.2</version>
+            <scope>${smack.scope}</scope>
         </dependency>
         <dependency>
             <groupId>org.igniterealtime.smack</groupId>
             <artifactId>smack-im</artifactId>
             <version>4.2.2</version>
+            <scope>${smack.scope}</scope>
         </dependency>
         <dependency>
             <groupId>org.igniterealtime.smack</groupId>
             <artifactId>smack-tcp</artifactId>
             <version>4.2.2</version>
+            <scope>${smack.scope}</scope>
         </dependency>
         <dependency>
             <groupId>org.igniterealtime.smack</groupId>
             <artifactId>smack-extensions</artifactId>
             <version>4.2.2</version>
+            <scope>${smack.scope}</scope>
         </dependency>
     </dependencies>
 

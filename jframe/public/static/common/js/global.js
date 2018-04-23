@@ -505,12 +505,12 @@ function cityPicker(id, level, type, func) {
 //format  yyyy    yyyy-mm yyyy-mm-dd  yyyy-mm-dd hh:ii
 
 /**
- * 时间选择器 datePicker("#datetimepicker")
+ * 时间选择器 datePicker("#datetimepicker", "yyyy-mm-dd")
  * @param id
  * @param format
- * @param func onClose callback
+ * @param hide onHide callback
  */
-function datePicker(ids, format, func) {
+function datePicker(ids, format, hide) {
     $.ajaxSetup({cache: true});
     $.getScript("/static/library/bootstrap/bootstrap-datetimepicker.min.js",
         function () {
@@ -532,9 +532,18 @@ function datePicker(ids, format, func) {
                 todayBtn: true,
                 autoclose: true
             }).on('hide', function (e) {
-                if (func) {
-                    func();
+                e.preventDefault();
+                e.stopPropagation();
+                if (ids.indexOf("startDate") > 0 && ids.indexOf("endDate") > 0) {
+                    // var time = e.date; // 会产生时区问题
+                    var id = e.currentTarget.id;
+                    if ("startDate" == id) {
+                        $("#endDate").datetimepicker("setStartDate", $("#startDate").val());
+                    } else if ("endDate" == id) {
+                        $("#startDate").datetimepicker("setEndDate", $("#endDate").val());
+                    }
                 }
+                if (hide) hide();
             });
         }
     );

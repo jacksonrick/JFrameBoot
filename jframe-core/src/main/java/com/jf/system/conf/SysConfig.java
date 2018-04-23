@@ -51,6 +51,8 @@ public class SysConfig {
     private SysConfig.Wechat wechat;
     // 极验验证
     private SysConfig.Geetest geetest;
+    // jpush推送
+    private SysConfig.Jpush jpush;
     // 上传
     private SysConfig.Upload upload;
 
@@ -114,6 +116,7 @@ public class SysConfig {
                 ", aliyun=" + aliyun +
                 ", wechat=" + wechat +
                 ", geetest=" + geetest +
+                ", jpush=" + jpush +
                 ", upload=" + upload +
                 '}';
     }
@@ -142,6 +145,14 @@ public class SysConfig {
 
     public void setGeetest(SysConfig.Geetest geetest) {
         this.geetest = geetest;
+    }
+
+    public SysConfig.Jpush getJpush() {
+        return jpush;
+    }
+
+    public void setJpush(SysConfig.Jpush jpush) {
+        this.jpush = jpush;
     }
 
     public SysConfig.Upload getUpload() {
@@ -357,6 +368,35 @@ public class SysConfig {
             return "Geetest{" +
                     "id='" + id + '\'' +
                     ", key='" + key + '\'' +
+                    '}';
+        }
+    }
+
+    public static class Jpush {
+        private String appkey1;
+        private String secret1;
+
+        public String getAppkey1() {
+            return appkey1;
+        }
+
+        public void setAppkey1(String appkey1) {
+            this.appkey1 = appkey1;
+        }
+
+        public String getSecret1() {
+            return secret1;
+        }
+
+        public void setSecret1(String secret1) {
+            this.secret1 = secret1;
+        }
+
+        @Override
+        public String toString() {
+            return "Jpush{" +
+                    "appkey1='" + appkey1 + '\'' +
+                    ", secret1='" + secret1 + '\'' +
                     '}';
         }
     }

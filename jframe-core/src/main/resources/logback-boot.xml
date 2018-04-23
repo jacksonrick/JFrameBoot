@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
 
-    <!-- 日志目录/PRO -->
+    <!-- 测试环境日志目录 Mac|Linux -->
     <property name="LOG_HOME" value="/Users/xujunfei/Downloads/logs"></property>
+    <!-- 测试环境日志目录 Windows -->
+    <property name="LOG_HOME_WIN" value="C:/logs"></property>
+    <!-- 生产环境日志目录 Linux -->
     <property name="LOG_HOME_PRO" value="/data/wwwlogs"></property>
-    <!-- 若使用分布式，则选择flume appender -->
+
     <!-- 日志显示格式 -->
     <property name="PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS} %highlight(%-5level) %cyan(%logger{40}.%M:%L) - %msg%n"></property>
     <!-- 日志文件名称 -->

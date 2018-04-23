@@ -344,8 +344,8 @@ public class TestController extends BaseController {
     public ResMsg redisTemplate() {
         redisTemplate.opsForValue().set("name", "xujunfei");
         System.out.println((String) redisTemplate.opsForValue().get("name"));
-        redisTemplate.delete("name");
-        String res = (String) redisTemplate.opsForValue().getAndSet("name", "hahahahah");
+        //redisTemplate.delete("name");
+        //String res = (String) redisTemplate.opsForValue().getAndSet("name", "hahahahah");
         return new ResMsg(0, SUCCESS);
     }
 

@@ -47,7 +47,7 @@ public class BaseController extends Constant {
      *
      * @param userId
      */
-    public String putUser(Long userId) {
+    public String bindToken(Long userId) {
         String newToken = StringUtil.getTokenId();
         String oldToken = (String) redisTemplate.opsForValue().getAndSet(PREFIX + userId, newToken);
         if (oldToken != null) {
@@ -110,13 +110,15 @@ public class BaseController extends Constant {
     @ResponseBody
     public Object exceptionHandler(Exception exception, HttpServletRequest request, HttpServletResponse response) {
         // 跟踪错误信息
-        LogManager.error("An exception happened in【Server ID：" + config.getServerId() + "】【URI：" + request.getRequestURI() + "】", exception);
+        LogManager.info("An exception happened in【Server ID：" + config.getServerId() + "】【URI：" + request.getRequestURI() + "】" + "【Msg：" + exception.getMessage() + "】");
+        LogManager.error("【Server ID：" + config.getServerId() + "】【URI：" + request.getRequestURI() + "】", exception);
+
         String requestType = request.getHeader("X-Requested-With");
         String appHeader = request.getHeader("Req-Type");
-        if (appHeader != null && "APP".equals(appHeader)) {
+        if ("APP".equals(appHeader)) {
             return new ResMsg(-1, SERVER_ERROR);
         }
-        if (requestType != null && "XMLHttpRequest".equalsIgnoreCase(requestType)) {
+        if ("XMLHttpRequest".equalsIgnoreCase(requestType)) {
             return new ResMsg(-1, SERVER_ERROR);
         } else {
             Map map = new HashMap();

@@ -159,6 +159,9 @@ public class UserService {
      * @return
      */
     public List<User> findByCondition(User condition) {
+        //condition.setPageNo(1);
+        //condition.setPageSize(10);
+        //condition.setPage(false);
         return userMapper.findByCondition(condition);
     }
 

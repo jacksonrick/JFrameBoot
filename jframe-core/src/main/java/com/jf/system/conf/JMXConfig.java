@@ -55,6 +55,11 @@ public class JMXConfig {
     }
 
     public void setPort(Integer port) {
-        this.port = port;
+        // 注意：port是依据Tomcat/Undertow服务器的端口，建议4位
+        if (port == -1) {
+            this.port = 12121;
+        } else {
+            this.port = port + 10000;
+        }
     }
 }

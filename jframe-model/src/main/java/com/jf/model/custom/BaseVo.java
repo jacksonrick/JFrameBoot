@@ -75,6 +75,9 @@ public class BaseVo {
             if (this.pageSize == null) {
                 this.pageSize = 20;
             }
+        } else {
+            this.pageNo = null;
+            this.pageSize = null;
         }
     }
 

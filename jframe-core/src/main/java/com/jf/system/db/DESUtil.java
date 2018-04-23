@@ -105,9 +105,4 @@ public class DESUtil {
         return new String(cipher.doFinal(Base64.decodeBase64(data))).trim();
     }
 
-    public static void main(String[] args) throws Exception {
-    	System.out.println(encrypt("sysadmin"));
-    	String decryptData = decrypt("xq97RiKngs8=");
-        System.out.println("解密后: " + decryptData.trim());
-    }
 }

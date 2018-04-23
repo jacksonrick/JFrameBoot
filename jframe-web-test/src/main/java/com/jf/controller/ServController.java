@@ -5,6 +5,7 @@ import com.jf.system.conf.SysConfig;
 import com.jf.system.service.EmailService;
 import com.jf.system.service.PDFService;
 import com.jf.system.service.SMService;
+import com.jf.system.third.jpush.JPushService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -29,6 +30,9 @@ public class ServController extends BaseController {
     private EmailService emailService;
     @Resource
     private PDFService pdfService;
+    @Resource
+    private JPushService jPushService;
+
     @Resource
     private SysConfig sysConfig;
 
@@ -66,6 +70,13 @@ public class ServController extends BaseController {
             e.printStackTrace();
             return new ResMsg(0, "error");
         }
+    }
+
+    @RequestMapping("/jpush")
+    @ResponseBody
+    public ResMsg jpush() {
+        jPushService.sendPush(1, "hello", null, "10001");
+        return new ResMsg(0, SUCCESS);
     }
 
 }

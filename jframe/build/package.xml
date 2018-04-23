@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <assembly xmlns="http://maven.apache.org/ASSEMBLY/2.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
           xsi:schemaLocation="http://maven.apache.org/ASSEMBLY/2.0.0 http://maven.apache.org/xsd/assembly-2.0.0.xsd">
+    <!--
+    1、如果使用文件分离，则生成以下目录结构：
+        lib：依赖包
+        static：所有静态文件，方便动静分离
+        jframe-.jar：启动入口
+    2、如果使用单个Jar包运行，则将项目的pom打包插件更改为：spring-boot-maven-plugin即可
+    -->
     <id>package</id>
     <formats>
         <format>dir</format>
@@ -34,8 +41,9 @@
             <!-- 目标目录 -->
             <outputDirectory>lib/</outputDirectory>
             <scope>runtime</scope>
-            <excludes>
+            <excludes> <!-- 排除不需要的Jar包 -->
                 <exclude>${groupId}:${artifactId}</exclude>
+                <exclude>com.amazonaws:*</exclude>
             </excludes>
         </dependencySet>
     </dependencySets>

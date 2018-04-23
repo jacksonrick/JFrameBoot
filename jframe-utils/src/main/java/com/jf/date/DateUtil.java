@@ -1,22 +1,28 @@
 package com.jf.date;
 
-import java.text.DateFormat;
-import java.text.ParseException;
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
 /**
  * 时间工具类
+ * <p>Joda Time</p>
  *
  * @author rick
  */
 public class DateUtil {
 
-    public final static DateFormat YYYY_MM_DD_HH_MM_SS = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    public final static DateFormat YYYY_MM_DD = new SimpleDateFormat("yyyy-MM-dd");
-    public final static DateFormat YYYY_MM = new SimpleDateFormat("yyyy-MM");
-    public final static DateFormat YYYY = new SimpleDateFormat("yyyy");
+    private final static DateTimeFormatter FMT_YYYY_MM_DD_HH_MM_SS = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
+    private final static DateTimeFormatter FMT_YYYY_MM_DD = DateTimeFormat.forPattern("yyyy-MM-dd");
+
+    private final static String YYYY_MM_DD_HH_MM_SS = "yyyy-MM-dd HH:mm:ss";
+    private final static String YYYY_MM_DD = "yyyy-MM-dd";
+    private final static String YYYY_MM = "yyyy-MM";
+    private final static String YYYY = "yyyy";
 
     /**
      * 获取当前时间
@@ -28,16 +34,16 @@ public class DateUtil {
      * @return
      */
     public static String getCurrentTime(Integer type) {
-        Date date = new Date();
+        DateTime dt = new DateTime(System.currentTimeMillis());
         if (type == 1)
-            return YYYY_MM_DD_HH_MM_SS.format(date);
+            return dt.toString(YYYY_MM_DD_HH_MM_SS);
         else if (type == 2)
-            return YYYY_MM_DD.format(date);
+            return dt.toString(YYYY_MM_DD);
         else if (type == 3)
-            return YYYY_MM.format(date);
+            return dt.toString(YYYY_MM);
         else if (type == 4)
-            return YYYY.format(date);
-        return YYYY_MM_DD.format(date);
+            return dt.toString(YYYY);
+        return dt.toString(YYYY_MM_DD);
     }
 
     /**
@@ -47,7 +53,8 @@ public class DateUtil {
      * @return YYYY_MM_DD_HH_MM_SS
      */
     public static String dateToStr(Date date) {
-        return YYYY_MM_DD_HH_MM_SS.format(date);
+        DateTime dt = new DateTime(date);
+        return dt.toString(YYYY_MM_DD_HH_MM_SS);
     }
 
     /**
@@ -56,8 +63,9 @@ public class DateUtil {
      * @param date
      * @return YYYY_MM_DD
      */
-    public static String dateToStr2(Date date) {
-        return YYYY_MM_DD.format(date);
+    public static String dateToStrDay(Date date) {
+        DateTime dt = new DateTime(date);
+        return dt.toString(YYYY_MM_DD);
     }
 
     /**
@@ -67,13 +75,7 @@ public class DateUtil {
      * @return
      */
     public static Date strToDate(String dateString) {
-        Date date = null;
-        try {
-            date = YYYY_MM_DD_HH_MM_SS.parse(dateString);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return date;
+        return FMT_YYYY_MM_DD_HH_MM_SS.parseDateTime(dateString).toDate();
     }
 
     /**
@@ -143,15 +145,11 @@ public class DateUtil {
      * @return
      */
     public static boolean between(String d1, String d2, String date) {
-        try {
-            Date date1 = YYYY_MM_DD.parse(d1);
-            Date date2 = YYYY_MM_DD.parse(d2);
-            Date d = YYYY_MM_DD.parse(date);
-            if (d.after(date1) && d.before(date2)) {
-                return true;
-            }
-        } catch (ParseException e) {
-            return false;
+        Date date1 = FMT_YYYY_MM_DD.parseDateTime(d1).toDate();
+        Date date2 = FMT_YYYY_MM_DD.parseDateTime(d2).toDate();
+        Date d = FMT_YYYY_MM_DD.parseDateTime(date).toDate();
+        if (d.after(date1) && d.before(date2)) {
+            return true;
         }
         return false;
     }
@@ -331,31 +329,26 @@ public class DateUtil {
      * @return
      */
     public static String getMoment(String time) {
-        try {
-            Date now = new Date();
-            Date date = YYYY_MM_DD_HH_MM_SS.parse(time);
-            long l = now.getTime() - date.getTime();
-            long day = l / (24 * 60 * 60 * 1000);
-            long hour = (l / (60 * 60 * 1000) - day * 24);
-            long min = ((l / (60 * 1000)) - day * 24 * 60 - hour * 60);
-            long s = (l / 1000 - day * 24 * 60 * 60 - hour * 60 * 60 - min * 60);
+        Date now = new Date();
+        Date date = FMT_YYYY_MM_DD_HH_MM_SS.parseDateTime(time).toDate();
+        long l = now.getTime() - date.getTime();
+        long day = l / (24 * 60 * 60 * 1000);
+        long hour = (l / (60 * 60 * 1000) - day * 24);
+        long min = ((l / (60 * 1000)) - day * 24 * 60 - hour * 60);
+        long s = (l / 1000 - day * 24 * 60 * 60 - hour * 60 * 60 - min * 60);
 
-            StringBuffer sb = new StringBuffer();
-            if (day > 0)
-                sb.append(day + "天");
-            else if (hour > 0)
-                sb.append(hour + "小时");
-            else if (min > 0)
-                sb.append(min + "分钟");
-            else if (s > 0)
-                sb.append(s + "秒");
-            else
-                sb.append("0秒");
-            sb.append("前");
-            return sb.toString();
-        } catch (ParseException e) {
-            e.printStackTrace();
-            return "";
-        }
+        StringBuffer sb = new StringBuffer("");
+        if (day > 0)
+            sb.append(day + "天");
+        else if (hour > 0)
+            sb.append(hour + "小时");
+        else if (min > 0)
+            sb.append(min + "分钟");
+        else if (s > 0)
+            sb.append(s + "秒");
+        else
+            sb.append("0秒");
+        sb.append("前");
+        return sb.toString();
     }
 }

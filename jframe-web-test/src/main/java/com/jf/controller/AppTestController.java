@@ -30,7 +30,7 @@ public class AppTestController extends BaseController {
     @GetMapping("/app/get")
     public ResMsg get() {
         Long userId = 10001L;
-        String token = putUser(userId);
+        String token = bindToken(userId);
         return new ResMsg(0, SUCCESS, token);
     }
 

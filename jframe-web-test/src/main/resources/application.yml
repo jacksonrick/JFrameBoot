@@ -26,13 +26,13 @@ app:
       enabled: false
   eureka: # Eureka注册服务
     enabled: false
-  monitor: # 监控端点 为true需引用monitor配置*
+  monitor: # 监控端点
     enabled: true
   druid: # druid数据源监控
     enabled: true
   springsch: # spring定时器
     enabled: false
-  redisson: # 分布式事务
+  redisson: # 分布式锁
     enabled: false
   activemq: # ActiveMQ
     enabled: false
@@ -43,4 +43,4 @@ app:
 rmi: # 启用rmi监控
   enabled: true
   host: 127.0.0.1
-  port: 1${server.port}
+  port: ${server.port}

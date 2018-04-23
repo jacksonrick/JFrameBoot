@@ -3,6 +3,9 @@ package com.jf;
 import com.jf.model.Address;
 import com.jf.service.system.AddrService;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.Resource;
 import java.io.FileWriter;
@@ -12,11 +15,13 @@ import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
- * Description:
+ * Description: 生成地址库js文件（需要修改输出的路径）
  * User: xujunfei
  * Date: 2018-01-30
  * Time: 11:25
  */
+@RunWith(SpringRunner.class)
+@SpringBootTest
 public class GenAddr {
 
     @Resource
