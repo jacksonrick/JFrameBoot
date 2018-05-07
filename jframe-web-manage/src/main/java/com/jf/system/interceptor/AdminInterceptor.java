@@ -1,6 +1,6 @@
 package com.jf.system.interceptor;
 
-import com.jf.model.Admin;
+import com.jf.database.model.Admin;
 import com.jf.service.system.ModuleService;
 import com.jf.system.PathUtil;
 import com.jf.system.conf.LogManager;

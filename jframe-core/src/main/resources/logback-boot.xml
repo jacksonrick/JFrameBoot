@@ -37,11 +37,20 @@
             </encoder>
         </appender>
 
+        <!-- 分布式ELK日志 -->
+        <!--<appender name="elk" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
+            <destination>192.168.1.200:9250</destination>
+            <encoder charset="UTF-8" class="net.logstash.logback.encoder.LogstashEncoder" />
+        </appender>-->
+
         <root level="info">
             <appender-ref ref="console"/>
             <appender-ref ref="devlog"/>
+            <!--<appender-ref ref="elk"/>-->
         </root>
-        <logger name="com.jf.mapper" level="DEBUG"></logger>
+
+        <logger name="freemarker.cache" level="ERROR"></logger>
+        <logger name="com.jf.database.mapper" level="DEBUG"></logger>
         <logger name="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping" level="ERROR"></logger>
         <logger name="org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver" level="ERROR"></logger>
     </springProfile>

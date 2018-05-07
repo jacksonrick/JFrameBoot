@@ -15,6 +15,13 @@
     <packaging>jar</packaging>
     <name>jframe-service-order</name>
 
+    <properties>
+        <scope.springcloud.eureka>compile</scope.springcloud.eureka>
+        <scope.springcloud.feign>compile</scope.springcloud.feign>
+        <scope.springcloud.hystrix>compile</scope.springcloud.hystrix>
+        <scope.springcloud.config>compile</scope.springcloud.config>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>com.jf</groupId>

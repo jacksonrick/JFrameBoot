@@ -58,11 +58,11 @@ spring:
   datasource:
     druid: # Druid数据源配置
       driver-class-name: com.mysql.jdbc.Driver
-      db1: # 库1
+      primary: # 主库
         url: jdbc:mysql://127.0.0.1:3306/jframe?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false
         username: root
         password: 12345678
-      db2: # 库2
+      secondary: # 备或从库
         url: jdbc:mysql://127.0.0.1:3306/test?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false
         username: root
         password: 12345678
@@ -122,9 +122,9 @@ spring:
           auth: true
           timeout: 25000
   redis: # spring redis
-    host: 192.168.1.199
+    host: 192.168.1.200
     port: 6379
-    password: 12345678 # 密码
+    password:  # 密码
     timeout: 5s
     lettuce: # 使用lettuce或者jedis
       pool:
@@ -153,6 +153,12 @@ spring:
     password: 12345678
     packages:
       trust-all: true
+  rabbitmq: # rabbitmq
+    host: 192.168.1.200 # 服务器地址
+    port: 5672
+    username: rabbitmq
+    password: 12345678
+    virtual-host: /rmq
 fdfs: # fastDFS配置
   so-timeout: 3000
   connect_timeout: 3000
@@ -187,7 +193,7 @@ management:
     jms:
       enabled: false
 system: # 系统自定义配置
-  appkey: 00056cb1d74435076a4c15a490798df4
+  appkey: ${app.appkey:0}
   static_host: http://127.0.0.1:${server.port}/ # 静态服务器地址
   static_path: /Users/xujunfei/Downloads/static/ # 静态文件目录
   log_path: /Users/xujunfei/Downloads/logs/ # 日志存放目录

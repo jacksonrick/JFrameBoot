@@ -1,8 +1,11 @@
 package com.jf.service.order;
 
+import com.jf.database.model.User;
+import com.jf.service.user.UserService;
 import com.jf.string.StringUtil;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.Date;
 
 /**
@@ -14,6 +17,10 @@ import java.util.Date;
  */
 @Service
 public class OrderService {
+
+    @Resource
+    private UserService userService;
+
 
     /**
      * 下单
@@ -29,6 +36,41 @@ public class OrderService {
         Order order = new Order(userId, productId, price, amount, orderNum);
         order.setCreateTime(new Date());
         return order;
+    }
+
+
+    /**
+     * 分布式事务 - 增加余额
+     *
+     * @param xid
+     * @param money
+     */
+    public void add(String xid, String money) {
+        long startTime = System.currentTimeMillis();   //获取开始时间
+
+        User user = new User(10001l);
+        user.setMoney(150d);
+        userService.updateUser(user);
+
+        long endTime = System.currentTimeMillis(); //获取结束时间
+        System.out.println("运行时间： " + (endTime - startTime) + "ms");
+    }
+
+    /**
+     * 分布式事务 - 减少余额
+     *
+     * @param xid
+     * @param money
+     */
+    public void reduce(String xid, String money) {
+        long startTime = System.currentTimeMillis();   //获取开始时间
+
+        User user = new User(10000l);
+        user.setMoney(50d);
+        userService.updateUser(user);
+
+        long endTime = System.currentTimeMillis(); //获取结束时间
+        System.out.println("运行时间： " + (endTime - startTime) + "ms");
     }
 
     class Order {

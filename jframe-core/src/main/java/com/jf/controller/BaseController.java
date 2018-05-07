@@ -1,11 +1,11 @@
 package com.jf.controller;
 
 import com.jf.entity.ResMsg;
-import com.jf.model.Admin;
-import com.jf.model.User;
+import com.jf.database.model.Admin;
+import com.jf.database.model.User;
 import com.jf.service.system.SystemService;
 import com.jf.string.StringUtil;
-import com.jf.system.Constant;
+import com.jf.system.conf.Constant;
 import com.jf.system.conf.LogManager;
 import com.jf.system.conf.SysConfig;
 import com.jf.system.exception.AppLoginException;

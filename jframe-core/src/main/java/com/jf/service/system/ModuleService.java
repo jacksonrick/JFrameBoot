@@ -1,9 +1,9 @@
 package com.jf.service.system;
 
-import com.jf.mapper.ModuleMapper;
-import com.jf.mapper.RoleMapper;
-import com.jf.model.Module;
-import com.jf.model.Role;
+import com.jf.database.mapper.ModuleMapper;
+import com.jf.database.mapper.RoleMapper;
+import com.jf.database.model.Module;
+import com.jf.database.model.Role;
 import com.jf.string.StringUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;

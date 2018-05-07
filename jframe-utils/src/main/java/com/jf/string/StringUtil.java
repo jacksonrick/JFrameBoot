@@ -74,43 +74,6 @@ public class StringUtil {
     }
 
     /**
-     * 对密码进行加密
-     *
-     * @param origin 明文密码
-     * @return
-     */
-    public static String MD5Encode(String origin) {
-        String resultString = null;
-        resultString = new String(origin);
-        try {
-            MessageDigest md = MessageDigest.getInstance("MD5");
-            resultString = byteArrayToHexString(md.digest(resultString.getBytes()));
-        } catch (NoSuchAlgorithmException e) {
-
-        }
-        return resultString;
-    }
-
-    private static final String[] hexDigits = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "a", "b", "c", "d", "e", "f"};
-
-    private static String byteArrayToHexString(byte[] b) {
-        StringBuffer resultSb = new StringBuffer();
-        for (int i = 0; i < b.length; i++) {
-            resultSb.append(byteToHexString(b[i]));
-        }
-        return resultSb.toString();
-    }
-
-    private static String byteToHexString(byte b) {
-        int n = b;
-        if (n < 0)
-            n = 256 + n;
-        int d1 = n / 16;
-        int d2 = n % 16;
-        return hexDigits[d1] + hexDigits[d2];
-    }
-
-    /**
      * 文件随机命名
      * <p>规则：当前时间(Long)+5位随机数+原文件后缀</p>
      *
@@ -216,7 +179,13 @@ public class StringUtil {
         // 产生16字节的byte
         random.nextBytes(bytes);
         // 取摘要,默认是"MD5"算法
-        bytes = getDigest().digest(bytes);
+        try {
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            bytes = md.digest(bytes);
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+
         StringBuffer result = new StringBuffer();
         // 转化为16进制字符串
         for (int i = 0; i < bytes.length; i++) {
@@ -232,16 +201,6 @@ public class StringUtil {
                 result.append((char) ('A' + (b2 - 10)));
         }
         return (result.toString());
-    }
-
-    private static MessageDigest getDigest() {
-        try {
-            MessageDigest md = MessageDigest.getInstance("MD5");
-            return md;
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
-        return null;
     }
 
 }

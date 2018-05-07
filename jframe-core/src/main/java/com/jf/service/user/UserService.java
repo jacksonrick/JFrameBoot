@@ -1,19 +1,25 @@
 package com.jf.service.user;
 
 import com.github.pagehelper.PageInfo;
-import com.jf.db2.User2Mapper;
-import com.jf.mapper.TestMapper;
-import com.jf.mapper.UserMapper;
-import com.jf.model.User;
-import com.jf.model.custom.IdText;
+import com.jf.encrypt.PasswordUtil;
+import com.jf.database.mapper.TestMapper;
+import com.jf.database.mapper.UserMapper;
+import com.jf.database.model.User;
+import com.jf.database.model.custom.IdText;
+import com.jf.database.secondary.User2Mapper;
 import com.jf.string.StringUtil;
 import com.jf.system.cache.RedisLocker;
 import com.jf.system.cache.lock.AquiredLockWorker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -33,7 +39,6 @@ public class UserService {
 
     @Resource
     private TestMapper testMapper;
-
 
     // RedisLocker
     @Autowired(required = false)
@@ -58,6 +63,31 @@ public class UserService {
         });
     }
 
+    @Autowired(required = false)
+    private RestTemplate restTemplate;
+
+    /**
+     * 转账-分布式事务
+     *
+     * @param money
+     * @return
+     */
+    public int transfer(String money) {
+        String xid = "8u3ej3923ej";
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("xid", xid);
+        HttpEntity<String> requestEntity = new HttpEntity<String>(null, headers);
+        ResponseEntity<String> response1 = restTemplate.exchange("http://JFRAME-SERVICE-ORDER-01/add?money={money}", HttpMethod.GET, requestEntity, String.class, money);
+
+        ResponseEntity<String> response2 = restTemplate.exchange("http://JFRAME-SERVICE-ORDER-02/reduce?money={money}", HttpMethod.GET, requestEntity, String.class, money);
+
+        int ret = Integer.parseInt(response2.getBody().toString());
+        if (ret == -1) {
+            throw new RuntimeException("账户余额不足");
+        }
+        return 1;
+    }
+
     /**
      * 测试msyql cluster集群
      * <p>已安装集群环境</p>
@@ -71,25 +101,25 @@ public class UserService {
     /**
      * 测试事务回滚 testRollbackA & testRollbackB
      */
-    @Transactional(value = "dbTransactionManager")
+    @Transactional(value = "primaryTransactionManager")
     public void testRollbackA() {
         User user = userMapper.findById(10000l);
-        user.setNickname("db1_rollback");
+        user.setNickname("primary_rollback");
         userMapper.update(user);
         System.out.println(1 / 0); // error
         user = new User(10001l);
-        user.setNickname("db2_rollback2");
+        user.setNickname("secondary_rollback");
         userMapper.update(user);
     }
 
-    @Transactional(value = "db2TransactionManager")
+    @Transactional(value = "secondaryTransactionManager")
     public void testRollbackB() {
         User user = user2Mapper.findById(10000l);
-        user.setNickname("db2_rollback");
+        user.setNickname("secondary_rollback");
         user2Mapper.update(user);
         System.out.println(1 / 0); // error
         user = new User(10001l);
-        user.setNickname("db1_rollback2");
+        user.setNickname("primary_rollback");
         user2Mapper.update(user);
     }
 
@@ -101,10 +131,10 @@ public class UserService {
      */
     public User testMutilSource(String source) {
         User user = null;
-        if ("db1".equals(source)) {
+        if ("primary".equals(source)) {
             user = userMapper.findById(10000l);
         }
-        if ("db2".equals(source)) {
+        if ("secondary".equals(source)) {
             user = user2Mapper.findById(10000l);
         }
         return user;
@@ -133,7 +163,7 @@ public class UserService {
     @CacheEvict(value = "user", key = "'findUserById'+#user.id")
     public int updateUser(User user) {
         if (StringUtil.isNotBlank(user.getPassword())) {
-            user.setPassword(StringUtil.MD5Encode(user.getPassword()));
+            user.setPassword(PasswordUtil.MD5Encode(user.getPassword()));
         }
         return userMapper.update(user);
     }
@@ -231,7 +261,7 @@ public class UserService {
      * @return
      */
     public User findUserByNameAndPwd(String account, String password) {
-        return userMapper.findByNameAndPwd(account, StringUtil.MD5Encode(password));
+        return userMapper.findByNameAndPwd(account, PasswordUtil.MD5Encode(password));
     }
 
     /**
@@ -246,7 +276,7 @@ public class UserService {
     public int insertUser(String nickname, String email, String password, String phone) {
         User user = new User();
         user.setEmail(email);
-        user.setPassword(StringUtil.MD5Encode(password));
+        user.setPassword(PasswordUtil.MD5Encode(password));
         user.setPhone(phone);
         user.setNickname(nickname);
         // 新增用户

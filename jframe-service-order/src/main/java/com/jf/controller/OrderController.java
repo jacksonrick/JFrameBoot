@@ -2,11 +2,15 @@ package com.jf.controller;
 
 import com.jf.entity.ResMsg;
 import com.jf.service.order.OrderService;
+import com.jf.service.user.UserService;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 
 /**
  * Created with IntelliJ IDEA.
@@ -20,6 +24,8 @@ public class OrderController {
 
     @Resource
     private OrderService orderService;
+    @Resource
+    private UserService userService;
 
     @Value("${server.port}")
     private String port;
@@ -35,6 +41,32 @@ public class OrderController {
     public ResMsg order(Long userId, Long productId) {
         System.out.println("订单到达，本机端口：" + port);
         return new ResMsg(0, "下单成功，服务端口：" + port, orderService.order(userId, productId, 100.1, 2));
+    }
+
+    @GetMapping("/reduce")
+    public String reduce(HttpServletRequest request) {
+        String xid = request.getHeader("xid");
+        System.out.println("xid=" + request.getHeader("xid"));
+        String str_money = request.getParameter("money");
+        System.out.println("money:" + str_money);
+
+        Double money = Double.parseDouble(str_money);
+        Double total_money = userService.findUserById(10000l).getMoney();
+        if (total_money < money) {
+            return "-1";
+        }
+        orderService.reduce(xid, str_money);
+        return "1";
+    }
+
+    @GetMapping("/add")
+    public String add(HttpServletRequest request) {
+        String xid = request.getHeader("xid");
+        System.out.println("xid=" + request.getHeader("xid"));
+        String money = request.getParameter("money");
+        System.out.println("money:" + money);
+        orderService.add(xid, money);
+        return "1";
     }
 
 }

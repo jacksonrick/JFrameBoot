@@ -4,7 +4,7 @@ import com.github.pagehelper.PageInfo;
 import com.jf.controller.BaseController;
 import com.jf.controller.view.UserExcel;
 import com.jf.entity.ResMsg;
-import com.jf.model.User;
+import com.jf.database.model.User;
 import com.jf.service.user.UserService;
 import com.jf.system.annotation.AuthPassport;
 import org.springframework.stereotype.Controller;

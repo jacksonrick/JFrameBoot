@@ -1,5 +1,5 @@
 # JFrame
-##### JFrame - SpringBoot & Cloud Project `v4.7.1`
+##### JFrame - SpringBoot & Cloud Project `v4.7.beta1`
 `jackson-rick`   <br>
 `https://github.com/jacksonrick/JFrameBoot`
 
@@ -30,6 +30,10 @@
 * Jenkins自动化部署、脚本
 
 ### 更新日志：
+* v4.8 beta1 `20180507`
+    * 1.优化Jar依赖关系
+    * 2.新增AMPQ、ELK等组件
+    * 3.移除model模块
 * v4.7.1 `20180423`
     * 1.完善系统架构文档说明
     * 2.优化日志、Sys、Redisson等服务的配置

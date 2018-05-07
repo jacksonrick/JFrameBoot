@@ -1,6 +1,6 @@
 package com.jf.system.interceptor;
 
-import com.jf.model.User;
+import com.jf.database.model.User;
 import com.jf.system.PathUtil;
 import com.jf.system.conf.LogManager;
 import com.jf.system.annotation.Login;

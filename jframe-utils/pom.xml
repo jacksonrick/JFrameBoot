@@ -25,19 +25,32 @@
     </properties>
 
     <dependencies>
+        <!-- provided start -->
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>servlet-api</artifactId>
             <version>2.5</version>
             <scope>provided</scope>
         </dependency>
-
-        <!-- mysql -->
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <version>5.1.45</version>
+            <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>1.7.25</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>1.2.17</version>
+            <scope>provided</scope>
+        </dependency>
+        <!-- provided end -->
 
         <!-- poi -->
         <dependency>
@@ -86,7 +99,7 @@
             <classifier>jdk15</classifier>
         </dependency>
 
-        <!-- jdom & dom4j -->
+        <!-- dom -->
         <dependency>
             <groupId>org.jdom</groupId>
             <artifactId>jdom</artifactId>
@@ -96,6 +109,11 @@
             <groupId>dom4j</groupId>
             <artifactId>dom4j</artifactId>
             <version>1.6.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.thoughtworks.xstream</groupId>
+            <artifactId>xstream</artifactId>
+            <version>1.4.8</version>
         </dependency>
 
         <dependency>
@@ -129,13 +147,6 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
             <version>3.4</version>
-        </dependency>
-
-        <!-- xml -->
-        <dependency>
-            <groupId>com.thoughtworks.xstream</groupId>
-            <artifactId>xstream</artifactId>
-            <version>1.4.8</version>
         </dependency>
 
         <!-- httpclient -->
@@ -191,25 +202,6 @@
             <version>3.6.0</version>
         </dependency>
 
-        <!-- weixin & alipay -->
-        <dependency>
-            <groupId>com.github.wxpay</groupId>
-            <artifactId>wxpay-sdk</artifactId>
-            <version>0.0.3</version>
-        </dependency>
-        <dependency>
-            <groupId>com.alipay.api</groupId>
-            <artifactId>k12-alipay-sdk</artifactId>
-            <version>0.0.1-beta</version>
-        </dependency>
-
-        <!-- jpush -->
-        <dependency>
-            <groupId>cn.jpush.api</groupId>
-            <artifactId>jpush-client</artifactId>
-            <version>3.2.17</version>
-        </dependency>
-
         <!-- pagehelper -->
         <dependency>
             <groupId>com.github.pagehelper</groupId>
@@ -242,6 +234,10 @@
             <version>4.2.2</version>
             <scope>${smack.scope}</scope>
         </dependency>
+
+        <!-- 第三方Jar包 -->
+        <!-- 注意：外部导入的Jar无法打包，必须将jar包复制到maven本地仓库中 -->
+
     </dependencies>
 
 </project>

@@ -1,6 +1,6 @@
 package com.jf.system.interceptor;
 
-import com.jf.system.Constant;
+import com.jf.system.conf.Constant;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;

@@ -3,9 +3,7 @@
 .idea
 *.iml
 jframe/doc/*.txt
-jframe-utils/target/
-jframe-model/target/
-jframe-core/target/
-jframe-web-*/target/
+jframe-*/target/
 cloud-server/target/
+
 /jframe-core/src/main/resources/application-pro.yml

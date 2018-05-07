@@ -12,9 +12,8 @@ info:
     description: "pc"
 app:
   host: 192.168.1.199
-  appkey: "------"
   static_path: /data/wwwroot/front/static/
   static_host: http://${app.host}:${server.port}/
   db:
-    db1:
+    primary:
       enabled: true

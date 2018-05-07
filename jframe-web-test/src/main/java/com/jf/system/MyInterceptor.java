@@ -1,6 +1,6 @@
 package com.jf.system;
 
-import com.jf.model.User;
+import com.jf.database.model.User;
 import com.jf.system.annotation.Login;
 import com.jf.system.conf.LogManager;
 import com.jf.system.conf.SysConfig;

@@ -1,6 +1,6 @@
 package com.jf.system.socket;
 
-import com.jf.model.User;
+import com.jf.database.model.User;
 import com.jf.system.conf.SysConfig;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;

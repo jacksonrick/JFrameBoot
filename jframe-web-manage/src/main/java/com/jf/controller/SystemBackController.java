@@ -9,7 +9,7 @@ import com.jf.entity.Tree;
 import com.jf.file.Directory;
 import com.jf.file.FileUtil;
 import com.jf.http.HttpUtil;
-import com.jf.model.*;
+import com.jf.database.model.*;
 import com.jf.obj.BeanUtil;
 import com.jf.service.system.AddrService;
 import com.jf.service.system.AdminService;

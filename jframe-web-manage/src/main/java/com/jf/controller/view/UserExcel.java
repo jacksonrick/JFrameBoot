@@ -1,7 +1,7 @@
 package com.jf.controller.view;
 
 import com.jf.date.DateUtil;
-import com.jf.model.User;
+import com.jf.database.model.User;
 import com.jf.system.conf.LogManager;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;

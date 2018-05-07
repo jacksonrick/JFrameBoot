@@ -11,7 +11,6 @@
     <modules>
         <module>../cloud-server</module>
         <module>../jframe-utils</module>
-        <module>../jframe-model</module>
         <module>../jframe-core</module>
         <module>../jframe-web-manage</module>
         <module>../jframe-web-front</module>
@@ -25,6 +24,23 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
         <spring-cloud.version>Finchley.M7</spring-cloud.version>
+
+        <!-- provided | compile -->
+        <scope.quartz>provided</scope.quartz>
+        <scope.activemq>provided</scope.activemq>
+        <scope.amqp>provided</scope.amqp>
+        <scope.websocket>provided</scope.websocket>
+        <scope.redisson>provided</scope.redisson>
+        <scope.flume>provided</scope.flume>
+        <scope.elk>provided</scope.elk>
+        <scope.springcloud.eureka>provided</scope.springcloud.eureka>
+        <scope.springcloud.feign>provided</scope.springcloud.feign>
+        <scope.springcloud.hystrix>provided</scope.springcloud.hystrix>
+        <scope.springcloud.config>provided</scope.springcloud.config>
+        <scope.thrid.jpush>provided</scope.thrid.jpush>
+        <scope.thrid.wepay>provided</scope.thrid.wepay>
+        <scope.thrid.alipay>provided</scope.thrid.alipay>
+        <scope.thrid.wechat>provided</scope.thrid.wechat>
     </properties>
 
     <parent>
@@ -81,6 +97,9 @@
                 </exclusion>
             </exclusions>
         </dependency>
+        <!-- tomcat : default -->
+        <!-- undertow : current -->
+        <!-- jetty -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-undertow</artifactId>
@@ -128,11 +147,18 @@
             <version>1.1.9</version>
         </dependency>
 
+        <!-- mysql -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>5.1.45</version>
+        </dependency>
         <!-- redisson -->
         <dependency>
             <groupId>org.redisson</groupId>
             <artifactId>redisson</artifactId>
             <version>3.6.2</version>
+            <scope>${scope.redisson}</scope>
         </dependency>
         <!-- spring session -->
         <dependency>
@@ -140,11 +166,99 @@
             <artifactId>spring-session-data-redis</artifactId>
             <version>2.0.2.RELEASE</version>
         </dependency>
+
         <!-- fastdfs-client -->
         <dependency>
             <groupId>com.luhuiguo</groupId>
             <artifactId>fastdfs-client</artifactId>
             <version>0.4.0</version>
+        </dependency>
+        <!-- distribute log flume -->
+        <dependency>
+            <groupId>org.apache.flume</groupId>
+            <artifactId>flume-ng-sdk</artifactId>
+            <version>1.5.0.1</version>
+            <scope>${scope.flume}</scope>
+        </dependency>
+        <!-- distribute log elk -->
+        <dependency>
+            <groupId>net.logstash.logback</groupId>
+            <artifactId>logstash-logback-encoder</artifactId>
+            <version>5.1</version>
+            <scope>${scope.elk}</scope>
+        </dependency>
+
+        <!-- 极光推送 -->
+        <dependency>
+            <groupId>cn.jpush.api</groupId>
+            <artifactId>jpush-client</artifactId>
+            <version>3.2.17</version>
+            <scope>${scope.thrid.jpush}</scope>
+        </dependency>
+        <!-- 微信支付 -->
+        <dependency>
+            <groupId>com.github.wxpay</groupId>
+            <artifactId>wxpay-sdk</artifactId>
+            <version>0.0.3</version>
+            <scope>${scope.thrid.wepay}</scope>
+        </dependency>
+        <!-- 支付宝 -->
+        <dependency>
+            <groupId>com.alipay.api</groupId>
+            <artifactId>k12-alipay-sdk</artifactId>
+            <version>0.0.1-beta</version>
+            <scope>${scope.thrid.alipay}</scope>
+        </dependency>
+        <!-- 微信公众号 -->
+        <dependency>
+            <groupId>com.mxixm</groupId>
+            <artifactId>fastboot-weixin</artifactId>
+            <version>0.5.1</version>
+            <scope>${scope.thrid.wechat}</scope>
+        </dependency>
+
+        <!-- spring cloud [eureka client | feign | cloud config] -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+            <scope>${scope.springcloud.eureka}</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
+            <scope>${scope.springcloud.feign}</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-hystrix</artifactId>
+            <scope>${scope.springcloud.hystrix}</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-config</artifactId>
+            <scope>${scope.springcloud.config}</scope>
+        </dependency>
+
+        <!-- 组件 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-quartz</artifactId>
+            <scope>${scope.quartz}</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-activemq</artifactId>
+            <scope>${scope.activemq}</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-amqp</artifactId>
+            <scope>${scope.amqp}</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-websocket</artifactId>
+            <scope>${scope.websocket}</scope>
         </dependency>
     </dependencies>
 
@@ -161,6 +275,11 @@
     </dependencyManagement>
 
     <repositories>
+        <repository>
+            <id>alimaven</id>
+            <name>aliyun maven</name>
+            <url>http://maven.aliyun.com/nexus/content/groups/public/</url>
+        </repository>
         <repository>
             <id>spring-milestones</id>
             <name>Spring Milestones</name>

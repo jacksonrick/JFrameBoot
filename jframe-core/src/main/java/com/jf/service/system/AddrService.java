@@ -1,7 +1,7 @@
 package com.jf.service.system;
 
-import com.jf.mapper.AddressMapper;
-import com.jf.model.Address;
+import com.jf.database.mapper.AddressMapper;
+import com.jf.database.model.Address;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;

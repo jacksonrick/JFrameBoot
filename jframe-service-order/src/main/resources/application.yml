@@ -16,5 +16,5 @@ app:
   monitor:
     enabled: true
   db:
-    db1:
+    primary:
       enabled: true

@@ -1,9 +1,9 @@
 package com.jf.controller;
 
 import com.jf.entity.ResMsg;
-import com.jf.model.Admin;
-import com.jf.model.Module;
-import com.jf.model.Msg;
+import com.jf.database.model.Admin;
+import com.jf.database.model.Module;
+import com.jf.database.model.Msg;
 import com.jf.service.system.AdminService;
 import com.jf.service.system.ModuleService;
 import com.jf.string.StringUtil;

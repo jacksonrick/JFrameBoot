@@ -1,9 +1,9 @@
 package com.jf.service.system;
 
 import com.github.pagehelper.PageInfo;
-import com.jf.mapper.LogMapper;
-import com.jf.model.Log;
-import com.jf.system.db.DbTool;
+import com.jf.database.mapper.LogMapper;
+import com.jf.database.model.Log;
+import com.jf.system.db.DbSQLExecutor;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -104,10 +104,10 @@ public class SystemService {
         Statement stmt = null;
         ResultSet rs = null;
         Connection conn = null;
-        conn = DbTool.getConn();
+        conn = DbSQLExecutor.getConn();
         stmt = conn.createStatement();
         rs = stmt.executeQuery(sql);
-        columnList = DbTool.getFieldLsit(conn, sql);
+        columnList = DbSQLExecutor.getFieldLsit(conn, sql);
         while (rs.next()) {
             List<Object> onedataList = new ArrayList<Object>(); // 存放每条记录里面每个字段的值
             for (int i = 1; i < columnList.size() + 1; i++) {
@@ -131,7 +131,7 @@ public class SystemService {
     public void executeUpdate(String sql) throws ClassNotFoundException, SQLException {
         Statement stmt = null;
         Connection conn = null;
-        conn = DbTool.getConn();
+        conn = DbSQLExecutor.getConn();
         stmt = conn.createStatement();
         stmt.executeUpdate(sql);
         conn.close();

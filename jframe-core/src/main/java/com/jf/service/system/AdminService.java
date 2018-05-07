@@ -1,10 +1,11 @@
 package com.jf.service.system;
 
 import com.github.pagehelper.PageInfo;
-import com.jf.mapper.AdminMapper;
-import com.jf.mapper.MsgMapper;
-import com.jf.model.Admin;
-import com.jf.model.Msg;
+import com.jf.encrypt.PasswordUtil;
+import com.jf.database.mapper.AdminMapper;
+import com.jf.database.mapper.MsgMapper;
+import com.jf.database.model.Admin;
+import com.jf.database.model.Msg;
 import com.jf.string.StringUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -58,7 +59,7 @@ public class AdminService {
      * @return
      */
     public Admin findAdminByNameAndPwd(String username, String password) {
-        return adminMapper.findByNameAndPwd(username, StringUtil.MD5Encode(password));
+        return adminMapper.findByNameAndPwd(username, PasswordUtil.MD5Encode(password));
     }
 
     /**
@@ -100,10 +101,10 @@ public class AdminService {
         admin.setRoleId(roleId);
         admin.setAdminCreateTime(new Date());
         if (StringUtil.isNotBlank(admin.getAdminPassword())) {
-            admin.setAdminPassword(StringUtil.MD5Encode(admin.getAdminPassword()));
+            admin.setAdminPassword(PasswordUtil.MD5Encode(admin.getAdminPassword()));
         } else {
             // 默认密码
-            admin.setAdminPassword(StringUtil.MD5Encode("123456"));
+            admin.setAdminPassword(PasswordUtil.MD5Encode("123456"));
         }
         return adminMapper.insert(admin);
     }
@@ -118,7 +119,7 @@ public class AdminService {
     public int updateAdmin(Admin admin, Long roleId) {
         admin.setRoleId(roleId);
         if (StringUtil.isNotBlank(admin.getAdminPassword())) {
-            admin.setAdminPassword(StringUtil.MD5Encode(admin.getAdminPassword()));
+            admin.setAdminPassword(PasswordUtil.MD5Encode(admin.getAdminPassword()));
         }
         return adminMapper.update(admin);
     }
@@ -146,7 +147,7 @@ public class AdminService {
      */
     public int updatePassword(Long adminId, String password) {
         Admin admin = new Admin(adminId);
-        admin.setAdminPassword(StringUtil.MD5Encode(password));
+        admin.setAdminPassword(PasswordUtil.MD5Encode(password));
         return adminMapper.update(admin);
     }
 

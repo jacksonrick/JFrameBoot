@@ -1,8 +1,8 @@
 package com.jf.cloud;
 
-import com.jf.http.HttpUtil;
-import com.jf.string.StringUtil;
-import com.jf.system.Result;
+import com.jf.cloud.common.HttpUtil;
+import com.jf.cloud.common.Result;
+import com.jf.cloud.common.StringUtil;
 import com.netflix.appinfo.ApplicationInfoManager;
 import com.netflix.appinfo.EurekaInstanceConfig;
 import com.netflix.appinfo.InstanceInfo;

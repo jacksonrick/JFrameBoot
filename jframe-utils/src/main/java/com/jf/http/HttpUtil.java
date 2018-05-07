@@ -28,13 +28,13 @@ import java.util.*;
  */
 public class HttpUtil {
 
-    public static void main(String[] args) throws Exception {
+    /*public static void main(String[] args) throws Exception {
         Map<String, String> paramsMap = new HashMap<String, String>();
         paramsMap.put("", "");
         paramsMap.put("", "");
         System.out.println(HttpUtil.post("http://localhost:8080/get", paramsMap));
         // System.out.println(HttpUtil.getMethod("http://localhost:8080/post?code=17730215423&uname=feifei"));
-    }
+    }*/
 
     /**
      * 第三方API调用

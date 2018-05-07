@@ -12,29 +12,30 @@ info: # 定义各种额外的详情给服务端显示
     description: "pc"
 # ↓↓↓↓↓↓ 独立应用配置
 # 如果值false，可以不配置
-# 在dev/pro环境有调用，有默认值
-# *注：springcloud相关的jar在各个端的pom下
+# enabled值仅用于条件加载各个组件
 app:
-  host: 192.168.1.199
-  appkey: "------"
+  host: 192.168.1.199 # 生产环境服务器地址（用于文件上传返回绝对路径↓↓↓）
   static_path: /data/wwwroot/test/static/ # 静态文件目录
   static_host: http://${app.host}:${server.port}/ # 静态文件地址
   db: # 多数据库 -可同时启用,但必须启用一个*
-    db1:
+    primary:
       enabled: true
-    db2:
+    secondary:
       enabled: false
+    # 可以添加多个数据库
   eureka: # Eureka注册服务
     enabled: false
   monitor: # 监控端点
     enabled: true
   druid: # druid数据源监控
-    enabled: true
+    enabled: false
   springsch: # spring定时器
     enabled: false
   redisson: # 分布式锁
     enabled: false
   activemq: # ActiveMQ
+    enabled: false
+  rabbitmq: # RabbitMQ
     enabled: false
   socket: # spring websocket
     enabled: false
@@ -44,3 +45,8 @@ rmi: # 启用rmi监控
   enabled: true
   host: 127.0.0.1
   port: ${server.port}
+wx: # 微信公众号API
+  appid: 111111
+  token: qwertyuiopqwertyuiopqwertyuiopqw
+  appsecret: 111111
+  callback-url:

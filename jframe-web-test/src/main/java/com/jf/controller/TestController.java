@@ -1,12 +1,13 @@
 package com.jf.controller;
 
 import com.jf.entity.ResMsg;
-import com.jf.model.User;
+import com.jf.database.model.User;
 import com.jf.restapi.OrderRestService;
 import com.jf.service.user.UserService;
 import com.jf.string.StringUtil;
 import com.jf.system.conf.LogManager;
-import com.jf.system.jms.activemq.MQService;
+import com.jf.system.mq.activemq.ActiveMQService;
+import com.jf.system.mq.rabbitmq.RabbitMQService;
 import com.jf.system.schedule.QuartzManager;
 import com.jf.system.schedule.jobs.Job1;
 import com.jf.system.socket.SocketMessage;
@@ -55,8 +56,11 @@ public class TestController extends BaseController {
     private Scheduler scheduler;
 
     @Autowired(required = false)
-    private MQService producer;
+    private ActiveMQService producer; // activemq
+    @Autowired(required = false)
+    private RabbitMQService producer2; // rabbitmq
 
+    // spring websocket
     @Autowired(required = false)
     private SimpMessagingTemplate messagingTemplate;
     @Autowired(required = false)
@@ -127,10 +131,10 @@ public class TestController extends BaseController {
     @RequestMapping("/testRollback")
     @ResponseBody
     public ResMsg testRollback(String source) {
-        if ("db1".equals(source)) {
+        if ("primary".equals(source)) {
             userService.testRollbackA();
         }
-        if ("db2".equals(source)) {
+        if ("secondary".equals(source)) {
             userService.testRollbackB();
         }
         return new ResMsg(0, "");
@@ -218,6 +222,14 @@ public class TestController extends BaseController {
     @ResponseBody
     public ResMsg testLock() throws Exception {
         userService.testLock(10000l);
+        return new ResMsg(0, SUCCESS);
+    }
+
+    @RequestMapping("/transfer")
+    @ResponseBody
+    public ResMsg transfer() {
+        int result = userService.transfer("100");
+        System.out.println("result = " + result);
         return new ResMsg(0, SUCCESS);
     }
 
@@ -331,6 +343,35 @@ public class TestController extends BaseController {
         User user = new User(1000l);
         user.setNickname("hahha");
         producer.sendObjectMessage(destination, user);
+        return new ResMsg(0, SUCCESS);
+    }
+
+    /**
+     * rabbitmq send
+     */
+    @RequestMapping("/mq_send2")
+    @ResponseBody
+    public ResMsg mq_send2() {
+        for (int i = 0; i < 5; i++) {
+            User user = new User(10000l);
+            user.setNickname("fei");
+            System.out.println("A Sender : " + user);
+            producer2.send("topic.msg.a", user);
+        }
+
+        System.out.println("########################");
+
+        for (int i = 0; i < 5; i++) {
+            String context = "B hello " + i;
+            System.out.println("B Sender : " + context);
+            producer2.send("topic.msg.b", context);
+        }
+
+        System.out.println("########################");
+
+        for (int i = 0; i < 5; i++) {
+            producer2.send("topic.msg.any", "any " + i);
+        }
         return new ResMsg(0, SUCCESS);
     }
 

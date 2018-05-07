@@ -12,6 +12,14 @@
         .form-control {
             display: inline;
         }
+
+        .rbtn {
+            z-index: 9999;
+            position: absolute;
+            top: 9px;
+            right: 0px;
+            width: 175px;
+        }
     </style>
 </head>
 <body>
@@ -155,6 +163,12 @@
                         } else {
                             bodys += '<p class="text-muted"><b class="text-info">provider: </b>' + v.details.provider + '</p>';
                         }
+                    } else if (k == "rabbit") {
+                        if (v.status == "DOWN") {
+                            bodys += '<p class="text-muted"><b class="text-info">error: </b>' + v.details.error + '</p>';
+                        } else {
+                            bodys += '<p class="text-muted"><b class="text-info">version: </b>' + v.details.version + '</p>';
+                        }
                     } else if (k == "mail") {
                         bodys += '<p class="text-muted"><b class="text-info">location: </b>' + v.details.location + '</p>';
                         if (v.status == "DOWN") {
@@ -248,7 +262,8 @@
                     process: new Array(),
                     tomcat: new Array(),
                     logback: new Array(),
-                    http: new Array()
+                    http: new Array(),
+                    other: new Array()
                 };
                 $.each(data.names, function (kk, k) {
                     var v = '<a href="javascript:;" class="label label-info get">get</a>';
@@ -333,7 +348,7 @@
                         }
                     });
                     var bodys = '<li class="list-group-item">' + v.request.uri + '  <small> ' + v.timestamp + '</small>' +
-                            ' <span class="pull-right"><span class="label label-default">' + v.request.method + '</span>' +
+                            ' <span class="pull-right rbtn"><span class="label label-default">' + v.request.method + '</span>' +
                             ' <a tabindex="0" class="label label-info pop" data-toggle="popover" title="request" data-content="' + requests + '">request</a>' +
                             ' <a tabindex="0" class="label label-info pop" data-toggle="popover" title="response" data-content="' + responses + '">response</a></span></li>'
                     html += bodys;
