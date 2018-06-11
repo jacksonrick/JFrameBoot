@@ -1,17 +1,22 @@
 package com.jf.controller;
 
-import com.jf.entity.ResMsg;
+import com.jf.common.BaseController;
 import com.jf.database.model.User;
+import com.jf.entity.ResMsg;
+import com.jf.entity.enums.ResCode;
 import com.jf.restapi.OrderRestService;
-import com.jf.service.user.UserService;
+import com.jf.service.UserService;
 import com.jf.string.StringUtil;
-import com.jf.system.conf.LogManager;
-import com.jf.system.mq.activemq.ActiveMQService;
+import com.jf.system.LogManager;
+import com.jf.system.async.service.EmailService;
+import com.jf.system.async.service.PDFService;
+import com.jf.system.async.service.SMService;
+import com.jf.system.conf.SysConfig;
 import com.jf.system.mq.rabbitmq.RabbitMQService;
-import com.jf.system.schedule.QuartzManager;
-import com.jf.system.schedule.jobs.Job1;
+import com.jf.system.quartz.QuartzManager;
+import com.jf.system.quartz.jobs.Job1;
 import com.jf.system.socket.SocketMessage;
-import org.apache.activemq.command.ActiveMQQueue;
+import com.jf.system.third.jpush.JPushService;
 import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,10 +32,15 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.socket.config.WebSocketMessageBrokerStats;
 
 import javax.annotation.Resource;
-import javax.jms.Destination;
 import javax.servlet.http.HttpSession;
 import java.security.Principal;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
+//import com.jf.system.mq.activemq.ActiveMQService;
+//import org.apache.activemq.command.ActiveMQQueue;
+//import javax.jms.Destination;
 
 /**
  * Created with IntelliJ IDEA.
@@ -55,8 +65,8 @@ public class TestController extends BaseController {
     @Resource
     private Scheduler scheduler;
 
-    @Autowired(required = false)
-    private ActiveMQService producer; // activemq
+    //@Autowired(required = false)
+    //private ActiveMQService producer; // activemq
     @Autowired(required = false)
     private RabbitMQService producer2; // rabbitmq
 
@@ -77,7 +87,7 @@ public class TestController extends BaseController {
     @RequestMapping("/test")
     @ResponseBody
     public ResMsg test() {
-        return new ResMsg(0, SUCCESS, a);
+        return new ResMsg(ResCode.SUCCESS.code(), ResCode.SUCCESS.msg(), a);
     }
 
     /**
@@ -94,8 +104,8 @@ public class TestController extends BaseController {
     @RequestMapping("/testError")
     @ResponseBody
     public ResMsg testError() {
-        System.out.println(1 / 0);
-        return new ResMsg(0, SUCCESS);
+        userService.testRollback();
+        return new ResMsg(ResCode.SUCCESS.code(), ResCode.SUCCESS.msg());
     }
 
     @RequestMapping("/testLog")
@@ -108,7 +118,7 @@ public class TestController extends BaseController {
         LogManager.error("11");
         LogManager.error("22");
         LogManager.error("33");
-        return new ResMsg(0, SUCCESS);
+        return new ResMsg(ResCode.SUCCESS.code(), ResCode.SUCCESS.msg());
     }
 
     /**
@@ -119,7 +129,7 @@ public class TestController extends BaseController {
     @RequestMapping("/testMysqlCluster")
     @ResponseBody
     public ResMsg testMysqlCluster() {
-        return new ResMsg(0, SUCCESS, userService.testMysqlCluster());
+        return new ResMsg(ResCode.SUCCESS.code(), ResCode.SUCCESS.msg(), userService.testMysqlCluster());
     }
 
     /**
@@ -153,7 +163,7 @@ public class TestController extends BaseController {
             return new ResMsg(-1, "source is empty");
         }
         User user = userService.testMutilSource(source);
-        return new ResMsg(0, SUCCESS, user);
+        return new ResMsg(ResCode.SUCCESS.code(), ResCode.SUCCESS.msg(), user);
     }
 
     @RequestMapping("/ws")
@@ -203,13 +213,13 @@ public class TestController extends BaseController {
     @ResponseBody
     public ResMsg testSetSession(HttpSession session) {
         session.setAttribute("name", "xujunfei");
-        return new ResMsg(0, SUCCESS);
+        return new ResMsg(ResCode.SUCCESS.code(), ResCode.SUCCESS.msg());
     }
 
     @RequestMapping("/testGetSession")
     @ResponseBody
     public ResMsg testGetSession(HttpSession session) {
-        return new ResMsg(0, SUCCESS, session.getAttribute("name"));
+        return new ResMsg(ResCode.SUCCESS.code(), ResCode.SUCCESS.msg(), session.getAttribute("name"));
     }
 
     /**
@@ -222,7 +232,7 @@ public class TestController extends BaseController {
     @ResponseBody
     public ResMsg testLock() throws Exception {
         userService.testLock(10000l);
-        return new ResMsg(0, SUCCESS);
+        return new ResMsg(ResCode.SUCCESS.code(), ResCode.SUCCESS.msg());
     }
 
     @RequestMapping("/transfer")
@@ -230,7 +240,7 @@ public class TestController extends BaseController {
     public ResMsg transfer() {
         int result = userService.transfer("100");
         System.out.println("result = " + result);
-        return new ResMsg(0, SUCCESS);
+        return new ResMsg(ResCode.SUCCESS.code(), ResCode.SUCCESS.msg());
     }
 
     /**
@@ -242,7 +252,7 @@ public class TestController extends BaseController {
     @ResponseBody
     public ResMsg testCache1() {
         User user = userService.findUserById(10000l);
-        return new ResMsg(0, SUCCESS, user);
+        return new ResMsg(ResCode.SUCCESS.code(), ResCode.SUCCESS.msg(), user);
     }
 
     @RequestMapping("/testCache2")
@@ -251,7 +261,7 @@ public class TestController extends BaseController {
         User user = new User(10000l);
         user.setMoney(1000d);
         userService.updateUser(user);
-        return new ResMsg(0, SUCCESS);
+        return new ResMsg(ResCode.SUCCESS.code(), ResCode.SUCCESS.msg());
     }
 
     /**
@@ -269,7 +279,7 @@ public class TestController extends BaseController {
         } catch (SchedulerException e) {
             e.printStackTrace();
         }
-        return new ResMsg(0, SUCCESS);
+        return new ResMsg(ResCode.SUCCESS.code(), ResCode.SUCCESS.msg());
     }
 
     @RequestMapping("/stopQ")
@@ -282,13 +292,13 @@ public class TestController extends BaseController {
         } catch (SchedulerException e) {
             e.printStackTrace();
         }
-        return new ResMsg(0, SUCCESS);
+        return new ResMsg(ResCode.SUCCESS.code(), ResCode.SUCCESS.msg());
     }
 
     /**
      * Quartz 添加任务
      *
-     * @param className      com.jf.system.schedule.jobs.Job1
+     * @param className      com.jf.system.quartz.jobs.Job1
      * @param groupName      g1
      * @param cronExpression 0/5 * * * * ?
      * @return
@@ -307,10 +317,10 @@ public class TestController extends BaseController {
             CronTrigger trigger = TriggerBuilder.newTrigger().withIdentity(className, groupName).withSchedule(scheduleBuilder).build();
 
             Date date = scheduler.scheduleJob(jobDetail, trigger);
-            return new ResMsg(0, SUCCESS, date);
+            return new ResMsg(ResCode.SUCCESS.code(), ResCode.SUCCESS.msg(), date);
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResMsg(-1, FAIL);
+            return new ResMsg(ResCode.ERROR.code(), ResCode.ERROR.msg());
         }
     }
 
@@ -321,10 +331,10 @@ public class TestController extends BaseController {
             scheduler.pauseTrigger(TriggerKey.triggerKey(className, groupName));
             scheduler.unscheduleJob(TriggerKey.triggerKey(className, groupName));
             scheduler.deleteJob(JobKey.jobKey(className, groupName));
-            return new ResMsg(0, SUCCESS);
+            return new ResMsg(ResCode.SUCCESS.code(), ResCode.SUCCESS.msg());
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResMsg(-1, FAIL);
+            return new ResMsg(ResCode.ERROR.code(), ResCode.ERROR.msg());
         }
     }
 
@@ -335,16 +345,17 @@ public class TestController extends BaseController {
 
     /**
      * activemq send
+     * 弃用，选用RabbitMQ
      */
-    @RequestMapping("/mq_send")
+    /*@RequestMapping("/mq_send")
     @ResponseBody
     public ResMsg mq_send() {
         Destination destination = new ActiveMQQueue("test.queue");
         User user = new User(1000l);
         user.setNickname("hahha");
         producer.sendObjectMessage(destination, user);
-        return new ResMsg(0, SUCCESS);
-    }
+        return new ResMsg(ResCode.SUCCESS.code(), ResCode.SUCCESS.msg());
+    }*/
 
     /**
      * rabbitmq send
@@ -372,7 +383,7 @@ public class TestController extends BaseController {
         for (int i = 0; i < 5; i++) {
             producer2.send("topic.msg.any", "any " + i);
         }
-        return new ResMsg(0, SUCCESS);
+        return new ResMsg(ResCode.SUCCESS.code(), ResCode.SUCCESS.msg());
     }
 
     /**
@@ -387,7 +398,62 @@ public class TestController extends BaseController {
         System.out.println((String) redisTemplate.opsForValue().get("name"));
         //redisTemplate.delete("name");
         //String res = (String) redisTemplate.opsForValue().getAndSet("name", "hahahahah");
-        return new ResMsg(0, SUCCESS);
+        return new ResMsg(ResCode.SUCCESS.code(), ResCode.SUCCESS.msg());
+    }
+
+    @Resource
+    private SMService smService;
+    @Resource
+    private EmailService emailService;
+    @Resource
+    private PDFService pdfService;
+    @Resource
+    private JPushService jPushService;
+
+    @Resource
+    private SysConfig sysConfig;
+
+    @RequestMapping("/testSms")
+    @ResponseBody
+    public ResMsg testSms() {
+        smService.send("1", "17730215423");
+        smService.send("2", "17730215423");
+        smService.send("3", "17730215423");
+        smService.send("4", "17730215423");
+        smService.send("5", "17730215423");
+        return new ResMsg(ResCode.SUCCESS.code(), ResCode.SUCCESS.msg());
+    }
+
+    @RequestMapping("/testEmail")
+    @ResponseBody
+    public ResMsg testEmail() {
+        emailService.sendTemplateMail(null, "80222@qq.com", "123", "email_register");
+        return new ResMsg(ResCode.SUCCESS.code(), ResCode.SUCCESS.msg());
+    }
+
+    @RequestMapping("/htmltopdf")
+    @ResponseBody
+    public ResMsg htmltopdf() {
+        try {
+            // 导入数据
+            Map<String, Object> map = new HashMap<String, Object>();
+            map.put("name", "xujunfei");
+            String str = pdfService.pdfCreate("pdf_user", map, sysConfig.getStaticPath());
+            if ("error".equals(str)) {
+                return new ResMsg(ResCode.FAIL.code(), ResCode.FAIL.msg());
+            }
+            return new ResMsg(1, str);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResMsg(ResCode.ERROR.code(), ResCode.ERROR.msg());
+        }
+    }
+
+    @RequestMapping("/jpush")
+    @ResponseBody
+    public ResMsg jpush() {
+        jPushService.sendPush(1, "hello", null, "10001");
+        return new ResMsg(ResCode.SUCCESS.code(), ResCode.SUCCESS.msg());
     }
 
 }

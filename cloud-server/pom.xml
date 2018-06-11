@@ -100,13 +100,9 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
-					<!-- exclude some jars -->
-					<excludes>
-						<exclude>
-							<groupId>com.amazonaws</groupId>
-							<artifactId>*</artifactId>
-						</exclude>
-					</excludes>
+					<excludeGroupIds>com.amazonaws</excludeGroupIds>
+					<layout>JAR</layout>
+					<mainClass>com.jf.cloud.CloudServerApplication</mainClass>
 				</configuration>
 			</plugin>
 		</plugins>

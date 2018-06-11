@@ -1,10 +1,12 @@
 package com.jf.controller.user;
 
 import com.github.pagehelper.PageInfo;
-import com.jf.controller.BaseController;
+import com.jf.common.BaseController;
 import com.jf.controller.view.UserExcel;
-import com.jf.entity.ResMsg;
 import com.jf.database.model.User;
+import com.jf.entity.ResMsg;
+import com.jf.entity.enums.ResCode;
+import com.jf.service.system.SystemService;
 import com.jf.service.user.UserService;
 import com.jf.system.annotation.AuthPassport;
 import org.springframework.stereotype.Controller;
@@ -31,6 +33,8 @@ public class UserController extends BaseController {
 
     @Resource
     private UserService userService;
+    @Resource
+    private SystemService systemService;
 
     /**
      * 用户列表
@@ -70,13 +74,13 @@ public class UserController extends BaseController {
     @ResponseBody
     public ResMsg userEnable(Long userId, HttpServletRequest request) {
         if (userId == null) {
-            return new ResMsg(1, INVALID_ID);
+            return new ResMsg(ResCode.INVALID_ID.code(), ResCode.INVALID_ID.msg());
         }
         if (userService.deleteUser(userId) > 0) {
-            addAdminLog(request, "禁用/启用用户", "id=" + userId);
-            return new ResMsg(0, OPERATE_SUCCESS);
+            systemService.addAdminLog(request, "禁用/启用用户", "id=" + userId);
+            return new ResMsg(ResCode.OPERATE_SUCCESS.code(), ResCode.OPERATE_SUCCESS.msg());
         }
-        return new ResMsg(2, OPERATE_FAIL);
+        return new ResMsg(ResCode.OPERATE_FAIL.code(), ResCode.OPERATE_FAIL.msg());
     }
 
     /**
@@ -110,12 +114,12 @@ public class UserController extends BaseController {
             }
             int res = userService.updateUser(user);
             if (res > 0) {
-                addAdminLog(request, "编辑用户", "phone=" + phone);
-                return new ResMsg(0, UPDATE_SUCCESS);
+                systemService.addAdminLog(request, "编辑用户", "phone=" + phone);
+                return new ResMsg(ResCode.UPDATE_SUCCESS.code(), ResCode.UPDATE_SUCCESS.msg());
             }
-            return new ResMsg(7, UPDATE_FAIL);
+            return new ResMsg(ResCode.UPDATE_FAIL.code(), ResCode.UPDATE_FAIL.msg());
         }
-        return new ResMsg(5, INVALID_ID);
+        return new ResMsg(ResCode.INVALID_ID.code(), ResCode.INVALID_ID.msg());
     }
 
     /**

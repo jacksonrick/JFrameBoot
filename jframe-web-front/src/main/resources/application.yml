@@ -11,7 +11,7 @@ info:
     version: "1.0"
     description: "pc"
 app:
-  host: 192.168.1.199
+  host: 192.168.1.200
   static_path: /data/wwwroot/front/static/
   static_host: http://${app.host}:${server.port}/
   db:

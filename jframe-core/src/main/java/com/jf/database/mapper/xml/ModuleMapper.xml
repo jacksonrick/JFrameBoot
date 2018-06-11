@@ -17,14 +17,26 @@
 		SELECT id, parent_id, mod_name, mod_path, mod_icon, mod_flag
 		FROM s_module
 		<where>
-            <if test="flag != null">
-                AND mod_flag IN <foreach item="idx" collection="flag" open="(" separator="," close=")"> #{idx} </foreach>
+            <if test="flags != null">
+                AND mod_flag IN <foreach item="idx" collection="flags" open="(" separator="," close=")"> #{idx} </foreach>
             </if>
             <if test="roleId != null">
                 AND FIND_IN_SET(id, (SELECT role_rights FROM s_role WHERE id = #{roleId}))
             </if>
+			<if test="adminId != null">
+				AND FIND_IN_SET(id, (SELECT admin_rights FROM s_admin WHERE id = #{adminId}))
+			</if>
+			<if test="ids != null and ids != ''">
+				AND FIND_IN_SET(id, #{ids})
+			</if>
 		</where>
 		ORDER BY mod_sort ASC
+	</select>
+
+	<select id="findIdByPath" resultType="int" parameterType="string">
+		SELECT id
+		FROM s_module
+		WHERE mod_path = #{path}
 	</select>
 
 	<update id="update" parameterType="module">

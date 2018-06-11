@@ -18,3 +18,5 @@ app:
   db:
     primary:
       enabled: true
+  cache:
+    enabled: true

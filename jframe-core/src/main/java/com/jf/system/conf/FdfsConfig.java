@@ -12,7 +12,7 @@ import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
- * Description:
+ * Description: FastDFS
  * User: xujunfei
  * Date: 2018-01-19
  * Time: 14:20
@@ -23,9 +23,9 @@ import java.util.List;
 public class FdfsConfig {
 
     // 读取时间，默认1000
-    private int soTimeout = 1000;
+    private int soTimeout = 2000;
     // 连接超时时间
-    private int connectTimeout = 1000;
+    private int connectTimeout = 2000;
     // Tracker 地址列表
     private List<String> trackerList = new ArrayList<>();
 

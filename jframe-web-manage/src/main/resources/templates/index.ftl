@@ -71,15 +71,17 @@
                     </#if>
                     <!-- 监控 -->
                     <li class="dropdown">
-                        <a class="tp" onclick="newTab('云服务器监控', 'http://127.0.0.1:10000')" title="云服务器监控">
+                        <a class="dropdown-toggle tp" data-toggle="dropdown" title="监控">
                             <i class="fa fa-server fa-lg"></i>
                         </a>
+                        <ul class="dropdown-menu m-t-xs">
+                            <li onclick="newTab('云服务器监控', 'http://127.0.0.1:10000')"><a><i class="fa fa-server"></i>云服务器监控</a></li>
+                            <li onclick="newTab('数据源监控', '/druid/index.html')"><a><i class="fa fa-database"></i>数据源监控</a></li>
+                            <li onclick="newTab('Redis Cachecloud', 'http://192.168.24.200:20010')"><a><i class="fa fa-cloud"></i>Redis Cachecloud</a></li>
+                            <li onclick="newTab('ELK', 'http://192.168.24.200:5601')"><a><i class="fa fa-history"></i>ELK</a></li>
+                        </ul>
                     </li>
-                    <li class="dropdown">
-                        <a class="tp" onclick="newTab('数据源监控', '/druid/index.html')" title="数据源监控">
-                            <i class="fa fa-database fa-lg"></i>
-                        </a>
-                    </li>
+
                     <!-- 系统消息 -->
                     <li class="dropdown">
                         <a class="dropdown-toggle count-info tp" data-toggle="dropdown" title="系统消息">

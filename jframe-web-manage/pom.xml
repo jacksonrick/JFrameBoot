@@ -21,7 +21,23 @@
             <artifactId>jframe-core</artifactId>
             <version>1.0</version>
         </dependency>
+
+        <!-- test -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <!-- quartz -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-quartz</artifactId>
+        </dependency>
     </dependencies>
+
+    <properties>
+        <project.name>manage</project.name>
+    </properties>
 
     <build>
         <finalName>jframe-web-manage</finalName>
@@ -41,7 +57,6 @@
             </resource>
         </resources>
         <plugins>
-            <!-- package plugin -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>

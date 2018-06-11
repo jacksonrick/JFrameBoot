@@ -3,6 +3,7 @@ server:
 spring:
   profiles:
     active: dev
+    include: cloud # 加载springcloud配置
   application:
     name: JFRAME-WEB-TEST
 info: # 定义各种额外的详情给服务端显示
@@ -31,6 +32,10 @@ app:
     enabled: false
   springsch: # spring定时器
     enabled: false
+  quartz: # Quartz定时任务
+    enabled: true
+  cache: # redis缓存支持
+    enabled: true
   redisson: # 分布式锁
     enabled: false
   activemq: # ActiveMQ

@@ -14,10 +14,10 @@ if [ ! -n "$JARNAME" ];then
     exit 1;
 fi
 
-if [ ! -d "$JAVAPATH" ];then
-    echo "Java path doesn't exist"
-    exit 1;
-fi
+#if [ ! -d "$JAVAPATH" ];then
+#    echo "Java path doesn't exist"
+#    exit 1;
+#fi
 
 APP_NAME="jframe-web-$JARNAME"
 
@@ -43,7 +43,7 @@ echo App Home: $APPATH
 echo App Name: $APP_NAME
 echo Server port: ${SP:-'Default'}
 
-nohup $JAVAPATH/java -server $JPARAM -Dapp.name=$APP_NAME -jar $APPATH/$JARNAME/$APP_NAME.jar $PORT --spring.profiles.active=pro >/dev/null 2>&1 &
+nohup $JAVAPATH/java -server $JPARAM -jar $APPATH/$JARNAME/$APP_NAME.jar $PORT --spring.profiles.active=pro >/dev/null 2>&1 &
 
 echo starting...
 sleep 5

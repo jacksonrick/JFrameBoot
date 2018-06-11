@@ -1,5 +1,6 @@
 package com.jf.controller;
 
+import com.jf.common.BaseController;
 import com.mxixm.fastboot.weixin.annotation.*;
 import com.mxixm.fastboot.weixin.module.event.WxEvent;
 import com.mxixm.fastboot.weixin.module.message.WxMessage;

@@ -30,6 +30,7 @@
                 <button type="button" class="btn btn-warning btn-sm" data-open="modal" data-width="800px"
                         data-height="500px" href="/admin/user/userList?mode=1"><i class="fa fa-user"></i> 选择用户
                 </button>
+                <button type="button" class="btn btn-default btn-sm" id="btn-test"><i class="fa fa-copy"></i> 测试</button>
             </div>
         </div>
         <table id="table" class="table table-striped table-bordered table-hover" width="100%"></table>
@@ -83,6 +84,13 @@
 
         $("#search").on("click", function () {
             tables.draw();// 查询后不需要保持分页状态，回首页
+        });
+
+        // 销毁tables实例
+        // tables.destroy();
+        $("#btn-test").on("click", function () {
+            tables.destroy();
+            $('#table').html('');
         });
 
         $("#export").click(function () {// 导出到Excel

@@ -58,4 +58,13 @@ public class Tree {
 		this.name = name;
 	}
 
+	@Override
+	public String toString() {
+		return "Tree{" +
+				"id=" + id +
+				", pId=" + pId +
+				", checked=" + checked +
+				", name='" + name + '\'' +
+				'}';
+	}
 }

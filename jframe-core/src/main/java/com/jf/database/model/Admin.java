@@ -41,6 +41,9 @@ public class Admin extends BaseVo implements Serializable {
     @EmptyPattern(regexp = "^1[3|4|5|7|8][0-9]\\d{8}$", message = "手机号格式错误")
 	private String adminPhone;
 
+	/** 权限 */
+    private String adminRights;
+
 	/** 账号创建日期 */
 	private Date adminCreateTime;
 
@@ -122,7 +125,15 @@ public class Admin extends BaseVo implements Serializable {
 		return this.adminPhone;
 	}
 
-    public Date getAdminCreateTime() {
+	public void setAdminRights(String adminRights) {
+		this.adminRights = adminRights;
+	}
+
+	public String getAdminRights() {
+		return adminRights;
+	}
+
+	public Date getAdminCreateTime() {
         return adminCreateTime;
     }
 

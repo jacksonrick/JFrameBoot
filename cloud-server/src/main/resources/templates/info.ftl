@@ -38,7 +38,7 @@
                 <li><a href="javascript:;">user: <input class="form-control" type="text" id="username" value="spring" style="width: 150px"/></a>
                 </li>
                 <li><a href="javascript:;">pwd:
-                    <input class="form-control" type="password" id="password" value="spring1234" style="width: 150px"/></a></li>
+                    <input class="form-control" type="password" id="password" value="springboot123456!" style="width: 150px"/></a></li>
                 <li role="separator" class="divider"></li>
                 <li><a href="javascript:;" id="refresh">Refresh Cloud Configs</a></li>
             </ul>

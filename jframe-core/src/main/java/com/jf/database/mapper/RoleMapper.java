@@ -22,10 +22,9 @@ public interface RoleMapper {
 
 	/**
 	 * 检查权限
-	 * @param roleId
-	 * @param modPath
-	 * @return
+	 * @return 1 | 0
 	 */
+	@Deprecated
 	int checkRights(@Param("roleId") Long roleId, @Param("modPath") String modPath);
 
 }

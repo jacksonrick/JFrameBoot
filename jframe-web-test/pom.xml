@@ -16,26 +16,8 @@
     <name>jframe-web-test</name>
     <description>Test project for Spring Boot</description>
 
-    <!-- 以下组件是否打包[compile] -->
-    <properties>
-        <scope.quartz>compile</scope.quartz>
-        <scope.activemq>provided</scope.activemq>
-        <scope.amqp>compile</scope.amqp>
-        <scope.websocket>provided</scope.websocket>
-        <scope.redisson>compile</scope.redisson>
-        <scope.flume>provided</scope.flume>
-        <scope.elk>provided</scope.elk>
-        <scope.springcloud.eureka>compile</scope.springcloud.eureka>
-        <scope.springcloud.feign>compile</scope.springcloud.feign>
-        <scope.springcloud.hystrix>compile</scope.springcloud.hystrix>
-        <scope.springcloud.config>compile</scope.springcloud.config>
-        <scope.thrid.jpush>provided</scope.thrid.jpush>
-        <scope.thrid.wepay>provided</scope.thrid.wepay>
-        <scope.thrid.alipay>provided</scope.thrid.alipay>
-        <scope.thrid.wechat>provided</scope.thrid.wechat>
-    </properties>
-
     <dependencies>
+        <!-- test -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
@@ -47,7 +29,120 @@
             <artifactId>jframe-core</artifactId>
             <version>1.0</version>
         </dependency>
+
+        <!-- actuator -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+        <!-- security -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+        <!-- spring session -->
+        <dependency>
+            <groupId>org.springframework.session</groupId>
+            <artifactId>spring-session-data-redis</artifactId>
+            <version>2.0.2.RELEASE</version>
+        </dependency>
+        <!-- mail -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-mail</artifactId>
+        </dependency>
+        <!-- spring cache -->
+        <!--<dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-cache</artifactId>
+        </dependency>-->
+        <!-- redisson -->
+        <dependency>
+            <groupId>org.redisson</groupId>
+            <artifactId>redisson</artifactId>
+            <version>3.6.2</version>
+        </dependency>
+        <!-- fastdfs -->
+        <dependency>
+            <groupId>com.luhuiguo</groupId>
+            <artifactId>fastdfs-client</artifactId>
+            <version>0.4.0</version>
+        </dependency>
+        <!-- 极光推送 -->
+        <dependency>
+            <groupId>cn.jpush.api</groupId>
+            <artifactId>jpush-client</artifactId>
+            <version>3.2.17</version>
+        </dependency>
+        <!-- 微信支付 -->
+        <dependency>
+            <groupId>com.github.wxpay</groupId>
+            <artifactId>wxpay-sdk</artifactId>
+            <version>0.0.3</version>
+        </dependency>
+        <!-- 支付宝 -->
+        <dependency>
+            <groupId>com.alipay.api</groupId>
+            <artifactId>k12-alipay-sdk</artifactId>
+            <version>0.0.1-beta</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>javax.servlet</groupId>
+                    <artifactId>servlet-api</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <!-- 微信公众号 -->
+        <dependency>
+            <groupId>com.mxixm</groupId>
+            <artifactId>fastboot-weixin</artifactId>
+            <version>0.5.1</version>
+        </dependency>
+        <!-- quartz -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-quartz</artifactId>
+        </dependency>
+        <!-- activemq -->
+        <!--<dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-activemq</artifactId>
+        </dependency>-->
+        <!-- amqp -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-amqp</artifactId>
+        </dependency>
+        <!-- websocket -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-websocket</artifactId>
+        </dependency>
+        <!-- spring cloud eureka -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+        </dependency>
+        <!-- spring cloud feign -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
+        </dependency>
+        <!-- spring cloud hystrix -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-hystrix</artifactId>
+        </dependency>
+        <!-- spring cloud config -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-config</artifactId>
+        </dependency>
     </dependencies>
+
+    <properties>
+        <project.name>test</project.name>
+    </properties>
 
     <build>
         <finalName>jframe-web-test</finalName>
@@ -74,6 +169,7 @@
                 <configuration>
                     <archive>
                         <manifest>
+                            <!-- 主函数 -->
                             <mainClass>com.jf.JframeWebTestApplication</mainClass>
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>lib/</classpathPrefix>
@@ -93,6 +189,7 @@
                 <configuration>
                     <appendAssemblyId>false</appendAssemblyId>
                     <descriptors>
+                        <!-- 描述文件 -->
                         <descriptor>../jframe/build/package.xml</descriptor>
                     </descriptors>
                 </configuration>

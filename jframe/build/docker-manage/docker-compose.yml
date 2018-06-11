@@ -1,0 +1,14 @@
+version: '2.2'
+services:
+  web:
+    build: .
+    image: jackson/web/manage:latest
+    container_name: web_manage
+    external_links:
+      - mysql:mysql
+    volumes:
+      - /home/docker/jframe/logs:/data/wwwlogs
+      - /home/docker/jframe/manage/static:/data/wwwroot/manage/static
+    ports:
+      - "8080:8080"
+    command: java -server -jar /data/wwwroot/manage/jframe-web-manage.jar --spring.profiles.active=pro

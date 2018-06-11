@@ -1,9 +1,21 @@
 # IntelliJ project files
-.DS_Store
-.idea
+/.idea
 *.iml
-jframe/doc/*.txt
+
+# Eclipse
+/out/
+/.settings/
+.classpath
+.launch
+.project
+
+# for mac | windows
+.DS_Store
+Thumbs.db
+
+# for maven
 jframe-*/target/
 cloud-server/target/
 
+# this project
 /jframe-core/src/main/resources/application-pro.yml

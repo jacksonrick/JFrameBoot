@@ -3,14 +3,16 @@ package com.jf.controller;
 import com.alipay.api.internal.util.AlipaySignature;
 import com.github.wxpay.sdk.WXPay;
 import com.github.wxpay.sdk.WXPayUtil;
+import com.jf.common.BaseController;
 import com.jf.convert.Convert;
 import com.jf.entity.ResMsg;
+import com.jf.entity.enums.ResCode;
 import com.jf.file.Qrcode;
 import com.jf.json.JSONUtils;
 import com.jf.string.StringUtil;
+import com.jf.system.alipay.AliPayService;
 import com.jf.system.conf.SysConfig;
-import com.jf.system.third.alipay.AliPayService;
-import com.jf.system.third.wechat.WxPayService;
+import com.jf.system.wechat.WxPayService;
 import net.sf.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -84,7 +86,7 @@ public class AppPayController extends BaseController {
     @ResponseBody
     public ResMsg ali_refund() throws Exception {
         String result = aliPayService.refund("2018011711333198018150", "2018011721001004630200410967", 100d, "退款");
-        return new ResMsg(0, SUCCESS, result);
+        return new ResMsg(ResCode.SUCCESS.code(), ResCode.SUCCESS.msg(), result);
     }
 
     /**
@@ -182,7 +184,7 @@ public class AppPayController extends BaseController {
     @ResponseBody
     public ResMsg wx_refund() throws Exception {
         wxPayService.refund("2018012515533680990396", StringUtil.getOrderCode(), 0.01, 0.01);
-        return new ResMsg(0, SUCCESS);
+        return new ResMsg(ResCode.SUCCESS.code(), ResCode.SUCCESS.msg());
     }
 
     /**
@@ -249,7 +251,7 @@ public class AppPayController extends BaseController {
     @ResponseBody
     public ResMsg wx_login() {
 
-        return new ResMsg(0, SUCCESS);
+        return new ResMsg(ResCode.SUCCESS.code(), ResCode.SUCCESS.msg());
     }
 
 

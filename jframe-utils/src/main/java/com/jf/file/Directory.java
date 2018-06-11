@@ -38,4 +38,12 @@ public class Directory {
 		this.type = type;
 	}
 
+	@Override
+	public String toString() {
+		return "Directory{" +
+				"name='" + name + '\'' +
+				", path='" + path + '\'' +
+				", type='" + type + '\'' +
+				'}';
+	}
 }

@@ -1,0 +1,26 @@
+auth-server: http://127.0.0.1:8090
+local-server: http://127.0.0.1:8091
+server:
+  port: 8091
+  servlet:
+    context-path: /
+    session:
+      cookie:
+        name: JSESSIONID1
+security:
+  oauth2:
+    sso:
+      login-path: /sso/login
+    client:
+      client-id: sso
+      client-secret: 123456
+      user-authorization-uri: ${auth-server}/oauth/authorize
+      access-token-uri: ${auth-server}/oauth/token
+#      pre-established-redirect-uri: ${local-server}/a/hello
+#      use-current-uri: false
+    resource:
+      jwt:
+        key-uri: ${auth-server}/oauth/token_key
+logging:
+  level:
+    org.springframework: info

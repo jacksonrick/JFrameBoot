@@ -1,8 +1,8 @@
 package com.jf.controller;
 
 import com.jf.entity.ResMsg;
-import com.jf.service.order.OrderService;
-import com.jf.service.user.UserService;
+import com.jf.service.OrderService;
+import com.jf.service.UserService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
 
 /**
  * Created with IntelliJ IDEA.

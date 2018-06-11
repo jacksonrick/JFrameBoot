@@ -1,6 +1,6 @@
 logging:
   config: classpath:logback-boot.xml # 日志配置文件
-  file: ${system.log_path}${app.name:jframe}.log # 当前日志位置
+  #file: ${system.log_path}${app.name:jframe}.log # 当前日志位置
 server:
   tomcat: # tomcat容器
     uri-encoding: UTF-8
@@ -21,7 +21,7 @@ server:
 #    key-alias: tomcat
 spring:
   cache: # 缓存设置
-    type: NONE # 缓存类型 NONE | REDIS
+    type: REDIS # 缓存类型 NONE | REDIS
     cache-names: user,order # 缓存的名称(多个)
     redis:
       time-to-live: 20m
@@ -66,7 +66,7 @@ spring:
         url: jdbc:mysql://127.0.0.1:3306/test?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false
         username: root
         password: 12345678
-      loadbalance: # 集群[需要请替换到以上配置]
+      loadbalance: # 集群
         url: jdbc:mysql:loadbalance://192.168.1.191:3306,192.168.1.192:3306/test?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&roundRobinLoadBalance=true
         username: root
         password: 12345678
@@ -136,7 +136,7 @@ spring:
 #      nodes:
 #        - 192.168.1.199:26379
 #        - 192.168.1.199:26380
-#    cluster: # Cluster集群
+#    cluster: # Cluster集群(6)
 #      nodes:
 #        - 192.168.1.199:7001
 #        - 192.168.1.199:7002
@@ -164,34 +164,6 @@ fdfs: # fastDFS配置
   connect_timeout: 3000
   tracker-list: # 可设置多个
     - 192.168.1.199:22122
-eureka: # eureka客户端注册
-  client:
-    enabled: ${app.eureka.enabled:false}
-    serviceUrl:
-      defaultZone: http://eureka:eureka1234@127.0.0.1:10000/eureka/ # eureka服务端地址
-feign: # 断路器|监控 需配合注解使用*
-  hystrix:
-    enabled: ${app.eureka.enabled:false}
-management:
-  endpoints: # Actuator监控
-    enabled-by-default: ${app.monitor.enabled:false}
-    web:
-      base-path: /monitor # 监控主路径
-      exposure: # 暴露的接口
-        include: info, health, env, httptrace, metrics, threaddump, logfile, refresh
-    jmx:
-      exposure:
-        include: info, health, mappings, beans # 不暴露jmx: exclude: '*'
-  server:
-    add-application-context-header: false # 隐藏http头
-  endpoint:
-    health: # 显示详细
-      show-details: WHEN_AUTHORIZED
-  health: # 指定不监控的服务
-    mail:
-      enabled: false
-    jms:
-      enabled: false
 system: # 系统自定义配置
   appkey: ${app.appkey:0}
   static_host: http://127.0.0.1:${server.port}/ # 静态服务器地址
@@ -219,6 +191,8 @@ system: # 系统自定义配置
   jpush: # jpush推送
     appkey1: appkey
     secret1: secret
+    alert1: "JFRAME"
+    ios_product: false
   upload:
     fdfs: ${app.fdfs.enabled:false}
     img_size: 3

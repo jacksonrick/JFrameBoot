@@ -21,6 +21,8 @@ public interface AdminMapper {
 
 	Admin findByNameAndPwd(@Param("adminName") String adminName, @Param("adminPassword") String adminPassword);
 
+	Admin findRightsById(Long id);
+
 	int insert(Admin bean);
 
 	int update(Admin bean);

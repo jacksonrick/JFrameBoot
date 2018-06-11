@@ -21,7 +21,30 @@
             <artifactId>jframe-core</artifactId>
             <version>1.0</version>
         </dependency>
+
+        <!-- 微信支付 -->
+        <dependency>
+            <groupId>com.github.wxpay</groupId>
+            <artifactId>wxpay-sdk</artifactId>
+            <version>0.0.3</version>
+        </dependency>
+        <!-- 支付宝 -->
+        <dependency>
+            <groupId>com.alipay.api</groupId>
+            <artifactId>k12-alipay-sdk</artifactId>
+            <version>0.0.1-beta</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>javax.servlet</groupId>
+                    <artifactId>servlet-api</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
     </dependencies>
+
+    <properties>
+        <project.name>app</project.name>
+    </properties>
 
     <build>
         <finalName>jframe-web-app</finalName>
@@ -37,14 +60,12 @@
             </resource>
         </resources>
         <plugins>
-            <!-- package plugin -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
                 <configuration>
                     <archive>
                         <manifest>
-                            <!-- 主函数 -->
                             <mainClass>com.jf.JframeWebAppApplication</mainClass>
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>lib/</classpathPrefix>
@@ -64,7 +85,6 @@
                 <configuration>
                     <appendAssemblyId>false</appendAssemblyId>
                     <descriptors>
-                        <!-- 描述文件 -->
                         <descriptor>../jframe/build/package.xml</descriptor>
                     </descriptors>
                 </configuration>

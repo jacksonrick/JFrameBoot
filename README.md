@@ -1,16 +1,19 @@
 # JFrame
-##### JFrame - SpringBoot & Cloud Project `v4.7.beta1`
-`jackson-rick`   <br>
-`https://github.com/jacksonrick/JFrameBoot`
+##### JFrame - SpringBoot & Cloud Project `v5.0 beta1`
+made by @jackson-rick   <br>
+本架构是对技术框架的整合及开发的规范
+
 
 ### 模块
-* jframe `文档/配置/共享静态资源`
-* jframe-core `服务类/系统相关`
-* jframe-model `实体类/Mapper`
+* jframe `文档/配置/共享静态资源/Docker`
+* jframe-core `实体对象/服务类/系统相关`
 * jframe-utils `工具类`
 * jframe-web-app `App端`
 * jframe-web-front `PC端`
 * jframe-web-manage `后台管理端`
+* jframe-web-test `模块测试`
+* jframe-service-order `微服务模块测试`
+* jframe-service-oauth `OAuth2.0模块`
 
 ### 集成
 * Spring/SpringMVC/MyBatis/SpringBoot/SpringCloud
@@ -30,7 +33,14 @@
 * Jenkins自动化部署、脚本
 
 ### 更新日志：
-* v4.8 beta1 `20180507`
+* v5.0 beta1 `20180611`
+    * 1.架构优化，轻量化服务
+    * 2.优化测试模块，集成更多的服务测试
+    * 3.新增OAuth授权服务及三种模式
+    * 4.优化打包，集成Docker配置
+    * 5.移除全部的拦截器，更换为AOP，包括请求日志、权限、统一的错误处理等
+    * 6.解决部分依赖不兼容的问题，修复个别BUG
+* v4.8 `20180507`
     * 1.优化Jar依赖关系
     * 2.新增AMPQ、ELK等组件
     * 3.移除model模块
@@ -165,14 +175,23 @@
 * Maven 3.3.9
 * Redis 2.8.9
 * Linux CentOS 7
-* IDEA 2017
+* IDEA 2017+
+---
+* application-dev.yml 开发环境
+* application-pro.yml 生产环境
+* application-cloud.yml SpringCloud支持
 
-### 打包到服务器
+### 运行
+#### 打包到服务器运行
 * 修改生产环境配置
-* 运行 `clean package -DskipTests`进行打包
+* 在各个端下运行 `clean package -DskipTests`进行打包[必须先install父pom]
 * 将target目录下的打包文件上传到服务器目录
 * 运行`jframe/build/run`命令或直接运行`java -jar`命令
 * 注意：运行脚本前，请先查看注释，需要按照指定的命名方式
+
+#### Docker
+* 直接运行打包命令，将上传到服务器目录，如:/opt/jframe/front
+* 运行`docker-compose up -d`
 
 ### 其他
 * 使用maven下载Jar包时，请先在`maven-.../conf/setting.xml`的mirrors标签内加入以下：

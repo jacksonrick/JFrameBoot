@@ -24,6 +24,7 @@
 		a.admin_name,
 		a.admin_realname,
 		a.admin_phone,
+		a.admin_rights,
 		a.admin_create_time,
 		a.admin_login_time,
 		a.admin_login_ip,
@@ -38,6 +39,7 @@
 		<result property="adminName" column="admin_name" />
 		<result property="adminRealname" column="admin_realname" />
 		<result property="adminPhone" column="admin_phone" />
+		<result property="adminRights" column="admin_rights" />
 		<result property="adminCreateTime" column="admin_create_time" />
 		<result property="adminLoginTime" column="admin_login_time" />
 		<result property="adminLoginIp" column="admin_login_ip" />
@@ -47,6 +49,13 @@
 			<id property="id" column="role_id" />
 			<result property="roleName" column="role_name" />
 			<result property="isDelete" column="role_delete" />
+		</association>
+	</resultMap>
+
+	<resultMap type="admin" id="adminRightsResultMap">
+		<result property="adminRights" column="admin_rights" />
+		<association property="role" javaType="role">
+			<result property="roleRights" column="role_rights" />
 		</association>
 	</resultMap>
 
@@ -75,6 +84,12 @@
 		WHERE a.admin_name = #{adminName} AND a.admin_password = #{adminPassword}
 	</select>
 
+	<select id="findRightsById" resultMap="adminRightsResultMap" parameterType="long">
+		SELECT a.admin_rights, r.role_rights
+		FROM s_admin a LEFT JOIN s_role r ON a.role_id = r.id
+		WHERE a.id = #{id}
+	</select>
+
 	<insert id="insert" parameterType="admin">
 		INSERT INTO s_admin (
 		  role_id,
@@ -100,6 +115,7 @@
 			<if test="adminRealname != null and adminRealname != ''">admin_realname = #{adminRealname},</if>
 			<if test="adminPassword != null and adminPassword != ''">admin_password = #{adminPassword},</if>
 			<if test="adminPhone != null and adminPhone != ''">admin_phone = #{adminPhone},</if>
+			<if test="adminRights != null">admin_rights = #{adminRights},</if>
 			<if test="adminLoginTime != null">admin_login_time = #{adminLoginTime},</if>
 			<if test="adminLoginIp != null and adminLoginIp != ''">admin_login_ip = #{adminLoginIp},</if>
 		</set>

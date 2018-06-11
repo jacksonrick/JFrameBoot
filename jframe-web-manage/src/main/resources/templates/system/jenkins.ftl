@@ -18,7 +18,7 @@
         <h5>
             Jenkins服务器IP：
             <select id="serverIP" class="form-control" style="width: 200px">
-                <option value="http://120.79.56.97:9999" selected>http://120.79.56.97:9999</option>
+                <option value="http://ip:port" selected>http://ip:port</option>
             </select>
             工程名称：
             <select id="serverProj" class="form-control" style="width: 180px">
@@ -26,8 +26,8 @@
             </select>
             <br><br>
             用户名/密码：
-            <input class="form-control" type="text" id="username" value="zhigui" style="width: 100px"/>
-            <input class="form-control" type="password" id="password" value="zhigui1688," style="width: 100px"/>
+            <input class="form-control" type="text" id="username" value="username" style="width: 100px"/>
+            <input class="form-control" type="password" id="password" value="passwd" style="width: 100px"/>
 
             <button class="btn btn-danger" id="start"><i class="fa fa-plus"></i>开始自动部署</button>
             <button class="btn btn-info" onclick="getInfo()"><i class="fa fa-refresh"></i>刷新状态</button>
@@ -40,7 +40,7 @@
 
 <script>
     $(function () {
-        getInfo();
+        //getInfo();
 
         $("#start").click(function () {
             Ajax.ajax({
@@ -85,10 +85,9 @@
                     });
                     html += modules + "</p>"
                     $("#content").html(html);
-                } else if (data.code == -1) {
+                } else if (data.code == 403) {
                     openLayerHTML(data.data, "500px", "400px");
-                }
-                else {
+                } else {
                     alert(data.msg);
                 }
             }

@@ -15,18 +15,32 @@
     <packaging>jar</packaging>
     <name>jframe-service-order</name>
 
-    <properties>
-        <scope.springcloud.eureka>compile</scope.springcloud.eureka>
-        <scope.springcloud.feign>compile</scope.springcloud.feign>
-        <scope.springcloud.hystrix>compile</scope.springcloud.hystrix>
-        <scope.springcloud.config>compile</scope.springcloud.config>
-    </properties>
-
     <dependencies>
         <dependency>
             <groupId>com.jf</groupId>
             <artifactId>jframe-core</artifactId>
             <version>1.0</version>
+        </dependency>
+
+        <!-- spring cloud eureka -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+        </dependency>
+        <!-- spring cloud feign -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
+        </dependency>
+        <!-- spring cloud hystrix -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-hystrix</artifactId>
+        </dependency>
+        <!-- spring cloud config -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-config</artifactId>
         </dependency>
     </dependencies>
 

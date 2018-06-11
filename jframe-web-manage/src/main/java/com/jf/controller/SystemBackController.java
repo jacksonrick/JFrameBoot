@@ -1,15 +1,17 @@
 package com.jf.controller;
 
 import com.github.pagehelper.PageInfo;
+import com.jf.common.BaseController;
 import com.jf.controller.view.ViewExcel;
 import com.jf.convert.Convert;
+import com.jf.database.model.*;
 import com.jf.date.DateUtil;
 import com.jf.entity.ResMsg;
 import com.jf.entity.Tree;
+import com.jf.entity.enums.ResCode;
 import com.jf.file.Directory;
 import com.jf.file.FileUtil;
 import com.jf.http.HttpUtil;
-import com.jf.database.model.*;
 import com.jf.obj.BeanUtil;
 import com.jf.service.system.AddrService;
 import com.jf.service.system.AdminService;
@@ -114,9 +116,15 @@ public class SystemBackController extends BaseController {
             json = HttpUtil.getWithAuthorization(ip, auth);
         }
         if (json != null && json.startsWith("<html>")) {
-            return new ResMsg(-1, "FAIL", json);
+            return new ResMsg(ResCode.REFUSE.code(), ResCode.REFUSE.msg(), json);
         }
-        return new ResMsg(0, "SUCCESS", json);
+        if (HttpUtil.STR_ERROR.equals(json)) {
+            return new ResMsg(ResCode.ERROR.code(), ResCode.ERROR.msg());
+        }
+        if (HttpUtil.STR_TIMEOUT.equals(json)) {
+            return new ResMsg(ResCode.TIMEOUT.code(), ResCode.TIMEOUT.msg());
+        }
+        return new ResMsg(ResCode.SUCCESS.code(), ResCode.SUCCESS.msg(), json);
     }
 
     /**
@@ -170,32 +178,28 @@ public class SystemBackController extends BaseController {
     @ResponseBody
     public ResMsg adminEnable(Long adminId, HttpServletRequest request) {
         if (adminId == null) {
-            return new ResMsg(1, INVALID_ID);
+            return new ResMsg(ResCode.INVALID_ID.code(), ResCode.INVALID_ID.msg());
         }
         if (adminService.deleteAdmin(adminId) > 0) {
-            addAdminLog(request, "禁用/启用管理员", "id=" + adminId);
-            return new ResMsg(0, OPERATE_SUCCESS);
+            systemService.addAdminLog(request, "禁用/启用管理员", "id=" + adminId);
+            return new ResMsg(ResCode.OPERATE_SUCCESS.code(), ResCode.OPERATE_SUCCESS.msg());
         }
-        return new ResMsg(2, OPERATE_FAIL);
+        return new ResMsg(ResCode.OPERATE_FAIL.code(), ResCode.OPERATE_FAIL.msg());
     }
 
     /**
      * 管理员编辑
      *
      * @param admin
-     * @param roleId
      * @param br
      * @return
      */
     @RequestMapping("/adminEdit")
     @AuthPassport
     @ResponseBody
-    public ResMsg adminEdit(@Valid Admin admin, Long roleId, BindingResult br, HttpServletRequest request) {
+    public ResMsg adminEdit(@Valid Admin admin, BindingResult br, HttpServletRequest request) {
         if (br.hasErrors()) {
             return new ResMsg(1, br.getFieldError().getDefaultMessage());
-        }
-        if (roleId == null) {
-            return new ResMsg(4, "请选择组");
         }
         if (admin.getId() == null) {
             if (StringUtil.isBlank(admin.getAdminPassword())) {
@@ -204,13 +208,13 @@ public class SystemBackController extends BaseController {
             if (adminService.findAdminCountByName(admin.getAdminName()) > 0) {
                 return new ResMsg(6, "用户名已存在");
             }
-            adminService.insertAdmin(admin, roleId);
-            addAdminLog(request, "新增管理员", "username=" + admin.getAdminName());
-            return new ResMsg(0, INSERT_SUCCESS);
+            adminService.insertAdmin(admin);
+            systemService.addAdminLog(request, "新增管理员", "username=" + admin.getAdminName());
+            return new ResMsg(ResCode.INSERT_SUCCESS.code(), ResCode.INSERT_SUCCESS.msg());
         } else {
-            adminService.updateAdmin(admin, roleId);
-            addAdminLog(request, "更新管理员", "username=" + admin.getAdminName());
-            return new ResMsg(0, OPERATE_SUCCESS);
+            adminService.updateAdmin(admin);
+            systemService.addAdminLog(request, "更新管理员", "username=" + admin.getAdminName());
+            return new ResMsg(ResCode.UPDATE_SUCCESS.code(), ResCode.UPDATE_SUCCESS.msg());
         }
     }
 
@@ -268,16 +272,16 @@ public class SystemBackController extends BaseController {
                 return new ResMsg(3, "请选择父模块");
             }
             if (moduleService.insertModule(flag, name, parentId, path, icon) > 0) {
-                addAdminLog(request, "新增模块", "name=" + name);
-                return new ResMsg(0, "添加成功");
+                systemService.addAdminLog(request, "新增模块", "name=" + name);
+                return new ResMsg(ResCode.INSERT_SUCCESS.code(), ResCode.INSERT_SUCCESS.msg());
             }
-            return new ResMsg(-1, FAIL);
+            return new ResMsg(ResCode.INSERT_FAIL.code(), ResCode.INSERT_FAIL.msg());
         } else {
             if (moduleService.updateModule(moduleId, name, path, icon) > 0) {
-                addAdminLog(request, "编辑模块", "name=" + name);
-                return new ResMsg(0, "更新成功");
+                systemService.addAdminLog(request, "编辑模块", "name=" + name);
+                return new ResMsg(ResCode.UPDATE_SUCCESS.code(), ResCode.UPDATE_SUCCESS.msg());
             }
-            return new ResMsg(-1, FAIL);
+            return new ResMsg(ResCode.UPDATE_FAIL.code(), ResCode.UPDATE_FAIL.msg());
         }
     }
 
@@ -292,12 +296,12 @@ public class SystemBackController extends BaseController {
     @AuthPassport
     public ResMsg moduleDel(Integer moduleId) {
         if (moduleId == null) {
-            return new ResMsg(1, INVALID_ID);
+            return new ResMsg(ResCode.INVALID_ID.code(), ResCode.INVALID_ID.msg());
         }
         if (moduleService.deleteModule(moduleId) > 0) {
-            return new ResMsg(0, DELETE_SUCCESS);
+            return new ResMsg(ResCode.DELETE_SUCCESS.code(), ResCode.DELETE_SUCCESS.msg());
         }
-        return new ResMsg(-1, DELETE_FAIL);
+        return new ResMsg(ResCode.DELETE_FAIL.code(), ResCode.DELETE_FAIL.msg());
     }
 
     /**
@@ -325,13 +329,13 @@ public class SystemBackController extends BaseController {
     @ResponseBody
     public ResMsg roleEnable(Long roleId, HttpServletRequest request) {
         if (roleId == null) {
-            return new ResMsg(1, INVALID_ID);
+            return new ResMsg(ResCode.INVALID_ID.code(), ResCode.INVALID_ID.msg());
         }
         if (moduleService.deleteRole(roleId) > 0) {
-            addAdminLog(request, "组禁用或启用", "roleId=" + roleId);
-            return new ResMsg(0, OPERATE_SUCCESS);
+            systemService.addAdminLog(request, "组禁用或启用", "roleId=" + roleId);
+            return new ResMsg(ResCode.OPERATE_SUCCESS.code(), ResCode.OPERATE_SUCCESS.msg());
         }
-        return new ResMsg(2, OPERATE_FAIL);
+        return new ResMsg(ResCode.OPERATE_FAIL.code(), ResCode.OPERATE_FAIL.msg());
     }
 
     /**
@@ -350,85 +354,96 @@ public class SystemBackController extends BaseController {
         }
         if (roleId == null) {
             moduleService.insertRole(roleName);
-            addAdminLog(request, "新增组", "roleName=" + roleName);
-            return new ResMsg(0, INSERT_SUCCESS);
+            systemService.addAdminLog(request, "新增组", "roleName=" + roleName);
+            return new ResMsg(ResCode.INSERT_SUCCESS.code(), ResCode.INSERT_SUCCESS.msg());
         }
         moduleService.updateRole(roleId, roleName);
-        addAdminLog(request, "编辑组", "roleName=" + roleName);
-        return new ResMsg(0, UPDATE_SUCCESS);
+        systemService.addAdminLog(request, "编辑组", "roleName=" + roleName);
+        return new ResMsg(ResCode.UPDATE_SUCCESS.code(), ResCode.UPDATE_SUCCESS.msg());
     }
 
     /**
-     * 获取组权限
+     * 获取权限(组或用户)
      *
      * @param roleId
+     * @param adminId
      * @return
      */
-    @RequestMapping("/rolePerm")
+    @RequestMapping("/permits")
     @AuthPassport
     @ResponseBody
-    public List<Tree> rolePerm(Long roleId) {
-        if (roleId != null) {
-            List<Tree> treeList = new ArrayList<Tree>();
-            // 所有模块
-            List<Module> list = moduleService.findModuleAll();
-            // 角色模块
-            List<Module> mods = moduleService.findModuleByRole(roleId, true);
+    public List<Tree> permits(Long roleId, Long adminId) {
+        // ztree data
+        List<Tree> treeList = new ArrayList<Tree>();
+        // 所有模块
+        List<Module> list = moduleService.findModuleAll();
+        List<Module> mods = moduleService.findModuleByRoleOrAdmin(roleId, adminId);
 
-            for (int i = 0, j = list.size(); i < j; i++) {
-                Module m = list.get(i);
-                // 组织tree
-                Tree tree = new Tree();
-                tree.setId(m.getId());
-                tree.setpId(m.getParentId());
-                tree.setName(m.getModName());
-                if (mods == null) {
-                    treeList.add(tree);
-                    continue;
-                }
-                for (Module roleMenu : mods) { // 匹配
-                    // System.out.println(roleMenu.getId()+"=="+m.getId()+"?"+(roleMenu.getId().equals(m.getId())));
-                    if (roleMenu.getId().equals(m.getId())) {
-                        tree.setChecked(true); // 选中状态
-                        break;
-                    }
-                }
+        for (int i = 0, j = list.size(); i < j; i++) {
+            Module m = list.get(i);
+            // 组织tree
+            Tree tree = new Tree();
+            tree.setId(m.getId());
+            tree.setpId(m.getParentId());
+            tree.setName(m.getModName());
+            if (mods == null || mods.isEmpty()) {
                 treeList.add(tree);
+                continue;
             }
-            return treeList;
+            for (Module roleMenu : mods) { // 匹配
+                // System.out.println(roleMenu.getId()+"=="+m.getId()+"?"+(roleMenu.getId().equals(m.getId())));
+                if (roleMenu.getId().equals(m.getId())) {
+                    tree.setChecked(true); // 选中状态
+                    break;
+                }
+            }
+            treeList.add(tree);
         }
-        return null;
+        return treeList;
     }
 
     /**
-     * 授权
+     * 授权(组或用户)
      *
      * @param roleId
+     * @param adminId
      * @param params
+     * @param request
      * @return
      */
     @RequestMapping("/permit")
     @AuthPassport
     @ResponseBody
-    public ResMsg permit(Long roleId, String params, HttpServletRequest request) {
-        if (roleId == null) {
-            return new ResMsg(1, INVALID_ID);
-        }
-        if (StringUtil.isBlank(params)) {
-            moduleService.deleteRights(roleId);
-            return new ResMsg(0, "已取消所有权限");
+    public ResMsg permit(Long roleId, Long adminId, String params, HttpServletRequest request) {
+        if (roleId == null && adminId == null) {
+            return new ResMsg(ResCode.INVALID_ID.code(), ResCode.INVALID_ID.msg());
         }
 
         // 模块id集合
         String[] rights = params.split(",");
         Integer[] mid = new Integer[rights.length];
-        //检查字符串合法性
         for (int i = 0, b = rights.length; i < b; i++) {
             mid[i] = Integer.parseInt(rights[i]);
         }
 
-        moduleService.permit(roleId, rights);
-        addAdminLog(request, "授权组", "roleId=" + roleId);
+        if (roleId != null) {
+            if (StringUtil.isBlank(params)) {
+                moduleService.deleteRights(roleId);
+                return new ResMsg(0, "已取消组所有权限");
+            }
+            moduleService.permitRole(roleId, rights);
+            systemService.addAdminLog(request, "授权组", "roleId=" + roleId);
+        }
+
+        if (adminId != null) {
+            if (StringUtil.isBlank(params)) {
+                adminService.deleteRights(adminId);
+                return new ResMsg(0, "已取消用户所有权限");
+            }
+            moduleService.permitAdmin(adminId, rights);
+            systemService.addAdminLog(request, "授权用户", "adminId=" + adminId);
+        }
+
         return new ResMsg(0, "授权成功");
     }
 
@@ -489,19 +504,19 @@ public class SystemBackController extends BaseController {
             address.setParent(parent);
             address.setLevel(level + 1);
             if (addrService.insert(address) > 0) {
-                return new ResMsg(0, INSERT_SUCCESS);
+                return new ResMsg(ResCode.INSERT_SUCCESS.code(), ResCode.INSERT_SUCCESS.msg());
             }
-            return new ResMsg(-1, FAIL);
+            return new ResMsg(ResCode.INSERT_FAIL.code(), ResCode.INSERT_FAIL.msg());
         }
         //更新
         Address address = new Address(id);
         address.setParent(parent);
         address.setName(name);
         if (addrService.update(address) > 0) {
-            addAdminLog(request, "编辑地址", "name=" + name);
-            return new ResMsg(0, UPDATE_SUCCESS);
+            systemService.addAdminLog(request, "编辑地址", "name=" + name);
+            return new ResMsg(ResCode.UPDATE_SUCCESS.code(), ResCode.UPDATE_SUCCESS.msg());
         }
-        return new ResMsg(-1, FAIL);
+        return new ResMsg(ResCode.UPDATE_FAIL.code(), ResCode.UPDATE_FAIL.msg());
     }
 
     /**
@@ -513,12 +528,12 @@ public class SystemBackController extends BaseController {
     @AuthPassport
     public ResMsg addrDel(Integer id) {
         if (id == null) {
-            return new ResMsg(1, INVALID_ID);
+            return new ResMsg(ResCode.INVALID_ID.code(), ResCode.INVALID_ID.msg());
         }
         if (addrService.delete(id) > 0) {
-            return new ResMsg(0, DELETE_SUCCESS);
+            return new ResMsg(ResCode.DELETE_SUCCESS.code(), ResCode.DELETE_SUCCESS.msg());
         }
-        return new ResMsg(2, DELETE_FAIL);
+        return new ResMsg(ResCode.DELETE_FAIL.code(), ResCode.DELETE_FAIL.msg());
     }
 
     /**
@@ -529,7 +544,6 @@ public class SystemBackController extends BaseController {
     @RequestMapping("/addrGenc")
     @AuthPassport(right = false)
     public void addrGenc(HttpServletResponse response) {
-        response.setCharacterEncoding("utf-8");
         response.setContentType("multipart/form-data");
         response.setHeader("Content-Disposition", "attachment;fileName=city-picker.data.all.js");
         String addr = addrService.genAddr();
@@ -589,7 +603,7 @@ public class SystemBackController extends BaseController {
         // 存放数据(从数据库读出来的数据)
         map.put("dataList", dataList);
         map.put("msg", msg);
-        addAdminLog(request, "执行查询SQL", "sql=" + sql);
+        systemService.addAdminLog(request, "执行查询SQL", "sql=" + sql);
         return map;
     }
 
@@ -623,7 +637,7 @@ public class SystemBackController extends BaseController {
 
         map.put("rTime", String.valueOf((endTime - startTime) / 1000.000));
         map.put("msg", msg);
-        addAdminLog(request, "执行更新SQL", "sql=" + sql);
+        systemService.addAdminLog(request, "执行更新SQL", "sql=" + sql);
         return map;
     }
 
@@ -660,7 +674,6 @@ public class SystemBackController extends BaseController {
         // linux /data/wwwlogs
         String path = config.getLogPath() + "/";
         // 以流的方式下载
-        response.setCharacterEncoding("utf-8");
         response.setContentType("multipart/form-data");
         response.setHeader("Content-Disposition", "attachment;fileName=" + fileName);
 
@@ -840,7 +853,7 @@ public class SystemBackController extends BaseController {
         if (list == null) {
             return new ResMsg(3, "路径不存在", null);
         }
-        return new ResMsg(0, SUCCESS, list);
+        return new ResMsg(ResCode.SUCCESS.code(), ResCode.SUCCESS.msg(), list);
     }
 
 }

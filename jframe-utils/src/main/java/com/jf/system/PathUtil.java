@@ -30,6 +30,7 @@ public class PathUtil {
      * @param request
      * @throws IOException
      */
+    @Deprecated
     public static void nologin(String url, HttpServletResponse response, HttpServletRequest request) throws IOException {
         String requestType = request.getHeader("X-Requested-With");
         if ("XMLHttpRequest".equalsIgnoreCase(requestType)) { // AJAX
@@ -52,6 +53,7 @@ public class PathUtil {
      * @param request
      * @throws IOException
      */
+    @Deprecated
     public static void refuse(String url, HttpServletResponse response, HttpServletRequest request) throws IOException {
         String requestType = request.getHeader("X-Requested-With");
         if ("XMLHttpRequest".equalsIgnoreCase(requestType)) { // AJAX
@@ -74,6 +76,7 @@ public class PathUtil {
      * @param response
      * @throws IOException
      */
+    @Deprecated
     public static void output(Integer code, String msg, HttpServletResponse response) throws IOException {
         response.setCharacterEncoding("UTF-8");
         response.setContentType("application/json;charset=UTF-8");

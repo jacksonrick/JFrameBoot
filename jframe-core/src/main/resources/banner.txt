@@ -7,6 +7,6 @@ ${AnsiColor.BRIGHT_GREEN}
   \ \____/\ \_\ \ \_\\ \__/.\_\ \_\ \_\ \_\ \____\
    \/___/  \/_/  \/_/ \/__/\/_/\/_/\/_/\/_/\/____/
 
-${AnsiColor.BRIGHT_RED}###### JFrame® Power by jfXu (Jackson Rick) @v4.0
+${AnsiColor.BRIGHT_RED}###### JFrame® Developed by Jackson Rick @v5.0
 ${AnsiColor.BRIGHT_RED}###### Spring Boot Version: ${spring-boot.version}
 ${AnsiColor.BRIGHT_BLACK}

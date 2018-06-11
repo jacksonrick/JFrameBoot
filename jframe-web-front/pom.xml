@@ -23,6 +23,10 @@
         </dependency>
     </dependencies>
 
+    <properties>
+        <project.name>front</project.name>
+    </properties>
+
     <build>
         <finalName>jframe-web-front</finalName>
         <sourceDirectory>src/main/java</sourceDirectory>
@@ -41,7 +45,6 @@
             </resource>
         </resources>
         <plugins>
-            <!-- package plugin -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>

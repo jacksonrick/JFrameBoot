@@ -8,11 +8,13 @@
     <!-- 生产环境日志目录 Linux -->
     <property name="LOG_HOME_PRO" value="/data/wwwlogs"></property>
 
+    <!-- 读取Spring配置 -->
+    <springProperty name="application" source="spring.application.name" defaultValue="JFRAME" />
     <!-- 日志显示格式 -->
-    <property name="PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS} %highlight(%-5level) %cyan(%logger{40}.%M:%L) - %msg%n"></property>
-    <!-- 日志文件名称 -->
-    <property name="FILE_NAME" value="${app.name:-jframe}"></property>
-    <property name="ERROR_NAME" value="${app.name:-jframe}.error"></property>
+    <property name="PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS} %highlight(%-5level) [%thread] [%X{server}][%X{rid}] %cyan(%logger{40}.%M:%L) - %msg%n"></property>
+    <!-- 日志文件名称 读取环境变量${app.name:-jframe} -->
+    <property name="FILE_NAME" value="${application}"></property>
+    <property name="ERROR_NAME" value="${application}.ERROR"></property>
 
     <!-- 开发环境 -->
     <!-- 控制台打印+写入日志文件 -->
@@ -27,8 +29,8 @@
             <file>${LOG_HOME}/${FILE_NAME}.log</file>
             <!-- 按大小滚动日志，最大5M，保留最近10个文件，总大小10GB -->
             <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-                <fileNamePattern>${LOG_HOME}/%d{yyyy-MM-dd}/${FILE_NAME}.%i.log.zip</fileNamePattern>
-                <maxFileSize>5MB</maxFileSize>
+                <fileNamePattern>${LOG_HOME}/%d{yyyy-MM-dd}/${FILE_NAME}.%i.log</fileNamePattern>
+                <maxFileSize>1MB</maxFileSize>
                 <maxHistory>10</maxHistory>
                 <totalSizeCap>10GB</totalSizeCap>
             </rollingPolicy>
@@ -37,9 +39,8 @@
             </encoder>
         </appender>
 
-        <!-- 分布式ELK日志 -->
         <!--<appender name="elk" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
-            <destination>192.168.1.200:9250</destination>
+            <destination>192.168.24.200:9250</destination>
             <encoder charset="UTF-8" class="net.logstash.logback.encoder.LogstashEncoder" />
         </appender>-->
 
@@ -51,13 +52,17 @@
 
         <logger name="freemarker.cache" level="ERROR"></logger>
         <logger name="com.jf.database.mapper" level="DEBUG"></logger>
-        <logger name="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping" level="ERROR"></logger>
-        <logger name="org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver" level="ERROR"></logger>
     </springProfile>
 
     <!-- 生产环境 -->
     <!-- INFO+ERROR -->
     <springProfile name="pro">
+        <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+            <encoder>
+                <pattern>${PATTERN}</pattern>
+            </encoder>
+        </appender>
+
         <!-- 记录INFO日志 -->
         <appender name="syslog" class="ch.qos.logback.core.rolling.RollingFileAppender">
             <file>${LOG_HOME_PRO}/${FILE_NAME}.log</file>
@@ -67,7 +72,7 @@
                 <onMismatch>ACCEPT</onMismatch>
             </filter>
             <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-                <fileNamePattern>${LOG_HOME_PRO}/%d{yyyy-MM-dd}/${FILE_NAME}.%i.log.zip</fileNamePattern>
+                <fileNamePattern>${LOG_HOME_PRO}/%d{yyyy-MM-dd}/${FILE_NAME}.%i.log</fileNamePattern>
                 <maxFileSize>5MB</maxFileSize>
                 <maxHistory>30</maxHistory>
                 <totalSizeCap>10GB</totalSizeCap>
@@ -77,7 +82,7 @@
             </encoder>
         </appender>
 
-        <!-- 记录日志 -->
+        <!-- 记录Error日志 -->
         <appender name="errorlog" class="ch.qos.logback.core.rolling.RollingFileAppender">
             <file>${LOG_HOME_PRO}/${FILE_NAME}.error.log</file>
             <filter class="ch.qos.logback.classic.filter.LevelFilter">
@@ -86,7 +91,7 @@
                 <onMismatch>DENY</onMismatch>
             </filter>
             <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-                <fileNamePattern>${LOG_HOME_PRO}/%d{yyyy-MM-dd}/${FILE_NAME}.%i.error.log.zip</fileNamePattern>
+                <fileNamePattern>${LOG_HOME_PRO}/%d{yyyy-MM-dd}/${FILE_NAME}.%i.ERROR.log</fileNamePattern>
                 <maxFileSize>2MB</maxFileSize>
                 <maxHistory>30</maxHistory>
                 <totalSizeCap>1GB</totalSizeCap>
@@ -116,10 +121,16 @@
             </layout>
         </appender>-->
 
+        <!-- 分布式ELK日志 -->
+        <!--<appender name="elk" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
+            <destination>192.168.24.200:9250</destination>
+            <encoder charset="UTF-8" class="net.logstash.logback.encoder.LogstashEncoder" />
+        </appender>-->
+
         <root level="INFO">
+            <appender-ref ref="console"/>
             <appender-ref ref="syslog"/>
             <appender-ref ref="errorlog"/>
-            <!--<appender-ref ref="flume"/>-->
         </root>
     </springProfile>
 

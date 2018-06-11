@@ -2,9 +2,11 @@ package com.jf;
 
 import com.jf.system.Environment;
 import com.jf.system.SystemUtil;
-import com.jf.system.conf.LogManager;
+import com.jf.system.LogManager;
 
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.

@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8">
     <title></title>
+    <link href="/static/library/plugins/zTree/metroStyle/metroStyle.css" rel="stylesheet">
 <#include "include.ftl"/>
 </head>
 
@@ -47,7 +48,13 @@
                     <tr>
                         <td>${v_index }</td>
                         <td>${v.adminName }</td>
-                        <td>${v.role.isDelete?string('<s>','')} ${v.role.roleName } ${v.role.isDelete?string('<s>','')}</td>
+                        <td>
+                            <#if v.role != null>
+                                ${v.role.isDelete?string('<s>','')} ${v.role.roleName } ${v.role.isDelete?string('<s>','')}
+                            <#else>
+                                --
+                            </#if>
+                        </td>
                         <td>${v.adminRealname }</td>
                         <td>${v.adminPhone }</td>
                         <td>${v.adminCreateTime?string('yyyy-MM-dd HH:mm:ss')}</td>
@@ -65,6 +72,8 @@
                                     <a class="btn btn-sm btn-circle btn-danger btn-enable" title="禁用" data-id="${v.id }"
                                        data-toggle="tooltip" data-placement="top"><i class="fa fa-times"></i></a>
                                 </#if>
+                                <a class="btn btn-sm btn-circle btn-success" title="编辑管理员权限" data-toggle="tooltip" data-placement="top"
+                                   onclick="getModules(${v.id },'${v.adminName }')"><i class="fa fa-legal"></i></a>
                             <#else>
                                 <a class="btn btn-sm btn-circle btn-warning" disabled="disabled" title="不可编辑"
                                    data-toggle="tooltip" data-placement="top"><i class="fa fa-pencil-square"></i></a>
@@ -90,13 +99,75 @@
     </div>
 </div>
 
+<div class="layer-win layer-tree">
+    <ul id="tree" class="ztree"></ul>
+    <input type="hidden" id="aid" value="">
+    <a class="btn btn-sm btn-success btn-block btn-rounded" id="btn-permit">对该管理员授权</a>
+</div>
+
+<script type="text/javascript" src="/static/library/plugins/zTree/jquery.ztree.all.min.js"></script>
 <script type="text/javascript">
     $(function () {
         $(".btn-enable").click(function () {
             var title = $(this).attr("title") == "" ? $(this).attr("data-original-title") : $(this).attr("title");
             layerConfirm('确定要' + title + '该管理员吗', "/admin/system/adminEnable?adminId=" + $(this).attr('data-id'));
         });
+
+        $("#btn-permit").click(function () {
+            var str = "";
+            var treeObj = $.fn.zTree.getZTreeObj("tree");
+            var nodes = treeObj.getCheckedNodes(true);
+            for (var i = 0; i < nodes.length; i++) {
+                str += nodes[i].id + ",";
+            }
+            var aid = $("#aid").val();
+            if (aid == "") {
+                toast(2, "", "未选择管理员");
+                return;
+            }
+            Ajax.ajax({
+                url: '/admin/system/permit',
+                params: {adminId: aid, params: str},
+                success: function (data) {
+                    if (data.code == 0) {
+                        showMsg(data.msg, 1, function () {
+                            layer.close(zindex);
+                        });
+                    } else {
+                        showMsg(data.msg, 2);
+                    }
+                }
+            });
+        });
     });
+
+    var zindex;
+    var tree = "";
+    var setting = {
+        check: {
+            chkboxType: {"Y": "p", "N": "ps"},// 勾选checkbox对于父子节点的关联关系
+            chkStyle: "checkbox",
+            enable: true // 是否复选框
+        },
+        data: {
+            simpleData: {
+                enable: true
+            }
+        }
+    };
+
+    function getModules(adminId, adminName) {
+        $("#aid").val(adminId);
+        Ajax.ajax({
+            url: '/admin/system/permits',
+            params: {"adminId": adminId},
+            success: function (data) {
+                tree = $.fn.zTree.init($("#tree"), setting, data);
+                tree.expandAll(true);
+                zindex = openLayerContent('编辑权限【' + adminName + '】', "450px", "500px", $(".layer-tree"));
+            }
+        });
+    }
 </script>
 </body>
 </html>

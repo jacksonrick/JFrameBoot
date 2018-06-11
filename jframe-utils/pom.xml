@@ -19,17 +19,12 @@
         </resources>
     </build>
 
-    <properties>
-        <smack.scope>provided</smack.scope>
-        <echarts.scope>provided</echarts.scope>
-    </properties>
-
     <dependencies>
         <!-- provided start -->
         <dependency>
             <groupId>javax.servlet</groupId>
-            <artifactId>servlet-api</artifactId>
-            <version>2.5</version>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>3.1.0</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -51,6 +46,13 @@
             <scope>provided</scope>
         </dependency>
         <!-- provided end -->
+
+        <!-- pagehelper -->
+        <dependency>
+            <groupId>com.github.pagehelper</groupId>
+            <artifactId>pagehelper</artifactId>
+            <version>5.1.2</version>
+        </dependency>
 
         <!-- poi -->
         <dependency>
@@ -187,52 +189,11 @@
             <version>3.3.1</version>
         </dependency>
 
-        <!-- baidu echarts -->
-        <dependency>
-            <groupId>com.github.abel533</groupId>
-            <artifactId>ECharts</artifactId>
-            <version>3.0.0.2</version>
-            <scope>${echarts.scope}</scope>
-        </dependency>
-
         <!-- aliyun esc -->
         <dependency>
             <groupId>com.aliyun</groupId>
             <artifactId>aliyun-java-sdk-core</artifactId>
             <version>3.6.0</version>
-        </dependency>
-
-        <!-- pagehelper -->
-        <dependency>
-            <groupId>com.github.pagehelper</groupId>
-            <artifactId>pagehelper</artifactId>
-            <version>5.1.2</version>
-        </dependency>
-
-        <!-- openfire+smack即时通信 -->
-        <dependency>
-            <groupId>org.igniterealtime.smack</groupId>
-            <artifactId>smack-java7</artifactId>
-            <version>4.2.2</version>
-            <scope>${smack.scope}</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.igniterealtime.smack</groupId>
-            <artifactId>smack-im</artifactId>
-            <version>4.2.2</version>
-            <scope>${smack.scope}</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.igniterealtime.smack</groupId>
-            <artifactId>smack-tcp</artifactId>
-            <version>4.2.2</version>
-            <scope>${smack.scope}</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.igniterealtime.smack</groupId>
-            <artifactId>smack-extensions</artifactId>
-            <version>4.2.2</version>
-            <scope>${smack.scope}</scope>
         </dependency>
 
         <!-- 第三方Jar包 -->

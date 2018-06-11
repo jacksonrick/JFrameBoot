@@ -7,7 +7,7 @@ import java.lang.annotation.*;
 /**
  * Created by xujunfei on 2017/8/1.
  */
-@Target(ElementType.PARAMETER)
+@Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface Token {

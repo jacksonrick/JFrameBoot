@@ -15,6 +15,7 @@
                 <div class="alert alert-warning">
                     <p><i class="fa fa-exclamation-circle"></i>超级管理员和技术管理员为系统内置，不可编辑；为保证系统安全，仅技术管理拥有【系统管理】所有权限。</p>
                     <p><i class="fa fa-exclamation-circle"></i>授权说明：选择子模块，对应的父模块也会被选择；取消授权只需将模块反勾选即可。</p>
+                    <p><i class="fa fa-exclamation-circle"></i>可对管理员和组分别授权，若都有权限，则会进行权限合并。</p>
                 </div>
                 <table class="table table-striped table-bordered table-hover">
                     <thead>
@@ -23,7 +24,7 @@
                         <th>组名称</th>
                         <th>状态</th>
                         <th>编辑</th>
-                        <th>操作</th>
+                        <th>权限操作</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -49,8 +50,8 @@
                             </#if>
                         </td>
                         <td>
-                            <a class="btn btn-sm btn-circle btn-success" title="编辑权限" data-toggle="tooltip" data-placement="top"
-                               onclick="getModules(${v.id },'${v.roleName }')"><i class="fa fa-pencil-square"></i></a>
+                            <a class="btn btn-sm btn-circle btn-success" title="编辑组权限" data-toggle="tooltip" data-placement="top"
+                               onclick="getModules(${v.id },'${v.roleName }')"><i class="fa fa-legal"></i></a>
                         </td>
                     </tr>
                     </#list>
@@ -176,7 +177,7 @@
     function getModules(roleId, roleName) {
         $("#rid").val(roleId);
         Ajax.ajax({
-            url: '/admin/system/rolePerm',
+            url: '/admin/system/permits',
             params: {"roleId": roleId},
             success: function (data) {
                 tree = $.fn.zTree.init($("#tree"), setting, data);

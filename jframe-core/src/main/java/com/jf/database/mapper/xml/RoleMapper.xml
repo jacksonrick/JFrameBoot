@@ -47,7 +47,7 @@
 		UPDATE s_role
 		<set>
 			<if test="roleName != null and roleName != ''">role_name = #{roleName},</if>
-			<if test="roleRights != null and roleRights != ''">role_rights = #{roleRights},</if>
+			<if test="roleRights != null">role_rights = #{roleRights},</if>
 		</set>
 		WHERE id = #{id}
 	</update>

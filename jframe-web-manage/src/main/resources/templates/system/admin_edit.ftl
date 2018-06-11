@@ -18,6 +18,7 @@
                         <option value="${role.id }" ${(adm.role.id == role.id)?string('selected','')}>${role.roleName }</option>
                     </#list>
                 </select>
+                <span class="help-block">*组可以不选择，若选择组，则会继承组权限</span>
             </div>
         </div>
         <div class="form-group">
@@ -58,13 +59,6 @@
     $(function () {
         $("#adminEditForm").bootstrapValidator({
             fields: {
-                roleId: {
-                    validators: {
-                        notEmpty: {
-                            message: '请选择组'
-                        }
-                    }
-                },
                 adminName: {
                     validators: {
                         notEmpty: {

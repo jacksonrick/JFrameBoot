@@ -16,21 +16,20 @@ import java.util.Arrays;
 @ConfigurationProperties(prefix = "system")
 public class SysConfig {
 
-    // 每页显示数量->BaseVo
-    //public static Integer PAGE_SIZE = 20;
+    // 常量
+    public final static String PREFIX = "UID";
+    public final static String[] excludePathPatterns = {"/static/**", "/images/**", "/js/**", "/css/**", "/error/**"};
+    // SESSION
+    public final static String SESSION_USER = "user";
+    public final static String SESSION_ADMIN = "admin";
+    public final static String SESSION_RAND = "rand";
+    public final static String SESSION_SMS = "sms";
+    // TOKEN
+    public final static String TOKEN = "token";
+    public final static String TOKEN_HEADER = "header";
+    public final static String TOKEN_COOKIE = "cookie";
 
-    // SESSION NAME
-    public static String SESSION_USER = "user";
-    public static String SESSION_ADMIN = "admin";
-    public static String SESSION_RAND = "rand";
-    public static String SESSION_SMS = "sms";
-
-    // TOKEN NAME
-    public static final String TOKEN = "token";
-    public static final String TOKEN_HEADER = "header";
-    public static final String TOKEN_COOKIE = "cookie";
-
-    //// 以下来自 application.yml 自定义配置
+    //###### 以下来自 application.yml 自定义配置 ######
 
     // app key
     private String appkey;
@@ -375,6 +374,8 @@ public class SysConfig {
     public static class Jpush {
         private String appkey1;
         private String secret1;
+        private String alert1;
+        private Boolean iosProduct; // IOS开发环境-false，生产环境-true
 
         public String getAppkey1() {
             return appkey1;
@@ -392,17 +393,35 @@ public class SysConfig {
             this.secret1 = secret1;
         }
 
+        public String getAlert1() {
+            return alert1;
+        }
+
+        public void setAlert1(String alert1) {
+            this.alert1 = alert1;
+        }
+
+        public Boolean getIosProduct() {
+            return iosProduct;
+        }
+
+        public void setIosProduct(Boolean iosProduct) {
+            this.iosProduct = iosProduct;
+        }
+
         @Override
         public String toString() {
             return "Jpush{" +
                     "appkey1='" + appkey1 + '\'' +
                     ", secret1='" + secret1 + '\'' +
+                    ", alert1='" + alert1 + '\'' +
+                    ", iosProduct='" + iosProduct + '\'' +
                     '}';
         }
     }
 
     public static class Upload {
-        // fdfs enable
+        // fdfs enable，如果为false,则启用spring上传到本地指定目录
         private Boolean fdfs;
         // 图片大小
         private Integer imgSize;

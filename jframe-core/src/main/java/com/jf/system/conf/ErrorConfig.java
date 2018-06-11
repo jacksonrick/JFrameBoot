@@ -10,19 +10,16 @@ import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
- * Description: ErrorViewResolver | ErrorPageRegistrar
+ * Description: 自定义错误页面
  * User: xujunfei
- * Date: 2017-11-28
- * Time: 14:22
+ * Date: 2018-05-25
+ * Time: 13:29
  */
 @Component
 public class ErrorConfig implements ErrorViewResolver {
 
     @Override
     public ModelAndView resolveErrorView(HttpServletRequest request, HttpStatus status, Map<String, Object> model) {
-        LogManager.info(new StringBuilder().append("请求错误").append(",状态：").append(status.value())
-                .append("信息：").append(model).toString(), ErrorConfig.class);
-
         if (HttpStatus.NOT_FOUND.value() == status.value()) {
             return new ModelAndView("error/404");
         } else if (HttpStatus.BAD_REQUEST.value() == status.value()) {
@@ -35,4 +32,5 @@ public class ErrorConfig implements ErrorViewResolver {
             return new ModelAndView("error/unknow");
         }
     }
+
 }

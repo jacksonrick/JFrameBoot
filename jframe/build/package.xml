@@ -23,15 +23,20 @@
                 <include>*.jar</include>
             </includes>
         </fileSet>
+        <!-- module static resources -->
         <fileSet>
-            <!-- module static resources -->
             <directory>target/classes/static/</directory>
             <outputDirectory>static/</outputDirectory>
         </fileSet>
-        <fileSet>
-            <!-- public static resources -->
+        <!-- public static resources -->
+        <!--<fileSet>
             <directory>../jframe/public/static/</directory>
             <outputDirectory>static/</outputDirectory>
+        </fileSet>-->
+        <!-- docker file -->
+        <fileSet>
+            <directory>../jframe/build/docker-${project.name}/</directory>
+            <outputDirectory/>
         </fileSet>
     </fileSets>
 

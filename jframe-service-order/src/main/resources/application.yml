@@ -4,12 +4,12 @@ spring:
   profiles:
     active: dev
   application:
-    name: JFRAME-SERVICE-ORDER
+    name: JFRAME-SERVICE-ORDER-01
 info:
   app:
     name: ${spring.application.name}
     version: "1.0"
-    description: "service-order"
+    description: "service-order-01"
 app:
   eureka:
     enabled: true

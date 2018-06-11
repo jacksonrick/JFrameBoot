@@ -46,4 +46,12 @@ public class UploadRet {
 		this.message = message;
 	}
 
+	@Override
+	public String toString() {
+		return "UploadRet{" +
+				"error=" + error +
+				", url='" + url + '\'' +
+				", message='" + message + '\'' +
+				'}';
+	}
 }
