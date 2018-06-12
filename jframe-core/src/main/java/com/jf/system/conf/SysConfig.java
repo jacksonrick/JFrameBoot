@@ -372,33 +372,24 @@ public class SysConfig {
     }
 
     public static class Jpush {
-        private String appkey1;
-        private String secret1;
-        private String alert1;
+        private String appkey;
+        private String secret;
         private Boolean iosProduct; // IOS开发环境-false，生产环境-true
 
-        public String getAppkey1() {
-            return appkey1;
+        public String getAppkey() {
+            return appkey;
         }
 
-        public void setAppkey1(String appkey1) {
-            this.appkey1 = appkey1;
+        public void setAppkey(String appkey) {
+            this.appkey = appkey;
         }
 
-        public String getSecret1() {
-            return secret1;
+        public String getSecret() {
+            return secret;
         }
 
-        public void setSecret1(String secret1) {
-            this.secret1 = secret1;
-        }
-
-        public String getAlert1() {
-            return alert1;
-        }
-
-        public void setAlert1(String alert1) {
-            this.alert1 = alert1;
+        public void setSecret(String secret) {
+            this.secret = secret;
         }
 
         public Boolean getIosProduct() {
@@ -412,9 +403,8 @@ public class SysConfig {
         @Override
         public String toString() {
             return "Jpush{" +
-                    "appkey1='" + appkey1 + '\'' +
-                    ", secret1='" + secret1 + '\'' +
-                    ", alert1='" + alert1 + '\'' +
+                    "appkey='" + appkey + '\'' +
+                    ", secret='" + secret + '\'' +
                     ", iosProduct='" + iosProduct + '\'' +
                     '}';
         }

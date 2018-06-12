@@ -31,18 +31,24 @@ public class JPushService {
     @Resource
     private SysConfig config;
 
-    /**
-     * TAG ID推送
-     *
-     * @param devive
-     * @param content
-     * @param extras
-     * @param id      String...
-     */
+    private final String DEFAULT_ALERT = "JFRAME";
+
     @Async
-    public void sendPush(int devive, String content, Map<String, String> extras, String... id) {
-        androidPush(devive, content, extras, id);
-        iosPush(devive, content, extras, id);
+    public void sendPush(String alert, String msg, String... id) {
+        androidPush(alert, msg, null, id);
+        iosPush(alert, msg, null, id);
+    }
+
+    @Async
+    public void sendPush(String alert, String msg, Map<String, String> extras, String... id) {
+        androidPush(alert, msg, extras, id);
+        iosPush(alert, msg, extras, id);
+    }
+
+    @Async
+    public void sendPush(String msg, Map<String, String> extras, String... id) {
+        androidPush(DEFAULT_ALERT, msg, extras, id);
+        iosPush(DEFAULT_ALERT, msg, extras, id);
     }
 
     // 注意： 不同APP的APPKEY是不一样的，需要进行标识区分，可以写死，也可以写在配置文件。
@@ -50,22 +56,13 @@ public class JPushService {
     /**
      * 安卓推送
      *
-     * @param device
-     * @param content
+     * @param alert
+     * @param msg
      * @param extras
      * @param id
      */
-    private void androidPush(int device, String content, Map<String, String> extras, String... id) {
-        String APP_KEY = "", MASTER_SECRET = "";
-        if (device == 1) {
-            APP_KEY = config.getJpush().getAppkey1();
-            MASTER_SECRET = config.getJpush().getSecret1();
-        } else if (device == 2) {
-
-        } else {
-            return;
-        }
-
+    private void androidPush(String alert, String msg, Map<String, String> extras, String... id) {
+        String APP_KEY = config.getJpush().getAppkey(), MASTER_SECRET = config.getJpush().getSecret();
         ClientConfig clientConfig = ClientConfig.getInstance();
         String host = (String) clientConfig.get(ClientConfig.PUSH_HOST_NAME);
         final NettyHttpClient client = new NettyHttpClient(ServiceHelper.getBasicAuthorization(APP_KEY, MASTER_SECRET), null, clientConfig);
@@ -77,7 +74,7 @@ public class JPushService {
                     //.setAudience(Audience.all())
                     //.setAudience(Audience.alias(id))
                     //.setAudience(Audience.registrationId(id))
-                    .setNotification(Notification.android(config.getJpush().getAlert1(), content, extras)).build();
+                    .setNotification(Notification.android(alert, msg, extras)).build();
             client.sendRequest(HttpMethod.POST, payload.toString(), uri, new NettyHttpClient.BaseCallback() {
                 @Override
                 public void onSucceed(ResponseWrapper responseWrapper) {
@@ -92,22 +89,13 @@ public class JPushService {
     /**
      * IOS推送
      *
-     * @param device
-     * @param content
+     * @param alert
+     * @param msg
      * @param extras
      * @param id
      */
-    private void iosPush(int device, String content, Map<String, String> extras, String... id) {
-        String APP_KEY = "", MASTER_SECRET = "";
-        if (device == 1) {
-            APP_KEY = config.getJpush().getAppkey1();
-            MASTER_SECRET = config.getJpush().getSecret1();
-        } else if (device == 2) {
-
-        } else {
-            return;
-        }
-
+    private void iosPush(String alert, String msg, Map<String, String> extras, String... id) {
+        String APP_KEY = config.getJpush().getAppkey(), MASTER_SECRET = config.getJpush().getSecret();
         ClientConfig clientConfig = ClientConfig.getInstance();
         String host = (String) clientConfig.get(ClientConfig.PUSH_HOST_NAME);
         final NettyHttpClient client = new NettyHttpClient(ServiceHelper.getBasicAuthorization(APP_KEY, MASTER_SECRET), null, clientConfig);
@@ -116,8 +104,8 @@ public class JPushService {
             PushPayload payload2 = PushPayload.newBuilder()
                     .setPlatform(Platform.ios())
                     .setAudience(Audience.tag(id))
-                    .setNotification(Notification.newBuilder().addPlatformNotification(IosNotification.newBuilder().setAlert(config.getJpush().getAlert1()).addExtras(extras).build()).build())
-                    .setMessage(Message.newBuilder().setMsgContent(content).build())
+                    .setNotification(Notification.newBuilder().addPlatformNotification(IosNotification.newBuilder().setAlert(alert).addExtras(extras).build()).build())
+                    .setMessage(Message.newBuilder().setMsgContent(msg).build())
                     .setOptions(Options.newBuilder().setApnsProduction(config.getJpush().getIosProduct()).build()).build();
             client.sendRequest(HttpMethod.POST, payload2.toString(), uri, new NettyHttpClient.BaseCallback() {
                 @Override

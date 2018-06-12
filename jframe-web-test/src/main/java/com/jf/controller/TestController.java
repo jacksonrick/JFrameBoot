@@ -452,7 +452,7 @@ public class TestController extends BaseController {
     @RequestMapping("/jpush")
     @ResponseBody
     public ResMsg jpush() {
-        jPushService.sendPush(1, "hello", null, "10001");
+        jPushService.sendPush("alert", "content", "10001");
         return new ResMsg(ResCode.SUCCESS.code(), ResCode.SUCCESS.msg());
     }
 

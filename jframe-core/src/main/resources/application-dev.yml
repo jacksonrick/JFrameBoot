@@ -189,9 +189,8 @@ system: # 系统自定义配置
     id: a53178
     key: 51dbc8
   jpush: # jpush推送
-    appkey1: appkey
-    secret1: secret
-    alert1: "JFRAME"
+    appkey: appkey
+    secret: secret
     ios_product: false
   upload:
     fdfs: ${app.fdfs.enabled:false}
