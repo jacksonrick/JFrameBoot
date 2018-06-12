@@ -20,3 +20,4 @@ cloud-server/target/
 
 # this project
 /jframe-core/src/main/resources/application-pro.yml
+/jframe-utils/src/test/java/com/jf/generate/*

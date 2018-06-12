@@ -6,6 +6,7 @@ import com.jf.system.LogManager;
 
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -18,7 +19,8 @@ import java.util.List;
 public class MainTest {
 
     public static void main(String[] args) {
-
+        TestUser user = new TestUser().id(1).username("xu").age(10).createTime(new Date()).enable(true);
+        System.out.println(user);
     }
 
     public static URI testURI(String uri) {

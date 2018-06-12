@@ -58,7 +58,7 @@ public class GenerateBeansAndMybatisUtil {
     private static String dbName = "jframe";
 
     // 输出路径
-    private static String global_path = "/Users/xujunfei/Desktop/Project/db/mybatis/";
+    private static String global_path = "";
 
     private static String bean_path = global_path + "entity_bean";
 
@@ -102,9 +102,15 @@ public class GenerateBeansAndMybatisUtil {
      * @author rick
      * @date 2016年8月10日 上午8:54:10
      */
-    private void init() throws ClassNotFoundException, SQLException {
+    private void init(String target) throws ClassNotFoundException, SQLException {
         Class.forName(driverName);
         conn = DriverManager.getConnection(url, user, password);
+
+        global_path = target;
+        bean_path = global_path + "entity_bean";
+        mapper_path = global_path + "entity_mapper";
+        xml_path = global_path + "entity_mapper/xml";
+        html_path = global_path + "html";
     }
 
     /**
@@ -966,14 +972,16 @@ public class GenerateBeansAndMybatisUtil {
     /**
      * 构建主方法
      *
+     * @param target
      * @throws ClassNotFoundException
      * @throws SQLException
      * @throws IOException
      * @author rick
      * @date 2016年8月10日 上午9:00:31
      */
-    public void generate() throws ClassNotFoundException, SQLException, IOException {
-        init();
+    public void generate(String target) throws ClassNotFoundException, SQLException, IOException {
+        init(target);
+        clear();
         String prefix = "show full fields from ";
         List<String> columns = null;
         List<String> types = null;
@@ -1002,25 +1010,19 @@ public class GenerateBeansAndMybatisUtil {
             buildMapperXml(columns, types, comments);
         }
         System.out.println("数据库表共" + tables.size() + "个");
+        System.out.println("文件输出到：" + target);
         conn.close();
     }
 
-    public static void main(String[] args) {
-        System.out.println("开始执行......");
+    /**
+     * 清理旧文件
+     */
+    public static void clear() {
         System.out.println("开始清理......");
         deleteFile(new File(bean_path));
         deleteFile(new File(mapper_path));
         deleteFile(new File(xml_path));
         deleteFile(new File(html_path));
-
-        long start = System.currentTimeMillis();
-        try {
-            new GenerateBeansAndMybatisUtil().generate();
-            System.out.println("执行完成，总用时 : " + (System.currentTimeMillis() - start) + "毫秒");
-        } catch (Exception e) {
-            System.out.println("执行出现问题，请检查");
-            e.printStackTrace();
-        }
     }
 
     private static void deleteFile(File parent) {

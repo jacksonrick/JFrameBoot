@@ -3,11 +3,12 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <groupId>com.jf</groupId>
-        <artifactId>jframe-service-oauth</artifactId>
+        <artifactId>jframe-srv-oauth</artifactId>
         <version>0.0.2</version>
     </parent>
+
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>oauth-resource</artifactId>
+    <artifactId>oauth-client2</artifactId>
 
     <dependencies>
         <dependency>
@@ -24,6 +25,5 @@
             </plugin>
         </plugins>
     </build>
-
 
 </project>

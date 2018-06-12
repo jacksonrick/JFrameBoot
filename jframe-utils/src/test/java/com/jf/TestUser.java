@@ -3,7 +3,7 @@ package com.jf;
 /**
  * Created by xujunfei on 2017/1/4.
  */
-public class User {
+public class TestUser {
 
     private String name;
 

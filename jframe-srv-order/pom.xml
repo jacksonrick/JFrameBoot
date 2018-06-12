@@ -10,10 +10,10 @@
         <relativePath>../jframe/pom.xml</relativePath>
     </parent>
 
-    <artifactId>jframe-service-order</artifactId>
+    <artifactId>jframe-srv-order</artifactId>
     <version>0.0.1</version>
     <packaging>jar</packaging>
-    <name>jframe-service-order</name>
+    <name>jframe-srv-order</name>
 
     <dependencies>
         <dependency>

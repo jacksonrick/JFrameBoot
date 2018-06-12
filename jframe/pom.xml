@@ -16,8 +16,10 @@
         <module>../jframe-web-front</module>
         <module>../jframe-web-app</module>
         <module>../jframe-web-test</module>
-        <module>../jframe-service-order</module>
-        <module>../jframe-service-oauth</module>
+
+        <module>../jframe-srv-order</module>
+        <module>../jframe-srv-oauth</module>
+        <module>../jframe-srv-gateway</module>
     </modules>
 
     <properties>
