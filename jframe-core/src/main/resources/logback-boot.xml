@@ -50,7 +50,7 @@
             <!--<appender-ref ref="elk"/>-->
         </root>
 
-        <logger name="freemarker.cache" level="ERROR"></logger>
+        <logger name="freemarker.cache" level="OFF"></logger>
         <logger name="com.jf.database.mapper" level="DEBUG"></logger>
     </springProfile>
 

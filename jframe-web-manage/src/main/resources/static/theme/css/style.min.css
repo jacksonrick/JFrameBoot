@@ -5669,6 +5669,10 @@ a:focus, a:hover {
     text-decoration: none
 }
 
+a.label {
+    margin-right: 1px;
+}
+
 .border-bottom {
     border-bottom: 1px solid #e7eaec !important
 }
@@ -9767,7 +9771,6 @@ table.dataTable tbody tr.selected, table.dataTable tbody th.selected, table.data
 table.dataTable tbody tr.selected a, table.dataTable tbody th.selected a, table.dataTable tbody td.selected a {
     color: #a2d4ed
 }
-
 
 .w20 {
     width: 20%

@@ -1,7 +1,7 @@
 package com.jf.database.model;
 
 import com.jf.database.model.custom.BaseVo;
-import com.jf.entity.valid.EmptyPattern;
+import com.jf.system.handler.valid.EmptyPattern;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -52,9 +52,6 @@ public class Admin extends BaseVo implements Serializable {
 
 	/** 上次登录ip */
 	private String adminLoginIp;
-
-	/** 是否可编辑 1-可编辑 0-不可编辑 */
-	private Integer adminFlag;
 
     /** 是否删除 1-是 0-否 */
     private Boolean isDelete;
@@ -155,14 +152,6 @@ public class Admin extends BaseVo implements Serializable {
 
 	public String getAdminLoginIp() {
 		return this.adminLoginIp;
-	}
-
-	public void setAdminFlag(Integer adminFlag) {
-		this.adminFlag = adminFlag;
-	}
-
-	public Integer getAdminFlag() {
-		return this.adminFlag;
 	}
 
     public void setIsDelete(Boolean isDelete) {

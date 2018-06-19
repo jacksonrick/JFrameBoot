@@ -1,5 +1,6 @@
 package com.jf.database.mapper;
 
+import com.jf.database.model.User;
 import com.jf.database.model.custom.IdText;
 
 import java.util.List;
@@ -12,5 +13,9 @@ import java.util.List;
 public interface TestMapper {
 
 	List<IdText> findAll();
+
+	List<User> findUserById(Long id);
+
+	int insertUser(User user);
 
 }

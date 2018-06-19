@@ -18,12 +18,8 @@ app:
   host: 192.168.1.199 # 生产环境服务器地址（用于文件上传返回绝对路径↓↓↓）
   static_path: /data/wwwroot/test/static/ # 静态文件目录
   static_host: http://${app.host}:${server.port}/ # 静态文件地址
-  db: # 多数据库 -可同时启用,但必须启用一个*
-    primary:
-      enabled: true
-    secondary:
-      enabled: false
-    # 可以添加多个数据库
+  secondb: # 从或备数据库
+    enabled: false
   eureka: # Eureka注册服务
     enabled: false
   monitor: # 监控端点

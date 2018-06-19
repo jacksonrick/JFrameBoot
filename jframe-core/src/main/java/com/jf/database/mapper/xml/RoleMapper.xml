@@ -5,8 +5,8 @@
 <mapper namespace="com.jf.database.mapper.RoleMapper">
 
 	<sql id="simpleColumn">
-		r.id,
 		r.role_name,
+		r.role_flag,
 		r.is_delete AS `role_delete`
 	</sql>
 

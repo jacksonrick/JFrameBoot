@@ -29,7 +29,6 @@
 		a.admin_login_time,
 		a.admin_login_ip,
 		a.is_delete,
-		a.admin_flag,
         <include refid="com.jf.database.mapper.RoleMapper.simpleColumn"/>
 	</sql>
 
@@ -43,11 +42,11 @@
 		<result property="adminCreateTime" column="admin_create_time" />
 		<result property="adminLoginTime" column="admin_login_time" />
 		<result property="adminLoginIp" column="admin_login_ip" />
-		<result property="adminFlag" column="admin_flag" />
 		<result property="isDelete" column="is_delete" />
 		<association property="role" javaType="role">
 			<id property="id" column="role_id" />
 			<result property="roleName" column="role_name" />
+			<result property="roleFlag" column="role_flag" />
 			<result property="isDelete" column="role_delete" />
 		</association>
 	</resultMap>
@@ -56,6 +55,7 @@
 		<result property="adminRights" column="admin_rights" />
 		<association property="role" javaType="role">
 			<result property="roleRights" column="role_rights" />
+			<result property="roleFlag" column="role_flag" />
 		</association>
 	</resultMap>
 
@@ -85,7 +85,7 @@
 	</select>
 
 	<select id="findRightsById" resultMap="adminRightsResultMap" parameterType="long">
-		SELECT a.admin_rights, r.role_rights
+		SELECT a.admin_rights, r.role_rights, r.role_flag
 		FROM s_admin a LEFT JOIN s_role r ON a.role_id = r.id
 		WHERE a.id = #{id}
 	</select>

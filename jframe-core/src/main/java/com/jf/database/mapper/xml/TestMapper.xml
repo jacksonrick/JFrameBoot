@@ -8,4 +8,29 @@
 		SELECT * FROM test1
 	</select>
 
+	<resultMap type="user" id="userResultMapper">
+		<id property="id" column="id" />
+		<result property="nickname" column="nickname" />
+		<result property="phone" column="phone" />
+		<result property="extend" column="extend" typeHandler="com.jf.system.handler.mybatis.JsonTypeHandler" />
+	</resultMap>
+
+	<select id="findUserById" resultMap="userResultMapper" parameterType="long">
+		SELECT id,nickname,phone,extend
+		FROM t_user
+		WHERE id = #{id}
+	</select>
+
+	<insert id="insertUser" parameterType="user">
+		INSERT INTO t_user (
+			nickname,
+			phone,
+			extend
+		) VALUES (
+			#{nickname},
+			#{phone},
+			#{extend, typeHandler=com.jf.system.handler.mybatis.JsonTypeHandler}
+		)
+	</insert>
+
 </mapper>

@@ -82,7 +82,7 @@ public class SystemBackController extends BaseController {
     @RequestMapping("/jenkins")
     @AuthPassport(right = false)
     public String jenkins(HttpServletRequest request) {
-        if (getAdmin(request).getAdminFlag() != 0) {
+        if (getAdmin(request).getRole().getRoleFlag() != 0) {
             return "error/refuse";
         }
         return "system/jenkins";
@@ -105,8 +105,8 @@ public class SystemBackController extends BaseController {
         if (StringUtil.isBlank(ip) || StringUtil.isBlank(type) || StringUtil.isBlank(auth)) {
             return new ResMsg(1, "invalid param");
         }
-        if (getAdmin(request).getAdminFlag() != 0) {
-            return new ResMsg(1, "no auth only superadmin");
+        if (getAdmin(request).getRole().getRoleFlag() != 0) {
+            return new ResMsg(1, "refuse if superadmin");
         }
 
         String json = "";

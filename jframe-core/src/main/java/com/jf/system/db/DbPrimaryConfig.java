@@ -34,7 +34,6 @@ import java.util.Properties;
  * @version 2.0
  */
 @Configuration
-@ConditionalOnProperty(name = "app.db.primary.enabled", havingValue = "true")
 @MapperScan(basePackages = DbPrimaryConfig.mapperPackage, sqlSessionFactoryRef = "primarySqlSessionFactory")
 @EnableTransactionManagement
 public class DbPrimaryConfig {

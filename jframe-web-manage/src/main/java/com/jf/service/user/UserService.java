@@ -1,8 +1,10 @@
 package com.jf.service.user;
 
 import com.github.pagehelper.PageInfo;
+import com.jf.database.mapper.TestMapper;
 import com.jf.database.mapper.UserMapper;
 import com.jf.database.model.User;
+import com.jf.database.model.custom.Extend;
 import com.jf.database.model.custom.IdText;
 import com.jf.encrypt.PasswordUtil;
 import com.jf.string.StringUtil;
@@ -24,6 +26,24 @@ public class UserService {
 
     @Resource
     private UserMapper userMapper;
+
+    @Resource
+    private TestMapper testMapper;
+
+    public List<User> testFindUserForJson() {
+        return testMapper.findUserById(10013l);
+    }
+
+    public int testInsertUserForJson() {
+        User user = new User();
+        user.setNickname("qqq");
+        user.setPhone("12321343213");
+        Extend extend = new Extend();
+        extend.setA("12");
+        extend.setB("99");
+        user.setExtend(extend);
+        return testMapper.insertUser(user);
+    }
 
     /**
      * 按id查询用户

@@ -9,13 +9,11 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>../cloud-server</module>
         <module>../jframe-utils</module>
         <module>../jframe-core</module>
         <module>../jframe-web-manage</module>
         <module>../jframe-web-front</module>
         <module>../jframe-web-app</module>
-        <module>../jframe-web-test</module>
 
         <module>../jframe-srv-order</module>
         <module>../jframe-srv-oauth</module>

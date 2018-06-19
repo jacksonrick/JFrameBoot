@@ -2,7 +2,8 @@ package com.jf.database.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.jf.database.model.custom.BaseVo;
-import com.jf.entity.valid.EmptyPattern;
+import com.jf.database.model.custom.Extend;
+import com.jf.system.handler.valid.EmptyPattern;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -72,6 +73,9 @@ public class User extends BaseVo implements Serializable {
 
     /** 是否删除 1-是 0-否(默认) */
     private Boolean isDelete;
+
+    // 拓展字段 JSON
+    private Extend extend;
 
     // 搜索条件
 
@@ -203,6 +207,14 @@ public class User extends BaseVo implements Serializable {
         return this.isDelete;
     }
 
+    public Extend getExtend() {
+        return extend;
+    }
+
+    public void setExtend(Extend extend) {
+        this.extend = extend;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -221,6 +233,7 @@ public class User extends BaseVo implements Serializable {
                 ", address='" + address + '\'' +
                 ", birthday='" + birthday + '\'' +
                 ", isDelete=" + isDelete +
+                ", extend=" + extend +
                 '}';
     }
 }

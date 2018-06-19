@@ -11,10 +11,10 @@
 	</parent>
 
 	<groupId>com.jf</groupId>
-	<artifactId>cloud-server</artifactId>
+	<artifactId>jframe-cloud</artifactId>
 	<version>1.0</version>
 	<packaging>jar</packaging>
-	<name>cloud-server</name>
+	<name>jframe-cloud</name>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

@@ -62,9 +62,12 @@
                         <td>${v.adminLoginIp }</td>
                         <td><i class="fa ${v.isDelete?string('fa-times','fa-check')}"></i></td>
                         <td>
-                            <#if v.adminFlag == 1>
+                            <#if v.role.roleFlag == 0>
+                                <a class="btn btn-sm btn-circle btn-warning" disabled="disabled" title="不可编辑"
+                                   data-toggle="tooltip" data-placement="top"><i class="fa fa-pencil-square"></i></a>
+                            <#else>
                                 <a class="btn btn-sm btn-circle btn-warning" title="编辑" href="/admin/system/adminDetail?adminId=${v.id }"
-                                   data-open="modal" data-width="800px" data-height="400px" data-toggle="tooltip" data-placement="top"><i class="fa fa-pencil-square"></i></a>
+                                   data-open="modal" data-width="768px" data-height="400px" data-toggle="tooltip" data-placement="top"><i class="fa fa-pencil-square"></i></a>
                                 <#if v.isDelete>
                                     <a class="btn btn-sm btn-circle btn-warning btn-enable" title="启用" data-id="${v.id }"
                                        data-toggle="tooltip" data-placement="top"><i class="fa fa-check"></i></a>
@@ -74,9 +77,6 @@
                                 </#if>
                                 <a class="btn btn-sm btn-circle btn-success" title="编辑管理员权限" data-toggle="tooltip" data-placement="top"
                                    onclick="getModules(${v.id },'${v.adminName }')"><i class="fa fa-legal"></i></a>
-                            <#else>
-                                <a class="btn btn-sm btn-circle btn-warning" disabled="disabled" title="不可编辑"
-                                   data-toggle="tooltip" data-placement="top"><i class="fa fa-pencil-square"></i></a>
                             </#if>
                         </td>
                     </tr>

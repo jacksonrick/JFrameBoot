@@ -15,6 +15,3 @@ app:
     enabled: true
   monitor:
     enabled: true
-  db:
-    primary:
-      enabled: true

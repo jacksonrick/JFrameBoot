@@ -180,18 +180,18 @@ var CONSTANT = {
             targets: 0,
             defaultContent: "<div class='checkbox checkbox-inline'><input type='checkbox'><label></label></div>"
         },
+        // 圆形按钮样式 btn btn-info btn-sm btn-circle btn-enable
         EDIT: function (url) {
-            return "<button class='btn btn-primary btn-sm btn-circle btn-edit' title='详情' data-open='modal' " +
-                "data-width='800px' data-height='500px' href='" + url + "' type='button'><i class='fa fa-edit'></i></button>";
+            return "<a class='label label-info btn-edit' title='详情' data-open='modal' data-width='800px' data-height='500px' href='" + url + "'>详情</a>";
         },
         ENABLE: function () {
-            return "<button class='btn btn-info btn-sm btn-circle btn-enable' title='启用' type='button'><i class='fa fa-check'></i></button>";
+            return "<a class='label label-info btn-enable' title='启用'>启用</a>";
         },
         DISABLE: function () {
-            return "<button class='btn btn-warning btn-sm btn-circle btn-enable' title='禁用' type='button'><i class='fa fa-trash-o'></i></button>";
+            return "<a class='label label-warning btn-enable' title='禁用'>禁用</a>";
         },
         DELETE: function () {
-            return "<button class='btn btn-danger btn-sm btn-circle btn-del' title='删除' type='button'><i class='fa fa-trash-o'></i></button>";
+            return "<a class='label label-danger btn-del' title='删除'>删除</a>";
         }
     },
     RENDER: {// 转换器
@@ -230,7 +230,7 @@ var CONSTANT = {
     },
     GETCOLUMN: function (order, array) { // 获取排序列名
         var sort = "";
-        if (order && order.column > 0) {
+        if (order && order.column >= 0) {
             $.each(array, function (k, v) {
                 if (order.column == v[0]) {
                     sort = v[1] + " " + order.dir.toUpperCase();

@@ -25,7 +25,7 @@ import java.util.Properties;
 
 /**
  * Created with IntelliJ IDEA.
- * Description: DB数据源、Mybatis|Plugins、事务
+ * Description: DB数据源、Mybatis|Plugins、事务 （从数据库）
  * User: xujunfei
  * Date: 2017-11-28
  * Time: 10:43
@@ -33,7 +33,7 @@ import java.util.Properties;
  * @version 2.0
  */
 @Configuration
-@ConditionalOnProperty(name = "app.db.secondary.enabled", havingValue = "true")
+@ConditionalOnProperty(name = "app.secondb.enabled", havingValue = "true")
 @MapperScan(basePackages = DbSecondaryConfig.mapperPackage, sqlSessionFactoryRef = "secondarySqlSessionFactory")
 @EnableTransactionManagement
 public class DbSecondaryConfig {

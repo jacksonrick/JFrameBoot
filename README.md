@@ -1,5 +1,5 @@
 # JFrame
-##### JFrame - SpringBoot & Cloud Project `v5.0.1 beta`
+##### JFrame - SpringBoot & Cloud Project `v5.0.2 beta`
 made by @jackson-rick   <br>
 本架构是对技术框架的整合及开发的规范
 
@@ -33,6 +33,9 @@ made by @jackson-rick   <br>
 * Jenkins自动化部署、脚本
 
 ### 更新日志：
+* v5.0.2 beta `20180619`
+    * 1.优化部分目录结构
+    * 2.新增支持数据库JSON类型的支持
 * v5.0.1 beta `20180612`
     * 1.优化实体类和数据库及数据字典生成工具
     * 2.新增gateway模块，下个版本将集中开发网关功能

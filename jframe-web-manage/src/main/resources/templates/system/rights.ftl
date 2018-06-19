@@ -13,7 +13,7 @@
         <div class="ibox float-e-margins">
             <div class="ibox-content">
                 <div class="alert alert-warning">
-                    <p><i class="fa fa-exclamation-circle"></i>超级管理员和技术管理员为系统内置，不可编辑；为保证系统安全，仅技术管理拥有【系统管理】所有权限。</p>
+                    <p><i class="fa fa-exclamation-circle"></i>超级管理员为系统内置，不可编辑；为保证系统安全，仅超级管理拥有【系统管理】所有权限。</p>
                     <p><i class="fa fa-exclamation-circle"></i>授权说明：选择子模块，对应的父模块也会被选择；取消授权只需将模块反勾选即可。</p>
                     <p><i class="fa fa-exclamation-circle"></i>可对管理员和组分别授权，若都有权限，则会进行权限合并。</p>
                 </div>
@@ -50,8 +50,12 @@
                             </#if>
                         </td>
                         <td>
-                            <a class="btn btn-sm btn-circle btn-success" title="编辑组权限" data-toggle="tooltip" data-placement="top"
-                               onclick="getModules(${v.id },'${v.roleName }')"><i class="fa fa-legal"></i></a>
+                            <#if v.roleFlag == 0>
+                                --
+                            <#else>
+                                <a class="btn btn-sm btn-circle btn-success" title="编辑组权限" data-toggle="tooltip" data-placement="top"
+                                   onclick="getModules(${v.id },'${v.roleName }')"><i class="fa fa-legal"></i></a>
+                            </#if>
                         </td>
                     </tr>
                     </#list>

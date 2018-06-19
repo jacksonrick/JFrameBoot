@@ -1,5 +1,8 @@
 package com.jf.generate;
 
+import com.jf.string.StringUtil;
+import org.apache.commons.lang3.StringUtils;
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -10,6 +13,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -18,12 +22,11 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 自动生成MyBatis的实体类、实体映射XML文件、Mapper<br>
- * *对于mybatis xml还需进一步修改使用，实体类可直接使用<br>
- * *此类仅对本项目有效，其他项目规范可适当修改参数使用
+ * 自动生成MyBatis的实体类、实体映射XML接口、Mapper SQL、Service、Controller、HTML<br>
+ * 对于mybatis xml还需进一步修改使用，实体类可直接使用<br>
+ * 适用数据库：MySQL、Postgres
  *
- * @version 4.0
- * @date 2018-01-18
+ * @version 4.2
  */
 public class GenerateBeansAndMybatisUtil {
 
@@ -32,17 +35,15 @@ public class GenerateBeansAndMybatisUtil {
      * 类型应如：int、tinyint、decimal、text、char、varchar、datetime
      *************************************/
 
-    private static String type_char = "char";
+    private static String type_char = "char"; // like char/varchar
 
     private static String type_date = "date";
 
     private static String type_timestamp = "timestamp";
 
-    private static String type_int = "int";
+    private static String type_int = "int"; // like int/tinyint
 
     private static String type_bigint = "bigint";
-
-    private static String type_tinyint = "tinyint";
 
     private static String type_text = "text";
 
@@ -54,44 +55,28 @@ public class GenerateBeansAndMybatisUtil {
 
     private static String type_blob = "blob";
 
-    // 数据库名称
-    private static String dbName = "jframe";
-
     // 输出路径
-    private static String global_path = "";
+    private static String bean_path = null;
+    private static String mapper_path = null;
+    private static String xml_path = null;
+    private static String html_path = null;
+    private static String service_path = null;
+    private static String controller_path = null;
 
-    private static String bean_path = global_path + "entity_bean";
-
-    private static String mapper_path = global_path + "entity_mapper";
-
-    private static String xml_path = global_path + "entity_mapper/xml";
-
-    private static String html_path = global_path + "html";
-
-    // 包名
-    private static String bean_package = "com.jf.model";
-
-    private static String mapper_package = "com.jf.mapper";
-
+    // model/mapper包
+    private final static String bean_package = "com.jf.database.model";
+    private final static String mapper_package = "com.jf.database.mapper";
     // 基类
-    private static String base_vo = "com.jf.model.custom.BaseVo;";
+    private final static String base_vo = "com.jf.database.model.custom.BaseVo;";
 
-    // 数据库连接信息
-    private static String driverName = "com.mysql.jdbc.Driver";
-
-    private static String user = "root";
-
-    private static String password = "12345678";
-
-    private static String url = "jdbc:mysql://127.0.0.1:3306/" + dbName + "?characterEncoding=utf8&useSSL=false";
-
+    private Integer dbType = 1; // 1-mysql 2-postgres
+    private String schema = null;
     private String tableName = null;
     private String beanName = null;
     private String mapperName = null;
     private Connection conn = null;
 
-    // 作者&时间
-    private final String author = "jfxu";
+    private String author = "";
     private final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy年MM月dd日 aaa HH:mm:ss");
 
     /**
@@ -102,15 +87,36 @@ public class GenerateBeansAndMybatisUtil {
      * @author rick
      * @date 2016年8月10日 上午8:54:10
      */
-    private void init(String target) throws ClassNotFoundException, SQLException {
-        Class.forName(driverName);
-        conn = DriverManager.getConnection(url, user, password);
+    private void init(GenInfo info) throws Exception {
+        bean_path = info.getGlobalPath() + "/entity_bean";
+        mapper_path = info.getGlobalPath() + "/entity_mapper";
+        xml_path = info.getGlobalPath() + "/entity_mapper/xml";
+        html_path = info.getGlobalPath() + "/html";
+        service_path = info.getGlobalPath() + "/service";
+        controller_path = info.getGlobalPath() + "/controller";
 
-        global_path = target;
-        bean_path = global_path + "entity_bean";
-        mapper_path = global_path + "entity_mapper";
-        xml_path = global_path + "entity_mapper/xml";
-        html_path = global_path + "html";
+        author = info.getAuthor();
+
+        if (info.getDriver().contains("mysql")) {
+            System.out.println("数据库类型：mysql");
+            dbType = 1;
+        } else if (info.getDriver().contains("postgresql")) {
+            System.out.println("数据库类型：postgresql");
+            dbType = 2;
+            schema = info.getSchema();
+            if (schema == null) {
+                throw new RuntimeException("postgres必须指定schema");
+            }
+        } else {
+            throw new RuntimeException("不支持的数据库");
+        }
+
+        System.out.println("清理文件......");
+        deleteFile(new File(info.getGlobalPath()));
+
+        System.out.println("初始化数据库连接......");
+        Class.forName(info.getDriver());
+        conn = DriverManager.getConnection(info.getDbUrl(), info.getUsername(), info.getPassword());
     }
 
     /**
@@ -120,8 +126,14 @@ public class GenerateBeansAndMybatisUtil {
      * @throws SQLException
      */
     private List<String> getTables() throws SQLException {
+        String sql = "";
+        if (dbType == 1) {
+            sql = "SHOW TABLES";
+        } else if (dbType == 2) {
+            sql = "SELECT tablename FROM pg_tables WHERE schemaname = '" + schema + "'";
+        }
         List<String> tables = new ArrayList<String>();
-        PreparedStatement pstate = conn.prepareStatement("show tables");
+        PreparedStatement pstate = conn.prepareStatement(sql);
         ResultSet results = pstate.executeQuery();
         while (results.next()) {
             String tableName = results.getString(1);
@@ -129,6 +141,32 @@ public class GenerateBeansAndMybatisUtil {
         }
         return tables;
     }
+
+    /**
+     * 获取所有的数据库表注释
+     *
+     * @return
+     * @throws SQLException
+     */
+    private Map<String, String> getTableComment() throws SQLException {
+        String sql = "";
+        if (dbType == 1) {
+            sql = "SHOW TABLE STATUS";
+        } else if (dbType == 2) {
+            sql = "SELECT C.relname AS NAME, CAST ( obj_description ( C.relfilenode, 'pg_class' ) AS VARCHAR ) AS COMMENT \n" +
+                    "FROM pg_class C, pg_tables T WHERE T.schemaname = '" + schema + "' AND C.relname = T.tablename AND relkind = 'r'";
+        }
+        Map<String, String> maps = new HashMap<String, String>();
+        PreparedStatement pstate = conn.prepareStatement(sql);
+        ResultSet results = pstate.executeQuery();
+        while (results.next()) {
+            String tableName = results.getString("NAME");
+            String comment = results.getString("COMMENT");
+            maps.put(tableName, comment);
+        }
+        return maps;
+    }
+
 
     /**
      * 处理字段类型
@@ -141,24 +179,22 @@ public class GenerateBeansAndMybatisUtil {
     private String processType(String type) {
         if (type.indexOf(type_char) > -1) {
             return "String";
-        } else if (type.indexOf(type_bigint) > -1) {
-            return "Long";
-        } else if (type.indexOf(type_tinyint) > -1) {
-            return "Integer";
-        } else if (type.indexOf(type_int) > -1) {
-            return "Integer";
-        } else if (type.indexOf(type_date) > -1) {
-            return "Date";
         } else if (type.indexOf(type_text) > -1) {
             return "String";
-        } else if (type.indexOf(type_timestamp) > -1) {
-            return "Date";
-        } else if (type.indexOf(type_bit) > -1) {
-            return "Boolean";
+        } else if (type.indexOf(type_bigint) > -1) {
+            return "Long";
         } else if (type.indexOf(type_decimal) > -1) {
             return "Double";
         } else if (type.indexOf(type_double) > -1) {
             return "Double";
+        } else if (type.indexOf(type_int) > -1) {
+            return "Integer";
+        } else if (type.indexOf(type_date) > -1) {
+            return "Date";
+        } else if (type.indexOf(type_timestamp) > -1) {
+            return "Date";
+        } else if (type.indexOf(type_bit) > -1) {
+            return "Boolean";
         } else if (type.indexOf(type_blob) > -1) {
             return "byte[]";
         }
@@ -243,6 +279,8 @@ public class GenerateBeansAndMybatisUtil {
         bw.newLine();
         bw.write(" * " + text);
         bw.newLine();
+        bw.write(" *");
+        bw.newLine();
         bw.write(" * @date " + simpleDateFormat.format(new Date()));
         bw.newLine();
         bw.write(" * @author " + author);
@@ -297,103 +335,78 @@ public class GenerateBeansAndMybatisUtil {
             folder.mkdir();
         }
 
+        // form表单
         File htmlEditFile = new File(html_path, processHtmlFile(tableName) + "_edit.ftl");
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(htmlEditFile)));
-        bw.write("<!DOCTYPE html>\n<html>\n<head>\n\t<meta charset=\"utf-8\">\n\t<title>" + tableComment + "</title>");
-        bw.newLine();
-        bw.write("<#include \"include.ftl\"/>\n</head>");
-        bw.newLine();
-        bw.write("<body>\n\n<div class=\"ibox-content\">\n\t<form class=\"form-horizontal\" id=\"" + beanName + "EditForm\">");
-        bw.newLine();
+        bw.write("<!DOCTYPE html>\n<html>\n<head>\n\t<meta charset=\"utf-8\">\n\t<title>" + tableComment + "</title>\n");
+        bw.write("<#include \"include.ftl\"/>\n</head>\n");
+        bw.write("<body>\n\n<div class=\"ibox-content\">\n\t<form class=\"form-horizontal\" id=\"" + beanName + "EditForm\">\n");
 
         int size = columns.size();
-        Boolean hasDate = false;
-        String dateName = "";
+        boolean hasDate = false;
+        int maxLength = 4;
+        List<String> dateIds = new ArrayList<String>();
+        String bean = processResultMapId(beanName);
         for (int i = 0; i < size; i++) {
-            bw.write("\t\t<div class=\"form-group\">");
-            bw.newLine();
-            bw.write("\t\t\t<label class=\"col-sm-2 control-label\">" + comments.get(i) + "：</label>");
-            bw.newLine();
-            bw.write("\t\t\t<div class=\"col-sm-9\">");
-            bw.newLine();
             String name = processField(columns.get(i));
             String comment = comments.get(i);
-            if ("Boolean".equals(processType(types.get(i)))) {
-                bw.write("\t\t\t\t<div class=\"radio radio-info radio-inline\">");
-                bw.newLine();
-                bw.write("\t\t\t\t\t<input type=\"radio\" name=\"" + name + "\" id=\"" + name + "1\" value=\"1\" ${prefix." + name + "?string('checked','') }>\n\t\t\t\t\t<label for=\"" + name + "1\">1</label>");
-                bw.newLine();
-                bw.write("\t\t\t\t</div>\n\t\t\t\t<div class=\"radio radio-info radio-inline\">");
-                bw.newLine();
-                bw.write("\t\t\t\t\t<input type=\"radio\" name=\"" + name + "\" id=\"" + name + "0\" value=\"0\" ${prefix." + name + "?string('checked','') }>\n\t\t\t\t\t<label for=\"" + name + "0\">0</label>\n\t\t\t\t</div>");
-            } else if ("Date".equals(processType(types.get(i)))) {
-                bw.write("\t\t\t\t<input type=\"text\" id=\"" + name + "\" name=\"" + name + "\" value=\"${prefix." + name + " }\" class=\"form-control\" placeholder=\"" + comment + "\">");
+            String label = comment;
+            if (StringUtil.isBlank(label)) {
+                label = columns.get(i);
+            } else if (label.length() > maxLength) {
+                label = label.substring(0, maxLength);
+            }
+            bw.write("\t\t<div class=\"form-group\">\n");
+            bw.write("\t\t\t<label class=\"col-sm-2 control-label\">" + label + "：</label>\n");
+            bw.write("\t\t\t<div class=\"col-sm-9\">\n");
+            if ("Boolean".equals(processType(types.get(i)))) { // boolean类型转换为radio
+                bw.write("\t\t\t\t<div class=\"radio radio-info radio-inline\">\n");
+                bw.write("\t\t\t\t\t<input type=\"radio\" name=\"" + name + "\" id=\"" + name + "1\" value=\"1\" ${map." + name + "?string('checked','') }>\n\t\t\t\t\t<label for=\"" + name + "1\">1</label>\n");
+                bw.write("\t\t\t\t</div>\n\t\t\t\t<div class=\"radio radio-info radio-inline\">\n");
+                bw.write("\t\t\t\t\t<input type=\"radio\" name=\"" + name + "\" id=\"" + name + "0\" value=\"0\" ${map." + name + "?string('checked','') }>\n\t\t\t\t\t<label for=\"" + name + "0\">0</label>\n\t\t\t\t</div>");
+            } else if ("Date".equals(processType(types.get(i)))) { // 时间类型添加时间选择插件
+                bw.write("\t\t\t\t<input type=\"text\" id=\"" + name + "\" name=\"" + name + "\" value=\"${map." + name + "?string('yyyy-MM-dd HH:mm:ss') }\" class=\"form-control\" placeholder=\"" + comment + "\">");
                 hasDate = true;
-                dateName = name;
-            } else {
-                bw.write("\t\t\t\t<input type=\"text\" name=\"" + name + "\" value=\"${prefix." + name + " }\" class=\"form-control\" placeholder=\"" + comment + "\">");
+                dateIds.add("#" + name);
+            } else { // 否则为普通文本框
+                bw.write("\t\t\t\t<input type=\"text\" name=\"" + name + "\" value=\"${map." + name + " }\" class=\"form-control\" placeholder=\"" + comment + "\">");
             }
             bw.newLine();
-            bw.write("\t\t\t</div>\n\t\t</div>");
-            bw.newLine();
+            bw.write("\t\t\t</div>\n\t\t</div>\n");
         }
 
-        bw.write("\t\t<div class=\"form-group\">\n\t\t\t<div class=\"col-sm-offset-2 col-sm-3\">");
-        bw.newLine();
-        bw.write("\t\t\t\t<input type=\"hidden\" name=\"id\" value=\"${prefix.id }\">");
-        bw.newLine();
-        bw.write("\t\t\t\t<button type=\"submit\" class=\"btn btn-info btn-block\">保存</button>");
-        bw.newLine();
-        bw.write("\t\t\t</div>\n\t\t</div>\n\t</form>\n</div>");
-        bw.newLine();
-        bw.newLine();
+        bw.write("\t\t<div class=\"form-group\">\n\t\t\t<div class=\"col-sm-offset-2 col-sm-3\">\n");
+        bw.write("\t\t\t\t<input type=\"hidden\" name=\"id\" value=\"${map.id }\">\n");
+        bw.write("\t\t\t\t<button type=\"submit\" class=\"btn btn-info btn-block\">保存</button>\n");
+        bw.write("\t\t\t</div>\n\t\t</div>\n\t</form>\n</div>\n\n");
 
-        bw.write("<script type=\"text/javascript\">");
-        bw.newLine();
-        bw.write("\t$(function () {");
-        bw.newLine();
-        if (hasDate) {
-            bw.write("\t\tdatePicker(\"#" + dateName + "\", \"yyyy-mm-dd\");");
-            bw.newLine();
+        bw.write("<script type=\"text/javascript\">\n");
+        bw.write("\t$(function () {\n");
+        if (hasDate) { // 添加时间选择插件
+            bw.write("\t\tdatePicker(\"" + StringUtils.join(dateIds, ",") + "\", \"yyyy-mm-dd\");\n");
         }
-        bw.write("\t\tvar index = parent.layer.getFrameIndex(window.name);");
-        bw.newLine();
-        bw.newLine();
-        bw.write("\t\t$(\"#" + beanName + "EditForm\").bootstrapValidator({");
-        bw.newLine();
-        bw.write("\t\t\texcluded: [':disabled'],");
-        bw.newLine();
-        bw.write("\t\t\tfields: {");
-        bw.newLine();
+        bw.write("\t\tvar index = parent.layer.getFrameIndex(window.name);\n\n");
+        bw.write("\t\t$(\"#" + beanName + "EditForm\").bootstrapValidator({\n");
+        bw.write("\t\t\texcluded: [':disabled'],\n");
+        bw.write("\t\t\tfields: {\n");
         for (int i = 0; i < size; i++) {
-            bw.write("\t\t\t\t" + processField(columns.get(i)) + ": {\n\t\t\t\t\tvalidators: {");
-            bw.newLine();
-            bw.write("\t\t\t\t\t\tnotEmpty: {\n\t\t\t\t\t\t\tmessage: '不能为空'\n\t\t\t\t\t\t}\n\t\t\t\t\t}\n\t\t\t\t},");
-            bw.newLine();
+            bw.write("\t\t\t\t" + processField(columns.get(i)) + ": {\n\t\t\t\t\tvalidators: {\n");
+            bw.write("\t\t\t\t\t\tnotEmpty: {\n\t\t\t\t\t\t\tmessage: '不能为空'\n\t\t\t\t\t\t}\n\t\t\t\t\t}\n\t\t\t\t},\n");
         }
-        bw.write("\t\t\t}\n\t\t}).on('success.form.bv', function (e) {\n\t\t\te.preventDefault();\n\t\t\tvar $form = $(e.target);");
-        bw.newLine();
-        bw.write("\t\t\tAjax.ajax({");
-        bw.newLine();
-        bw.write("\t\t\t\turl: '/admin/../..',\n\t\t\t\tparams: $form.serialize(),\n\t\t\t\tsuccess: function (data) {");
-        bw.newLine();
-        bw.write("\t\t\t\t\tif (data.code == 0) {\n\t\t\t\t\t\tshowMsg(data.msg, 1, function () {\n\t\t\t\t\t\t\tparent.layer.close(index);\n\t\t\t\t\t\t\tparent.reload();");
-        bw.newLine();
-        bw.write("\t\t\t\t\t\t});\n\t\t\t\t\t} else {\n\t\t\t\t\t\tshowMsg(data.msg, 2);\n\t\t\t\t\t}\n\t\t\t\t}");
-        bw.newLine();
-        bw.write("\t\t\t});");
-        bw.newLine();
-        bw.write("\t\t});");
-        bw.newLine();
-        bw.write("\t});");
-        bw.newLine();
-        bw.write("</script>");
-        bw.newLine();
+        bw.write("\t\t\t}\n\t\t}).on('success.form.bv', function (e) {\n\t\t\te.preventDefault();\n\t\t\tvar $form = $(e.target);\n");
+        bw.write("\t\t\tAjax.ajax({\n");
+        bw.write("\t\t\t\turl: '/admin/" + bean + "/" + bean + "Edit',\n\t\t\t\tparams: $form.serialize(),\n\t\t\t\tsuccess: function (data) {\n");
+        bw.write("\t\t\t\t\tif (data.code == 0) {\n\t\t\t\t\t\tshowMsg(data.msg, 1, function () {\n\t\t\t\t\t\t\tparent.layer.close(index);\n\t\t\t\t\t\t\tparent.reload();\n");
+        bw.write("\t\t\t\t\t\t});\n\t\t\t\t\t} else {\n\t\t\t\t\t\tshowMsg(data.msg, 2);\n\t\t\t\t\t}\n\t\t\t\t}\n");
+        bw.write("\t\t\t});\n");
+        bw.write("\t\t});\n");
+        bw.write("\t});\n");
+        bw.write("</script>\n");
         bw.write("</body>\n</html>");
-
         bw.flush();
         bw.close();
 
+        // 列表-DataTables
         File htmlListFile = new File(html_path, processHtmlFile(tableName) + "_list.ftl");
         BufferedWriter bw2 = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(htmlListFile)));
         bw2.write("<!DOCTYPE html>\n" +
@@ -424,9 +437,6 @@ public class GenerateBeansAndMybatisUtil {
                 "                    <i class=\"fa fa-plus\"></i> 添加\n" +
                 "                </button>\n" +
                 "                <button type=\"button\" class=\"btn btn-danger btn-sm\" id=\"btn-del\"><i class=\"fa fa-remove\"></i> 批量删除</button>\n" +
-                "                <button type=\"button\" class=\"btn btn-warning btn-sm\" data-open=\"modal\" data-width=\"800px\"\n" +
-                "                        data-height=\"500px\" href=\"/admin/module/moduleList?mode=1\"><i class=\"fa fa-user\"></i> 选择数据\n" +
-                "                </button>\n" +
                 "            </div>\n" +
                 "        </div>\n" +
                 "        <table id=\"table\" class=\"table table-striped table-bordered table-hover\" width=\"100%\"></table>\n" +
@@ -437,17 +447,23 @@ public class GenerateBeansAndMybatisUtil {
                 "    var tables;\n" +
                 "    $(function () {\n" +
                 "        var columns = [\n" +
-                "            CONSTANT.COLUMN.CHECKALL,\n");
+                "            CONSTANT.COLUMN.CHECKALL, // 全选\n");
 
         for (int i = 0; i < size; i++) {
-            bw2.write("\t\t\t{title: \"" + comments.get(i) + "\", data: \"" + processField(columns.get(i)) + "\", defaultContent: \"--\"" + (i == 0 ? "" : ", orderable: false") + "},");
+            String comment = comments.get(i);
+            if (StringUtil.isBlank(comment)) {
+                comment = columns.get(i);
+            } else if (comment.length() > maxLength) {
+                comment = comment.substring(0, maxLength);
+            }
+            bw2.write("\t\t\t{title: \"" + comment + "\", data: \"" + processField(columns.get(i)) + "\", defaultContent: \"--\"" + (i == 0 ? "" : ", orderable: false") + "},");
             bw2.newLine();
         }
 
         bw2.write("            {\n" +
                 "                title: \"操作\", data: null, orderable: false,\n" +
                 "                render: function (data, type, full, callback) {\n" +
-                "                    var btns = CONSTANT.BUTTON.EDIT(\"/admin/module/moduleDetail?id=\" + full.id);\n" +
+                "                    var btns = CONSTANT.BUTTON.EDIT(\"/admin/" + bean + "/" + bean + "Detail?id=\" + full.id);\n" +
                 "                    if (full.isDelete) {\n" +
                 "                        btns += CONSTANT.BUTTON.ENABLE();\n" +
                 "                    } else {\n" +
@@ -461,7 +477,7 @@ public class GenerateBeansAndMybatisUtil {
                 "        tables = $table.DataTable($.extend(true, {}, CONSTANT.DEFAULT_OPTION, {\n" +
                 "            columns: columns,\n" +
                 "            ajax: function (data, callback, settings) {\n" +
-                "                CONSTANT.AJAX(\"/admin/module/moduleListData\", [[1, \"id\"]], data, callback, settings);\n" +
+                "                CONSTANT.AJAX(\"/admin/" + bean + "/" + bean + "ListData\", [[1, \"id\"]], data, callback, settings);\n" +
                 "            },\n" +
                 "            columnDefs: [CONSTANT.BUTTON.CHECKBOXS],\n" +
                 "            drawCallback: function (settings) {\n" +
@@ -475,7 +491,7 @@ public class GenerateBeansAndMybatisUtil {
                 "\n" +
                 "        $(\"#export\").click(function () {\n" +
                 "            var formData = $(\"#queryForm\").serialize();\n" +
-                "            location.href = '/admin/module/exportExcel?' + formData;\n" +
+                "            location.href = '/admin/excel?' + formData;\n" +
                 "        });\n" +
                 "\n" +
                 "        $(\"#btn-del\").click(function () {\n" +
@@ -499,7 +515,7 @@ public class GenerateBeansAndMybatisUtil {
                 "            var item = tables.row($(this).closest('tr')).data();\n" +
                 "        }).on(\"click\", \".btn-enable\", function () {\n" +
                 "            var item = tables.row($(this).closest('tr')).data();\n" +
-                "            layerConfirm('确定要...吗', \"/admin/module/moduleEnable?id=\" + item.id, function () {\n" +
+                "            layerConfirm('确定要启用或禁用吗', \"/admin/" + bean + "/" + bean + "Enable?id=\" + item.id, function () {\n" +
                 "                reload();\n" +
                 "            });\n" +
                 "        });\n" +
@@ -507,10 +523,12 @@ public class GenerateBeansAndMybatisUtil {
                 "        datePicker('#startDate,#endDate', \"yyyy-mm-dd\");\n" +
                 "    });\n" +
                 "\n" +
+                "    // 重新加载表格\n" +
                 "    function reload() {\n" +
                 "        tables.draw('page');\n" +
                 "    }\n" +
                 "\n" +
+                "    // 选择框的回调方法\n" +
                 "    function dealData(data) {\n" +
                 "        console.log(\"选择的数量为：\" + data.length);\n" +
                 "        console.log(data);\n" +
@@ -541,55 +559,39 @@ public class GenerateBeansAndMybatisUtil {
 
         File beanFile = new File(bean_path, beanName + ".java");
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(beanFile)));
-        bw.write("package " + bean_package + ";\r\n");
-        bw.newLine();
-        // 基类
-        bw.write("import " + base_vo + "");
-        bw.newLine();
-        bw.newLine();
+        bw.write("package " + bean_package + ";\n\n");
+        bw.write("import " + base_vo + "\n\n"); // 基类
         // 导入包
         bw.write("import java.io.Serializable;");
         if (checkDate(size, types)) {
-            bw.newLine();
-            bw.write("import java.util.Date;");
+            bw.write("\nimport java.util.Date;");
         }
         bw = buildClassComment(bw, tableComment);
         bw.newLine();
         // 类
-        bw.write("public class " + beanName + " extends BaseVo implements Serializable {");
-        bw.newLine();
-        bw.newLine();
-        bw.write("\tprivate static final long serialVersionUID = 1L;");
-        bw.newLine();
-        bw.newLine();
+        bw.write("public class " + beanName + " extends BaseVo implements Serializable {\n\n");
+        bw.write("\tprivate static final long serialVersionUID = 1L;\n\n");
 
         boolean idInt = false;
         for (int i = 0; i < size; i++) { // 生成字段
-            bw.write("\t/** " + comments.get(i) + " */");
-            bw.newLine();
-            bw.write("\tprivate " + processType(types.get(i)) + " " + processField(columns.get(i)) + ";");
-            bw.newLine();
-            bw.newLine();
-            if ("id".equals(processField(columns.get(i)))) {
-                if ("Integer".equals(processType(types.get(i)))) {
+            String field = processField(columns.get(i));
+            String type = processType(types.get(i));
+            bw.write("\t/** " + (StringUtil.isBlank(comments.get(i)) ? field : comments.get(i)) + " */\n");
+            bw.write("\tprivate " + type + " " + field + ";\n\n");
+            if ("id".equals(field)) {
+                if ("Integer".equals(type)) {
                     idInt = true;
                 }
             }
         }
         //生成构造方法
-        bw.write("\tpublic " + beanName + "() {");
-        bw.newLine();
-        bw.write("\t}");
-        bw.newLine();
-        bw.newLine();
-        bw.write("\tpublic " + beanName + "(" + (idInt ? "Integer" : "Long") + " id) {");
-        bw.newLine();
-        bw.write("\t\tsuper();");
-        bw.newLine();
-        bw.write("\t\tthis.id = id;");
-        bw.newLine();
-        bw.write("\t}");
-        bw.newLine();
+        bw.write("\tpublic " + beanName + "() {\n");
+        bw.write("\t}\n\n");
+        bw.write("\tpublic " + beanName + "(" + (idInt ? "Integer" : "Long") + " id) {\n");
+        bw.write("\t\tsuper();\n");
+        bw.write("\t\tthis.id = id;\n");
+        bw.write("\t}\n");
+
         // 生成get和 set方法
         String tempField = null;
         String _tempField = null;
@@ -599,23 +601,30 @@ public class GenerateBeansAndMybatisUtil {
             _tempField = processField(columns.get(i));
             tempField = _tempField.substring(0, 1).toUpperCase() + _tempField.substring(1);
             bw.newLine();
-            bw.write("\tpublic " + tempType + " get" + tempField + "() {");
-            bw.newLine();
-            bw.write("\t\treturn this." + _tempField + ";");
-            bw.newLine();
-            bw.write("\t}");
-            bw.newLine();
-            bw.newLine();
-            bw.write("\tpublic void set" + tempField + "(" + tempType + " " + _tempField + ") {");
-            bw.newLine();
-            bw.write("\t\tthis." + _tempField + " = " + _tempField + ";");
-            bw.newLine();
-            bw.write("\t}");
-            bw.newLine();
+            bw.write("\tpublic " + tempType + " get" + tempField + "() {\n");
+            bw.write("\t\treturn this." + _tempField + ";\n");
+            bw.write("\t}\n\n");
+            bw.write("\tpublic void set" + tempField + "(" + tempType + " " + _tempField + ") {\n");
+            bw.write("\t\tthis." + _tempField + " = " + _tempField + ";\n");
+            bw.write("\t}\n");
         }
         bw.newLine();
-        bw.write("}");
-        bw.newLine();
+
+        // 生成toString()
+        bw.write("\t@Override\n");
+        bw.write("\tpublic String toString() {\n");
+        bw.write("\t\treturn \"" + beanName + "{\" +\n");
+        for (int i = 0; i < size; i++) {
+            String field = processField(columns.get(i));
+            if (i == 0) {
+                bw.write("\t\t\t\t\"" + field + "=\" + " + field + " +\n");
+            } else {
+                bw.write("\t\t\t\t\", " + field + "=\" + " + field + " +\n");
+            }
+        }
+        bw.write("\t\t\t\t\"}\";\n");
+        bw.write("\t}\n");
+        bw.write("}\n");
         bw.flush();
         bw.close();
     }
@@ -633,58 +642,26 @@ public class GenerateBeansAndMybatisUtil {
 
         File mapperFile = new File(mapper_path, mapperName + ".java");
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(mapperFile), "utf-8"));
-        bw.write("package " + mapper_package + ";");
-        bw.newLine();
-        bw.newLine();
-        bw.write("import java.util.List;\r\nimport " + bean_package + "." + beanName + ";");
-        bw.newLine();
+        bw.write("package " + mapper_package + ";\n\n");
+        bw.write("import java.util.List;\n\nimport " + bean_package + "." + beanName + ";\n");
         // 自定义查询封装类
         bw.write("import com.jf.entity.BaseVo;");
         bw = buildClassComment(bw, mapperName + " Interface");
-        bw.newLine();
-        bw.write("public interface " + mapperName + " {");
-        bw.newLine();
+        bw.write("\npublic interface " + mapperName + " {\n\n");
 
         // ----------定义Mapper中的方法Begin----------
-        bw.newLine();
-        //bw.write("\t/**\r\n\t * \r\n\t * @param baseVo\r\n\t * @return\r\n\t */\r\n");
-        bw.write("\tList<" + beanName + "> findByCondition(BaseVo baseVo);");
-        bw.newLine();
-        bw.newLine();
-        //bw.write("\t/**\r\n\t * \r\n\t * @param baseVo\r\n\t * @return\r\n\t */\r\n");
-        bw.write("\tint findCountByCondition(BaseVo baseVo);");
-        bw.newLine();
-        bw.newLine();
-        bw.write("\t" + beanName + " findById(Long id);");
-        bw.newLine();
-        bw.newLine();
-        bw.write("\t" + beanName + " findSimpleById(Long id);");
-        bw.newLine();
-        bw.newLine();
-        bw.write("\tObject findFieldById(@Param(\"id\") Long id, @Param(\"field\") String field);");
-        bw.newLine();
-        bw.newLine();
-        //bw.write("\t/**\r\n\t * \r\n\t * @param bean\r\n\t */\r\n");
-        bw.write("\t" + "int insert(" + beanName + " bean);");
-        bw.newLine();
-        bw.newLine();
-        //bw.write("\t/**\r\n\t * \r\n\t * @param list\r\n\t */\r\n");
-        bw.write("\t" + "int insertBatch(List<" + beanName + "> list);");
-        bw.newLine();
-        bw.newLine();
-        //bw.write("\t/**\r\n\t * \r\n\t * @param bean\r\n\t */\r\n");
-        bw.write("\t" + "int update(" + beanName + " bean);");
-        bw.newLine();
-        bw.newLine();
-        //bw.write("\t/**\r\n\t * \r\n\t * @param id\r\n\t */\r\n");
-        bw.write("\t" + "int delete(Long id);");
-        bw.newLine();
-        bw.newLine();
-        bw.write("\t" + "int deleteBatch(@Param(\"ids\") Long[] ids);");
-        bw.newLine();
+        bw.write("\tList<" + beanName + "> findByCondition(BaseVo baseVo);\n\n");
+        bw.write("\tint findCountByCondition(BaseVo baseVo);\n\n");
+        bw.write("\t" + beanName + " findById(Long id);\n\n");
+        bw.write("\t" + beanName + " findSimpleById(Long id);\n\n");
+        bw.write("\tObject findFieldById(@Param(\"id\") Long id, @Param(\"field\") String field);\n\n");
+        bw.write("\t" + "int insert(" + beanName + " bean);\n\n");
+        bw.write("\t" + "int insertBatch(List<" + beanName + "> list);\n\n");
+        bw.write("\t" + "int update(" + beanName + " bean);\n\n");
+        bw.write("\t" + "int delete(Long id);\n\n");
+        bw.write("\t" + "int deleteBatch(@Param(\"ids\") Long[] ids);\n\n");
 
         // ----------定义Mapper中的方法End----------
-        bw.newLine();
         bw.write("}");
         bw.flush();
         bw.close();
@@ -706,17 +683,11 @@ public class GenerateBeansAndMybatisUtil {
 
         File mapperXmlFile = new File(xml_path, mapperName + ".xml");
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(mapperXmlFile)));
-        bw.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
-        bw.newLine();
-        bw.write("<!DOCTYPE mapper PUBLIC \"-//mybatis.org//DTD Mapper 3.0//EN\" ");
-        bw.newLine();
-        bw.write("    \"http://mybatis.org/dtd/mybatis-3-mapper.dtd\">");
-        bw.newLine();
-        bw.newLine();
+        bw.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
+        bw.write("<!DOCTYPE mapper PUBLIC \"-//mybatis.org//DTD Mapper 3.0//EN\" \n");
+        bw.write("    \"http://mybatis.org/dtd/mybatis-3-mapper.dtd\">\n\n");
         // 命名空间
-        bw.write("<mapper namespace=\"" + mapper_package + "." + mapperName + "\">");
-        bw.newLine();
-        bw.newLine();
+        bw.write("<mapper namespace=\"" + mapper_package + "." + mapperName + "\">\n\n");
 
         // 下面开始写SqlMapper中的方法
         // 构建通用方法，其它可根据需要新增或改写
@@ -730,183 +701,121 @@ public class GenerateBeansAndMybatisUtil {
     private void buildSQL(BufferedWriter bw, List<String> columns, List<String> types) throws IOException {
         int size = columns.size();
 
-        bw.write("\t<sql id=\"baseCondition\">");
-        bw.newLine();
-        bw.write("\t\t<where>");
-        bw.newLine();
-        bw.write("\t\t\t<include refid=\"COMMON.DATE\"><property name=\"column\" value=\"create_time\"/></include>");
-        bw.newLine();
-        bw.write("\t\t</where>");
-        bw.newLine();
-        bw.write("\t</sql>");
-        bw.newLine();
-        bw.newLine();
+        bw.write("\t<sql id=\"baseCondition\">\n");
+        bw.write("\t\t<where>\n");
+        bw.write("\t\t\t<include refid=\"COMMON.DATE\"><property name=\"column\" value=\"create_time\"/></include>\n");
+        bw.write("\t\t</where>\n");
+        bw.write("\t</sql>\n\n");
 
-        bw.write("\t<sql id=\"simpleColumn\">");
-        bw.newLine();
-        bw.write("\t\tid\r\n");
-        bw.write("\t</sql>");
-        bw.newLine();
-        bw.newLine();
+        bw.write("\t<sql id=\"simpleColumn\">\n");
+        bw.write("\t\tid\n");
+        bw.write("\t</sql>\n\n");
 
-        bw.write("\t<sql id=\"allColumn\">");
-        bw.newLine();
+        bw.write("\t<sql id=\"allColumn\">\n");
         bw.write("\t\t");
         String allColumn = "";
         for (int i = 0; i < size; i++) {
             allColumn += columns.get(i);
             if (i < size - 1) {
-                allColumn += ",\r\n\t\t";
+                allColumn += ",\n\t\t";
             }
         }
         bw.write(allColumn);
         bw.newLine();
-        bw.write("\t</sql>");
-        bw.newLine();
-        bw.newLine();
+        bw.write("\t</sql>\n\n");
 
-        bw.write("\t<resultMap type=\"" + processResultMapId(beanName) + "\" id=\"baseResultMap\">");
-        bw.newLine();
-        bw.write("\t\t<id property=\"id\" column=\"id\" />");
-        bw.newLine();
+        bw.write("\t<resultMap type=\"" + processResultMapId(beanName) + "\" id=\"baseResultMap\">\n");
+        bw.write("\t\t<id property=\"id\" column=\"id\" />\n");
         for (int i = 0; i < size; i++) {
             if (!"id".equals(columns.get(i))) {
                 bw.write("\t\t<result property=\"" + processField(columns.get(i)) + "\" column=\"" + columns.get(i) +
-                        "\" />");
-                bw.newLine();
+                        "\" />\n");
             }
         }
-        bw.write("\t</resultMap>");
-        bw.newLine();
-        bw.newLine();
+        bw.write("\t</resultMap>\n\n");
 
         // 条件查询-findBeanByCondition
-        bw.write("\t<select id=\"findByCondition\" resultMap=\"baseResultMap\" parameterType=\"baseVo\">");
-        bw.newLine();
-        bw.write("\t\tSELECT <include refid=\"allColumn\"/> \r\n\t\tFROM " + tableName);
-        bw.newLine();
-        bw.write("\t\t<include refid=\"baseCondition\"/>");
-        bw.newLine();
-        bw.write("\t\t<include refid=\"COMMON.ORDER\"/>");
-        bw.newLine();
-        bw.write("\t</select>");
-        bw.newLine();
-        bw.newLine();
+        bw.write("\t<select id=\"findByCondition\" resultMap=\"baseResultMap\" parameterType=\"baseVo\">\n");
+        bw.write("\t\tSELECT <include refid=\"allColumn\"/> \n\t\tFROM " + tableName + "\n");
+        bw.write("\t\t<include refid=\"baseCondition\"/>\n");
+        bw.write("\t\t<include refid=\"COMMON.ORDER\"/>\n");
+        bw.write("\t</select>\n\n");
 
         // 条件查询总数-findBeanCountByCondition
-        bw.write("\t<select id=\"findCountByCondition\" resultType=\"int\" parameterType=\"baseVo\">");
-        bw.newLine();
-        bw.write("\t\tSELECT COUNT(1) \r\n\t\tFROM " + tableName);
-        bw.newLine();
-        bw.write("\t\t<include refid=\"baseCondition\"/>");
-        bw.newLine();
-        bw.write("\t</select>");
-        bw.newLine();
-        bw.newLine();
+        bw.write("\t<select id=\"findCountByCondition\" resultType=\"int\" parameterType=\"baseVo\">\n");
+        bw.write("\t\tSELECT COUNT(1) \n\t\tFROM " + tableName + "\n");
+        bw.write("\t\t<include refid=\"baseCondition\"/>\n");
+        bw.write("\t</select>\n\n");
 
         // 通过id查询
-        bw.write("\t<select id=\"findById\" resultMap=\"baseResultMap\" parameterType=\"long\">");
-        bw.newLine();
-        bw.write("\t\tSELECT <include refid=\"allColumn\"/> \r\n\t\tFROM " + tableName);
-        bw.newLine();
-        bw.write("\t\tWHERE id = #{id}");
-        bw.newLine();
-        bw.write("\t</select>");
-        bw.newLine();
-        bw.newLine();
+        bw.write("\t<select id=\"findById\" resultMap=\"baseResultMap\" parameterType=\"long\">\n");
+        bw.write("\t\tSELECT <include refid=\"allColumn\"/> \n\t\tFROM " + tableName + "\n");
+        bw.write("\t\tWHERE id = #{id}\n");
+        bw.write("\t</select>\n\n");
 
         // 通过id查询-simple
-        bw.write("\t<select id=\"findSimpleById\" resultMap=\"baseResultMap\" parameterType=\"long\">");
-        bw.newLine();
-        bw.write("\t\tSELECT <include refid=\"simpleColumn\"/> \r\n\t\tFROM " + tableName);
-        bw.newLine();
-        bw.write("\t\tWHERE id = #{id}");
-        bw.newLine();
-        bw.write("\t</select>");
-        bw.newLine();
-        bw.newLine();
+        bw.write("\t<select id=\"findSimpleById\" resultMap=\"baseResultMap\" parameterType=\"long\">\n");
+        bw.write("\t\tSELECT <include refid=\"simpleColumn\"/> \n\t\tFROM " + tableName + "\n");
+        bw.write("\t\tWHERE id = #{id}\n");
+        bw.write("\t</select>\n\n");
 
         // findFieldById
-        bw.write("\t<select id=\"findFieldById\" resultType=\"object\">");
-        bw.newLine();
-        bw.write("\t\tSELECT ${field} \r\n\t\tFROM " + tableName);
-        bw.newLine();
-        bw.write("\t\tWHERE id = #{id}");
-        bw.newLine();
-        bw.write("\t</select>");
-        bw.newLine();
-        bw.newLine();
+        bw.write("\t<select id=\"findFieldById\" resultType=\"object\">\n");
+        bw.write("\t\tSELECT ${field} \n\t\tFROM " + tableName + "\n");
+        bw.write("\t\tWHERE id = #{id}\n");
+        bw.write("\t</select>\n\n");
 
         // 添加insert方法-insertBean
-        bw.write("\t<insert id=\"insert\" parameterType=\"" + processResultMapId(beanName) + "\">");
-        bw.newLine();
-        bw.write("\t\tINSERT INTO " + tableName);
-        bw.write(" (\r\n");
+        bw.write("\t<insert id=\"insert\" parameterType=\"" + processResultMapId(beanName) + "\">\n");
+        bw.write("\t\tINSERT INTO " + tableName + " (\n");
         for (int i = 0; i < size; i++) {
             if (i < size - 1) {
-                bw.write("\t\t\t" + columns.get(i) + ",\r\n");
+                bw.write("\t\t\t" + columns.get(i) + ",\n");
             } else {
-                bw.write("\t\t\t" + columns.get(i) + "\r\n");
+                bw.write("\t\t\t" + columns.get(i) + "\n");
             }
         }
-        bw.write("\t\t)");
-        bw.newLine();
-        bw.write("\t\tVALUE ");
-        bw.write("(\r\n");
+        bw.write("\t\t)\n");
+        bw.write("\t\tVALUE (\n");
         for (int i = 0; i < size; i++) {
             if (i < size - 1) {
-                bw.write("\t\t\t#{" + processField(columns.get(i)) + "},\r\n");
+                bw.write("\t\t\t#{" + processField(columns.get(i)) + "},\n");
             } else {
-                bw.write("\t\t\t#{" + processField(columns.get(i)) + "}\r\n");
+                bw.write("\t\t\t#{" + processField(columns.get(i)) + "}\n");
             }
         }
-        bw.write("\t\t)");
-        bw.newLine();
-        bw.write("\t</insert>");
-        bw.newLine();
-        bw.newLine();
+        bw.write("\t\t)\n");
+        bw.write("\t</insert>\n\n");
 
         // 批量插入-insertBatch
-        bw.write("\t<insert id=\"insertBatch\" parameterType=\"list\">");
-        bw.newLine();
-        bw.write("\t\tINSERT INTO " + tableName);
-        bw.write(" (\r\n");
+        bw.write("\t<insert id=\"insertBatch\" parameterType=\"list\">\n");
+        bw.write("\t\tINSERT INTO " + tableName + " (\n");
         for (int i = 0; i < size; i++) {
             if (i < size - 1) {
-                bw.write("\t\t\t" + columns.get(i) + ",\r\n");
+                bw.write("\t\t\t" + columns.get(i) + ",\n");
             } else {
-                bw.write("\t\t\t" + columns.get(i) + "\r\n");
+                bw.write("\t\t\t" + columns.get(i) + "\n");
             }
         }
-        bw.write("\t\t)");
-        bw.newLine();
-        bw.write("\t\tVALUES ");
-        bw.write("\r\n");
-        bw.write("\t\t<foreach collection=\"list\" item=\"item\" separator=\",\">\r\n");
-        bw.write("\t\t(");
-        bw.newLine();
+        bw.write("\t\t)\n");
+        bw.write("\t\tVALUES \n");
+        bw.write("\t\t<foreach collection=\"list\" item=\"item\" separator=\",\">\n");
+        bw.write("\t\t(\n");
         for (int i = 0; i < size; i++) {
             if (i < size - 1) {
-                bw.write("\t\t\t#{item." + processField(columns.get(i)) + "},\r\n");
+                bw.write("\t\t\t#{item." + processField(columns.get(i)) + "},\n");
             } else {
-                bw.write("\t\t\t#{item." + processField(columns.get(i)) + "}\r\n");
+                bw.write("\t\t\t#{item." + processField(columns.get(i)) + "}\n");
             }
         }
-        bw.write("\t\t)");
-        bw.newLine();
-        bw.write("\t\t</foreach>");
-        bw.newLine();
-        bw.write("\t</insert>");
-        bw.newLine();
-        bw.newLine();
+        bw.write("\t\t)\n");
+        bw.write("\t\t</foreach>\n");
+        bw.write("\t</insert>\n\n");
 
         // 修改update方法-updateBean
-        bw.write("\t<update id=\"update\" parameterType=\"" + processResultMapId(beanName) + "\">");
-        bw.newLine();
-        bw.write("\t\tUPDATE " + tableName);
-        bw.newLine();
-        bw.write("\t\t<set>");
-        bw.newLine();
+        bw.write("\t<update id=\"update\" parameterType=\"" + processResultMapId(beanName) + "\">\n");
+        bw.write("\t\tUPDATE " + tableName + "\n");
+        bw.write("\t\t<set>\n");
 
         String tempField = null;
         for (int i = 1; i < size; i++) {
@@ -917,72 +826,203 @@ public class GenerateBeansAndMybatisUtil {
                 bw.write("\t\t\t<if test=\"" + tempField + " != null\">");
             }
             bw.write("" + columns.get(i) + " = #{" + tempField + "},");
-            bw.write("</if>");
-            bw.newLine();
+            bw.write("</if>\n");
         }
-        bw.write("\t\t</set>");
-        bw.newLine();
-        bw.write("\t\tWHERE " + columns.get(0) + " = #{" + processField(columns.get(0)) + "}");
-        bw.newLine();
-        bw.write("\t</update>");
-        bw.newLine();
-        bw.newLine();
+        bw.write("\t\t</set>\n");
+        bw.write("\t\tWHERE " + columns.get(0) + " = #{" + processField(columns.get(0)) + "}\n");
+        bw.write("\t</update>\n\n");
 
         // 删除-deleteBean
-        bw.write("\t<delete id=\"delete\" parameterType=\"long\">");
-        bw.newLine();
-        bw.write("\t\tDELETE FROM " + tableName);
-        bw.newLine();
-        bw.write("\t\tWHERE " + columns.get(0) + " = #{" + processField(columns.get(0)) + "}");
-        bw.newLine();
-        bw.write("\t</delete>");
-        bw.newLine();
-        bw.newLine();
+        bw.write("\t<delete id=\"delete\" parameterType=\"long\">\n");
+        bw.write("\t\tDELETE FROM " + tableName + "\n");
+        bw.write("\t\tWHERE " + columns.get(0) + " = #{" + processField(columns.get(0)) + "}\n");
+        bw.write("\t</delete>\n\n");
 
         // 批量删除-deleteBatch
-        bw.write("\t<delete id=\"deleteBatch\">");
-        bw.newLine();
-        bw.write("\t\tDELETE FROM " + tableName);
-        bw.newLine();
-        bw.write("\t\tWHERE id IN <foreach item=\"id\" collection=\"ids\" open=\"(\" separator=\",\" close=\")\"> #{id} </foreach>");
-        bw.newLine();
-        bw.write("\t</delete>");
-        bw.newLine();
-        bw.newLine();
+        bw.write("\t<delete id=\"deleteBatch\">\n");
+        bw.write("\t\tDELETE FROM " + tableName + "\n");
+        bw.write("\t\tWHERE id IN <foreach item=\"id\" collection=\"ids\" open=\"(\" separator=\",\" close=\")\"> #{id} </foreach>\n");
+        bw.write("\t</delete>\n\n");
     }
 
     /**
-     * 获取所有的数据库表注释
+     * 构建Service
      *
-     * @return
-     * @throws SQLException
+     * @throws IOException
      */
-    private Map<String, String> getTableComment() throws SQLException {
-        Map<String, String> maps = new HashMap<String, String>();
-        PreparedStatement pstate = conn.prepareStatement("show table status");
-        ResultSet results = pstate.executeQuery();
-        while (results.next()) {
-            String tableName = results.getString("NAME");
-            String comment = results.getString("COMMENT");
-            maps.put(tableName, comment);
+    public void buildService() throws IOException {
+        File folder = new File(service_path);
+        if (!folder.exists()) {
+            folder.mkdirs();
         }
-        return maps;
+
+        File serviceFile = new File(service_path, beanName + "Service.java");
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(serviceFile)));
+        bw.write("package com.jf.service;\n\n");
+        bw.write("import javax.annotation.Resource;\n");
+        bw.write("import java.util.List;\n\n");
+        bw.write("import " + bean_package + "." + beanName + ";\n");
+        bw.write("import " + mapper_package + "." + beanName + "Mapper;\n");
+        bw.write("import org.springframework.stereotype.Service;\n");
+        bw.write("import com.github.pagehelper.PageInfo;\n\n");
+
+        String bean = processResultMapId(beanName);
+        String mapper = bean + "Mapper";
+
+        bw.write("/**\n");
+        bw.write(" * Created with IntelliJ IDEA.\n");
+        bw.write(" * Description: \n");
+        bw.write(" * User: \n");
+        bw.write(" * Date: " + simpleDateFormat.format(new Date()) + "\n");
+        bw.write(" */\n");
+
+        bw.write("@Service\n");
+        bw.write("public class " + beanName + "Service {\n\n");
+        bw.write("\t@Resource\n");
+        bw.write("\tprivate " + beanName + "Mapper " + mapper + ";\n\n");
+        // 分页查询
+        bw.write("\tpublic PageInfo find" + beanName + "ByPage(" + beanName + " condition) {\n");
+        bw.write("\t\tcondition.setPage(true);\n");
+        bw.write("\t\tList<" + beanName + "> list = " + mapper + ".findByCondition(condition);\n");
+        bw.write("\t\treturn new PageInfo(list);\n");
+        bw.write("\t}\n\n");
+        // id查询
+        bw.write("\tpublic " + beanName + " find" + beanName + "ById(Long id) {\n");
+        bw.write("\t\treturn " + mapper + ".findById(id);\n");
+        bw.write("\t}\n\n");
+        // 新增
+        bw.write("\tpublic int insert" + beanName + "(" + beanName + " " + bean + ") {\n");
+        bw.write("\t\treturn " + mapper + ".insert(" + bean + ");\n");
+        bw.write("\t}\n\n");
+        // 更新
+        bw.write("\tpublic int update" + beanName + "(" + beanName + " " + bean + ") {\n");
+        bw.write("\t\treturn " + mapper + ".update(" + bean + ");\n");
+        bw.write("\t}\n\n");
+        // 删除
+        bw.write("\tpublic int delete" + beanName + "(Long id) {\n");
+        bw.write("\t\treturn " + mapper + ".delete(id);\n");
+        bw.write("\t}\n\n");
+
+        bw.write("}");
+        bw.flush();
+        bw.close();
+    }
+
+    /**
+     * 构建Controller
+     *
+     * @throws IOException
+     */
+    public void buildController() throws IOException {
+        File folder = new File(controller_path);
+        if (!folder.exists()) {
+            folder.mkdirs();
+        }
+
+        File controllerFile = new File(controller_path, beanName + "Controller.java");
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(controllerFile)));
+        bw.write("package com.jf.controller;\n\n");
+        bw.write("import javax.annotation.Resource;\n\n");
+        bw.write("import org.springframework.stereotype.Controller;\n");
+        bw.write("import org.springframework.ui.ModelMap;\n");
+        bw.write("import org.springframework.web.bind.annotation.RequestMapping;\n");
+        bw.write("import org.springframework.web.bind.annotation.ResponseBody;\n");
+        bw.write("import com.github.pagehelper.PageInfo;\n");
+        bw.write("import com.jf.entity.ResMsg;\n");
+        bw.write("import com.jf.entity.enums.ResCode;\n");
+        bw.write("import " + bean_package + "." + beanName + ";\n");
+        bw.write("import com.jf.service." + beanName + "Service;\n");
+        bw.write("import com.jf.common.BaseController;\n\n");
+
+        String bean = processResultMapId(beanName);
+        String service = bean + "Service";
+
+        bw.write("/**\n");
+        bw.write(" * Created with IntelliJ IDEA.\n");
+        bw.write(" * Description: \n");
+        bw.write(" * User: \n");
+        bw.write(" * Date: " + simpleDateFormat.format(new Date()) + "\n");
+        bw.write(" */\n");
+
+        bw.write("@Controller\n");
+        bw.write("@RequestMapping(\"/admin/" + bean + "\")\n");
+        bw.write("public class " + beanName + "Controller extends BaseController {\n\n");
+        bw.write("\t@Resource\n");
+        bw.write("\tprivate " + beanName + "Service " + service + ";\n\n");
+        // 页面
+        bw.write("\t@RequestMapping(\"/" + bean + "List\")\n");
+        bw.write("\tpublic String " + bean + "List() {\n");
+        bw.write("\t\treturn \"" + bean + "/" + bean + "_list\";\n");
+        bw.write("\t}\n\n");
+        // JSON数据
+        bw.write("\t@RequestMapping(\"/" + bean + "ListData\")\n");
+        bw.write("\t@ResponseBody\n");
+        bw.write("\tpublic PageInfo " + bean + "ListData(" + beanName + " condition) {\n");
+        bw.write("\t\treturn " + service + ".find" + beanName + "ByPage(condition);\n");
+        bw.write("\t}\n\n");
+        // 详情
+        bw.write("\t@RequestMapping(\"/" + bean + "Detail\")\n");
+        bw.write("\tpublic String " + bean + "Detail(Long id, ModelMap model) {\n");
+        bw.write("\t\tif (id != null) {\n");
+        bw.write("\t\t\t" + beanName + " map" + " = " + service + ".find" + beanName + "ById(id);\n");
+        bw.write("\t\t\tmodel.addAttribute(\"map\", map);\n");
+        bw.write("\t\t}\n");
+        bw.write("\t\treturn \"" + bean + "/" + bean + "_edit\";\n");
+        bw.write("\t}\n\n");
+        // 编辑-新增/更新
+        bw.write("\t@RequestMapping(\"/" + bean + "Edit\")\n");
+        bw.write("\t@ResponseBody\n");
+        bw.write("\tpublic ResMsg " + bean + "Edit(" + beanName + " " + bean + ") {\n");
+        bw.write("\t\tif (" + bean + ".getId() == null) {\n");
+        bw.write("\t\t\tint res = " + service + ".insert" + beanName + "(" + bean + ");\n");
+        bw.write("\t\t\tif (res > 0) {\n");
+        bw.write("\t\t\t\treturn new ResMsg(ResCode.INSERT_SUCCESS.code(), ResCode.INSERT_SUCCESS.msg());\n");
+        bw.write("\t\t\t}\n");
+        bw.write("\t\t\treturn new ResMsg(ResCode.INSERT_FAIL.code(), ResCode.INSERT_FAIL.msg());\n");
+        bw.write("\t\t} else {\n");
+        bw.write("\t\t\tint res = " + service + ".update" + beanName + "(" + bean + ");\n");
+        bw.write("\t\t\tif (res > 0) {\n");
+        bw.write("\t\t\t\treturn new ResMsg(ResCode.UPDATE_SUCCESS.code(), ResCode.UPDATE_SUCCESS.msg());\n");
+        bw.write("\t\t\t}\n");
+        bw.write("\t\t\treturn new ResMsg(ResCode.UPDATE_FAIL.code(), ResCode.UPDATE_FAIL.msg());\n");
+        bw.write("\t\t}\n");
+        bw.write("\t}\n\n");
+        // 禁用/启用
+        bw.write("\t@RequestMapping(\"/" + bean + "Enable\")\n");
+        bw.write("\t@ResponseBody\n");
+        bw.write("\tpublic ResMsg " + bean + "Enable(Long id) {\n");
+        bw.write("\t\tif (" + service + ".delete" + beanName + "(id) > 0) {\n");
+        bw.write("\t\t\treturn new ResMsg(ResCode.OPERATE_SUCCESS.code(), ResCode.OPERATE_SUCCESS.msg());\n");
+        bw.write("\t\t}\n");
+        bw.write("\t\treturn new ResMsg(ResCode.OPERATE_FAIL.code(), ResCode.OPERATE_FAIL.msg());\n");
+        bw.write("\t}\n\n");
+
+        bw.write("}");
+        bw.flush();
+        bw.close();
     }
 
     /**
      * 构建主方法
      *
-     * @param target
+     * @param info
      * @throws ClassNotFoundException
      * @throws SQLException
      * @throws IOException
      * @author rick
      * @date 2016年8月10日 上午9:00:31
      */
-    public void generate(String target) throws ClassNotFoundException, SQLException, IOException {
-        init(target);
-        clear();
-        String prefix = "show full fields from ";
+    public void generate(GenInfo info) throws Exception {
+        this.init(info);
+
+        String sql = "";
+        if (dbType == 1) {
+            sql = "SHOW FULL FIELDS FROM {0}";
+        } else if (dbType == 2) {
+            sql = "SELECT col_description ( A.attrelid, A.attnum ) AS COMMENT, pg_type.typname AS TYPE, A.attname AS FIELD \n" +
+                    "FROM pg_class AS C, pg_attribute AS A INNER JOIN pg_type ON pg_type.oid = A.atttypid \n" +
+                    "WHERE C.relname = ''{0}'' AND A.attrelid = C.oid AND A.attnum > 0";
+        }
         List<String> columns = null;
         List<String> types = null;
         List<String> comments = null;
@@ -993,7 +1033,7 @@ public class GenerateBeansAndMybatisUtil {
             columns = new ArrayList<String>();
             types = new ArrayList<String>();
             comments = new ArrayList<String>();
-            pstate = conn.prepareStatement(prefix + table);
+            pstate = conn.prepareStatement(MessageFormat.format(sql, table));
             ResultSet results = pstate.executeQuery();
             while (results.next()) {
                 columns.add(results.getString("FIELD"));
@@ -1004,33 +1044,26 @@ public class GenerateBeansAndMybatisUtil {
             processTable(table);
             String tableComment = tableComments.get(tableName);
 
+            // 以下是构建方法
             buildEntityBean(columns, types, comments, tableComment);
             buildForm(columns, types, comments, tableComment);
             buildMapper();
             buildMapperXml(columns, types, comments);
+            buildService();
+            buildController();
         }
         System.out.println("数据库表共" + tables.size() + "个");
-        System.out.println("文件输出到：" + target);
+        System.out.println("文件输出到：" + info.getGlobalPath());
         conn.close();
     }
 
-    /**
-     * 清理旧文件
-     */
-    public static void clear() {
-        System.out.println("开始清理......");
-        deleteFile(new File(bean_path));
-        deleteFile(new File(mapper_path));
-        deleteFile(new File(xml_path));
-        deleteFile(new File(html_path));
-    }
-
-    private static void deleteFile(File parent) {
-        if (parent.exists()) {
-            File[] files = parent.listFiles();
-            for (File f : files) {
-                if (f.isFile()) {
-                    f.delete();
+    public static void deleteFile(File dirFile) {
+        if (dirFile.exists()) {
+            if (dirFile.isFile()) {
+                dirFile.delete();
+            } else {
+                for (File file : dirFile.listFiles()) {
+                    deleteFile(file);
                 }
             }
         }

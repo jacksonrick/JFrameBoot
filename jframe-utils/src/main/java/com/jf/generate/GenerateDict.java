@@ -16,27 +16,17 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 生成数据字典(HTML)
+ * 生成数据字典
+ * <p>仅支持MySQL</p>
  *
  * @author xujunfei
- * @version 1.0
+ * @version 2.0
  * @date 2016-11-02 10:56
  */
 public class GenerateDict {
-    // 数据库名称
-    private final String dbName = "jframe";
 
-    // 数据库连接信息
-    private final String driverName = "com.mysql.jdbc.Driver";
-
-    private final String user = "root";
-
-    private final String password = "12345678";
-
-    private final String url = "jdbc:mysql://127.0.0.1:3306/" + dbName + "?characterEncoding=utf8&useSSL=false";
-
+    private String dbName = "";
     private String tableName = null;
-
     private Connection conn = null;
 
     /**
@@ -47,9 +37,10 @@ public class GenerateDict {
      * @author rick
      * @date 2016年8月10日 上午8:54:10
      */
-    private void init() throws ClassNotFoundException, SQLException {
-        Class.forName(driverName);
-        conn = DriverManager.getConnection(url, user, password);
+    private void init(GenInfo info) throws ClassNotFoundException, SQLException {
+        Class.forName(info.getDriver());
+        conn = DriverManager.getConnection(info.getDbUrl(), info.getUsername(), info.getPassword());
+        dbName = info.getDbName();
     }
 
     /**
@@ -60,7 +51,7 @@ public class GenerateDict {
      */
     private List<String> getTables() throws SQLException {
         List<String> tables = new ArrayList<String>();
-        PreparedStatement pstate = conn.prepareStatement("show tables");
+        PreparedStatement pstate = conn.prepareStatement("SHOW TABLES");
         ResultSet results = pstate.executeQuery();
         while (results.next()) {
             String tableName = results.getString(1);
@@ -77,7 +68,7 @@ public class GenerateDict {
      */
     private Map<String, String> getTableComment() throws SQLException {
         Map<String, String> maps = new HashMap<String, String>();
-        PreparedStatement pstate = conn.prepareStatement("show table status");
+        PreparedStatement pstate = conn.prepareStatement("SHOW TABLE STATUS");
         ResultSet results = pstate.executeQuery();
         while (results.next()) {
             String tableName = results.getString("NAME");
@@ -88,14 +79,15 @@ public class GenerateDict {
     }
 
     /**
-     * @param target
+     * @param info
      * @throws ClassNotFoundException
      * @throws SQLException
      * @throws IOException
      */
-    public void generate(String target) throws ClassNotFoundException, SQLException, IOException {
-        init();
-        String prefix = "show full fields from ";
+    public void generate(GenInfo info) throws ClassNotFoundException, SQLException, IOException {
+        this.init(info);
+
+        String prefix = "SHOW FULL FIELDS FROM ";
         List<String> columns = null;
         List<String> types = null;
         List<String> keys = null;
@@ -131,7 +123,7 @@ public class GenerateDict {
             buildFile(columns, types, keys, nulls, defaults, extras, comments, tableComment);
         }
         html += "</div></body></html>";
-        exportFile(target, html);
+        exportFile(info.getGlobalPath(), html);
         conn.close();
     }
 
