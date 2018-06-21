@@ -64,4 +64,13 @@ public class Address extends BaseVo implements Serializable {
 		return this.level;
 	}
 
+	@Override
+	public String toString() {
+		return "Address{" +
+				"id=" + id +
+				", name='" + name + '\'' +
+				", parent=" + parent +
+				", level=" + level +
+				'}';
+	}
 }

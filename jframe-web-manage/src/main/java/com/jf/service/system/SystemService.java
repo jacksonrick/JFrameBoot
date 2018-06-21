@@ -31,6 +31,9 @@ public class SystemService {
     @Resource
     private LogMapper logMapper;
 
+    @Resource
+    private DbSQLExecutor dbSQLExecutor;
+
     /**
      * 管理操作日志
      *
@@ -127,10 +130,10 @@ public class SystemService {
         Statement stmt = null;
         ResultSet rs = null;
         Connection conn = null;
-        conn = DbSQLExecutor.getConn();
+        conn = dbSQLExecutor.getConn();
         stmt = conn.createStatement();
         rs = stmt.executeQuery(sql);
-        columnList = DbSQLExecutor.getFieldLsit(conn, sql);
+        columnList = dbSQLExecutor.getFieldLsit(conn, sql);
         while (rs.next()) {
             List<Object> onedataList = new ArrayList<Object>(); // 存放每条记录里面每个字段的值
             for (int i = 1; i < columnList.size() + 1; i++) {
@@ -154,7 +157,7 @@ public class SystemService {
     public void executeUpdate(String sql) throws ClassNotFoundException, SQLException {
         Statement stmt = null;
         Connection conn = null;
-        conn = DbSQLExecutor.getConn();
+        conn = dbSQLExecutor.getConn();
         stmt = conn.createStatement();
         stmt.executeUpdate(sql);
         conn.close();

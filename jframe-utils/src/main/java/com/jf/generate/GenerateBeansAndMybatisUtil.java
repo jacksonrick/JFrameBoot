@@ -3,23 +3,12 @@ package com.jf.generate;
 import com.jf.string.StringUtil;
 import org.apache.commons.lang3.StringUtils;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.io.*;
+import java.sql.*;
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * 自动生成MyBatis的实体类、实体映射XML接口、Mapper SQL、Service、Controller、HTML<br>
@@ -73,6 +62,7 @@ public class GenerateBeansAndMybatisUtil {
     private String schema = null;
     private String tableName = null;
     private String beanName = null;
+    private Boolean idInt = true;
     private String mapperName = null;
     private Connection conn = null;
 
@@ -329,7 +319,7 @@ public class GenerateBeansAndMybatisUtil {
      * @param types
      * @param tableComment
      */
-    private void buildForm(List<String> columns, List<String> types, List<String> comments, String tableComment) throws IOException {
+    private void buildHtml(List<String> columns, List<String> types, List<String> comments, String tableComment) throws IOException {
         File folder = new File(html_path);
         if (!folder.exists()) {
             folder.mkdir();
@@ -464,11 +454,6 @@ public class GenerateBeansAndMybatisUtil {
                 "                title: \"操作\", data: null, orderable: false,\n" +
                 "                render: function (data, type, full, callback) {\n" +
                 "                    var btns = CONSTANT.BUTTON.EDIT(\"/admin/" + bean + "/" + bean + "Detail?id=\" + full.id);\n" +
-                "                    if (full.isDelete) {\n" +
-                "                        btns += CONSTANT.BUTTON.ENABLE();\n" +
-                "                    } else {\n" +
-                "                        btns += CONSTANT.BUTTON.DISABLE();\n" +
-                "                    }\n" +
                 "                    return btns;\n" +
                 "                }\n" +
                 "            }\n" +
@@ -491,7 +476,7 @@ public class GenerateBeansAndMybatisUtil {
                 "\n" +
                 "        $(\"#export\").click(function () {\n" +
                 "            var formData = $(\"#queryForm\").serialize();\n" +
-                "            location.href = '/admin/excel?' + formData;\n" +
+                "            location.href = '/admin/" + bean + "/" + bean + "Excel?' + formData;\n" +
                 "        });\n" +
                 "\n" +
                 "        $(\"#btn-del\").click(function () {\n" +
@@ -513,11 +498,6 @@ public class GenerateBeansAndMybatisUtil {
                 "            }\n" +
                 "        }).on(\"click\", \".btn-edit\", function () {\n" +
                 "            var item = tables.row($(this).closest('tr')).data();\n" +
-                "        }).on(\"click\", \".btn-enable\", function () {\n" +
-                "            var item = tables.row($(this).closest('tr')).data();\n" +
-                "            layerConfirm('确定要启用或禁用吗', \"/admin/" + bean + "/" + bean + "Enable?id=\" + item.id, function () {\n" +
-                "                reload();\n" +
-                "            });\n" +
                 "        });\n" +
                 "\n" +
                 "        datePicker('#startDate,#endDate', \"yyyy-mm-dd\");\n" +
@@ -572,7 +552,6 @@ public class GenerateBeansAndMybatisUtil {
         bw.write("public class " + beanName + " extends BaseVo implements Serializable {\n\n");
         bw.write("\tprivate static final long serialVersionUID = 1L;\n\n");
 
-        boolean idInt = false;
         for (int i = 0; i < size; i++) { // 生成字段
             String field = processField(columns.get(i));
             String type = processType(types.get(i));
@@ -581,6 +560,8 @@ public class GenerateBeansAndMybatisUtil {
             if ("id".equals(field)) {
                 if ("Integer".equals(type)) {
                     idInt = true;
+                } else {
+                    idInt = false;
                 }
             }
         }
@@ -645,21 +626,23 @@ public class GenerateBeansAndMybatisUtil {
         bw.write("package " + mapper_package + ";\n\n");
         bw.write("import java.util.List;\n\nimport " + bean_package + "." + beanName + ";\n");
         // 自定义查询封装类
-        bw.write("import com.jf.entity.BaseVo;");
+        bw.write("import " + base_vo + "\n");
+        bw.write("import org.apache.ibatis.annotations.Param;");
         bw = buildClassComment(bw, mapperName + " Interface");
         bw.write("\npublic interface " + mapperName + " {\n\n");
 
         // ----------定义Mapper中的方法Begin----------
+        String type = idInt ? "Integer" : "Long";
         bw.write("\tList<" + beanName + "> findByCondition(BaseVo baseVo);\n\n");
         bw.write("\tint findCountByCondition(BaseVo baseVo);\n\n");
-        bw.write("\t" + beanName + " findById(Long id);\n\n");
-        bw.write("\t" + beanName + " findSimpleById(Long id);\n\n");
-        bw.write("\tObject findFieldById(@Param(\"id\") Long id, @Param(\"field\") String field);\n\n");
+        bw.write("\t" + beanName + " findById(" + type + " id);\n\n");
+        bw.write("\t" + beanName + " findSimpleById(" + type + " id);\n\n");
+        bw.write("\tObject findFieldById(@Param(\"id\") " + type + " id, @Param(\"field\") String field);\n\n");
         bw.write("\t" + "int insert(" + beanName + " bean);\n\n");
         bw.write("\t" + "int insertBatch(List<" + beanName + "> list);\n\n");
         bw.write("\t" + "int update(" + beanName + " bean);\n\n");
-        bw.write("\t" + "int delete(Long id);\n\n");
-        bw.write("\t" + "int deleteBatch(@Param(\"ids\") Long[] ids);\n\n");
+        bw.write("\t" + "int delete(" + type + " id);\n\n");
+        bw.write("\t" + "int deleteBatch(@Param(\"ids\") " + type + "[] ids);\n\n");
 
         // ----------定义Mapper中的方法End----------
         bw.write("}");
@@ -700,6 +683,7 @@ public class GenerateBeansAndMybatisUtil {
 
     private void buildSQL(BufferedWriter bw, List<String> columns, List<String> types) throws IOException {
         int size = columns.size();
+        String type = idInt ? "int" : "long";
 
         bw.write("\t<sql id=\"baseCondition\">\n");
         bw.write("\t\t<where>\n");
@@ -748,13 +732,13 @@ public class GenerateBeansAndMybatisUtil {
         bw.write("\t</select>\n\n");
 
         // 通过id查询
-        bw.write("\t<select id=\"findById\" resultMap=\"baseResultMap\" parameterType=\"long\">\n");
+        bw.write("\t<select id=\"findById\" resultMap=\"baseResultMap\" parameterType=\"" + type + "\">\n");
         bw.write("\t\tSELECT <include refid=\"allColumn\"/> \n\t\tFROM " + tableName + "\n");
         bw.write("\t\tWHERE id = #{id}\n");
         bw.write("\t</select>\n\n");
 
         // 通过id查询-simple
-        bw.write("\t<select id=\"findSimpleById\" resultMap=\"baseResultMap\" parameterType=\"long\">\n");
+        bw.write("\t<select id=\"findSimpleById\" resultMap=\"baseResultMap\" parameterType=\"" + type + "\">\n");
         bw.write("\t\tSELECT <include refid=\"simpleColumn\"/> \n\t\tFROM " + tableName + "\n");
         bw.write("\t\tWHERE id = #{id}\n");
         bw.write("\t</select>\n\n");
@@ -833,7 +817,7 @@ public class GenerateBeansAndMybatisUtil {
         bw.write("\t</update>\n\n");
 
         // 删除-deleteBean
-        bw.write("\t<delete id=\"delete\" parameterType=\"long\">\n");
+        bw.write("\t<delete id=\"delete\" parameterType=\"" + type + "\">\n");
         bw.write("\t\tDELETE FROM " + tableName + "\n");
         bw.write("\t\tWHERE " + columns.get(0) + " = #{" + processField(columns.get(0)) + "}\n");
         bw.write("\t</delete>\n\n");
@@ -868,6 +852,7 @@ public class GenerateBeansAndMybatisUtil {
 
         String bean = processResultMapId(beanName);
         String mapper = bean + "Mapper";
+        String type = idInt ? "Integer" : "Long";
 
         bw.write("/**\n");
         bw.write(" * Created with IntelliJ IDEA.\n");
@@ -887,7 +872,7 @@ public class GenerateBeansAndMybatisUtil {
         bw.write("\t\treturn new PageInfo(list);\n");
         bw.write("\t}\n\n");
         // id查询
-        bw.write("\tpublic " + beanName + " find" + beanName + "ById(Long id) {\n");
+        bw.write("\tpublic " + beanName + " find" + beanName + "ById(" + type + " id) {\n");
         bw.write("\t\treturn " + mapper + ".findById(id);\n");
         bw.write("\t}\n\n");
         // 新增
@@ -899,7 +884,7 @@ public class GenerateBeansAndMybatisUtil {
         bw.write("\t\treturn " + mapper + ".update(" + bean + ");\n");
         bw.write("\t}\n\n");
         // 删除
-        bw.write("\tpublic int delete" + beanName + "(Long id) {\n");
+        bw.write("\tpublic int delete" + beanName + "(" + type + " id) {\n");
         bw.write("\t\treturn " + mapper + ".delete(id);\n");
         bw.write("\t}\n\n");
 
@@ -936,6 +921,7 @@ public class GenerateBeansAndMybatisUtil {
 
         String bean = processResultMapId(beanName);
         String service = bean + "Service";
+        String type = idInt ? "Integer" : "Long";
 
         bw.write("/**\n");
         bw.write(" * Created with IntelliJ IDEA.\n");
@@ -962,7 +948,7 @@ public class GenerateBeansAndMybatisUtil {
         bw.write("\t}\n\n");
         // 详情
         bw.write("\t@RequestMapping(\"/" + bean + "Detail\")\n");
-        bw.write("\tpublic String " + bean + "Detail(Long id, ModelMap model) {\n");
+        bw.write("\tpublic String " + bean + "Detail(" + type + " id, ModelMap model) {\n");
         bw.write("\t\tif (id != null) {\n");
         bw.write("\t\t\t" + beanName + " map" + " = " + service + ".find" + beanName + "ById(id);\n");
         bw.write("\t\t\tmodel.addAttribute(\"map\", map);\n");
@@ -990,7 +976,7 @@ public class GenerateBeansAndMybatisUtil {
         // 禁用/启用
         bw.write("\t@RequestMapping(\"/" + bean + "Enable\")\n");
         bw.write("\t@ResponseBody\n");
-        bw.write("\tpublic ResMsg " + bean + "Enable(Long id) {\n");
+        bw.write("\tpublic ResMsg " + bean + "Enable(" + type + " id) {\n");
         bw.write("\t\tif (" + service + ".delete" + beanName + "(id) > 0) {\n");
         bw.write("\t\t\treturn new ResMsg(ResCode.OPERATE_SUCCESS.code(), ResCode.OPERATE_SUCCESS.msg());\n");
         bw.write("\t\t}\n");
@@ -1046,7 +1032,7 @@ public class GenerateBeansAndMybatisUtil {
 
             // 以下是构建方法
             buildEntityBean(columns, types, comments, tableComment);
-            buildForm(columns, types, comments, tableComment);
+            buildHtml(columns, types, comments, tableComment);
             buildMapper();
             buildMapperXml(columns, types, comments);
             buildService();

@@ -33,8 +33,8 @@ public class AspectLog {
     @Resource
     private SysConfig config;
 
-    // 针对所有controller
-    @Pointcut("execution(public * com.jf.controller.*.*(..))")
+    // 针对所有controller(包含子包)
+    @Pointcut("execution(public * com.jf.controller..*.*(..))")
     public void ctl() {
     }
 

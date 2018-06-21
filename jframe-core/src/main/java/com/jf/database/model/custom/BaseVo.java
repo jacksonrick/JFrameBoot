@@ -14,7 +14,7 @@ public class BaseVo {
      * 默认不分页
      */
     @JsonIgnore
-    private Boolean page = false;
+    private Boolean page;
 
     /**
      * 每页数量

@@ -15,9 +15,8 @@ info: # 定义各种额外的详情给服务端显示
 # 如果值false，可以不配置
 # enabled值仅用于条件加载各个组件
 app:
-  host: 192.168.1.199 # 生产环境服务器地址（用于文件上传返回绝对路径↓↓↓）
-  static_path: /data/wwwroot/test/static/ # 静态文件目录
-  static_host: http://${app.host}:${server.port}/ # 静态文件地址
+  static_path: /data/wwwroot/test/static/ # (生产)静态文件目录
+  static_host: http://192.168.1.199:8088/ # (生产)静态文件地址-用于文件上传返回绝对路径
   secondb: # 从或备数据库
     enabled: false
   eureka: # Eureka注册服务
@@ -37,7 +36,7 @@ app:
   activemq: # ActiveMQ
     enabled: false
   rabbitmq: # RabbitMQ
-    enabled: false
+    enabled: true
   socket: # spring websocket
     enabled: false
   fdfs: # FastDFS,false则使用本地上传

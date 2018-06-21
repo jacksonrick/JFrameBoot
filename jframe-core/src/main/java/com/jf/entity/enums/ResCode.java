@@ -9,9 +9,11 @@ package com.jf.entity.enums;
  */
 public enum ResCode {
 
+    // 成功|失败
     SUCCESS(0, "成功"),
     FAIL(1, "失败"),
-    NODATA(2, "未查询到数据"),
+
+    // 增删改
     INSERT_SUCCESS(0, "新增成功"),
     INSERT_FAIL(11, "新增失败"),
     UPDATE_SUCCESS(0, "更新成功"),
@@ -20,8 +22,14 @@ public enum ResCode {
     DELETE_FAIL(15, "删除失败"),
     OPERATE_SUCCESS(0, "操作成功"),
     OPERATE_FAIL(17, "操作失败"),
-    INVALID_ID(20, "不合法的ID"),
-    INVALID_STATE(21, "不合法的状态"),
+
+    // 业务
+    NODATA(21, "未查询到数据"),
+    INVALID_ID(22, "不合法的ID"),
+    INVALID_STATE(23, "不合法的状态"),
+    INVALID_PARAM(24, "参数错误"),
+
+    // 系统
     NO_LOGIN(99, "未登录"),
     NOT_ALLOW(100, "拒绝访问"),
     TOKEN_EXP(101, "登录已过期，请重新登录"),

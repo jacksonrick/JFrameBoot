@@ -12,7 +12,8 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 用户
+ * 用户 - 本架构中用于DEMO
+ *
  * @date 2016年12月21日 上午 11:20:07
  * @author jfxu
  */

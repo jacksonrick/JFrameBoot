@@ -104,10 +104,10 @@ spring:
   aop:
     proxy-target-class: true
   task: # 线程池设置
-    corePoolSize: 10
+    corePoolSize: 10 # 维护线程的最少数量
     maxPoolSize: 30
-    queueCapacity: 200
-    keepAliveSeconds: 60
+    queueCapacity: 200 # 线程池所使用的缓冲队列
+    keepAliveSeconds: 60 # 维护线程所允许的空闲时间
     waitOnShutdown: true
     awaitTerminationSeconds: 60
   mail: # 邮件服务器设置
@@ -154,11 +154,19 @@ spring:
     packages:
       trust-all: true
   rabbitmq: # rabbitmq
-    host: 192.168.1.200 # 服务器地址
+    host: 192.168.24.200 # 服务器地址
     port: 5672
     username: rabbitmq
     password: 12345678
     virtual-host: /rmq
+    requested-heartbeat: 10s
+    publisher-confirms: true # 开启发送确认
+    publisher-returns: true # 开启发送失败退回
+    listener:
+      simple:
+        concurrency: 10 # 消费者数量
+        prefetch: 50 # 每个消费者获取最大投递数量
+        acknowledge-mode: manual # 开启ACK
 fdfs: # fastDFS配置
   so-timeout: 3000
   connect_timeout: 3000

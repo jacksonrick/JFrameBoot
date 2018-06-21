@@ -28,7 +28,7 @@ public class AspectApp {
 
     private final static Logger log = LoggerFactory.getLogger(AspectApp.class);
 
-    @Pointcut("execution(public * com.jf.controller.*.*(..))&&@within(org.springframework.web.bind.annotation.RestController)")
+    @Pointcut("execution(public * com.jf.controller..*.*(..))&&@within(org.springframework.web.bind.annotation.RestController)")
     public void app() {
     }
 

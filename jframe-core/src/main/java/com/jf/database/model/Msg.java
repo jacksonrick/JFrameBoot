@@ -64,4 +64,13 @@ public class Msg implements Serializable {
 		this.createTime = createTime;
 	}
 
+	@Override
+	public String toString() {
+		return "Msg{" +
+				"id=" + id +
+				", adminId=" + adminId +
+				", content='" + content + '\'' +
+				", createTime=" + createTime +
+				'}';
+	}
 }

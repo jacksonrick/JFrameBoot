@@ -11,9 +11,8 @@ info:
     version: "1.0"
     description: "app"
 app:
-  host: 192.168.1.199
   appkey: 00056cb1d74435076a4c15a490798df4
   static_path: /data/wwwroot/app/static/
-  static_host: http://${app.host}:${server.port}/
+  static_host: http://192.168.1.199:8082/
   cache:
     enabled: true

@@ -9,6 +9,7 @@ services:
     volumes:
       - /home/docker/jframe/logs:/data/wwwlogs
       - /home/docker/jframe/app/static:/data/wwwroot/app/static
+      # - /home/docker/jframe/app:/data/wwwroot/app # if no build
     ports:
       - "8082:8082"
     command: java -server -jar /data/wwwroot/app/jframe-web-app.jar --spring.profiles.active=pro

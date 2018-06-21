@@ -11,6 +11,5 @@ info:
     version: "1.0"
     description: "manage"
 app:
-  host: 192.168.1.199
   static_path: /data/wwwroot/manage/static/
-  static_host: http://${app.host}:${server.port}/
+  static_host: http://192.168.1.199:8080/

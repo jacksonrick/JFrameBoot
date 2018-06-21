@@ -3,6 +3,7 @@ package com.jf.database.model;
 import com.jf.database.model.custom.BaseVo;
 
 import java.io.Serializable;
+import java.util.Arrays;
 
 /**
  * 后台模块
@@ -125,5 +126,21 @@ public class Module extends BaseVo implements Serializable {
 
 	public void setAdminId(Long adminId) {
 		this.adminId = adminId;
+	}
+
+	@Override
+	public String toString() {
+		return "Module{" +
+				"id=" + id +
+				", parentId=" + parentId +
+				", modName='" + modName + '\'' +
+				", modPath='" + modPath + '\'' +
+				", modIcon='" + modIcon + '\'' +
+				", modFlag=" + modFlag +
+				", ids='" + ids + '\'' +
+				", flags=" + Arrays.toString(flags) +
+				", roleId=" + roleId +
+				", adminId=" + adminId +
+				'}';
 	}
 }

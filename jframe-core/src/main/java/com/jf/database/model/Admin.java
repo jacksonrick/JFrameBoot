@@ -170,4 +170,21 @@ public class Admin extends BaseVo implements Serializable {
 		this.roleId = roleId;
 	}
 
+	@Override
+	public String toString() {
+		return "Admin{" +
+				"id=" + id +
+				", roleId=" + roleId +
+				", adminName='" + adminName + '\'' +
+				", adminRealname='" + adminRealname + '\'' +
+				", adminPassword='" + adminPassword + '\'' +
+				", adminPhone='" + adminPhone + '\'' +
+				", adminRights='" + adminRights + '\'' +
+				", adminCreateTime=" + adminCreateTime +
+				", adminLoginTime=" + adminLoginTime +
+				", adminLoginIp='" + adminLoginIp + '\'' +
+				", isDelete=" + isDelete +
+				", role=" + role +
+				'}';
+	}
 }

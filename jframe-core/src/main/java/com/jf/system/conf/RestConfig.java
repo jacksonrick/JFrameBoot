@@ -18,24 +18,16 @@ import org.springframework.web.client.RestTemplate;
 public class RestConfig {
 
     @Bean
-    public RestTemplate restTemplate(ClientHttpRequestFactory factory) {
-        return new RestTemplate(factory);
-    }
-
-    @Bean
     public ClientHttpRequestFactory simpleClientHttpRequestFactory() {
         SimpleClientHttpRequestFactory factory = new SimpleClientHttpRequestFactory();
-        factory.setConnectTimeout(15000);
+        factory.setConnectTimeout(15000); // 连接超时时间
         factory.setReadTimeout(5000);
         return factory;
     }
 
-    /*private void test(){
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("name", value);
-        HttpEntity requestEntity = new HttpEntity(null, headers);
-        ResponseEntity response = restTemplate.exchange("http://ip:port/add?param={value}", HttpMethod.GET, requestEntity, String.class, value);
-        response.getBody()
-    }*/
+    @Bean
+    public RestTemplate restTemplate(ClientHttpRequestFactory factory) {
+        return new RestTemplate(factory);
+    }
 
 }

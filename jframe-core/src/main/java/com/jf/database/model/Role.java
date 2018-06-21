@@ -79,4 +79,15 @@ public class Role extends BaseVo implements Serializable {
     public Boolean getIsDelete() {
         return this.isDelete;
     }
+
+	@Override
+	public String toString() {
+		return "Role{" +
+				"id=" + id +
+				", roleName='" + roleName + '\'' +
+				", roleRights='" + roleRights + '\'' +
+				", roleFlag=" + roleFlag +
+				", isDelete=" + isDelete +
+				'}';
+	}
 }

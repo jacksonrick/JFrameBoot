@@ -89,4 +89,15 @@ public class Log extends BaseVo implements Serializable {
 		return this.logCreateTime;
 	}
 
+	@Override
+	public String toString() {
+		return "Log{" +
+				"id=" + id +
+				", logUser='" + logUser + '\'' +
+				", logRemark='" + logRemark + '\'' +
+				", logIp='" + logIp + '\'' +
+				", logParams='" + logParams + '\'' +
+				", logCreateTime=" + logCreateTime +
+				'}';
+	}
 }
