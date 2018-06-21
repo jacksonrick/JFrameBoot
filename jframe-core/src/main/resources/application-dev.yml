@@ -1,6 +1,5 @@
 logging:
   config: classpath:logback-boot.xml # 日志配置文件
-  #file: ${system.log_path}${app.name:jframe}.log # 当前日志位置
 server:
   tomcat: # tomcat容器
     uri-encoding: UTF-8
@@ -200,7 +199,7 @@ system: # 系统自定义配置
     appkey: appkey
     secret: secret
     ios_product: false
-  upload:
+  upload: # FastDFS
     fdfs: ${app.fdfs.enabled:false}
     img_size: 3
     img_type: jpg,jpeg,png
