@@ -1875,7 +1875,7 @@
 })(jQuery);
 
 /**
- * $.Uploader2({
+ * $.UploaderSingle({
       callback: function (data) {
         t.attr("src", data);
       }
@@ -1883,19 +1883,21 @@
  * Created by xujunfei on 2017/5/23.
  */
 !(function ($) {
-    $.Uploader2 = function (settings) {
+    $.UploaderSingle = function (settings) {
         var url = "";
         var width = "600px";
         var height = "300px";
+        var maxFile = 1;
+        var maxSize = 2;
         // mobile width = "90%"; height = "80%";
 
         var dropzone = '<div class="drop-main"><div id="dropzone"> ' +
             '<form class="dropzone dz-clickable" id="uploads" method="post" enctype="multipart/form-data">' +
-            '<div class="dz-message">拖拽文件到此可以上传或者直接点击蓝色虚线框处<br> <span class="note">最多<span class="span-color" id="limit"> ' + 1 + ' </span> 个文件，每个文件最多<span class="span-color"> ' + 2 + ' </span>MB</span> </div> ' +
+            '<div class="dz-message">拖拽文件到此可以上传或者直接点击蓝色虚线框处<br> <span class="note">最多<span class="span-color" id="limit"> ' + maxFile + ' </span> 个文件，每个文件最多<span class="span-color"> ' + maxSize + ' </span>MB</span> </div> ' +
             '</form> </div> </div> ' +
             '<div class="btn-con"> <button type="button" class="btn" id="confirm">确定</button> </div>';
 
-        idx = layer.open({
+        var idx = layer.open({
             type: 1,
             title: false,
             area: [width, height],
@@ -1912,7 +1914,6 @@
                     acceptedFiles: ".jpg,.jpeg,.png",
                     init: function () {
                         this.on("success", function (file, data, e) {
-                            //var ret = $.parseJSON(data.xhr.responseText);
                             if (data.error == 0) {
                                 url = data.url;
                             } else {
@@ -1937,6 +1938,70 @@
         $("#confirm").on("click", function () {
             if (url != "") {
                 settings.callback(url);
+                layer.close(idx);
+            }
+        });
+    }
+})(jQuery);
+
+/**
+ * $.UploaderExcel({
+      action: '/..',
+      callback: function (data) {
+      }
+   });
+ * Created by xujunfei on 2018/6/23.
+ */
+!(function ($) {
+    $.UploaderExcel = function (settings) {
+        var ret, myDropzone;
+        var width = "300px";
+        var height = "300px";
+        var maxFile = 1;
+        var maxSize = 10;
+
+        var dropzone = '<div class="drop-main"><div id="dropzone"> ' +
+            '<form class="dropzone dz-clickable" id="uploads" method="post" enctype="multipart/form-data">' +
+            '<div class="dz-message">拖拽文件到此可以上传或者直接点击蓝色虚线框处<br> <span class="note">最多<span class="span-color" id="limit"> ' + maxFile + ' </span> 个文件，每个文件最多<span class="span-color"> ' + maxSize + ' </span>MB</span> </div> ' +
+            '</form> </div> </div> ' +
+            '<div class="btn-con"> <button type="button" class="btn" id="confirm">确定</button> </div>';
+
+        var idx = layer.open({
+            type: 1,
+            title: false,
+            area: [width, height],
+            closeBtn: 1,
+            shadeClose: true,
+            content: dropzone,
+            success: function () {
+                myDropzone = new Dropzone("#uploads", {
+                    url: settings.action,
+                    paramName: "file",
+                    maxFiles: maxFile,
+                    maxFilesize: maxSize,
+                    addRemoveLinks: true,
+                    acceptedFiles: ".xls,.xlsx",
+                    autoProcessQueue: false,
+                    init: function () {
+                        this.on("success", function (file, data, e) {
+                            if (data.code == 0) {
+                                ret = data;
+                            } else {
+                                showMsg(data.msg, 2);
+                            }
+                        })
+                    }
+                });
+            },
+            end: function () {
+                $(".dz-hidden-input").remove();
+            }
+        });
+
+        $("#confirm").on("click", function () {
+            myDropzone.processQueue();
+            if (ret) {
+                settings.callback(ret);
                 layer.close(idx);
             }
         });

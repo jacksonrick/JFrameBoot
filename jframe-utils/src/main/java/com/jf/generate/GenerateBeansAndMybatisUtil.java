@@ -423,7 +423,7 @@ public class GenerateBeansAndMybatisUtil {
                 "                </form>\n" +
                 "            </div>\n" +
                 "            <div class=\"col-md-4 text-right\">\n" +
-                "                <button type=\"button\" class=\"btn btn-primary btn-sm\" data-open=\"modal\" data-width=\"800px\" data-height=\"500px\" href=\"/admin/user/userDetail\" id=\"btn-add\">\n" +
+                "                <button type=\"button\" class=\"btn btn-primary btn-sm\" data-open=\"modal\" data-width=\"800px\" data-height=\"500px\" href=\"/admin/" + bean + "/" + bean + "Detail\" id=\"btn-add\">\n" +
                 "                    <i class=\"fa fa-plus\"></i> 添加\n" +
                 "                </button>\n" +
                 "                <button type=\"button\" class=\"btn btn-danger btn-sm\" id=\"btn-del\"><i class=\"fa fa-remove\"></i> 批量删除</button>\n" +
@@ -913,6 +913,7 @@ public class GenerateBeansAndMybatisUtil {
         bw.write("import org.springframework.web.bind.annotation.RequestMapping;\n");
         bw.write("import org.springframework.web.bind.annotation.ResponseBody;\n");
         bw.write("import com.github.pagehelper.PageInfo;\n");
+        bw.write("import com.jf.system.annotation.AuthPassport;\n");
         bw.write("import com.jf.entity.ResMsg;\n");
         bw.write("import com.jf.entity.enums.ResCode;\n");
         bw.write("import " + bean_package + "." + beanName + ";\n");
@@ -937,17 +938,20 @@ public class GenerateBeansAndMybatisUtil {
         bw.write("\tprivate " + beanName + "Service " + service + ";\n\n");
         // 页面
         bw.write("\t@RequestMapping(\"/" + bean + "List\")\n");
+        bw.write("\t@AuthPassport(right = false)\n");
         bw.write("\tpublic String " + bean + "List() {\n");
         bw.write("\t\treturn \"" + bean + "/" + bean + "_list\";\n");
         bw.write("\t}\n\n");
         // JSON数据
         bw.write("\t@RequestMapping(\"/" + bean + "ListData\")\n");
         bw.write("\t@ResponseBody\n");
+        bw.write("\t@AuthPassport\n");
         bw.write("\tpublic PageInfo " + bean + "ListData(" + beanName + " condition) {\n");
         bw.write("\t\treturn " + service + ".find" + beanName + "ByPage(condition);\n");
         bw.write("\t}\n\n");
         // 详情
         bw.write("\t@RequestMapping(\"/" + bean + "Detail\")\n");
+        bw.write("\t@AuthPassport\n");
         bw.write("\tpublic String " + bean + "Detail(" + type + " id, ModelMap model) {\n");
         bw.write("\t\tif (id != null) {\n");
         bw.write("\t\t\t" + beanName + " map" + " = " + service + ".find" + beanName + "ById(id);\n");
@@ -958,6 +962,7 @@ public class GenerateBeansAndMybatisUtil {
         // 编辑-新增/更新
         bw.write("\t@RequestMapping(\"/" + bean + "Edit\")\n");
         bw.write("\t@ResponseBody\n");
+        bw.write("\t@AuthPassport\n");
         bw.write("\tpublic ResMsg " + bean + "Edit(" + beanName + " " + bean + ") {\n");
         bw.write("\t\tif (" + bean + ".getId() == null) {\n");
         bw.write("\t\t\tint res = " + service + ".insert" + beanName + "(" + bean + ");\n");
@@ -973,9 +978,10 @@ public class GenerateBeansAndMybatisUtil {
         bw.write("\t\t\treturn new ResMsg(ResCode.UPDATE_FAIL.code(), ResCode.UPDATE_FAIL.msg());\n");
         bw.write("\t\t}\n");
         bw.write("\t}\n\n");
-        // 禁用/启用
+        // 禁用/启用(删除-beanDel)
         bw.write("\t@RequestMapping(\"/" + bean + "Enable\")\n");
         bw.write("\t@ResponseBody\n");
+        bw.write("\t@AuthPassport\n");
         bw.write("\tpublic ResMsg " + bean + "Enable(" + type + " id) {\n");
         bw.write("\t\tif (" + service + ".delete" + beanName + "(id) > 0) {\n");
         bw.write("\t\t\treturn new ResMsg(ResCode.OPERATE_SUCCESS.code(), ResCode.OPERATE_SUCCESS.msg());\n");

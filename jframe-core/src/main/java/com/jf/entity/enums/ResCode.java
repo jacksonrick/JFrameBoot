@@ -13,7 +13,7 @@ public enum ResCode {
     SUCCESS(0, "成功"),
     FAIL(1, "失败"),
 
-    // 增删改
+    // 增删改 成功=0
     INSERT_SUCCESS(0, "新增成功"),
     INSERT_FAIL(11, "新增失败"),
     UPDATE_SUCCESS(0, "更新成功"),
@@ -23,13 +23,13 @@ public enum ResCode {
     OPERATE_SUCCESS(0, "操作成功"),
     OPERATE_FAIL(17, "操作失败"),
 
-    // 业务
-    NODATA(21, "未查询到数据"),
-    INVALID_ID(22, "不合法的ID"),
-    INVALID_STATE(23, "不合法的状态"),
-    INVALID_PARAM(24, "参数错误"),
+    // 业务 CODE_2?
+    CODE_21(21, "未查询到数据"),
+    CODE_22(22, "不合法的ID"),
+    CODE_23(23, "不合法的状态"),
+    CODE_24(24, "参数错误"),
 
-    // 系统
+    // 系统 >9?
     NO_LOGIN(99, "未登录"),
     NOT_ALLOW(100, "拒绝访问"),
     TOKEN_EXP(101, "登录已过期，请重新登录"),

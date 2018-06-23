@@ -4,6 +4,8 @@ services:
     build: .
     image: jackson/web/test:latest
     container_name: web_test
+    environment:
+      TZ: Asia/Shanghai
     external_links:
       - mysql:mysql
       - redis:redis

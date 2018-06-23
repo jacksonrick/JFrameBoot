@@ -74,7 +74,7 @@ public class UserController extends BaseController {
     @ResponseBody
     public ResMsg userEnable(Long userId, HttpServletRequest request) {
         if (userId == null) {
-            return new ResMsg(ResCode.INVALID_ID.code(), ResCode.INVALID_ID.msg());
+            return new ResMsg(ResCode.CODE_22.code(), ResCode.CODE_22.msg());
         }
         if (userService.deleteUser(userId) > 0) {
             systemService.addAdminLog(request, "禁用/启用用户", "id=" + userId);
@@ -119,7 +119,7 @@ public class UserController extends BaseController {
             }
             return new ResMsg(ResCode.UPDATE_FAIL.code(), ResCode.UPDATE_FAIL.msg());
         }
-        return new ResMsg(ResCode.INVALID_ID.code(), ResCode.INVALID_ID.msg());
+        return new ResMsg(ResCode.CODE_22.code(), ResCode.CODE_22.msg());
     }
 
     /**

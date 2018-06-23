@@ -178,7 +178,7 @@ public class SystemBackController extends BaseController {
     @ResponseBody
     public ResMsg adminEnable(Long adminId, HttpServletRequest request) {
         if (adminId == null) {
-            return new ResMsg(ResCode.INVALID_ID.code(), ResCode.INVALID_ID.msg());
+            return new ResMsg(ResCode.CODE_22.code(), ResCode.CODE_22.msg());
         }
         if (adminService.deleteAdmin(adminId) > 0) {
             systemService.addAdminLog(request, "禁用/启用管理员", "id=" + adminId);
@@ -296,7 +296,7 @@ public class SystemBackController extends BaseController {
     @AuthPassport
     public ResMsg moduleDel(Integer moduleId) {
         if (moduleId == null) {
-            return new ResMsg(ResCode.INVALID_ID.code(), ResCode.INVALID_ID.msg());
+            return new ResMsg(ResCode.CODE_22.code(), ResCode.CODE_22.msg());
         }
         if (moduleService.deleteModule(moduleId) > 0) {
             return new ResMsg(ResCode.DELETE_SUCCESS.code(), ResCode.DELETE_SUCCESS.msg());
@@ -329,7 +329,7 @@ public class SystemBackController extends BaseController {
     @ResponseBody
     public ResMsg roleEnable(Long roleId, HttpServletRequest request) {
         if (roleId == null) {
-            return new ResMsg(ResCode.INVALID_ID.code(), ResCode.INVALID_ID.msg());
+            return new ResMsg(ResCode.CODE_22.code(), ResCode.CODE_22.msg());
         }
         if (moduleService.deleteRole(roleId) > 0) {
             systemService.addAdminLog(request, "组禁用或启用", "roleId=" + roleId);
@@ -416,7 +416,7 @@ public class SystemBackController extends BaseController {
     @ResponseBody
     public ResMsg permit(Long roleId, Long adminId, String params, HttpServletRequest request) {
         if (roleId == null && adminId == null) {
-            return new ResMsg(ResCode.INVALID_ID.code(), ResCode.INVALID_ID.msg());
+            return new ResMsg(ResCode.CODE_22.code(), ResCode.CODE_22.msg());
         }
 
         // 模块id集合
@@ -528,7 +528,7 @@ public class SystemBackController extends BaseController {
     @AuthPassport
     public ResMsg addrDel(Integer id) {
         if (id == null) {
-            return new ResMsg(ResCode.INVALID_ID.code(), ResCode.INVALID_ID.msg());
+            return new ResMsg(ResCode.CODE_22.code(), ResCode.CODE_22.msg());
         }
         if (addrService.delete(id) > 0) {
             return new ResMsg(ResCode.DELETE_SUCCESS.code(), ResCode.DELETE_SUCCESS.msg());

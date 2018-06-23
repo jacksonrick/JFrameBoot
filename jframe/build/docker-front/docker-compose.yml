@@ -4,6 +4,8 @@ services:
     build: .
     image: jackson/web/front:latest
     container_name: web_front
+    environment:
+      TZ: Asia/Shanghai
     external_links:
       - mysql:mysql
     volumes:

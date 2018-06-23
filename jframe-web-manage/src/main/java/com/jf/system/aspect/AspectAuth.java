@@ -66,6 +66,10 @@ public class AspectAuth {
         if (!authPassport.right()) {
             return;
         }
+        // 内置管理组开放全部权限
+        if (admin.getRole() != null && admin.getRole().getRoleFlag() == 0) {
+            return;
+        }
         // 请求的URI
         String action = request.getRequestURI();
         if (!moduleService.checkHavingRight(admin.getId(), action)) {

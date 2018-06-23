@@ -4,6 +4,8 @@ services:
     build: .
     image: jackson/web/app:latest
     container_name: web_app
+    environment:
+      TZ: Asia/Shanghai
     external_links:
       - mysql:mysql
     volumes:

@@ -62,7 +62,9 @@ public class AspectLog {
             Set<String> keys = parameters.keySet();
             for (String key : keys) {
                 String[] params = parameters.get(key);
-                param += "|" + key + "=" + params[0];
+                if (params.length > 0) {
+                    param += "|" + key + "=" + params[0];
+                }
             }
             param += "|";
         } else {

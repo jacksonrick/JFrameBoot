@@ -242,9 +242,7 @@ public class ModuleService {
         if (admin == null) {
             return false;
         }
-        if (admin.getRole() != null && admin.getRole().getRoleFlag() == 0) { // 内置管理组开放全部权限
-            return true;
-        }
+
         // URI对应的模块id
         Integer moduleId = moduleMapper.findIdByPath(uri);
         if (moduleId == null) {
