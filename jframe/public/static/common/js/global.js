@@ -173,6 +173,12 @@ var CONSTANT = {
             data: null,
             orderable: false,
             width: '25px'
+        },
+        SEQ: { // 自增序号
+            title: "序号",
+            data: null,
+            orderable: false,
+            width: '30px'
         }
     },
     BUTTON: {// 操作按钮

@@ -14,8 +14,16 @@ public interface TestMapper {
 
 	List<IdText> findAll();
 
-	List<User> findUserById(Long id);
+	User findUserById(Integer id);
+
+	User findUserById2(Integer id);
+
+	User findUserById3(Integer id);
 
 	int insertUser(User user);
+
+	int insertUser2(User user);
+
+	int insertUser3(User user);
 
 }

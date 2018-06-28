@@ -18,13 +18,13 @@ public interface RoleMapper {
 
 	int update(Role bean);
 
-    int delete(Long id);
+    int delete(Integer id);
 
 	/**
 	 * 检查权限
 	 * @return 1 | 0
 	 */
 	@Deprecated
-	int checkRights(@Param("roleId") Long roleId, @Param("modPath") String modPath);
+	int checkRights(@Param("roleId") Integer roleId, @Param("modPath") String modPath);
 
 }

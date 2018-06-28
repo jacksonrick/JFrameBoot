@@ -56,6 +56,9 @@ public class AspectToken {
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = attributes.getRequest();
         Object[] args = pjp.getArgs();
+        if (args.length < 1) {
+            throw new AppTokenException("必须指定一个参数");
+        }
 
         String name = tk.name(); // 键名
         String type = tk.type(); // 类型 1-header 2-cookie
@@ -120,7 +123,7 @@ public class AspectToken {
                 throw new AppException("APP接口异常: Invalid token type.");
             }
         } catch (Throwable throwable) {
-            throw new AppTokenException(throwable.getMessage());
+            throw new AppException(throwable.getMessage());
         }
     }
 

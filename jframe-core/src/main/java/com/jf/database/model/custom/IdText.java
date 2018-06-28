@@ -9,15 +9,15 @@ package com.jf.database.model.custom;
  */
 public class IdText {
 
-    private Long id;
+    private Integer id;
 
     private String text;
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

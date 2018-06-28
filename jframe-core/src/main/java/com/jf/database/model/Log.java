@@ -16,7 +16,7 @@ public class Log extends BaseVo implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	/**  */
-	private Long id;
+	private Integer id;
 
 	/** 操作人 */
 	private String logUser;
@@ -36,16 +36,16 @@ public class Log extends BaseVo implements Serializable {
 	public Log() {
 	}
 
-	public Log(Long id) {
+	public Log(Integer id) {
 		super();
 		this.id = id;
 	}
 
-	public void setId(Long id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
-	public Long getId() {
+	public Integer getId() {
 		return this.id;
 	}
 

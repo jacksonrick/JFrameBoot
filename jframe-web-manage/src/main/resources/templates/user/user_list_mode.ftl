@@ -45,7 +45,7 @@
             {title: "手机号", data: "phone", defaultContent: "--"},
             {title: "邮箱", data: "email", defaultContent: "--", orderable: false},
             {title: "真实姓名", data: "realname", defaultContent: "--", orderable: false},
-            {title: "是否冻结", data: "isDelete", render: CONSTANT.RENDER.BOOLEAN}
+            {title: "是否冻结", data: "deleted", render: CONSTANT.RENDER.BOOLEAN}
         ]
         var $table = $('#table');
         tables = $table.DataTable($.extend(true, {}, CONSTANT.DEFAULT_OPTION, {

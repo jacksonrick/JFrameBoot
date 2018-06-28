@@ -1947,7 +1947,10 @@
 /**
  * $.UploaderExcel({
       action: '/..',
-      callback: function (data) {
+      callback: function (data, idx) {
+        showMsg(data.msg, 1, function () {
+            layer.close(idx);
+        });
       }
    });
  * Created by xujunfei on 2018/6/23.
@@ -1964,7 +1967,7 @@
             '<form class="dropzone dz-clickable" id="uploads" method="post" enctype="multipart/form-data">' +
             '<div class="dz-message">拖拽文件到此可以上传或者直接点击蓝色虚线框处<br> <span class="note">最多<span class="span-color" id="limit"> ' + maxFile + ' </span> 个文件，每个文件最多<span class="span-color"> ' + maxSize + ' </span>MB</span> </div> ' +
             '</form> </div> </div> ' +
-            '<div class="btn-con"> <button type="button" class="btn" id="confirm">确定</button> </div>';
+            '<div class="btn-con"> <button type="button" class="btn" id="confirm">上传</button> </div>';
 
         var idx = layer.open({
             type: 1,
@@ -1985,7 +1988,7 @@
                     init: function () {
                         this.on("success", function (file, data, e) {
                             if (data.code == 0) {
-                                ret = data;
+                                settings.callback(data, idx);
                             } else {
                                 showMsg(data.msg, 2);
                             }
@@ -2000,10 +2003,6 @@
 
         $("#confirm").on("click", function () {
             myDropzone.processQueue();
-            if (ret) {
-                settings.callback(ret);
-                layer.close(idx);
-            }
         });
     }
 })(jQuery);

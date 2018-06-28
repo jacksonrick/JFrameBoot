@@ -48,7 +48,7 @@ public class UserExcel extends AbstractXlsView {
                 row.createCell(0).setCellValue(user.getNickname());
                 row.createCell(1).setCellValue(user.getPhone());
                 row.createCell(2).setCellValue(DateUtil.dateToStr(user.getCreateTime()));
-                row.createCell(3).setCellValue(user.getIsDelete() ? "是" : "否");
+                row.createCell(3).setCellValue(user.getDeleted() ? "是" : "否");
             }
             for (int i = 0; i < length; i++) {
                 sheet.autoSizeColumn((short) i);

@@ -10,6 +10,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.TreeMap;
 
 /**
  * 用户 - 本架构中用于DEMO
@@ -22,7 +23,7 @@ public class User extends BaseVo implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /** id */
-    private Long id;
+    private Integer id;
 
     /** 昵称 */
     @NotEmpty(message = "昵称不能为空")
@@ -73,26 +74,26 @@ public class User extends BaseVo implements Serializable {
     private String birthday;
 
     /** 是否删除 1-是 0-否(默认) */
-    private Boolean isDelete;
+    private Boolean deleted;
 
-    // 拓展字段 JSON
+    // 拓展字段 JSON&stringarr
     private Extend extend;
-
-    // 搜索条件
+    private TreeMap params;
+    private String[] arr;
 
     public User() {
     }
 
-    public User(Long id) {
+    public User(Integer id) {
         super();
         this.id = id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
-    public Long getId() {
+    public Integer getId() {
         return this.id;
     }
 
@@ -200,12 +201,12 @@ public class User extends BaseVo implements Serializable {
         this.birthday = birthday;
     }
 
-    public void setIsDelete(Boolean isDelete) {
-        this.isDelete = isDelete;
+    public void setDeleted(Boolean deleted) {
+        this.deleted = deleted;
     }
 
-    public Boolean getIsDelete() {
-        return this.isDelete;
+    public Boolean getDeleted() {
+        return this.deleted;
     }
 
     public Extend getExtend() {
@@ -214,6 +215,22 @@ public class User extends BaseVo implements Serializable {
 
     public void setExtend(Extend extend) {
         this.extend = extend;
+    }
+
+    public TreeMap getParams() {
+        return params;
+    }
+
+    public void setParams(TreeMap params) {
+        this.params = params;
+    }
+
+    public String[] getArr() {
+        return arr;
+    }
+
+    public void setArr(String[] arr) {
+        this.arr = arr;
     }
 
     @Override
@@ -233,8 +250,10 @@ public class User extends BaseVo implements Serializable {
                 ", gender=" + gender +
                 ", address='" + address + '\'' +
                 ", birthday='" + birthday + '\'' +
-                ", isDelete=" + isDelete +
+                ", deleted=" + deleted +
                 ", extend=" + extend +
+                ", params=" + params +
+                ", arr=" + arr +
                 '}';
     }
 }

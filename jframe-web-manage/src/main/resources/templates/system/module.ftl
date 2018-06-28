@@ -28,7 +28,7 @@
                             <h5>添加/编辑模块</h5>
                         </div>
                         <div class="ibox-content">
-                            <form class="form-horizontal">
+                            <form class="form-horizontal" id="form">
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label">父模块：</label>
                                     <div class="col-sm-9">
@@ -38,26 +38,32 @@
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label">模块名：</label>
                                     <div class="col-sm-9">
-                                        <input type="text" id="modName" class="form-control" placeholder="模块名">
+                                        <input type="text" id="modName" name="name" class="form-control" placeholder="模块名">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label">Action：</label>
                                     <div class="col-sm-9">
-                                        <input type="text" id="action" class="form-control" placeholder="Action">
+                                        <input type="text" id="action" name="path" class="form-control" placeholder="Action">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label">图标名：</label>
                                     <div class="col-sm-9">
-                                        <input type="text" id="icon" class="form-control" placeholder="图标名">
+                                        <input type="text" id="icon" name="icon" class="form-control" placeholder="图标名">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">排序：</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" id="sort" name="sort" class="form-control" placeholder="排序">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="col-sm-12 col-sm-offset-3">
-                                        <input type="hidden" id="moduleId" value>
-                                        <input type="hidden" id="parentId" value>
-                                        <input type="hidden" id="flag" value>
+                                        <input type="hidden" id="moduleId" name="moduleId" value>
+                                        <input type="hidden" id="parentId" name="parentId" value>
+                                        <input type="hidden" id="flag" name="flag" value>
                                         <button class="btn btn-info" type="button" id="btn-edit">保存</button>
                                     </div>
                                 </div>
@@ -90,7 +96,8 @@
                 rootPId: 0,
                 flag: "flag", // 新增属性
                 path: "path",
-                icon: "icon"
+                icon: "icon",
+                sort: "sort"
             }
         },
         view: { // 关闭双击展开
@@ -147,6 +154,7 @@
             $("#modName").val('');
             $("#action").val('');
             $("#icon").val('');
+            $("#sort").val('');
             $("#flag").val(zTree.getSelectedNodes()[0].flag + 1);
         }
     }
@@ -160,6 +168,7 @@
             $("#modName").val(zTree.getSelectedNodes()[0].name);
             $("#action").val(zTree.getSelectedNodes()[0].path);
             $("#icon").val(zTree.getSelectedNodes()[0].icon);
+            $("#sort").val(zTree.getSelectedNodes()[0].sort);
             $("#flag").val('');
         }
     }
@@ -198,17 +207,9 @@
                 toast(2, "", "action长度5-50");
                 return;
             }
-            var param = {
-                moduleId: $("#moduleId").val(),
-                parentId: $("#parentId").val(),
-                name: $("#modName").val(),
-                path: $("#action").val(),
-                icon: $("#icon").val(),
-                flag: $("#flag").val()
-            }
             Ajax.ajax({
                 url: "/admin/system/moduleEdit",
-                params: param,
+                params: $("#form").serialize(),
                 success: function (data) {
                     if (data.code == 0) {
                         showMsg(data.msg, 1, function () {

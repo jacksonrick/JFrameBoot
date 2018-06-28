@@ -48,15 +48,17 @@ public class ModuleService {
      * @param parentId
      * @param path
      * @param icon
+     * @param sort
      * @return
      */
-    public int insertModule(Integer flag, String name, Integer parentId, String path, String icon) {
+    public int insertModule(Integer flag, String name, Integer parentId, String path, String icon, Integer sort) {
         Module module = new Module();
         module.setParentId(parentId);
         module.setModName(name);
         module.setModFlag(flag);
         module.setModPath(path);
         module.setModIcon(icon);
+        module.setModSort(sort);
         return moduleMapper.insert(module);
     }
 
@@ -65,13 +67,15 @@ public class ModuleService {
      * @param name
      * @param path
      * @param icon
+     * @param sort
      * @return
      */
-    public int updateModule(Integer id, String name, String path, String icon) {
+    public int updateModule(Integer id, String name, String path, String icon, Integer sort) {
         Module module = new Module(id);
         module.setModName(name);
         module.setModPath(path);
         module.setModIcon(icon);
+        module.setModSort(sort);
         return moduleMapper.update(module);
     }
 
@@ -113,7 +117,7 @@ public class ModuleService {
      * @param roleName
      * @return
      */
-    public int updateRole(Long roleId, String roleName) {
+    public int updateRole(Integer roleId, String roleName) {
         Role role = new Role(roleId);
         role.setRoleName(roleName);
         return roleMapper.update(role);
@@ -125,7 +129,7 @@ public class ModuleService {
      * @param roleId
      * @return
      */
-    public int deleteRole(Long roleId) {
+    public int deleteRole(Integer roleId) {
         return roleMapper.delete(roleId);
     }
 
@@ -135,7 +139,7 @@ public class ModuleService {
      * @param roleId
      * @return
      */
-    public int deleteRights(Long roleId) {
+    public int deleteRights(Integer roleId) {
         Role role = new Role(roleId);
         // 权限置空
         role.setRoleRights("");
@@ -149,7 +153,7 @@ public class ModuleService {
      * @param rights
      * @return
      */
-    public int permitRole(Long roleId, String[] rights) {
+    public int permitRole(Integer roleId, String[] rights) {
         Role role = new Role(roleId);
         role.setRoleRights(StringUtils.join(rights, ","));
         return roleMapper.update(role);
@@ -162,7 +166,7 @@ public class ModuleService {
      * @param rights
      * @return
      */
-    public int permitAdmin(Long adminId, String[] rights) {
+    public int permitAdmin(Integer adminId, String[] rights) {
         Admin admin = new Admin(adminId);
         admin.setAdminRights(StringUtils.join(rights, ","));
         return adminMapper.update(admin);
@@ -177,7 +181,7 @@ public class ModuleService {
      * @author rick
      * @date 2016年7月22日 上午11:56:18
      */
-    public List<Module> findModuleByRoleOrAdmin(Long roleId, Long adminId) {
+    public List<Module> findModuleByRoleOrAdmin(Integer roleId, Integer adminId) {
         Module module = new Module();
         module.setFlags(new Integer[]{1, 2, 3});
         if (roleId != null) { // 组
@@ -200,7 +204,7 @@ public class ModuleService {
      * @param adminId
      * @return
      */
-    public List<Module> findModules(Long adminId) {
+    public List<Module> findModules(Integer adminId) {
         Admin admin = adminMapper.findRightsById(adminId);
         // 管理员权限和组权限合并（去重）
         Set<String> set = new TreeSet<String>();
@@ -232,7 +236,7 @@ public class ModuleService {
      * @author rick
      * @date 2016年7月22日 下午1:49:51
      */
-    public boolean checkHavingRight(Long adminId, String uri) {
+    public boolean checkHavingRight(Integer adminId, String uri) {
         if (StringUtil.isBlank(uri)) {
             return false;
         }

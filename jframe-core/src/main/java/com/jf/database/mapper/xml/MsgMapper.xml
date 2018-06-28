@@ -31,7 +31,7 @@
 		<include refid="COMMON.ORDER"/>
 	</select>
 
-	<select id="findByToday" resultMap="msgResultMap" parameterType="long">
+	<select id="findByToday" resultMap="msgResultMap" parameterType="int">
 		SELECT <include refid="allColumn"/> 
 		FROM s_msg
 		WHERE admin_id = #{adminId} AND DATEDIFF(now(),create_time) &lt;= 1
@@ -48,7 +48,7 @@
 		)
 	</insert>
 
-	<delete id="delete" parameterType="long">
+	<delete id="delete" parameterType="int">
 		DELETE FROM s_msg
 		WHERE id = #{id}
 	</delete>

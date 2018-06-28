@@ -47,7 +47,7 @@ public class IndexController {
     @RequestMapping("/login")
     @ResponseBody
     public ResMsg login(HttpSession session) {
-        User user = new User(10000l);
+        User user = new User(10000);
         user.setNickname("feifei");
         session.setAttribute(SysConfig.SESSION_USER, user);
         return new ResMsg(0, "SUCCESS", user);

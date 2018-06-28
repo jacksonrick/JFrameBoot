@@ -13,10 +13,10 @@ public class Msg implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	/**  */
-	private Long id;
+	private Integer id;
 
 	/** 管理ID,10000 */
-	private Long adminId;
+	private Integer adminId;
 
 	/** 内容 */
 	private String content;
@@ -27,24 +27,24 @@ public class Msg implements Serializable {
 	public Msg() {
 	}
 
-	public Msg(Long id) {
+	public Msg(Integer id) {
 		super();
 		this.id = id;
 	}
 
-	public Long getId() {
+	public Integer getId() {
 		return this.id;
 	}
 
-	public void setId(Long id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
-	public Long getAdminId() {
+	public Integer getAdminId() {
 		return this.adminId;
 	}
 
-	public void setAdminId(Long adminId) {
+	public void setAdminId(Integer adminId) {
 		this.adminId = adminId;
 	}
 

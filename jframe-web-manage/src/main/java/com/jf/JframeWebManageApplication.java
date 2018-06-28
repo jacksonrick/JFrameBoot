@@ -8,7 +8,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class JframeWebManageApplication {
 
     public static void main(String[] args) {
-        LogManager.startup("JframeWebTestApplication");
+        LogManager.startup("JframeWebManageApplication");
         SpringApplication.run(JframeWebManageApplication.class, args);
     }
 

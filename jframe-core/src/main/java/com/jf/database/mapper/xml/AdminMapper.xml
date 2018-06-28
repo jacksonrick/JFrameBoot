@@ -28,7 +28,7 @@
 		a.admin_create_time,
 		a.admin_login_time,
 		a.admin_login_ip,
-		a.is_delete,
+		a.deleted,
         <include refid="com.jf.database.mapper.RoleMapper.simpleColumn"/>
 	</sql>
 
@@ -42,12 +42,12 @@
 		<result property="adminCreateTime" column="admin_create_time" />
 		<result property="adminLoginTime" column="admin_login_time" />
 		<result property="adminLoginIp" column="admin_login_ip" />
-		<result property="isDelete" column="is_delete" />
+		<result property="deleted" column="deleted" />
 		<association property="role" javaType="role">
 			<id property="id" column="role_id" />
 			<result property="roleName" column="role_name" />
 			<result property="roleFlag" column="role_flag" />
-			<result property="isDelete" column="role_delete" />
+			<result property="deleted" column="role_delete" />
 		</association>
 	</resultMap>
 
@@ -66,7 +66,7 @@
 		<include refid="COMMON.ORDER"/>
 	</select>
 
-    <select id="findById" resultMap="adminResultMap" parameterType="long">
+    <select id="findById" resultMap="adminResultMap" parameterType="int">
         SELECT <include refid="baseColumn"/>
         FROM s_admin a LEFT JOIN s_role r ON a.role_id = r.id
         WHERE a.id = #{id}
@@ -84,7 +84,7 @@
 		WHERE a.admin_name = #{adminName} AND a.admin_password = #{adminPassword}
 	</select>
 
-	<select id="findRightsById" resultMap="adminRightsResultMap" parameterType="long">
+	<select id="findRightsById" resultMap="adminRightsResultMap" parameterType="int">
 		SELECT a.admin_rights, r.role_rights, r.role_flag
 		FROM s_admin a LEFT JOIN s_role r ON a.role_id = r.id
 		WHERE a.id = #{id}
@@ -122,8 +122,8 @@
 		WHERE id = #{id}
 	</update>
 
-    <update id="delete" parameterType="long">
-        UPDATE s_admin SET is_delete = !is_delete
+    <update id="delete" parameterType="int">
+        UPDATE s_admin SET deleted = !deleted
         WHERE id = #{id}
     </update>
 

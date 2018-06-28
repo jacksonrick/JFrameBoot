@@ -35,10 +35,13 @@ public class Module extends BaseVo implements Serializable {
 	/** 1,2表示层级 | 3表示功能 */
 	private Integer modFlag;
 
+	/** 排序 */
+	private Integer modSort;
+
 	private String ids;
 	private Integer[] flags;
-	private Long roleId;
-	private Long adminId;
+	private Integer roleId;
+	private Integer adminId;
 
 	public Module() {
 	}
@@ -96,6 +99,14 @@ public class Module extends BaseVo implements Serializable {
 		return this.modFlag;
 	}
 
+	public Integer getModSort() {
+		return modSort;
+	}
+
+	public void setModSort(Integer modSort) {
+		this.modSort = modSort;
+	}
+
 	public String getIds() {
 		return ids;
 	}
@@ -112,19 +123,19 @@ public class Module extends BaseVo implements Serializable {
 		this.flags = flags;
 	}
 
-	public Long getRoleId() {
+	public Integer getRoleId() {
 		return roleId;
 	}
 
-	public void setRoleId(Long roleId) {
+	public void setRoleId(Integer roleId) {
 		this.roleId = roleId;
 	}
 
-	public Long getAdminId() {
+	public Integer getAdminId() {
 		return adminId;
 	}
 
-	public void setAdminId(Long adminId) {
+	public void setAdminId(Integer adminId) {
 		this.adminId = adminId;
 	}
 
@@ -137,6 +148,7 @@ public class Module extends BaseVo implements Serializable {
 				", modPath='" + modPath + '\'' +
 				", modIcon='" + modIcon + '\'' +
 				", modFlag=" + modFlag +
+				", modSort=" + modSort +
 				", ids='" + ids + '\'' +
 				", flags=" + Arrays.toString(flags) +
 				", roleId=" + roleId +

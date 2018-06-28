@@ -32,12 +32,12 @@
                     <tr>
                         <td>${v_index }</td>
                         <td>${v.roleName }</td>
-                        <td><i class="fa ${v.isDelete?string('fa-times','fa-check')}"></i></td>
+                        <td><i class="fa ${v.deleted?string('fa-times','fa-check')}"></i></td>
                         <td>
                             <#if v.roleFlag == 1>
                                 <a class="btn btn-sm btn-circle btn-warning" title="编辑" onclick="edit(${v.id},'${v.roleName }')"
                                    data-toggle="tooltip" data-placement="top"><i class="fa fa-pencil-square"></i></a>
-                                <#if v.isDelete>
+                                <#if v.deleted>
                                     <a class="btn btn-sm btn-circle btn-warning btn-enable" title="启用" data-id="${v.id }"
                                        data-toggle="tooltip" data-placement="top"><i class="fa fa-check"></i></a>
                                 <#else>

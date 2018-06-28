@@ -47,7 +47,7 @@ public class MQController extends BaseController {
     @ResponseBody
     public ResMsg mq_send() {
         for (int i = 1; i <= 50; i++) {
-            User user = new User(new Long(i));
+            User user = new User(i);
             user.setNickname("fei");
             String json = JSONUtils.toJSONString(user);
             System.out.println("A Sender : " + json);

@@ -50,7 +50,7 @@
                         <td>${v.adminName }</td>
                         <td>
                             <#if v.role != null>
-                                ${v.role.isDelete?string('<s>','')} ${v.role.roleName } ${v.role.isDelete?string('<s>','')}
+                                ${v.role.deleted?string('<s>','')} ${v.role.roleName } ${v.role.deleted?string('<s>','')}
                             <#else>
                                 --
                             </#if>
@@ -60,7 +60,7 @@
                         <td>${v.adminCreateTime?string('yyyy-MM-dd HH:mm:ss')}</td>
                         <td>${(v.adminLoginTime?string('yyyy-MM-dd HH:mm:ss'))!'--'}</td>
                         <td>${v.adminLoginIp }</td>
-                        <td><i class="fa ${v.isDelete?string('fa-times','fa-check')}"></i></td>
+                        <td><i class="fa ${v.deleted?string('fa-times','fa-check')}"></i></td>
                         <td>
                             <#if v.role.roleFlag == 0>
                                 <a class="btn btn-sm btn-circle btn-warning" disabled="disabled" title="不可编辑"
@@ -68,7 +68,7 @@
                             <#else>
                                 <a class="btn btn-sm btn-circle btn-warning" title="编辑" href="/admin/system/adminDetail?adminId=${v.id }"
                                    data-open="modal" data-width="768px" data-height="400px" data-toggle="tooltip" data-placement="top"><i class="fa fa-pencil-square"></i></a>
-                                <#if v.isDelete>
+                                <#if v.deleted>
                                     <a class="btn btn-sm btn-circle btn-warning btn-enable" title="启用" data-id="${v.id }"
                                        data-toggle="tooltip" data-placement="top"><i class="fa fa-check"></i></a>
                                 <#else>

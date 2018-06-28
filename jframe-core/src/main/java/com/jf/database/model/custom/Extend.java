@@ -29,11 +29,20 @@ public class Extend {
         this.b = b;
     }
 
+    public String getC() {
+        return c;
+    }
+
+    public void setC(String c) {
+        this.c = c;
+    }
+
     @Override
     public String toString() {
         return "Extend{" +
                 "a='" + a + '\'' +
                 ", b='" + b + '\'' +
+                ", c='" + c + '\'' +
                 '}';
     }
 }

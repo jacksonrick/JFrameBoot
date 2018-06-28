@@ -155,7 +155,7 @@ public class SystemBackController extends BaseController {
      */
     @RequestMapping("/adminDetail")
     @AuthPassport(right = false)
-    public String adminDetail(Long adminId, ModelMap map) {
+    public String adminDetail(Integer adminId, ModelMap map) {
         List<Role> roles = moduleService.findRoleList();
         map.addAttribute("roles", roles);
         if (adminId == null) {
@@ -176,7 +176,7 @@ public class SystemBackController extends BaseController {
     @RequestMapping("/adminEnable")
     @AuthPassport
     @ResponseBody
-    public ResMsg adminEnable(Long adminId, HttpServletRequest request) {
+    public ResMsg adminEnable(Integer adminId, HttpServletRequest request) {
         if (adminId == null) {
             return new ResMsg(ResCode.CODE_22.code(), ResCode.CODE_22.msg());
         }
@@ -245,6 +245,7 @@ public class SystemBackController extends BaseController {
             map.put("flag", m.getModFlag());
             map.put("path", m.getModPath());
             map.put("icon", m.getModIcon());
+            map.put("sort", m.getModSort());
             mapList.add(map);
         }
         return mapList;
@@ -253,14 +254,13 @@ public class SystemBackController extends BaseController {
     /**
      * 模块编辑
      *
-     * @param name
-     * @param path
      * @return
      */
     @RequestMapping("/moduleEdit")
     @ResponseBody
     @AuthPassport
-    public ResMsg moduleEdit(Integer moduleId, Integer parentId, Integer flag, String name, String path, String icon, HttpServletRequest request) {
+    public ResMsg moduleEdit(Integer moduleId, Integer parentId, Integer flag, String name, String path, String icon, Integer sort,
+                             HttpServletRequest request) {
         if (StringUtil.isBlank(name)) {
             return new ResMsg(1, "模块名不能为空");
         }
@@ -271,13 +271,13 @@ public class SystemBackController extends BaseController {
             if (parentId == null) {
                 return new ResMsg(3, "请选择父模块");
             }
-            if (moduleService.insertModule(flag, name, parentId, path, icon) > 0) {
+            if (moduleService.insertModule(flag, name, parentId, path, icon, sort) > 0) {
                 systemService.addAdminLog(request, "新增模块", "name=" + name);
                 return new ResMsg(ResCode.INSERT_SUCCESS.code(), ResCode.INSERT_SUCCESS.msg());
             }
             return new ResMsg(ResCode.INSERT_FAIL.code(), ResCode.INSERT_FAIL.msg());
         } else {
-            if (moduleService.updateModule(moduleId, name, path, icon) > 0) {
+            if (moduleService.updateModule(moduleId, name, path, icon, sort) > 0) {
                 systemService.addAdminLog(request, "编辑模块", "name=" + name);
                 return new ResMsg(ResCode.UPDATE_SUCCESS.code(), ResCode.UPDATE_SUCCESS.msg());
             }
@@ -327,7 +327,7 @@ public class SystemBackController extends BaseController {
     @RequestMapping("/roleEnable")
     @AuthPassport
     @ResponseBody
-    public ResMsg roleEnable(Long roleId, HttpServletRequest request) {
+    public ResMsg roleEnable(Integer roleId, HttpServletRequest request) {
         if (roleId == null) {
             return new ResMsg(ResCode.CODE_22.code(), ResCode.CODE_22.msg());
         }
@@ -348,7 +348,7 @@ public class SystemBackController extends BaseController {
     @RequestMapping("/roleEdit")
     @AuthPassport
     @ResponseBody
-    public ResMsg roleEdit(String roleName, Long roleId, HttpServletRequest request) {
+    public ResMsg roleEdit(String roleName, Integer roleId, HttpServletRequest request) {
         if (StringUtil.isBlank(roleName)) {
             return new ResMsg(1, "组名不能为空");
         }
@@ -372,7 +372,7 @@ public class SystemBackController extends BaseController {
     @RequestMapping("/permits")
     @AuthPassport
     @ResponseBody
-    public List<Tree> permits(Long roleId, Long adminId) {
+    public List<Tree> permits(Integer roleId, Integer adminId) {
         // ztree data
         List<Tree> treeList = new ArrayList<Tree>();
         // 所有模块
@@ -414,7 +414,7 @@ public class SystemBackController extends BaseController {
     @RequestMapping("/permit")
     @AuthPassport
     @ResponseBody
-    public ResMsg permit(Long roleId, Long adminId, String params, HttpServletRequest request) {
+    public ResMsg permit(Integer roleId, Integer adminId, String params, HttpServletRequest request) {
         if (roleId == null && adminId == null) {
             return new ResMsg(ResCode.CODE_22.code(), ResCode.CODE_22.msg());
         }

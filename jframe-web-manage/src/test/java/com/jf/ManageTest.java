@@ -1,6 +1,7 @@
 package com.jf;
 
 import com.jf.database.model.User;
+import com.jf.json.JSONUtils;
 import com.jf.service.user.UserService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,21 +20,8 @@ import java.util.List;
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class MyTest {
+public class ManageTest {
 
-    @Resource
-    private UserService userService;
 
-    @Test
-    public void test01() {
-        int result = userService.testInsertUserForJson();
-        System.out.println(result);
-    }
-
-    @Test
-    public void test02() {
-        List<User> list = userService.testFindUserForJson();
-        System.out.println(list);
-    }
 
 }

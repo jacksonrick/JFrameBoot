@@ -72,7 +72,7 @@ public class UserController extends BaseController {
     @RequestMapping("/userEnable")
     @AuthPassport
     @ResponseBody
-    public ResMsg userEnable(Long userId, HttpServletRequest request) {
+    public ResMsg userEnable(Integer userId, HttpServletRequest request) {
         if (userId == null) {
             return new ResMsg(ResCode.CODE_22.code(), ResCode.CODE_22.msg());
         }
@@ -99,7 +99,7 @@ public class UserController extends BaseController {
         String nickname = user.getNickname();
         String phone = user.getPhone();
         String email = user.getEmail();
-        Long userId = user.getId();
+        Integer userId = user.getId();
         if (userId != null) {
             User t = userService.findUserById(userId);
             if (!phone.equals(t.getPhone())) {
@@ -131,7 +131,7 @@ public class UserController extends BaseController {
      */
     @RequestMapping("/userDetail")
     @AuthPassport
-    public String userDetail(Long userId, ModelMap map) {
+    public String userDetail(Integer userId, ModelMap map) {
         if (userId != null) {
             User user = userService.findUserById(userId);
             map.addAttribute("user", user);
@@ -148,10 +148,14 @@ public class UserController extends BaseController {
     @RequestMapping("/exportUserExcel")
     @AuthPassport
     public ModelAndView exportUserExcel(User condition) {
-        condition.setPage(false);
         Map<String, Object> model = new HashMap<String, Object>();
         model.put("list", userService.findByCondition(condition));
         return new ModelAndView(new UserExcel(), model);
+        /* ViewExcel通用处理类
+        Map<String, Object> model = new HashMap<String, Object>();
+        model.put("list", userService.findUserExcelByCondition(condition));
+        return new ModelAndView(new ViewExcel<UserModel>(), model);
+        * */
     }
 
 }

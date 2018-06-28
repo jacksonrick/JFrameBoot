@@ -47,7 +47,7 @@ public class AdminService {
      * @param id
      * @return
      */
-    public Admin findAdminById(Long id) {
+    public Admin findAdminById(Integer id) {
         return adminMapper.findById(id);
     }
 
@@ -126,7 +126,7 @@ public class AdminService {
      * @param ip
      * @return
      */
-    private int updateLogin(Long adminId, String ip) {
+    private int updateLogin(Integer adminId, String ip) {
         Admin admin = new Admin(adminId);
         admin.setAdminLoginTime(new Date());
         admin.setAdminLoginIp(ip);
@@ -140,7 +140,7 @@ public class AdminService {
      * @param password
      * @return
      */
-    public int updatePassword(Long adminId, String password) {
+    public int updatePassword(Integer adminId, String password) {
         Admin admin = new Admin(adminId);
         admin.setAdminPassword(PasswordUtil.MD5Encode(password));
         return adminMapper.update(admin);
@@ -152,7 +152,7 @@ public class AdminService {
      * @param adminId
      * @return
      */
-    public int deleteAdmin(Long adminId) {
+    public int deleteAdmin(Integer adminId) {
         return adminMapper.delete(adminId);
     }
 
@@ -162,7 +162,7 @@ public class AdminService {
      * @param adminId
      * @return
      */
-    public int deleteRights(Long adminId) {
+    public int deleteRights(Integer adminId) {
         Admin admin = new Admin(adminId);
         admin.setAdminRights("");
         return adminMapper.update(admin);
@@ -174,7 +174,7 @@ public class AdminService {
      * @param adminId
      * @return
      */
-    public List<Msg> findByTodayMsg(Long adminId) {
+    public List<Msg> findByTodayMsg(Integer adminId) {
         return msgMapper.findByToday(adminId);
     }
 
@@ -184,7 +184,7 @@ public class AdminService {
      * @param adminId
      * @param content
      */
-    public void addMsg(Long adminId, String content) {
+    public void addMsg(Integer adminId, String content) {
         Msg msg = new Msg();
         msg.setAdminId(adminId);
         msg.setContent(content);

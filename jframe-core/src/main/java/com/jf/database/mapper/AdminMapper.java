@@ -15,18 +15,18 @@ public interface AdminMapper {
 
 	List<Admin> findByCondition(BaseVo baseVo);
 
-    Admin findById(Long id);
+    Admin findById(Integer id);
 
 	int findCountByKey(BaseVo baseVo);
 
 	Admin findByNameAndPwd(@Param("adminName") String adminName, @Param("adminPassword") String adminPassword);
 
-	Admin findRightsById(Long id);
+	Admin findRightsById(Integer id);
 
 	int insert(Admin bean);
 
 	int update(Admin bean);
 
-    int delete(Long id);
+    int delete(Integer id);
 
 }

@@ -18,10 +18,10 @@ public class Admin extends BaseVo implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	/** id */
-	private Long id;
+	private Integer id;
 
 	/** 用户组id */
-	private Long roleId;
+	private Integer roleId;
 
 	/** 用户名 */
     @NotEmpty(message = "不能为空")
@@ -54,7 +54,7 @@ public class Admin extends BaseVo implements Serializable {
 	private String adminLoginIp;
 
     /** 是否删除 1-是 0-否 */
-    private Boolean isDelete;
+    private Boolean deleted;
 
 	/** 用户组 */
 	private Role role;
@@ -62,7 +62,7 @@ public class Admin extends BaseVo implements Serializable {
 	public Admin() {
 	}
 
-	public Admin(Long id) {
+	public Admin(Integer id) {
 		super();
 		this.id = id;
 	}
@@ -74,11 +74,11 @@ public class Admin extends BaseVo implements Serializable {
 		this.setAdminName(adminName);
 	}
 
-	public void setId(Long id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
-	public Long getId() {
+	public Integer getId() {
 		return this.id;
 	}
 
@@ -154,19 +154,19 @@ public class Admin extends BaseVo implements Serializable {
 		return this.adminLoginIp;
 	}
 
-    public void setIsDelete(Boolean isDelete) {
-        this.isDelete = isDelete;
+    public void setDeleted(Boolean deleted) {
+        this.deleted = deleted;
     }
 
-    public Boolean getIsDelete() {
-        return this.isDelete;
+    public Boolean getDeleted() {
+        return this.deleted;
     }
 
-	public Long getRoleId() {
+	public Integer getRoleId() {
 		return roleId;
 	}
 
-	public void setRoleId(Long roleId) {
+	public void setRoleId(Integer roleId) {
 		this.roleId = roleId;
 	}
 
@@ -183,7 +183,7 @@ public class Admin extends BaseVo implements Serializable {
 				", adminCreateTime=" + adminCreateTime +
 				", adminLoginTime=" + adminLoginTime +
 				", adminLoginIp='" + adminLoginIp + '\'' +
-				", isDelete=" + isDelete +
+				", deleted=" + deleted +
 				", role=" + role +
 				'}';
 	}

@@ -19,7 +19,7 @@
 		u.gender,
 		u.address,
 		u.birthday,
-		u.is_delete
+		u.deleted
     </sql>
 
     <resultMap type="user" id="userResultMapper">
@@ -37,7 +37,7 @@
         <result property="gender" column="gender" />
         <result property="address" column="address" />
         <result property="birthday" column="birthday" />
-        <result property="isDelete" column="is_delete" />
+        <result property="deleted" column="deleted" />
     </resultMap>
 
     <select id="findByCondition" resultMap="userResultMapper" parameterType="baseVo">
@@ -45,7 +45,7 @@
         FROM t_user u
     </select>
 
-    <select id="findById" resultMap="userResultMapper" parameterType="long">
+    <select id="findById" resultMap="userResultMapper" parameterType="int">
         SELECT <include refid="baseColumn"></include>
         FROM t_user u
         WHERE u.id = #{id}
@@ -87,8 +87,8 @@
         WHERE id = #{id}
     </update>
 
-    <update id="delete" parameterType="long">
-        UPDATE t_user SET is_delete = !is_delete
+    <update id="delete" parameterType="int">
+        UPDATE t_user SET deleted = !deleted
         WHERE id = #{id}
     </update>
 

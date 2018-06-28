@@ -14,12 +14,12 @@ public interface User2Mapper {
 
     List<User> findByCondition(BaseVo baseVo);
 
-    User findById(Long id);
+    User findById(Integer id);
 
     int insert(User bean);
 
     int update(User bean);
 
-    int delete(Long id);
+    int delete(Integer id);
 
 }

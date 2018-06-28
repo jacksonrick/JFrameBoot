@@ -16,7 +16,7 @@ public class Role extends BaseVo implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	/** id */
-	private Long id;
+	private Integer id;
 
 	/** 用户组名称 */
     @NotEmpty(message = "用户组名称不能为空")
@@ -30,21 +30,21 @@ public class Role extends BaseVo implements Serializable {
 	private Integer roleFlag;
 
     /** 是否删除 1-是 0-否 */
-    private Boolean isDelete;
+    private Boolean deleted;
 
 	public Role() {
 	}
 
-	public Role(Long id) {
+	public Role(Integer id) {
 		super();
 		this.id = id;
 	}
 
-	public void setId(Long id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
-	public Long getId() {
+	public Integer getId() {
 		return this.id;
 	}
 
@@ -72,12 +72,12 @@ public class Role extends BaseVo implements Serializable {
 		return this.roleFlag;
 	}
 
-    public void setIsDelete(Boolean isDelete) {
-        this.isDelete = isDelete;
+    public void setDeleted(Boolean deleted) {
+        this.deleted = deleted;
     }
 
-    public Boolean getIsDelete() {
-        return this.isDelete;
+    public Boolean getDeleted() {
+        return this.deleted;
     }
 
 	@Override
@@ -87,7 +87,7 @@ public class Role extends BaseVo implements Serializable {
 				", roleName='" + roleName + '\'' +
 				", roleRights='" + roleRights + '\'' +
 				", roleFlag=" + roleFlag +
-				", isDelete=" + isDelete +
+				", deleted=" + deleted +
 				'}';
 	}
 }

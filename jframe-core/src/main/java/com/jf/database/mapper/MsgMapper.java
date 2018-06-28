@@ -13,10 +13,10 @@ public interface MsgMapper {
 
 	List<Msg> findByCondition(BaseVo baseVo);
 
-	List<Msg> findByToday(Long adminId);
+	List<Msg> findByToday(Integer adminId);
 
 	int insert(Msg bean);
 
-	int delete(Long id);
+	int delete(Integer id);
 
 }

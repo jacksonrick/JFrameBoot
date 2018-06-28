@@ -50,7 +50,7 @@ public class OrderService {
     public void add(String xid, String money) {
         long startTime = System.currentTimeMillis();   //获取开始时间
 
-        User user = new User(10001l);
+        User user = new User(10001);
         user.setMoney(150d);
         userMapper.update(user);
 
@@ -67,7 +67,7 @@ public class OrderService {
     public void reduce(String xid, String money) {
         long startTime = System.currentTimeMillis();   //获取开始时间
 
-        User user = new User(10000l);
+        User user = new User(10000);
         user.setMoney(50d);
         userMapper.update(user);
 

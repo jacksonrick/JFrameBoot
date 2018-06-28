@@ -1,4 +1,4 @@
-package com.jf;
+package com.jf.po;
 
 import java.util.Date;
 

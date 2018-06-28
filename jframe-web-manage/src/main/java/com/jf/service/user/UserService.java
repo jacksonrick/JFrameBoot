@@ -1,13 +1,15 @@
 package com.jf.service.user;
 
 import com.github.pagehelper.PageInfo;
-import com.jf.database.mapper.TestMapper;
 import com.jf.database.mapper.UserMapper;
 import com.jf.database.model.User;
 import com.jf.database.model.custom.Extend;
 import com.jf.database.model.custom.IdText;
 import com.jf.encrypt.PasswordUtil;
+import com.jf.json.JSONUtils;
 import com.jf.string.StringUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -15,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.TreeMap;
 
 /**
  * 用户Service
@@ -27,24 +30,6 @@ public class UserService {
     @Resource
     private UserMapper userMapper;
 
-    @Resource
-    private TestMapper testMapper;
-
-    public List<User> testFindUserForJson() {
-        return testMapper.findUserById(10013l);
-    }
-
-    public int testInsertUserForJson() {
-        User user = new User();
-        user.setNickname("qqq");
-        user.setPhone("12321343213");
-        Extend extend = new Extend();
-        extend.setA("12");
-        extend.setB("99");
-        user.setExtend(extend);
-        return testMapper.insertUser(user);
-    }
-
     /**
      * 按id查询用户
      *
@@ -52,7 +37,7 @@ public class UserService {
      * @return
      */
     @Cacheable(value = "user", key = "'findUserById'+#id")
-    public User findUserById(Long id) {
+    public User findUserById(Integer id) {
         return userMapper.findById(id);
     }
 
@@ -103,7 +88,7 @@ public class UserService {
      * @param field
      * @return
      */
-    public Object findFieleByUserId(Long userId, String field) {
+    public Object findFieleByUserId(Integer userId, String field) {
         return userMapper.findFieleByUserId(userId, field);
     }
 
@@ -189,7 +174,7 @@ public class UserService {
      * @param userId
      * @return
      */
-    public int deleteUser(Long userId) {
+    public int deleteUser(Integer userId) {
         return userMapper.delete(userId);
     }
 
@@ -199,7 +184,7 @@ public class UserService {
      * @param ids
      * @return
      */
-    public int deleteBatch(Long[] ids) {
+    public int deleteBatch(Integer[] ids) {
         return userMapper.deleteBatch(ids);
     }
 

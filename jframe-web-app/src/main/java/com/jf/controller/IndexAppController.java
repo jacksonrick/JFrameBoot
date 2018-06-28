@@ -5,6 +5,10 @@ import com.jf.entity.ResMsg;
 import com.jf.entity.enums.ResCode;
 import com.jf.system.annotation.Token;
 import com.jf.system.conf.SysConfig;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -40,7 +44,7 @@ public class IndexAppController extends BaseController {
 
     /**
      * Token测试
-     * *注意：第一个参数必须要是Long param_name
+     * *注意：第一个参数必须要是 `Long param_name`
      *
      * @param userId
      * @param param
@@ -62,4 +66,13 @@ public class IndexAppController extends BaseController {
         return new ResMsg(ResCode.SUCCESS.code(), ResCode.SUCCESS.msg(), userId);
     }
 
+    @GetMapping("/swagger")
+    @ApiOperation(value = "swagger测试", notes = "详细描述")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "p1", value = "参数1", dataType = "String", defaultValue = "haha"),
+            @ApiImplicitParam(name = "s2", value = "参数2", dataType = "Integer", defaultValue = "99")
+    })
+    public ResMsg swagger(String p1, Integer s2) {
+        return new ResMsg(ResCode.SUCCESS.code(), ResCode.SUCCESS.msg());
+    }
 }

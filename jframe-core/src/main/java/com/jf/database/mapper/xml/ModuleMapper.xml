@@ -4,6 +4,16 @@
 
 <mapper namespace="com.jf.database.mapper.ModuleMapper">
 
+	<sql id="baseColumn">
+		id,
+		parent_id,
+		mod_name,
+		mod_path,
+		mod_icon,
+		mod_flag,
+		mod_sort
+	</sql>
+
 	<resultMap type="module" id="moduleResultMap">
 		<id property="id" column="id" />
 		<result property="parentId" column="parent_id" />
@@ -11,10 +21,11 @@
 		<result property="modPath" column="mod_path" />
 		<result property="modIcon" column="mod_icon" />
 		<result property="modFlag" column="mod_flag" />
+		<result property="modSort" column="mod_sort" />
 	</resultMap>
 
 	<select id="findByCondition" resultMap="moduleResultMap" parameterType="baseVo">
-		SELECT id, parent_id, mod_name, mod_path, mod_icon, mod_flag
+		SELECT <include refid="baseColumn" />
 		FROM s_module
 		<where>
             <if test="flags != null">
@@ -45,6 +56,7 @@
 			<if test="modName != null and modName != ''">mod_name = #{modName},</if>
 			<if test="modPath != null and modPath != ''">mod_path = #{modPath},</if>
 			<if test="modIcon != null">mod_icon = #{modIcon},</if>
+			<if test="modSort != null">mod_sort = #{modSort},</if>
 		</set>
 		where id = #{id}
 	</update>
@@ -55,14 +67,16 @@
 			mod_name,
 			mod_path,
 			mod_icon,
-			mod_flag
+			mod_flag,
+			mod_sort
 		)
 		value (
 			#{parentId},
 			#{modName},
 			#{modPath},
 			#{modIcon},
-			#{modFlag}
+			#{modFlag},
+			#{modSort}
 		)
 	</insert>
 

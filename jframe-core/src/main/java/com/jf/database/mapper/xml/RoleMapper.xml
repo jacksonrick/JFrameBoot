@@ -7,7 +7,7 @@
 	<sql id="simpleColumn">
 		r.role_name,
 		r.role_flag,
-		r.is_delete AS `role_delete`
+		r.deleted AS `role_delete`
 	</sql>
 
 	<sql id="baseColumn">
@@ -15,14 +15,14 @@
 		r.role_name,
 		r.role_rights,
 		r.role_flag,
-		r.is_delete
+		r.deleted
 	</sql>
 
 	<resultMap type="role" id="roleResultMap">
 		<id property="id" column="id" />
 		<result property="roleName" column="role_name" />
 		<result property="roleRights" column="role_rights" />
-		<result property="isDelete" column="is_delete" />
+		<result property="deleted" column="deleted" />
 		<result property="roleFlag" column="role_flag" />
 	</resultMap>
 
@@ -52,8 +52,8 @@
 		WHERE id = #{id}
 	</update>
 
-    <update id="delete" parameterType="long">
-        UPDATE s_role SET is_delete = !is_delete
+    <update id="delete" parameterType="int">
+        UPDATE s_role SET deleted = !deleted
         WHERE id = #{id}
     </update>
 

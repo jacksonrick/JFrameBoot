@@ -37,14 +37,14 @@ public class RedisController extends BaseController {
     @RequestMapping("/testCache1")
     @ResponseBody
     public ResMsg testCache1() {
-        User user = userService.findUserById(10000l);
+        User user = userService.findUserById(10000);
         return new ResMsg(ResCode.SUCCESS.code(), ResCode.SUCCESS.msg(), user);
     }
 
     @RequestMapping("/testCache2")
     @ResponseBody
     public ResMsg testCache2() {
-        User user = new User(10000l);
+        User user = new User(10000);
         user.setMoney(1000d);
         userService.updateUser(user);
         return new ResMsg(ResCode.SUCCESS.code(), ResCode.SUCCESS.msg());
@@ -74,7 +74,7 @@ public class RedisController extends BaseController {
     @RequestMapping("/testLock")
     @ResponseBody
     public ResMsg testLock() throws Exception {
-        userService.testLock(10000l);
+        userService.testLock(10000);
         return new ResMsg(ResCode.SUCCESS.code(), ResCode.SUCCESS.msg());
     }
 

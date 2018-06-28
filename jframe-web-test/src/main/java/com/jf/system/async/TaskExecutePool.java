@@ -4,6 +4,7 @@ import com.jf.system.LogManager;
 import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.scheduling.annotation.AsyncConfigurer;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
@@ -22,6 +23,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 @Configuration
 @ConfigurationProperties(prefix = "spring.task")
 @EnableAsync
+//@EnableAspectJAutoProxy(exposeProxy = true) // 解决异步方法同步调用的问题
 public class TaskExecutePool implements AsyncConfigurer {
 
     private int corePoolSize;

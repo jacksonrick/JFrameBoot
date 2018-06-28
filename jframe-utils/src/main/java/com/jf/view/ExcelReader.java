@@ -1,11 +1,8 @@
 package com.jf.view;
 
-import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFDateUtil;
+import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -23,12 +20,12 @@ public class ExcelReader {
     /**
      * Excel 对象
      */
-    private XSSFWorkbook workbook;
+    private HSSFWorkbook workbook;
 
     /**
      * 当前操作 Sheet 对象
      */
-    private XSSFSheet sheet;
+    private HSSFSheet sheet;
 
     /**
      * <b>构造方法</b>
@@ -48,7 +45,7 @@ public class ExcelReader {
             inputStream = new FileInputStream(excelURI);
 
             //获取 Excel 对象
-            workbook = new XSSFWorkbook(inputStream);
+            workbook = new HSSFWorkbook(inputStream);
         } catch (FileNotFoundException e) {
             System.out.println("文件不存在");
         } catch (IOException e) {
@@ -72,7 +69,7 @@ public class ExcelReader {
     public ExcelReader(InputStream inputStream) {
         //获取 Excel 对象
         try {
-            workbook = new XSSFWorkbook(inputStream);
+            workbook = new HSSFWorkbook(inputStream);
         } catch (IOException e) {
             System.out.println("读取文件失败");
         }
@@ -88,7 +85,7 @@ public class ExcelReader {
         }
 
         //获取行信息
-        XSSFRow rows = this.getSheet().getRow(rowNum);
+        HSSFRow rows = this.getSheet().getRow(rowNum);
 
         //返回列信息
         return getValue(rows.getCell(cellNum));
@@ -117,7 +114,7 @@ public class ExcelReader {
             return new String[0];
         }
 
-        XSSFRow row = this.getSheet().getRow(rowNum);
+        HSSFRow row = this.getSheet().getRow(rowNum);
 
         //获取第一行的列数
         int cellNum = this.getSheet().getRow(rowNum).getPhysicalNumberOfCells();
@@ -154,7 +151,7 @@ public class ExcelReader {
         for (int i = startRowIndex; i < endRowIndex; i++) {
 
             //获取当前行
-            XSSFRow row = this.getSheet().getRow(i);
+            HSSFRow row = this.getSheet().getRow(i);
 
             //如果当前行为空则返回空数组
             if (row == null) {
@@ -188,12 +185,10 @@ public class ExcelReader {
      * @param cell
      * @return Object
      */
-    private Object getValue(XSSFCell cell) {
+    private Object getValue(HSSFCell cell) {
         if (null == cell) {
             return "";
         }
-
-        System.out.println(cell.getCellType());
         switch (cell.getCellType()) {
             case HSSFCell.CELL_TYPE_BLANK://空值
                 return "";
@@ -208,7 +203,7 @@ public class ExcelReader {
                 if (HSSFDateUtil.isCellDateFormatted(cell)) {
                     return cell.getDateCellValue();
                 }
-                return cell.getRawValue();
+                return cell.getStringCellValue();
             // 公式类型
             case HSSFCell.CELL_TYPE_FORMULA:
                 //读公式计算值
@@ -224,10 +219,10 @@ public class ExcelReader {
                         value = cell.getStringCellValue().toString();
                     }
                 } catch (Exception e) {
-                    return cell.getRawValue();
+                    return cell.getStringCellValue();
                 }
             default:
-                return cell.getRawValue();
+                return cell.getStringCellValue();
         }
 
     }
@@ -241,7 +236,7 @@ public class ExcelReader {
      *
      * @return XSSFSheet
      */
-    private XSSFSheet getSheet() {
+    private HSSFSheet getSheet() {
         if (sheet == null) {
             synchronized (this) {
                 if (sheet == null) {
@@ -253,7 +248,7 @@ public class ExcelReader {
     }
 
     public void setSheetName(String sheetName) {
-        XSSFSheet getSheet = this.workbook.getSheet(sheetName);
+        HSSFSheet getSheet = this.workbook.getSheet(sheetName);
         if (getSheet == null) {
             throw new IllegalArgumentException("将要获取的页面[" + sheetName + "]不存在");
         }
@@ -261,7 +256,7 @@ public class ExcelReader {
     }
 
     public void setSheetIndex(int index) {
-        XSSFSheet getSheet = this.workbook.getSheetAt(index);
+        HSSFSheet getSheet = this.workbook.getSheetAt(index);
         if (getSheet == null) {
             throw new IllegalArgumentException("将要获取的页面下标[" + index + "]不存在");
         }
@@ -273,4 +268,3 @@ public class ExcelReader {
     }
 
 }
-

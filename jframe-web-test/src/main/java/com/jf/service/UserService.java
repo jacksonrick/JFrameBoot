@@ -7,6 +7,7 @@ import com.jf.database.model.User;
 import com.jf.database.model.custom.IdText;
 import com.jf.database.secondary.User2Mapper;
 import com.jf.encrypt.PasswordUtil;
+import com.jf.json.JSONUtils;
 import com.jf.string.StringUtil;
 import com.jf.system.redisson.RedisLocker;
 import com.jf.system.redisson.lock.AquiredLockWorker;
@@ -24,6 +25,7 @@ import org.springframework.web.client.RestTemplate;
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TreeMap;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -51,6 +53,45 @@ public class UserService {
     private RedisLocker locker;
 
 
+    /**
+     * 测试 数据库JSON类型转bean
+     *
+     * @return
+     */
+    public User testTypeHandlerForFind() {
+//        return testMapper.findUserById(10038);
+//        return testMapper.findUserById2(10037);
+        return testMapper.findUserById3(10037);
+    }
+
+    public int testTypeHandlerForInsert() {
+        User user = new User();
+        user.setNickname("qqq");
+        /*Extend extend = new Extend();
+        extend.setA("12");
+        extend.setB("99");
+        extend.setC("00");
+        user.setExtend(extend);*/
+
+        /*TreeMap map = new TreeMap();
+        map.put("c", "1");
+        map.put("d", "2");
+        map.put("a", "3");
+        map.put("g", "4");
+        map.put("f", "5");
+        map.put("z", "6");
+        String json = JSONUtils.toJSONString(map);
+        System.out.println(json);
+        user.setParams(map);*/
+
+        user.setArr(new String[]{"q", "w", "e", "r", "t"});
+
+//        return testMapper.insertUser(user);
+//        return testMapper.insertUser2(user);
+        return testMapper.insertUser3(user);
+    }
+
+
     @Resource
     private User2Service user2Service;
 
@@ -61,7 +102,7 @@ public class UserService {
         ExecutorService executorService = Executors.newFixedThreadPool(2);
         List<Callable<Boolean>> callableList = new ArrayList<Callable<Boolean>>();
 
-        Long[] ids = new Long[]{10000l, 10001l, 10002l, 10003l, 10004l, 10005l, 10006l, 10007l};
+        Integer[] ids = new Integer[]{10000, 10001, 10002, 10003, 10004, 10005, 10006, 10007};
         for (int i = 0; i < ids.length; i++) {
             Callable<Boolean> callable = new UTask(ids[i]);
             callableList.add(callable);
@@ -103,9 +144,9 @@ public class UserService {
 
     class UTask implements Callable<Boolean> {
 
-        private Long id;
+        private Integer id;
 
-        public UTask(Long id) {
+        public UTask(Integer id) {
             this.id = id;
         }
 
@@ -134,7 +175,7 @@ public class UserService {
      *
      * @param userId
      */
-    public void testLock(Long userId) throws Exception {
+    public void testLock(Integer userId) throws Exception {
         locker.lock("user_" + userId + "_lock", new AquiredLockWorker<Object>() {
             @Override
             public Object invokeAfterLockAquire() throws Exception {
@@ -188,22 +229,22 @@ public class UserService {
      */
     @Transactional(value = "primaryTransactionManager")
     public void testRollbackA() {
-        User user = userMapper.findById(10000l);
+        User user = userMapper.findById(10000);
         user.setNickname("primary_rollback");
         userMapper.update(user);
         System.out.println(1 / 0); // error
-        user = new User(10001l);
+        user = new User(10001);
         user.setNickname("secondary_rollback");
         userMapper.update(user);
     }
 
     @Transactional(value = "secondaryTransactionManager")
     public void testRollbackB() {
-        User user = user2Mapper.findById(10000l);
+        User user = user2Mapper.findById(10000);
         user.setNickname("secondary_rollback");
         user2Mapper.update(user);
         System.out.println(1 / 0); // error
-        user = new User(10001l);
+        user = new User(10001);
         user.setNickname("primary_rollback");
         user2Mapper.update(user);
     }
@@ -217,10 +258,10 @@ public class UserService {
     public User testMutilSource(String source) {
         User user = null;
         if ("primary".equals(source)) {
-            user = userMapper.findById(10000l);
+            user = userMapper.findById(10000);
         }
         if ("secondary".equals(source)) {
-            user = user2Mapper.findById(10000l);
+            user = user2Mapper.findById(10000);
         }
         return user;
     }
@@ -233,7 +274,7 @@ public class UserService {
      * @return
      */
     @Cacheable(value = "user", key = "'findUserById'+#id")
-    public User findUserById(Long id) {
+    public User findUserById(Integer id) {
         return userMapper.findById(id);
     }
 
@@ -288,7 +329,7 @@ public class UserService {
      * @param field
      * @return
      */
-    public Object findFieleByUserId(Long userId, String field) {
+    public Object findFieleByUserId(Integer userId, String field) {
         return userMapper.findFieleByUserId(userId, field);
     }
 
@@ -375,7 +416,7 @@ public class UserService {
      * @param avatar
      * @return
      */
-    public int updateUserAvatar(Long userId, String avatar) {
+    public int updateUserAvatar(Integer userId, String avatar) {
         User user = new User();
         user.setId(userId);
         user.setAvatar(avatar);
@@ -388,7 +429,7 @@ public class UserService {
      * @param userId
      * @return
      */
-    public int deleteUser(Long userId) {
+    public int deleteUser(Integer userId) {
         return userMapper.delete(userId);
     }
 
@@ -398,7 +439,7 @@ public class UserService {
      * @param ids
      * @return
      */
-    public int deleteBatch(Long[] ids) {
+    public int deleteBatch(Integer[] ids) {
         return userMapper.deleteBatch(ids);
     }
 

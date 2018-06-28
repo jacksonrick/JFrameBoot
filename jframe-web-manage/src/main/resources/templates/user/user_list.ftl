@@ -51,13 +51,13 @@
             {title: "身份证", data: "idcard", defaultContent: "--", orderable: false},
             {title: "头像", data: "avatar", orderable: false, render: CONSTANT.RENDER.AVATAR},
             {title: "注册时间", data: "createTime", defaultContent: "--"},
-            {title: "是否冻结", data: "isDelete", render: CONSTANT.RENDER.BOOLEAN},
+            {title: "是否冻结", data: "deleted", render: CONSTANT.RENDER.BOOLEAN},
             {
                 title: "操作", data: null, orderable: false,
                 render: function (data, type, full, callback) {
                     // btn-edit btn-del
                     var btns = CONSTANT.BUTTON.EDIT("/admin/user/userDetail?userId=" + full.id);
-                    if (full.isDelete) {
+                    if (full.deleted) {
                         btns += CONSTANT.BUTTON.ENABLE();
                     } else {
                         btns += CONSTANT.BUTTON.DISABLE();
@@ -79,6 +79,11 @@
             ],
             drawCallback: function (settings) {
                 $(":checkbox[name='check-all']").prop("checked", false);
+                /* 自增序列
+                    this.api().column(0).nodes().each(function (cell, i) {
+                        cell.innerHTML = i + 1;
+                    });
+                */
             }
         }));
 

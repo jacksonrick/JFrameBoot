@@ -12,11 +12,37 @@
 		<id property="id" column="id" />
 		<result property="nickname" column="nickname" />
 		<result property="phone" column="phone" />
-		<result property="extend" column="extend" typeHandler="com.jf.system.handler.mybatis.JsonTypeHandler" />
+		<result property="extend" column="extend" typeHandler="com.jf.system.handler.mybatis.JsonHandler" javaType="extend" />
 	</resultMap>
 
-	<select id="findUserById" resultMap="userResultMapper" parameterType="long">
+	<resultMap type="user" id="userResultMapper2">
+		<id property="id" column="id" />
+		<result property="nickname" column="nickname" />
+		<result property="phone" column="phone" />
+		<result property="params" column="extend" typeHandler="com.jf.system.handler.mybatis.JsonHandler" javaType="java.util.TreeMap" />
+	</resultMap>
+
+	<resultMap type="user" id="userResultMapper3">
+		<id property="id" column="id" />
+		<result property="nickname" column="nickname" />
+		<result property="phone" column="phone" />
+		<result property="arr" column="address" typeHandler="com.jf.system.handler.mybatis.ArrayHandler" />
+	</resultMap>
+
+	<select id="findUserById" resultMap="userResultMapper" parameterType="int">
 		SELECT id,nickname,phone,extend
+		FROM t_user
+		WHERE id = #{id}
+	</select>
+
+	<select id="findUserById2" resultMap="userResultMapper2" parameterType="int">
+		SELECT id,nickname,phone,extend
+		FROM t_user
+		WHERE id = #{id}
+	</select>
+
+	<select id="findUserById3" resultMap="userResultMapper3" parameterType="int">
+		SELECT id,nickname,phone,address
 		FROM t_user
 		WHERE id = #{id}
 	</select>
@@ -29,7 +55,27 @@
 		) VALUES (
 			#{nickname},
 			#{phone},
-			#{extend, typeHandler=com.jf.system.handler.mybatis.JsonTypeHandler}
+			#{extend, typeHandler=com.jf.system.handler.mybatis.JsonHandler, javaType=extend}
+		)
+	</insert>
+
+	<insert id="insertUser2" parameterType="user">
+		INSERT INTO t_user (
+			nickname,
+			extend
+		) VALUES (
+			#{nickname},
+			#{params, typeHandler=com.jf.system.handler.mybatis.JsonHandler, javaType=java.util.TreeMap}
+		)
+	</insert>
+
+	<insert id="insertUser3" parameterType="user">
+		INSERT INTO t_user (
+			nickname,
+			address
+		) VALUES (
+			#{nickname},
+			#{arr, typeHandler=com.jf.system.handler.mybatis.ArrayHandler}
 		)
 	</insert>
 

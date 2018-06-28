@@ -122,10 +122,10 @@ public class HomeBackController extends BaseController {
         if (admin == null) {
             return new ResMsg(5, "用户名或密码不正确");
         }
-        if (admin.getRole() != null && admin.getRole().getIsDelete()) {
+        if (admin.getRole() != null && admin.getRole().getDeleted()) {
             return new ResMsg(6, "当前组已被禁用");
         }
-        if (admin.getIsDelete()) {
+        if (admin.getDeleted()) {
             return new ResMsg(7, "账户已被冻结");
         }
         session.setAttribute(SysConfig.SESSION_ADMIN, admin);

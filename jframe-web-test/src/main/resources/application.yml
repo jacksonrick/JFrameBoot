@@ -22,13 +22,13 @@ app:
   eureka: # Eureka注册服务
     enabled: false
   monitor: # 监控端点
-    enabled: true
+    enabled: false
   druid: # druid数据源监控
     enabled: false
   springsch: # spring定时器
     enabled: false
   quartz: # Quartz定时任务
-    enabled: true
+    enabled: false
   cache: # redis缓存支持
     enabled: true
   redisson: # 分布式锁
@@ -36,13 +36,13 @@ app:
   activemq: # ActiveMQ
     enabled: false
   rabbitmq: # RabbitMQ
-    enabled: true
+    enabled: false
   socket: # spring websocket
     enabled: false
   fdfs: # FastDFS,false则使用本地上传
     enabled: false
 rmi: # 启用rmi监控
-  enabled: true
+  enabled: false
   host: 127.0.0.1
   port: ${server.port}
 wx: # 微信公众号API

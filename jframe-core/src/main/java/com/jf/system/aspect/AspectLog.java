@@ -2,7 +2,10 @@ package com.jf.system.aspect;
 
 import com.jf.system.conf.SysConfig;
 import org.aspectj.lang.JoinPoint;
-import org.aspectj.lang.annotation.*;
+import org.aspectj.lang.annotation.AfterReturning;
+import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Before;
+import org.aspectj.lang.annotation.Pointcut;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
@@ -13,6 +16,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.Arrays;
 import java.util.Map;
 import java.util.Set;
 
@@ -78,7 +82,12 @@ public class AspectLog {
 
     @AfterReturning(pointcut = "ctl()", returning = "ret")
     public void ret(Object ret) {
-        log.info("Returns: {}", ret);
+        String cn = ret.getClass().getSimpleName();
+        if ("String".equals(cn) || "ResMsg".equals(cn) || "ArrayList".equals(cn)) {
+            log.info("Returns: {}", ret);
+        } else {
+            log.info("Returns: {}", ret.getClass().getName());
+        }
         MDC.clear();
     }
 

@@ -11,7 +11,8 @@ import java.sql.Timestamp;
 import java.util.*;
 
 /**
- * JSON封装工具类
+ * JSON工具类
+ * <p>json-lib</p>
  *
  * @author rick
  * @version 1.0
@@ -151,9 +152,8 @@ public class JSONUtils {
      * 将对象转换为List>
      *
      * @param object
-     * @return
+     * @return 返回非实体类型(Map)的List
      */
-    // 返回非实体类型(Map)的List
     public static List<Map<String, Object>> toList(Object object) {
         List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
         JSONArray jsonArray = JSONArray.fromObject(object);
