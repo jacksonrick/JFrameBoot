@@ -1,0 +1,186 @@
+logging:
+  config: classpath:logback-boot.xml
+  file: ${system.log_path}${app.name:jframe}.log
+server:
+  tomcat:
+    uri-encoding: UTF-8
+    max-threads: 800
+    min-spare-threads: 20
+    max-connections: 2000
+  undertow:
+    io-threads: 4
+    worker-threads: 20
+    buffer-size: 1024
+  servlet:
+    session:
+      timeout: 30m
+spring:
+  cache:
+    type: NONE
+    cache-names: user,order
+    redis:
+      time-to-live: 20m
+  session:
+    store-type: NONE
+  mvc:
+    static-path-pattern: /static/**
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 10MB
+  resources:
+    static-locations: classpath:/static/,file:${system.static_path}
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+    default-property-inclusion: non_null
+  freemarker:
+    template-loader-path: classpath:/templates
+    cache: true
+    charset: UTF-8
+    settings:
+      template_update_delay: 0
+      default_encoding: UTF-8
+      locale: zh_CN
+      url_escaping_charset: zh_CN
+      date_format: yyyy-MM-dd
+      time_format: HH:mm:ss
+      datetime_format: yyyy-MM-dd HH:mm:ss
+      number_format: 0.##
+      boolean_format: true,false
+      classic_compatible: true
+      whitespace_stripping: true
+  datasource:
+    druid:
+      driver-class-name: com.mysql.jdbc.Driver
+      primary:
+        url: jdbc:mysql://mysql:3306/jframe?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false
+        username: root
+        password: 12345678
+      secondary:
+        url: jdbc:mysql://mysql:3306/test?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false
+        username: root
+        password: 12345678
+      initial-size: 5
+      max-active: 20
+      max-wait: 60000
+      min-idle: 5
+      time-between-eviction-runs-millis: 60000
+      min-evictable-idle-time-millis: 300000
+      validation-query: SELECT 1 FROM DUAL
+      max-open-prepared-statements: 20
+      remove-abandoned: true
+      remove-abandoned-timeout-millis: 1800
+      test-on-borrow: false
+      test-on-return: false
+      test-while-idle: true
+      filter:
+        stat:
+          enabled: ${app.druid.enabled:false}
+          db-type: mysql
+          log-slow-sql: true
+          slow-sql-millis: 2000
+      stat-view-servlet:
+        enabled: ${app.druid.enabled:false}
+        url-pattern: /druid/*
+        reset-enable: true
+        login-username: admin
+        login-password: 123456
+        allow: 127.0.0.1
+      web-stat-filter:
+        enabled: ${app.druid.enabled:false}
+        url-pattern: /*
+        exclusions: "*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*"
+      aop-patterns: com.jf.service.*
+  aop:
+    proxy-target-class: true
+  task:
+    corePoolSize: 10
+    maxPoolSize: 30
+    queueCapacity: 200
+    keepAliveSeconds: 60
+    waitOnShutdown: true
+    awaitTerminationSeconds: 60
+  mail:
+    host: smtp.qq.com
+    username: 1@qq.com
+    password: 1
+    properties:
+      mail:
+        smtp:
+          ssl:
+            enable: true
+          auth: true
+          timeout: 25000
+  redis:
+    host: redis
+    port: 6379
+    password: 12345678
+    timeout: 5s
+    lettuce:
+      pool:
+        max-idle: 50
+        min-idle: 10
+        max-active: 10
+  activemq:
+    broker-url: tcp://activemq:61616
+    in-memory: true
+    pool:
+      enabled: false
+    user: activemq
+    password: 12345678
+    packages:
+      trust-all: true
+  rabbitmq:
+    host: rabbitmq
+    port: 5672
+    username: rabbitmq
+    password: 12345678
+    virtual-host: /rmq
+    requested-heartbeat: 10s
+    publisher-confirms: true
+    publisher-returns: true
+    listener:
+      simple:
+        concurrency: 10
+        prefetch: 50
+        acknowledge-mode: manual
+fdfs:
+  so-timeout: 3000
+  connect_timeout: 3000
+  tracker-list:
+    - fdfs:22122
+system:
+  appkey: ${app.appkey:0}
+  static_host: ${app.static_host}
+  static_path: ${app.static_path}
+  log_path: /data/wwwlogs/
+  server_id: ${spring.application.name}
+  fdfs_nginx: http://192.168.1.199/
+  aliyun: # 支付宝
+    partner: 2088
+    seller: nf@sandbox.com
+    app_id: 2016
+    rsa_private_key: MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCAbqwHTigw8Bs0czuAwy4Y8zyqdIhzVCMn9H4/oBF0J+t2eTxlAUCuXjX/vrf+X2bGVMiCym54s1IGQ3Himaon30thys4FxM7QVvH6UC6OefZLkaG1i4mpvYUK3gzsT+PHqbpK/lkQ6RoYwg3mHSHSl2Td/08SIJ326W8Ujs29YOID2OzUusupSly+acdHVwf/IRiuP9FkL/f0e9jwUzGTMhTuP2DXWU9frd0D2n9DHL+BL3kmQm2NToAJ+2xvhiqI5nPixQxe9ua38N2i3xMNY5N2/6nCmvpj7UZzVWdYkcmNQLPNvUeLNbohX4U/R+HYZ1SeTiIgIaog9nX6ctW3AgMBAAECggEAKOSUK8NL8sEQuHOUV5xN2i3gfBmctLPuebNUW2fZBtYLF+7kNvjeImbm5KZSKVExBSdLrLFN2WqnTE0/PrpUvltPwjRzwsx2WUnFxECxgjX9IPSeu5JRY9VvPhWToc6SJSm6olQ4AbVm1Mk86a8O7OG9gR3gjFIMWejbsH0Dry9qtsSD4byYuLXwQ/yy7CC9ZV/v76veCBwZxYiG1LzRLn82qCl5B3QwTj1K7wyGpYE2OHflTDBe05H82eUpnbUb1xKt8y7TdquJWheInDDxvt7OthHFwNVJhp7zui9s580WiXP6DtrEtmINaYYHDgOGR2SmleygXloNIUQ02xSZAQKBgQDhMMobbS67dqMQ5JzYvErj8xbhVhSk3wiKm7+MBpCtpM40HNLy5Z82JqlngN6CkJdHBybqWmvDjER07MvzKjX3VuyYM/jFkuyOCpBHzjbXSnFk7xn5UKqlQFKoW5v8XJB8qwksxpBlvHNmFedwVMU0mOfDD4uoF1axEt7cDs5+NwKBgQCSAPZrv07KVs/eEFU+nqGu9UpmQ0D6ZITgEiDoQwPecSO2uKovY8TsCKYgfTAntY2oJ51Jqf6lV8cKr6Fm6CoWm687BT4E5gljoyWj7iGgt/WPhki+ocWcQkGbkFGN7wNel56+3/TCrnKWcgNqoh8BqpaMERT23QCqLdaNy8akgQKBgBGCobSQQNoC15swq6GOwqQG+vh6oRBQ53Efuz1AJW/bKM2UkDKi+EZVq0aJFsRASgMT40rFzStfdNNCtnkqBxg8ghkzsVxrmElTOPTcbBdBip+2l+ZzB1HiNosw1GhDKlkHU6dPqVq/1JlTirOJY+w7F4prYwinB+6s8Pdbj2LxAoGANFXr/wuAbr9Xm743EE9EnbaHiMiqzhaiGr/k09zR0ja0GpdvSbV1rTYcdqDpVhKaSKCKnRE2moYwbwAt1vl5vMjpszpZ1N+wleqxX2XI4BeRCnWUNeE/OJf3dI/y6/G1P38SBFG7Jt3pbUxJNTwP6UUA2gx1e1gVGOt9cS6OcgECgYEAvxHdlmsyMWU0dZmXA6Pgs4Nl4JE7gVuVkuo9eXVIEtM7Er6uopkmvQItvb0Jp7aCDZi/eblGS7HiFoxh5YFIO9AGzWgMbDPjBbFcaD2+ucqG/0FYqi4pNV3NX4PuEEAyywH9L8G/pv/WwfYBMckwvwtqh6wdf7HgYuLXgVXuduA=
+    public_key: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA2F1OBxmr8/7Dd+uPMQoTzqJdldBG31c5YE8EpIdk+pxwyM0BGMXV1SETynt1br7Pw8MKOC+oJOTxD9hcqx7OOhsZhiqFH2iL5F4ejK9VNEPDxjwkZXjgYqnacK5cFRWq6iMn4tw5xTsxa1sSNtEoxjK4AZnpgTiTTT2hlB2TN6e78zW2ZMeyZ+ocb9jy5oa/xqMAv1Srgp2PIa1dQ5qDp52xxzs6PxjTZJwTh6v+Z2zJJaBu2lzkk/cY4LAYAkr2rxKRVseT4Xt5m8zRVA62rDlTd1/D7MoCS9ybGQ8IaGe/8XM+3FJtNjk1JKk6OQa2YWHgzqZz+BQQSZzeSGFn4QIDAQAB
+    notify_url: http://xjf.s1.natapp.cc/alipay_callback
+    return_url: http://xjf.s1.natapp.cc/alipay_return
+    gateway: https://openapi.alipaydev.com/gateway.do
+  wechat: # 微信
+    appid: wx47
+    partner: 1482
+    partner_key: ad8b6
+    notify_url: http://xjf.s1.natapp.cc/wxpay_callback
+  geetest: # 极验验证
+    id: a53178
+    key: 51dbc8
+  jpush:
+    appkey: appkey
+    secret: secret
+    ios_product: false
+  upload:
+    fdfs: ${app.fdfs.enabled:false}
+    img_size: 3
+    img_type: jpg,jpeg,png
+    file_size: 10
+    file_type: zip,rar,txt
