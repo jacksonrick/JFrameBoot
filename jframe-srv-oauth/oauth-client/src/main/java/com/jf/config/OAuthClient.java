@@ -45,7 +45,7 @@ public class OAuthClient {
         }
     }
 
-    public String get(String url) {
+    public String getAuth(String url) {
         if ("".equals(token)) {
             init();
         }
@@ -58,6 +58,17 @@ public class OAuthClient {
             HttpEntity<String> entity = new HttpEntity<String>(null, headers);
             ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET, entity, String.class);
             log.info("OAuth Resource返回: " + response.getBody() + ", token: " + token);
+            return response.getBody();
+        } catch (RestClientException e) {
+            e.printStackTrace();
+            return "error";
+        }
+    }
+
+    public String get(String url) {
+        try {
+            ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET, null, String.class);
+            log.info("OAuth Resource返回: " + response.getBody());
             return response.getBody();
         } catch (RestClientException e) {
             e.printStackTrace();

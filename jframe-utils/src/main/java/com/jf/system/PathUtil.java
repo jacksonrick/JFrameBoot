@@ -1,6 +1,6 @@
 package com.jf.system;
 
-import com.jf.json.JSONUtils;
+import com.jf.json.JacksonUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -37,7 +37,7 @@ public class PathUtil {
             response.setCharacterEncoding("UTF-8");
             response.setContentType("application/json;charset=UTF-8");
             PrintWriter pw = response.getWriter();
-            pw.print(JSONUtils.toJSONString(new Result(99, "未登录", url)));
+            pw.print(JacksonUtil.objectToJson(new Result(99, "未登录", url)));
             pw.flush();
             pw.close();
         } else { // 页面请求
@@ -60,7 +60,7 @@ public class PathUtil {
             response.setCharacterEncoding("UTF-8");
             response.setContentType("application/json;charset=UTF-8");
             PrintWriter pw = response.getWriter();
-            pw.print(JSONUtils.toJSONString(new Result(100, "拒绝访问", url)));
+            pw.print(JacksonUtil.objectToJson(new Result(100, "拒绝访问", url)));
             pw.flush();
             pw.close();
         } else { // 页面请求
@@ -81,7 +81,7 @@ public class PathUtil {
         response.setCharacterEncoding("UTF-8");
         response.setContentType("application/json;charset=UTF-8");
         PrintWriter pw = response.getWriter();
-        pw.print(JSONUtils.toJSONString(new Result(code, msg)));
+        pw.print(JacksonUtil.objectToJson(new Result(code, msg)));
         pw.flush();
         pw.close();
     }

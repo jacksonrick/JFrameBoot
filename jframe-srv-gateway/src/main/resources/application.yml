@@ -1,0 +1,19 @@
+server:
+  port: 10080
+spring:
+  application:
+    name: JFRAME-SRV-GATEWAY
+eureka:
+  client:
+    service-url:
+      defaultZone: http://eureka:eureka1234@127.0.0.1:10000/eureka/
+  instance:
+    prefer-ip-address: true
+zuul:
+  routes:
+    api-a:
+      path: /api-a/**
+      serviceId: JFRAME-SRV-ORDER-01
+    api-b:
+      path: /api-b/**
+      serviceId: JFRAME-SRV-ORDER-02

@@ -1,12 +1,8 @@
-package com.jf.system.exception;
+package com.jf.json;
 
-/**
- * app异常
- * Created by xujunfei on 2018/5/24.
- */
-public class AppException extends RuntimeException {
+public class JsonFormatException extends RuntimeException {
 
-    public AppException(String message) {
+    public JsonFormatException(String message) {
         super(message);
     }
 

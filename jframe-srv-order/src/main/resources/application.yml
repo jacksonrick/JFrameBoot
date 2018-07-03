@@ -1,8 +1,9 @@
 server:
-  port: 10002
+  port: 10003
 spring:
   profiles:
     active: dev
+    include: cloud
   application:
     name: JFRAME-SRV-ORDER-01
 info:
@@ -10,6 +11,10 @@ info:
     name: ${spring.application.name}
     version: "1.0"
     description: "service-order-01"
+security:
+  oauth2:
+    resource:
+      user-info-uri: http://127.0.0.1:8090/authentication/user
 app:
   eureka:
     enabled: true

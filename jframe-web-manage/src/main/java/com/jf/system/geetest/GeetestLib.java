@@ -1,7 +1,7 @@
 package com.jf.system.geetest;
 
-import com.jf.json.JSONUtils;
-import net.sf.json.JSONObject;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import org.apache.commons.collections.map.HashedMap;
 
 import java.io.IOException;
@@ -206,7 +206,7 @@ public class GeetestLib {
             }
 
             gtlog("result:" + result_str);
-            JSONObject jsonObject = JSONUtils.toJSONObject(result_str);
+            JSONObject jsonObject = JSON.parseObject(result_str);
             String return_challenge = jsonObject.getString("challenge");
 
             gtlog("return_challenge:" + return_challenge);
@@ -310,7 +310,7 @@ public class GeetestLib {
         String return_seccode = "";
         try {
 
-            JSONObject return_map = JSONUtils.toJSONObject(response);
+            JSONObject return_map = JSON.parseObject(response);
             return_seccode = return_map.getString("seccode");
             gtlog("md5: " + md5Encode(return_seccode));
 

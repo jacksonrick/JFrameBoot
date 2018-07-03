@@ -1,10 +1,4 @@
 # springcloud config support
-spring:
-  security: # spring security
-    user:
-      name: spring
-      password: $2a$10$2l13OXNHQVWVoaJTeoabtuxROniihnqThG/MB8aItx3Er540PDTWe
-      roles: ACTUATOR
 eureka: # eureka客户端注册
   client:
     enabled: ${app.eureka.enabled:false}
@@ -27,7 +21,7 @@ management:
     add-application-context-header: false # 隐藏http头
   endpoint:
     health: # 显示详细
-      show-details: WHEN_AUTHORIZED
+      show-details: ALWAYS
   health: # 指定不监控的服务
     mail:
       enabled: false

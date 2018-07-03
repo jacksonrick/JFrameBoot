@@ -1,6 +1,6 @@
 package com.jf.system.handler.mybatis;
 
-import com.jf.json.JSONUtils;
+import com.jf.json.JacksonUtil;
 import org.apache.ibatis.type.BaseTypeHandler;
 import org.apache.ibatis.type.JdbcType;
 
@@ -32,21 +32,21 @@ public class JsonHandler<T extends Object> extends BaseTypeHandler<T> {
 
     @Override
     public void setNonNullParameter(PreparedStatement ps, int i, T obj, JdbcType jdbcType) throws SQLException {
-        ps.setString(i, JSONUtils.toJSONString(obj));
+        ps.setString(i, JacksonUtil.objectToJson(obj));
     }
 
     @Override
     public T getNullableResult(ResultSet rs, String columnName) throws SQLException {
-        return JSONUtils.toBean(rs.getString(columnName), clazz);
+        return JacksonUtil.jsonToBean(rs.getString(columnName), clazz);
     }
 
     @Override
     public T getNullableResult(ResultSet rs, int columnIndex) throws SQLException {
-        return JSONUtils.toBean(rs.getString(columnIndex), clazz);
+        return JacksonUtil.jsonToBean(rs.getString(columnIndex), clazz);
     }
 
     @Override
     public T getNullableResult(CallableStatement cs, int columnIndex) throws SQLException {
-        return JSONUtils.toBean(cs.getString(columnIndex), clazz);
+        return JacksonUtil.jsonToBean(cs.getString(columnIndex), clazz);
     }
 }

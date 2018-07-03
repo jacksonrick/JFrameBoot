@@ -20,5 +20,4 @@ cloud-server/target/
 
 # this project
 /jframe/doc/http/*.http
-/jframe-core/src/main/resources/application-pro.yml
 /jframe-web-demo/

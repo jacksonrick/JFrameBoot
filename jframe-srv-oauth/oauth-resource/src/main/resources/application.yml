@@ -1,8 +1,7 @@
-auth-server: http://127.0.0.1:8090
 server:
   port: 8010
 security:
   oauth2:
     resource:
-#      token-info-uri: ${auth-server}/oauth/check_token
+#      token-info-uri: http://127.0.0.1:8090/oauth/check_token
       user-info-uri: http://127.0.0.1:8090/authentication/user

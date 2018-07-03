@@ -1,4 +1,4 @@
-package com.jf.config;
+package com.jf.cloud.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

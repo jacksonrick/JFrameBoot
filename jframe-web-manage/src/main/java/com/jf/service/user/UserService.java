@@ -3,13 +3,9 @@ package com.jf.service.user;
 import com.github.pagehelper.PageInfo;
 import com.jf.database.mapper.UserMapper;
 import com.jf.database.model.User;
-import com.jf.database.model.custom.Extend;
 import com.jf.database.model.custom.IdText;
 import com.jf.encrypt.PasswordUtil;
-import com.jf.json.JSONUtils;
 import com.jf.string.StringUtil;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -17,7 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
-import java.util.TreeMap;
 
 /**
  * 用户Service

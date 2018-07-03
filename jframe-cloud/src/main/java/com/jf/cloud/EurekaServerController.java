@@ -1,8 +1,8 @@
 package com.jf.cloud;
 
-import com.jf.cloud.common.HttpUtil;
 import com.jf.cloud.common.Result;
 import com.jf.cloud.common.StringUtil;
+import com.jf.cloud.config.OAuthClient;
 import com.netflix.appinfo.ApplicationInfoManager;
 import com.netflix.appinfo.EurekaInstanceConfig;
 import com.netflix.appinfo.InstanceInfo;
@@ -13,6 +13,7 @@ import com.netflix.eureka.EurekaServerContextHolder;
 import com.netflix.eureka.cluster.PeerEurekaNode;
 import com.netflix.eureka.util.StatusInfo;
 import com.netflix.eureka.util.StatusUtil;
+import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,6 +36,8 @@ public class EurekaServerController {
 
     @Resource
     private ApplicationInfoManager manager;
+    @Resource
+    private OAuthClient oAuthClient;
 
     /**
      * 登录
@@ -127,34 +130,32 @@ public class EurekaServerController {
      * 通过http(Auth) 获取实例的健康状态
      *
      * @param monitor http://ip:port/monitor/health
-     * @param auth    username:password
      * @return json
      */
     @RequestMapping(value = "/info", method = RequestMethod.POST)
     @ResponseBody
-    public Result info(String monitor, String auth) throws Exception {
-        if (StringUtil.isBlank(monitor) || StringUtil.isBlank(auth)) {
+    public Result info(String monitor) throws Exception {
+        if (StringUtil.isBlank(monitor)) {
             return new Result(1, "invalid param");
         }
-        String json = HttpUtil.getWithAuthorization(monitor, auth);
-        return new Result(0, "SUCCESS", json);
+        String result = oAuthClient.requestAuth(monitor, HttpMethod.GET);
+        return new Result(0, "SUCCESS", result);
     }
 
     /**
      * 配置刷新
      *
      * @param monitor http://ip:port/monitor/health
-     * @param auth    username:password
      * @return
      */
     @RequestMapping(value = "/info/refresh", method = RequestMethod.POST)
     @ResponseBody
-    public Result refresh(String monitor, String auth) throws Exception {
-        if (StringUtil.isBlank(monitor) || StringUtil.isBlank(auth)) {
+    public Result refresh(String monitor) throws Exception {
+        if (StringUtil.isBlank(monitor)) {
             return new Result(1, "invalid param");
         }
-        String json = HttpUtil.postWithAuthorization(monitor, null, auth);
-        return new Result(0, "SUCCESS", json);
+        String result = oAuthClient.requestAuth(monitor, HttpMethod.POST);
+        return new Result(0, "SUCCESS", result);
     }
 
 

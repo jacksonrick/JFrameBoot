@@ -50,3 +50,5 @@ eureka: # eureka服务端
     fetchRegistry: false
     serviceUrl: # 注册地址
       defaultZone: http://${eureka.security.username}:${eureka.security.password}@${eureka.instance.hostname}:${server.port}/eureka/
+oauth: # oauth服务器，client模式
+  token_url: http://127.0.0.1:8090/oauth/token?grant_type=client_credentials&scope=all&client_id=client&client_secret=123456

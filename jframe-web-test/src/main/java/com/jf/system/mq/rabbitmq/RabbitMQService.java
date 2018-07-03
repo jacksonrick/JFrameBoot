@@ -1,7 +1,7 @@
 package com.jf.system.mq.rabbitmq;
 
 import com.jf.database.model.User;
-import com.jf.json.JSONUtils;
+import com.jf.json.JacksonUtil;
 import com.rabbitmq.client.Channel;
 import org.springframework.amqp.core.*;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
@@ -57,7 +57,7 @@ public class RabbitMQService implements RabbitTemplate.ConfirmCallback, RabbitTe
                 boolean success = true;
                 long id = 0;
                 try {
-                    User user = JSONUtils.toBean(new String(body), User.class);
+                    User user = JacksonUtil.jsonToBean(new String(body), User.class);
                     id = user.getId();
                     if (id == 31) {
                         success = false;

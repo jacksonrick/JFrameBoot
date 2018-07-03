@@ -1,17 +1,29 @@
-package com.jf;
+package com.jf.po;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+import java.util.Date;
 
 /**
  * Created by xujunfei on 2017/1/4.
  */
-public class TestUser {
+public class TUser {
 
     private String name;
 
     private Integer age;
 
-    private Double money;
-
     private Boolean flag;
+
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private Date birth;
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date time;
+
+    private Date dates;
+
+    private TRole role;
 
     public String getName() {
         return name;
@@ -29,19 +41,56 @@ public class TestUser {
         this.age = age;
     }
 
-    public Double getMoney() {
-        return money;
-    }
-
-    public void setMoney(Double money) {
-        this.money = money;
-    }
-
     public Boolean getFlag() {
         return flag;
     }
 
     public void setFlag(Boolean flag) {
         this.flag = flag;
+    }
+
+    public Date getBirth() {
+        return birth;
+    }
+
+    public void setBirth(Date birth) {
+        this.birth = birth;
+    }
+
+    public Date getTime() {
+        return time;
+    }
+
+    public void setTimes(Date time) {
+        this.time = time;
+    }
+
+    public Date getDates() {
+        return dates;
+    }
+
+    public void setDates(Date dates) {
+        this.dates = dates;
+    }
+
+    public TRole getRole() {
+        return role;
+    }
+
+    public void setRole(TRole role) {
+        this.role = role;
+    }
+
+    @Override
+    public String toString() {
+        return "TUser{" +
+                "name='" + name + '\'' +
+                ", age=" + age +
+                ", flag=" + flag +
+                ", birth=" + birth +
+                ", time=" + time +
+                ", dates=" + dates +
+                ", role=" + role +
+                '}';
     }
 }

@@ -35,11 +35,7 @@
                 <span class="caret"></span>
             </button>
             <ul class="dropdown-menu">
-                <li><a href="javascript:;">user: <input class="form-control" type="text" id="username" value="spring" style="width: 150px"/></a>
-                </li>
-                <li><a href="javascript:;">pwd:
-                    <input class="form-control" type="password" id="password" value="springboot123456!" style="width: 150px"/></a></li>
-                <li role="separator" class="divider"></li>
+                <#--<li role="separator" class="divider"></li>-->
                 <li><a href="javascript:;" id="refresh">Refresh Cloud Configs</a></li>
             </ul>
         </div>
@@ -71,7 +67,7 @@
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
                     </button>
-                    <h4 class="modal-title">Message</h4>
+                    <h4 class="modal-title" id="title">Message</h4>
                 </div>
                 <div class="modal-body" id="modal-content">
                 </div>
@@ -375,7 +371,7 @@
     Ajax = {
         info: function () {
             $.ajax({
-                url: "/info?auth=" + $("#username").val() + ":" + $("#password").val() + "&monitor=" + monitor + "/info",
+                url: "/info?&monitor=" + monitor + "/info",
                 type: "post",
                 contentType: 'application/json',
                 dataType: "json",
@@ -393,7 +389,7 @@
         },
         ajax: function (config) {
             $.ajax({
-                url: "/info?auth=" + $("#username").val() + ":" + $("#password").val() + "&monitor=" + monitor + config.operate,
+                url: "/info?monitor=" + monitor + config.operate,
                 type: "post",
                 contentType: 'application/json',
                 dataType: "json",
@@ -421,7 +417,7 @@
         },
         refresh: function () {
             $.ajax({
-                url: "/info/refresh?auth=" + $("#username").val() + ":" + $("#password").val() + "&monitor=" + monitor + "/refresh",
+                url: "/info/refresh?monitor=" + monitor + "/refresh",
                 type: "post",
                 contentType: 'application/json',
                 dataType: "json",
@@ -433,8 +429,10 @@
                         } else {
                             $("#modal-content").html("no keys changed.");
                         }
+                        $("#title").html("Success");
                         $("#modal").modal('show');
                     } else {
+                        $("#title").html("Message");
                         alert(data.msg);
                     }
                 }

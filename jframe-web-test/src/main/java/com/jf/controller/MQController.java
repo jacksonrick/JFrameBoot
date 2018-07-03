@@ -1,10 +1,10 @@
 package com.jf.controller;
 
+import com.alibaba.druid.support.json.JSONUtils;
 import com.jf.common.BaseController;
 import com.jf.database.model.User;
 import com.jf.entity.ResMsg;
 import com.jf.entity.enums.ResCode;
-import com.jf.json.JSONUtils;
 import com.jf.system.mq.rabbitmq.RabbitMQService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

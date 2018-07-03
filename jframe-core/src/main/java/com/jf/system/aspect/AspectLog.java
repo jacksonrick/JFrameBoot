@@ -82,11 +82,14 @@ public class AspectLog {
 
     @AfterReturning(pointcut = "ctl()", returning = "ret")
     public void ret(Object ret) {
-        String cn = ret.getClass().getSimpleName();
-        if ("String".equals(cn) || "ResMsg".equals(cn) || "ArrayList".equals(cn)) {
-            log.info("Returns: {}", ret);
-        } else {
-            log.info("Returns: {}", ret.getClass().getName());
+        if (ret != null) {
+            String cn = ret.getClass().getSimpleName();
+            // 仅打印以下类型，否则打印类名
+            if ("String".equals(cn) || "ResMsg".equals(cn) || "ArrayList".equals(cn)) {
+                log.info("Returns: {}", ret);
+            } else {
+                log.info("Returns: {}", ret.getClass().getName());
+            }
         }
         MDC.clear();
     }

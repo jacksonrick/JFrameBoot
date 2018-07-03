@@ -43,7 +43,7 @@
             {title: "账户余额", data: "money", orderable: false, visible: false},
             {title: "头像", data: "avatar", orderable: false, render: CONSTANT.RENDER.AVATAR},
             {title: "注册时间", data: "createTime", defaultContent: "--"},
-            {title: "是否冻结", data: "isDelete", render: CONSTANT.RENDER.BOOLEAN},
+            {title: "是否冻结", data: "deleted", render: CONSTANT.RENDER.BOOLEAN},
             {title: "操作", data: null, orderable: false}
         ]
         var $table = $('#table');

@@ -33,7 +33,7 @@ public class OrderService {
      * @param amount
      * @return
      */
-    public Order order(Long userId, Long productId, Double price, Integer amount) {
+    public Order order(Integer userId, Integer productId, Double price, Integer amount) {
         String orderNum = StringUtil.getOrderCode();
         Order order = new Order(userId, productId, price, amount, orderNum);
         order.setCreateTime(new Date());
@@ -76,9 +76,9 @@ public class OrderService {
     }
 
     class Order {
-        private Long userId;
+        private Integer userId;
 
-        private Long productId;
+        private Integer productId;
 
         private Double price;
 
@@ -91,7 +91,7 @@ public class OrderService {
         public Order() {
         }
 
-        public Order(Long userId, Long productId, Double price, Integer amount, String orderNum) {
+        public Order(Integer userId, Integer productId, Double price, Integer amount, String orderNum) {
             this.userId = userId;
             this.productId = productId;
             this.price = price;
@@ -99,19 +99,19 @@ public class OrderService {
             this.orderNum = orderNum;
         }
 
-        public Long getUserId() {
+        public Integer getUserId() {
             return userId;
         }
 
-        public void setUserId(Long userId) {
+        public void setUserId(Integer userId) {
             this.userId = userId;
         }
 
-        public Long getProductId() {
+        public Integer getProductId() {
             return productId;
         }
 
-        public void setProductId(Long productId) {
+        public void setProductId(Integer productId) {
             this.productId = productId;
         }
 

@@ -48,6 +48,6 @@ public class CloudController extends BaseController {
     @RequestMapping("/order")
     @ResponseBody
     public String order() {
-        return orderRestService.order(10000l, 100l);
+        return orderRestService.order(10000, 100);
     }
 }

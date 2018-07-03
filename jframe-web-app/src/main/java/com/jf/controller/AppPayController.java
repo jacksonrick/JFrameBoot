@@ -1,5 +1,7 @@
 package com.jf.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.alipay.api.internal.util.AlipaySignature;
 import com.github.wxpay.sdk.WXPay;
 import com.github.wxpay.sdk.WXPayUtil;
@@ -8,12 +10,10 @@ import com.jf.convert.Convert;
 import com.jf.entity.ResMsg;
 import com.jf.entity.enums.ResCode;
 import com.jf.file.Qrcode;
-import com.jf.json.JSONUtils;
 import com.jf.string.StringUtil;
 import com.jf.system.alipay.AliPayService;
 import com.jf.system.conf.SysConfig;
 import com.jf.system.wechat.WxPayService;
-import net.sf.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -53,7 +53,7 @@ public class AppPayController extends BaseController {
     @RequestMapping("/alipay_qrcode")
     public void alipay_qrcode(HttpServletResponse response) throws Exception {
         String result = aliPayService.qrcode("商品", 0.01, StringUtil.getOrderCode());
-        JSONObject object = JSONUtils.toJSONObject(result).getJSONObject("alipay_trade_precreate_response");
+        JSONObject object = JSON.parseObject(result).getJSONObject("alipay_trade_precreate_response");
         if (object.get("code") != null) {
             System.out.println(object.get("sub_msg"));
             return;

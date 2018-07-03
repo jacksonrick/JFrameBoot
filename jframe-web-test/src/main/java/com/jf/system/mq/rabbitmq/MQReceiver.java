@@ -1,8 +1,7 @@
 package com.jf.system.mq.rabbitmq;
 
 import com.jf.database.model.User;
-import com.jf.json.JSONUtils;
-import com.rabbitmq.client.Channel;
+import com.jf.json.JacksonUtil;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
@@ -28,7 +27,7 @@ public class MQReceiver {
             e.printStackTrace();
         }
         try {
-            User user = JSONUtils.toBean(message, User.class);
+            User user = JacksonUtil.jsonToBean(message, User.class);
             if (user.getId() == 30) {
                 System.out.println(1 / 0);
             }

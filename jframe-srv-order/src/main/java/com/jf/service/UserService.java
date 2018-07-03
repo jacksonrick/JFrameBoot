@@ -22,7 +22,7 @@ public class UserService {
      * @param id
      * @return
      */
-    public User findUserById(Long id) {
+    public User findUserById(Integer id) {
         return userMapper.findById(id);
     }
 

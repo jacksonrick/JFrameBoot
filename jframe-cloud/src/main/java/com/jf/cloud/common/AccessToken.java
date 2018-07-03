@@ -1,8 +1,8 @@
-package com.jf.po;
+package com.jf.cloud.common;
 
 /**
  * Created with IntelliJ IDEA.
- * Description:
+ * Description: Oauth2 AccessToken
  * User: xujunfei
  * Date: 2018-06-06
  * Time: 16:31

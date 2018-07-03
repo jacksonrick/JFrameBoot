@@ -1,9 +1,14 @@
 package com.jf;
 
+import com.jf.json.JacksonUtil;
 import com.jf.obj.BeanUtil;
+import com.jf.po.TRole;
+import com.jf.po.TUser;
 import org.joda.time.Days;
 import org.joda.time.LocalDate;
 
+import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -12,11 +17,47 @@ import java.util.Map;
 public class MainTest {
 
     public static void main(String[] args) {
-        test02();
+
+    }
+
+    public static void testBeanToJson() {
+        TUser user = new TUser();
+        user.setName("xujunfei");
+        user.setAge(10);
+        user.setFlag(true);
+        user.setBirth(new Date());
+        user.setDates(new Date());
+        user.setTimes(new Date());
+
+        TRole role = new TRole();
+        role.setName("super");
+        role.setTime(new Date());
+        user.setRole(role);
+
+        String json = JacksonUtil.objectToJson(user);
+        System.out.println(json);
+    }
+
+    public static void testJsonToBean() {
+        String json = "{\"name\":\"xujunfei\",\"age\":10,\"flag\":true,\"birth\":\"2018-06-29\",\"time\":\"2018-06-29 05:02:27\",\"dates\":\"2018-06-29 13:02:27\",\"role\":{\"name\":\"super\",\"time\":\"2018-06-29 13:02:27\"}}";
+        TUser user = JacksonUtil.jsonToBean(json, TUser.class);
+        System.out.println(user);
+    }
+
+    public static void testJsonToMap() {
+        String json = "{\"name\":\"xujunfei\",\"age\":10,\"flag\":true,\"birth\":\"2018-06-29\",\"time\":\"2018-06-29 05:02:27\",\"dates\":\"2018-06-29 13:02:27\",\"role\":{\"name\":\"super\",\"time\":\"2018-06-29 13:02:27\"}}";
+        Map map = JacksonUtil.jsonToMap(json);
+        System.out.println(map);
+    }
+
+    public static void testJsonToList() {
+        String json = "[{\"name\":\"xujunfei\",\"age\":10,\"flag\":true,\"birth\":\"2018-06-29\",\"time\":\"2018-06-29 05:02:27\",\"dates\":\"2018-06-29 13:02:27\"},{\"name\":\"feifei\",\"age\":10,\"flag\":true,\"birth\":\"2018-06-29\",\"time\":\"2018-06-29 05:02:27\",\"dates\":\"2018-06-29 13:02:27\"}]";
+        List<TUser> list = JacksonUtil.jsonToList(json, TUser.class);
+        System.out.println(list);
     }
 
     public static void test01() {
-        TestUser user = new TestUser();
+        TUser user = new TUser();
         user.setAge(1);
         user.setFlag(true);
         Map<String, Object> map = BeanUtil.beanToMap(user);

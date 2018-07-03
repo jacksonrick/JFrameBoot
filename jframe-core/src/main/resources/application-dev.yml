@@ -121,7 +121,7 @@ spring:
           auth: true
           timeout: 25000
   redis: # spring redis
-    host: 192.168.1.200
+    host: 192.168.24.200
     port: 6379
     password:  # 密码
     timeout: 5s

@@ -1,7 +1,7 @@
 package com.jf;
 
 import com.jf.database.model.User;
-import com.jf.json.JSONUtils;
+import com.jf.json.JacksonUtil;
 import com.jf.service.TxService;
 import com.jf.service.UserService;
 import com.jf.system.conf.SysConfig;
@@ -47,7 +47,7 @@ public class Tests {
     @Test
     public void test4() {
         User list = userService.testTypeHandlerForFind();
-        System.out.println(JSONUtils.toJSONString(list));
+        System.out.println(JacksonUtil.objectToJson(list));
     }
 
 }

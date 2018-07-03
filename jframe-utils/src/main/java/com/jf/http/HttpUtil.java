@@ -46,7 +46,7 @@ public class HttpUtil {
     }*/
 
     // 请求和传输超时时间
-    private final static int connectTimeout = 10000;
+    private final static int connectTimeout = 20000;
     private final static int socketTimeout = 10000;
     // 根据返回字符串判断异常
     public final static String STR_TIMEOUT = "timeout";

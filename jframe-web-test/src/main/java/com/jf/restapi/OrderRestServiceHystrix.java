@@ -1,6 +1,9 @@
 package com.jf.restapi;
 
+import com.jf.database.model.User;
 import org.springframework.stereotype.Component;
+
+import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
@@ -13,8 +16,17 @@ import org.springframework.stereotype.Component;
 public class OrderRestServiceHystrix implements OrderRestService {
 
     @Override
-    public String order(Long userId, Long productId) {
+    public String order(Integer userId, Integer productId) {
         return "sorry!service[order] is Unavailable!";
     }
 
+    @Override
+    public String get(Map<String, Object> map) {
+        return "sorry!service[get] is Unavailable!";
+    }
+
+    @Override
+    public String post(User user) {
+        return "sorry!service[post] is Unavailable!";
+    }
 }

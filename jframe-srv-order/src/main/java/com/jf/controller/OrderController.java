@@ -1,15 +1,15 @@
 package com.jf.controller;
 
+import com.jf.database.model.User;
 import com.jf.entity.ResMsg;
 import com.jf.service.OrderService;
 import com.jf.service.UserService;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
@@ -30,17 +30,31 @@ public class OrderController {
     private String port;
 
     /**
-     * 订单服务接口
+     * 订单服务接口 Test
      *
      * @param userId
      * @param productId
      * @return
      */
-    @PostMapping("/order")
-    public ResMsg order(Long userId, Long productId) {
+    @GetMapping("/order")
+    public ResMsg order(Integer userId, Integer productId) {
         System.out.println("订单到达，本机端口：" + port);
         return new ResMsg(0, "下单成功，服务端口：" + port, orderService.order(userId, productId, 100.1, 2));
     }
+
+    @GetMapping("/get")
+    public String get(@RequestParam Map<String, Object> map) {
+        System.out.println(map);
+        return "get";
+    }
+
+    @PostMapping("/post")
+    public String post(@RequestBody User user) {
+        System.out.println(user);
+        return "post";
+    }
+
+    // 分布式事务测试
 
     @GetMapping("/reduce")
     public String reduce(HttpServletRequest request) {
@@ -50,7 +64,7 @@ public class OrderController {
         System.out.println("money:" + str_money);
 
         Double money = Double.parseDouble(str_money);
-        Double total_money = userService.findUserById(10000l).getMoney();
+        Double total_money = userService.findUserById(10000).getMoney();
         if (total_money < money) {
             return "-1";
         }
