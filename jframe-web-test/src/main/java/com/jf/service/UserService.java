@@ -2,10 +2,9 @@ package com.jf.service;
 
 import com.github.pagehelper.PageInfo;
 import com.jf.database.mapper.TestMapper;
-import com.jf.database.mapper.UserMapper;
 import com.jf.database.model.User;
 import com.jf.database.model.custom.IdText;
-import com.jf.database.secondary.User2Mapper;
+import com.jf.database.secondary.Test2Mapper;
 import com.jf.encrypt.PasswordUtil;
 import com.jf.string.StringUtil;
 import com.jf.system.redisson.RedisLocker;
@@ -39,12 +38,9 @@ public class UserService {
 
     // 多数据源
     @Resource
-    private UserMapper userMapper;
-    @Autowired(required = false)
-    private User2Mapper user2Mapper;
-
-    @Resource
     private TestMapper testMapper;
+    @Autowired(required = false)
+    private Test2Mapper test2Mapper;
 
     // RedisLocker
     @Autowired(required = false)
@@ -154,7 +150,7 @@ public class UserService {
                 //System.out.println("10006");
                 System.out.println(1 / 0); // error
             }
-            User user = userMapper.findById(id);
+            User user = testMapper.findById(id);
             user.setMoney(1000d);
             try {
                 user2Service.update(user);
@@ -178,9 +174,9 @@ public class UserService {
             @Override
             public Object invokeAfterLockAquire() throws Exception {
 
-                User user = userMapper.findSimpleById(userId);
+                User user = testMapper.findSimpleById(userId);
                 user.setMoney(user.getMoney() - 1);
-                userMapper.update(user);
+                testMapper.update(user);
 
                 return null;
             }
@@ -227,24 +223,24 @@ public class UserService {
      */
     @Transactional(value = "primaryTransactionManager")
     public void testRollbackA() {
-        User user = userMapper.findById(10000);
+        User user = testMapper.findById(10000);
         user.setNickname("primary_rollback");
-        userMapper.update(user);
+        testMapper.update(user);
         System.out.println(1 / 0); // error
         user = new User(10001);
         user.setNickname("secondary_rollback");
-        userMapper.update(user);
+        testMapper.update(user);
     }
 
     @Transactional(value = "secondaryTransactionManager")
     public void testRollbackB() {
-        User user = user2Mapper.findById(10000);
+        User user = test2Mapper.findById(10000);
         user.setNickname("secondary_rollback");
-        user2Mapper.update(user);
+        test2Mapper.update(user);
         System.out.println(1 / 0); // error
         user = new User(10001);
         user.setNickname("primary_rollback");
-        user2Mapper.update(user);
+        test2Mapper.update(user);
     }
 
     /**
@@ -256,10 +252,10 @@ public class UserService {
     public User testMutilSource(String source) {
         User user = null;
         if ("primary".equals(source)) {
-            user = userMapper.findById(10000);
+            user = testMapper.findById(10000);
         }
         if ("secondary".equals(source)) {
-            user = user2Mapper.findById(10000);
+            user = test2Mapper.findById(10000);
         }
         return user;
     }
@@ -273,7 +269,7 @@ public class UserService {
      */
     @Cacheable(value = "user", key = "'findUserById'+#id")
     public User findUserById(Integer id) {
-        return userMapper.findById(id);
+        return testMapper.findById(id);
     }
 
 
@@ -289,7 +285,7 @@ public class UserService {
         if (StringUtil.isNotBlank(user.getPassword())) {
             user.setPassword(PasswordUtil.MD5Encode(user.getPassword()));
         }
-        return userMapper.update(user);
+        return testMapper.update(user);
     }
 
     /**
@@ -304,7 +300,7 @@ public class UserService {
             condition.setPageSort("u.id DESC");
         }
         condition.setPage(true);
-        List<User> list = userMapper.findByCondition(condition);
+        List<User> list = testMapper.findByCondition(condition);
         return new PageInfo(list);
     }
 
@@ -316,7 +312,7 @@ public class UserService {
         //condition.setPageNo(1);
         //condition.setPageSize(10);
         //condition.setPage(false);
-        return userMapper.findByCondition(condition);
+        return testMapper.findByCondition(condition);
     }
 
     /**
@@ -328,7 +324,7 @@ public class UserService {
      * @return
      */
     public Object findFieleByUserId(Integer userId, String field) {
-        return userMapper.findFieleByUserId(userId, field);
+        return testMapper.findFieleByUserId(userId, field);
     }
 
     /**
@@ -338,7 +334,7 @@ public class UserService {
      * @return
      */
     public List<IdText> findUserLikePhone(String phone) {
-        return userMapper.findUserLikePhone(phone);
+        return testMapper.findUserLikePhone(phone);
     }
 
     /**
@@ -350,7 +346,7 @@ public class UserService {
     public User findUserByPhone(String phone) {
         User condition = new User();
         condition.setPhone(phone);
-        List<User> list = userMapper.findByCondition(condition);
+        List<User> list = testMapper.findByCondition(condition);
         if (!list.isEmpty()) {
             return list.get(0);
         }
@@ -364,7 +360,7 @@ public class UserService {
      * @return
      */
     public int findUserCountByPhone(String phone) {
-        return userMapper.findCountByKey("phone", phone);
+        return testMapper.findCountByKey("phone", phone);
     }
 
     /**
@@ -374,7 +370,7 @@ public class UserService {
      * @return
      */
     public int findUserCountByEmail(String email) {
-        return userMapper.findCountByKey("email", email);
+        return testMapper.findCountByKey("email", email);
     }
 
     /**
@@ -385,7 +381,7 @@ public class UserService {
      * @return
      */
     public User findUserByNameAndPwd(String account, String password) {
-        return userMapper.findByNameAndPwd(account, PasswordUtil.MD5Encode(password));
+        return testMapper.findByNameAndPwd(account, PasswordUtil.MD5Encode(password));
     }
 
     /**
@@ -404,7 +400,7 @@ public class UserService {
         user.setPhone(phone);
         user.setNickname(nickname);
         // 新增用户
-        return userMapper.insert(user);
+        return testMapper.insert(user);
     }
 
     /**
@@ -418,7 +414,7 @@ public class UserService {
         User user = new User();
         user.setId(userId);
         user.setAvatar(avatar);
-        return userMapper.update(user);
+        return testMapper.update(user);
     }
 
     /**
@@ -428,7 +424,7 @@ public class UserService {
      * @return
      */
     public int deleteUser(Integer userId) {
-        return userMapper.delete(userId);
+        return testMapper.delete(userId);
     }
 
     /**
@@ -438,7 +434,7 @@ public class UserService {
      * @return
      */
     public int deleteBatch(Integer[] ids) {
-        return userMapper.deleteBatch(ids);
+        return testMapper.deleteBatch(ids);
     }
 
 }

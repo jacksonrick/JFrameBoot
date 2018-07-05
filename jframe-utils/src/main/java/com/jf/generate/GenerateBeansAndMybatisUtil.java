@@ -1028,6 +1028,9 @@ public class GenerateBeansAndMybatisUtil {
             pstate = conn.prepareStatement(MessageFormat.format(sql, table));
             ResultSet results = pstate.executeQuery();
             while (results.next()) {
+                /*if (dbType == 1 && "VIRTUAL GENERATED".equals(results.getString("Extra"))) {
+                    continue; // 去除虚拟列
+                }*/
                 columns.add(results.getString("FIELD"));
                 types.add(results.getString("TYPE"));
                 comments.add(results.getString("COMMENT"));

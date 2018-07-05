@@ -4,6 +4,7 @@ import com.github.pagehelper.PageInfo;
 import com.jf.database.mapper.UserMapper;
 import com.jf.database.model.User;
 import com.jf.database.model.custom.IdText;
+import com.jf.database.model.excel.UserModel;
 import com.jf.encrypt.PasswordUtil;
 import com.jf.string.StringUtil;
 import org.springframework.cache.annotation.CacheEvict;
@@ -142,6 +143,17 @@ public class UserService {
      */
     public User findUserByNameAndPwd(String account, String password) {
         return userMapper.findByNameAndPwd(account, PasswordUtil.MD5Encode(password));
+    }
+
+    /**
+     * 导出Excel
+     *
+     * @param condition
+     * @return
+     */
+    public List<UserModel> findUserExcelByCondition(User condition) {
+        condition.setPageSort("u.id DESC");
+        return userMapper.findForExcel(condition);
     }
 
     /**

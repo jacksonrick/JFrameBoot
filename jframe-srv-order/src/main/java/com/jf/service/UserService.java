@@ -1,6 +1,6 @@
 package com.jf.service;
 
-import com.jf.database.mapper.UserMapper;
+import com.jf.database.mapper.TestMapper;
 import com.jf.database.model.User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,14 +16,14 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class UserService {
 
-    private UserMapper userMapper;
+    private TestMapper testMapper;
 
     /**
      * @param id
      * @return
      */
     public User findUserById(Integer id) {
-        return userMapper.findById(id);
+        return testMapper.findById(id);
     }
 
 }

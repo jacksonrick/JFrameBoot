@@ -1,4 +1,4 @@
-package com.jf.database.model;
+package com.jf.database.model.manage;
 
 import java.io.Serializable;
 import java.util.Date;

@@ -1,9 +1,9 @@
 package com.jf.service.system;
 
 import com.github.pagehelper.PageInfo;
-import com.jf.database.mapper.LogMapper;
-import com.jf.database.model.Admin;
-import com.jf.database.model.Log;
+import com.jf.database.mapper.manage.LogMapper;
+import com.jf.database.model.manage.Admin;
+import com.jf.database.model.manage.Log;
 import com.jf.system.conf.SysConfig;
 import com.jf.system.db.DbSQLExecutor;
 import org.springframework.stereotype.Service;

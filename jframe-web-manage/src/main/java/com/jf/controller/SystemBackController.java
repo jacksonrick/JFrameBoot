@@ -4,7 +4,7 @@ import com.github.pagehelper.PageInfo;
 import com.jf.common.BaseController;
 import com.jf.controller.view.ViewExcel;
 import com.jf.convert.Convert;
-import com.jf.database.model.*;
+import com.jf.database.model.manage.*;
 import com.jf.date.DateUtil;
 import com.jf.entity.ResMsg;
 import com.jf.entity.Tree;
@@ -82,7 +82,8 @@ public class SystemBackController extends BaseController {
     @RequestMapping("/jenkins")
     @AuthPassport(right = false)
     public String jenkins(HttpServletRequest request) {
-        if (getAdmin(request).getRole().getRoleFlag() != 0) {
+        Admin admin = getSession(request, SysConfig.SESSION_ADMIN);
+        if (admin == null || admin.getRole().getRoleFlag() != 0) {
             return "error/refuse";
         }
         return "system/jenkins";
@@ -105,7 +106,8 @@ public class SystemBackController extends BaseController {
         if (StringUtil.isBlank(ip) || StringUtil.isBlank(type) || StringUtil.isBlank(auth)) {
             return new ResMsg(1, "invalid param");
         }
-        if (getAdmin(request).getRole().getRoleFlag() != 0) {
+        Admin admin = getSession(request, SysConfig.SESSION_ADMIN);
+        if (admin == null || admin.getRole().getRoleFlag() != 0) {
             return new ResMsg(1, "refuse if superadmin");
         }
 

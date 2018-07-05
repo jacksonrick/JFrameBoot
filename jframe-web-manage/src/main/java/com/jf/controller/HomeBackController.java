@@ -1,9 +1,9 @@
 package com.jf.controller;
 
 import com.jf.common.BaseController;
-import com.jf.database.model.Admin;
-import com.jf.database.model.Module;
-import com.jf.database.model.Msg;
+import com.jf.database.model.manage.Admin;
+import com.jf.database.model.manage.Module;
+import com.jf.database.model.manage.Msg;
 import com.jf.entity.ResMsg;
 import com.jf.entity.enums.ResCode;
 import com.jf.service.system.AdminService;
@@ -83,7 +83,8 @@ public class HomeBackController extends BaseController {
      */
     @RequestMapping("/login")
     public String login(HttpServletRequest request, ModelMap map) {
-        if (getAdmin(request) != null) {
+        Admin admin = getSession(request, SysConfig.SESSION_ADMIN);
+        if (admin != null) {
             return "redirect:index";
         }
         map.put("version", VERSION.SYS_VER);
@@ -156,7 +157,7 @@ public class HomeBackController extends BaseController {
     @RequestMapping("/index")
     @AuthPassport(right = false)
     public String index(ModelMap map, HttpServletRequest request) {
-        Admin admin = getAdmin(request);
+        Admin admin = getSession(request, SysConfig.SESSION_ADMIN);
         map.put("admin", admin);
         List<Module> list = moduleService.findModules(admin.getId());
         map.addAttribute("modules", list);
@@ -207,7 +208,7 @@ public class HomeBackController extends BaseController {
     @AuthPassport(right = false)
     @ResponseBody
     public ResMsg changePwd(String oldPwd, String newPass, String newPass2, HttpServletRequest request) {
-        Admin admin = getAdmin(request);
+        Admin admin = getSession(request, SysConfig.SESSION_ADMIN);
         if (StringUtil.isBlank(oldPwd)) {
             return new ResMsg(1, "旧密码不能为空");
         }

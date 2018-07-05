@@ -1,6 +1,6 @@
 package com.jf.service;
 
-import com.jf.database.mapper.UserMapper;
+import com.jf.database.mapper.TestMapper;
 import com.jf.database.model.User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,11 +18,11 @@ import javax.annotation.Resource;
 public class User2Service {
 
     @Resource
-    private UserMapper userMapper;
+    private TestMapper testMapper;
 
     @Transactional
     public void update(User user) throws Exception {
-        userMapper.update(user);
+        testMapper.update(user);
     }
 
 }

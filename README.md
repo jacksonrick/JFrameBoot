@@ -1,5 +1,5 @@
 # JFrame
-##### JFrame - SpringBoot & Cloud Project `v5.0.3 beta`
+##### JFrame - SpringBoot & Cloud Project `v5.0.4 beta`
 made by @jackson-rick   <br>
 本架构是对技术框架的整合及开发的规范
 
@@ -33,6 +33,9 @@ made by @jackson-rick   <br>
 * Jenkins自动化部署、脚本
 
 ### 更新日志：
+* v5.0.4 beta `20180705`
+    * 1.将mybatis mapperxml移至resources目录
+    * 2.修复BUG
 * v5.0.3 beta `20180703`
     * 1.监控接口更改为OAuth请求模式
     * 2.优化MyBatis对JSON类型的处理

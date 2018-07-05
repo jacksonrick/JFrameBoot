@@ -1,7 +1,7 @@
-package com.jf.database.mapper;
+package com.jf.database.mapper.manage;
 
 import com.jf.database.model.custom.BaseVo;
-import com.jf.database.model.Address;
+import com.jf.database.model.manage.Address;
 
 import java.util.List;
 

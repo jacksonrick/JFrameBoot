@@ -1,7 +1,5 @@
 package com.jf.common;
 
-import com.jf.database.model.Admin;
-import com.jf.database.model.User;
 import com.jf.string.StringUtil;
 import com.jf.system.conf.SysConfig;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,8 +9,7 @@ import org.springframework.web.util.WebUtils;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * Controller Bases
- * token & user & constant
+ * Base Controller
  *
  * @author rick
  * @version 2.0
@@ -38,30 +35,16 @@ public class BaseController {
     }
 
     /**
-     * 从SESSION获取当前管理员信息
+     * 从SESSION获取登录信息
      *
      * @param request
+     * @param sessionName
      * @return
      */
-    protected Admin getAdmin(HttpServletRequest request) {
-        Object object = WebUtils.getSessionAttribute(request, SysConfig.SESSION_ADMIN);
+    protected <T> T getSession(HttpServletRequest request, String sessionName) {
+        Object object = WebUtils.getSessionAttribute(request, sessionName);
         if (object != null) {
-            return (Admin) object;
-        } else {
-            return null;
-        }
-    }
-
-    /**
-     * 获取当前用户
-     *
-     * @param request
-     * @return
-     */
-    protected User getUser(HttpServletRequest request) {
-        Object object = WebUtils.getSessionAttribute(request, SysConfig.SESSION_USER);
-        if (object != null) {
-            return (User) object;
+            return (T) object;
         } else {
             return null;
         }

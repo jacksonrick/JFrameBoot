@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8"?>
+	<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.jf.database.mapper.TestMapper">
+
+	<sql id="userCondition">
+		<where>
+			<include refid="COMMON.USER"></include>
+			<include refid="COMMON.DATE"><property name="column" value="u.create_time"/></include>
+			<if test="phone != null and phone != ''">AND u.phone = #{phone}</if>
+			<if test="realname != null and realname != ''">AND u.realname = #{realname}</if>
+		</where>
+	</sql>
+
+	<sql id="simpleColumn">
+        u.id,
+        u.nickname,
+		u.phone,
+		u.money
+    </sql>
+
+	<sql id="baseColumn">
+        u.id,
+        u.nickname,
+		u.phone,
+		u.email,
+		u.password,
+		u.avatar,
+		u.money,
+		u.create_time,
+		u.last_login_time,
+		u.realname,
+		u.idcard,
+		u.gender,
+		u.address,
+		u.birthday,
+		u.deleted
+    </sql>
+
+	<resultMap type="user" id="userResultMapper">
+		<id property="id" column="id" />
+		<result property="nickname" column="nickname" />
+		<result property="phone" column="phone" />
+		<result property="email" column="email" />
+		<result property="password" column="password" />
+		<result property="avatar" column="avatar" />
+		<result property="money" column="money" />
+		<result property="createTime" column="create_time" />
+		<result property="lastLoginTime" column="last_login_time" />
+		<result property="realname" column="realname" />
+		<result property="idcard" column="idcard" />
+		<result property="gender" column="gender" />
+		<result property="address" column="address" />
+		<result property="birthday" column="birthday" />
+		<result property="deleted" column="deleted" />
+	</resultMap>
+
+	<select id="findByCondition" resultMap="userResultMapper" parameterType="baseVo">
+		SELECT <include refid="baseColumn"></include>
+		FROM t_user u
+		<include refid="userCondition"></include>
+		<include refid="COMMON.ORDER"></include>
+	</select>
+
+	<select id="findById" resultMap="userResultMapper" parameterType="int">
+		SELECT <include refid="baseColumn"></include>
+		FROM t_user u
+		WHERE u.id = #{id}
+	</select>
+
+	<select id="findSimpleById" resultMap="userResultMapper" parameterType="int">
+		SELECT <include refid="simpleColumn"></include>
+		FROM t_user u
+		WHERE u.id = #{id}
+	</select>
+
+	<select id="findCountByKey" resultType="int">
+        SELECT COUNT(1)
+        FROM t_user
+        WHERE ${key} = #{val}
+    </select>
+
+	<select id="findByNameAndPwd" resultMap="userResultMapper" parameterType="string">
+		SELECT <include refid="baseColumn"></include>
+		FROM t_user u
+		WHERE u.id = (
+		SELECT id FROM t_user WHERE phone = #{account} AND password = #{password} UNION
+		SELECT id FROM t_user WHERE nickname = #{account} AND password = #{password}
+		)
+	</select>
+
+	<select id="findFieleByUserId" resultType="object">
+        SELECT ${field}
+        FROM t_user
+        WHERE id = #{userId}
+    </select>
+
+	<select id="findUserLikePhone" resultType="idText" parameterType="string">
+        SELECT id,nickname AS `text`
+        FROM t_user
+        WHERE phone LIKE CONCAT('%', #{phone}, '%')
+    </select>
+
+	<insert id="insert" parameterType="user" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO t_user (
+          nickname,
+          phone,
+          email,
+          password,
+          avatar
+        )
+		VALUE (
+		  #{nickname},
+		  #{phone},
+		  #{email},
+		  #{password},
+		  #{avatar}
+		)
+    </insert>
+
+	<update id="update" parameterType="user">
+		UPDATE t_user
+		<set>
+			<if test="nickname != null and nickname != ''">nickname = #{nickname},</if>
+			<if test="phone != null and phone != ''">phone = #{phone},</if>
+			<if test="email != null and email != ''">email = #{email},</if>
+			<if test="password != null and password != ''">password = #{password},</if>
+			<if test="avatar != null and avatar != ''">avatar = #{avatar},</if>
+			<if test="money != null">money = #{money},</if>
+			<if test="lastLoginTime != null">last_login_time = #{lastLoginTime},</if>
+			<if test="realname != null and realname != ''">realname = #{realname},</if>
+			<if test="idcard != null and idcard != ''">idcard = #{idcard},</if>
+			<if test="gender != null">gender = #{gender},</if>
+			<if test="address != null and address != ''">address = #{address},</if>
+			<if test="birthday != null and birthday != ''">birthday = #{birthday},</if>
+		</set>
+		WHERE id = #{id}
+	</update>
+
+	<update id="delete" parameterType="int">
+        UPDATE t_user SET deleted = !deleted
+        WHERE id = #{id}
+    </update>
+
+	<delete id="deleteBatch">
+		DELETE FROM t_user
+		WHERE id IN <foreach item="id" collection="ids" open="(" separator="," close=")"> #{id} </foreach>
+	</delete>
+
+	<select id="findAll" resultType="idText">
+		SELECT * FROM test1
+	</select>
+
+	<resultMap type="user" id="userResultMapper1">
+		<id property="id" column="id" />
+		<result property="nickname" column="nickname" />
+		<result property="phone" column="phone" />
+		<result property="extend" column="extend" typeHandler="com.jf.system.handler.mybatis.JsonHandler" javaType="extend" />
+	</resultMap>
+
+	<resultMap type="user" id="userResultMapper2">
+		<id property="id" column="id" />
+		<result property="nickname" column="nickname" />
+		<result property="phone" column="phone" />
+		<result property="params" column="extend" typeHandler="com.jf.system.handler.mybatis.JsonHandler" javaType="java.util.TreeMap" />
+	</resultMap>
+
+	<resultMap type="user" id="userResultMapper3">
+		<id property="id" column="id" />
+		<result property="nickname" column="nickname" />
+		<result property="phone" column="phone" />
+		<result property="arr" column="address" typeHandler="com.jf.system.handler.mybatis.ArrayHandler" />
+	</resultMap>
+
+	<select id="findUserById" resultMap="userResultMapper1" parameterType="int">
+		SELECT id,nickname,phone,extend
+		FROM t_user
+		WHERE id = #{id}
+	</select>
+
+	<select id="findUserById2" resultMap="userResultMapper2" parameterType="int">
+		SELECT id,nickname,phone,extend
+		FROM t_user
+		WHERE id = #{id}
+	</select>
+
+	<select id="findUserById3" resultMap="userResultMapper3" parameterType="int">
+		SELECT id,nickname,phone,address
+		FROM t_user
+		WHERE id = #{id}
+	</select>
+
+	<insert id="insertUser" parameterType="user">
+		INSERT INTO t_user (
+			nickname,
+			phone,
+			extend
+		) VALUES (
+			#{nickname},
+			#{phone},
+			#{extend, typeHandler=com.jf.system.handler.mybatis.JsonHandler, javaType=extend}
+		)
+	</insert>
+
+	<insert id="insertUser2" parameterType="user">
+		INSERT INTO t_user (
+			nickname,
+			extend
+		) VALUES (
+			#{nickname},
+			#{params, typeHandler=com.jf.system.handler.mybatis.JsonHandler, javaType=java.util.TreeMap}
+		)
+	</insert>
+
+	<insert id="insertUser3" parameterType="user">
+		INSERT INTO t_user (
+			nickname,
+			address
+		) VALUES (
+			#{nickname},
+			#{arr, typeHandler=com.jf.system.handler.mybatis.ArrayHandler}
+		)
+	</insert>
+
+</mapper>

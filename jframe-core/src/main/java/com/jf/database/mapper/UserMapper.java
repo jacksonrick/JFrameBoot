@@ -1,8 +1,9 @@
 package com.jf.database.mapper;
 
-import com.jf.database.model.custom.BaseVo;
 import com.jf.database.model.User;
+import com.jf.database.model.custom.BaseVo;
 import com.jf.database.model.custom.IdText;
+import com.jf.database.model.excel.UserModel;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -27,6 +28,8 @@ public interface UserMapper {
     Object findFieleByUserId(@Param("userId") Integer userId, @Param("field") String field);
 
     List<IdText> findUserLikePhone(String phone);
+
+    List<UserModel> findForExcel(BaseVo baseVo);
 
     int insert(User bean);
 

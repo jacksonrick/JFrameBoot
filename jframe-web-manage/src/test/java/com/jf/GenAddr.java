@@ -1,6 +1,6 @@
 package com.jf;
 
-import com.jf.database.model.Address;
+import com.jf.database.model.manage.Address;
 import com.jf.service.system.AddrService;
 import org.junit.Test;
 import org.junit.runner.RunWith;

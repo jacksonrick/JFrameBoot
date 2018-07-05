@@ -136,7 +136,7 @@ public class ViewExcel<T> extends AbstractXlsView {
             }
         }
 
-        LogManager.info(excelName + " 已导出，总计" + line + "行，" + total + "列", ViewExcel.class);
+        LogManager.info(excelName + " 已导出，总计" + (line - 1) + "行，" + total + "列", ViewExcel.class);
         // 自动列宽
         sheet.trackAllColumnsForAutoSizing();
         for (int i = 0; i < total; i++) {

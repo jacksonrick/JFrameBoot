@@ -11,7 +11,6 @@ import org.mybatis.spring.boot.autoconfigure.SpringBootVFS;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -41,8 +40,8 @@ public class DbPrimaryConfig {
     private Logger logger = LoggerFactory.getLogger(DbPrimaryConfig.class);
 
     public final static String mapperPackage = "com.jf.database.mapper";
-    public final static String xmlMapperLocation = "classpath:com/jf/database/mapper/xml/*.xml";
     public final static String modelPackage = "com.jf.database.model";
+    public final static String xmlMapperLocation = "classpath:mapper/**/*.xml";
 
     @Bean(name = "primaryDataSource")
     @Primary

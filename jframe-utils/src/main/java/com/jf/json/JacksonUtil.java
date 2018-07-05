@@ -39,7 +39,7 @@ public class JacksonUtil {
         try {
             return objectMapper.writeValueAsString(obj);
         } catch (JsonProcessingException e) {
-            throw new JsonFormatException("Object转Json发送错误：" + e.getMessage());
+            throw new JsonFormatException("Object转Json发生错误：" + e.getMessage());
         }
     }
 
@@ -60,7 +60,7 @@ public class JacksonUtil {
         try {
             return objectMapper.readValue(jsonString, clazz);
         } catch (IOException e) {
-            throw new JsonFormatException("Json转Bean发送错误：" + e.getMessage());
+            throw new JsonFormatException("Json转Bean发生错误：" + e.getMessage());
         }
     }
 
@@ -88,7 +88,7 @@ public class JacksonUtil {
         try {
             return objectMapper.readValue(jsonString, Map.class);
         } catch (IOException e) {
-            throw new JsonFormatException("Json转Map发送错误：" + e.getMessage());
+            throw new JsonFormatException("Json转Map发生错误：" + e.getMessage());
         }
     }
 
@@ -107,7 +107,7 @@ public class JacksonUtil {
         try {
             list = (List<T>) objectMapper.readValue(jsonArrayStr, javaType);
         } catch (IOException e) {
-            throw new JsonFormatException("Json转List发送错误：" + e.getMessage());
+            throw new JsonFormatException("Json转List发生错误：" + e.getMessage());
         }
         return list;
     }

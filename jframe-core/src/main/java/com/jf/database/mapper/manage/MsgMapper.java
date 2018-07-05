@@ -1,8 +1,9 @@
-package com.jf.database.mapper;
+package com.jf.database.mapper.manage;
+
+import com.jf.database.model.manage.Msg;
+import com.jf.database.model.custom.BaseVo;
 
 import java.util.List;
-import com.jf.database.model.Msg;
-import com.jf.database.model.custom.BaseVo;
 
 /**
  * MsgMapper Interface

@@ -62,7 +62,7 @@
                 </div>
                 <ul class="nav navbar-top-links navbar-right">
                     <!-- 自动化部署 -->
-                    <#if admin.adminFlag == 0>
+                    <#if admin.role.roleFlag == 0>
                         <li class="dropdown">
                             <a class="tp" onclick="newTab('自动化部署', '/admin/system/jenkins')" title="自动化部署">
                                 <i class="fa fa-sitemap fa-lg"></i>

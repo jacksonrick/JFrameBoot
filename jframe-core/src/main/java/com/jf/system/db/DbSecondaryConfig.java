@@ -41,8 +41,8 @@ public class DbSecondaryConfig {
     private Logger logger = LoggerFactory.getLogger(DbSecondaryConfig.class);
 
     public final static String mapperPackage = "com.jf.database.secondary";
-    public final static String xmlMapperLocation = "classpath:com/jf/database/secondary/xml/*.xml";
     public final static String modelPackage = "com.jf.database.model";
+    public final static String xmlMapperLocation = "classpath:mapper/secondary/*.xml";
 
     @Bean(name = "secondaryDataSource")
     @ConfigurationProperties("spring.datasource.druid.secondary")

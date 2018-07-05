@@ -13,7 +13,7 @@ import java.util.Date;
 import java.util.TreeMap;
 
 /**
- * 用户 - 本架构中用于DEMO
+ * 用户
  *
  * @date 2016年12月21日 上午 11:20:07
  * @author jfxu

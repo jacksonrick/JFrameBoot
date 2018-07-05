@@ -2,8 +2,9 @@ package com.jf.controller.user;
 
 import com.github.pagehelper.PageInfo;
 import com.jf.common.BaseController;
-import com.jf.controller.view.UserExcel;
+import com.jf.controller.view.ViewExcel;
 import com.jf.database.model.User;
+import com.jf.database.model.excel.UserModel;
 import com.jf.entity.ResMsg;
 import com.jf.entity.enums.ResCode;
 import com.jf.service.system.SystemService;
@@ -149,13 +150,8 @@ public class UserController extends BaseController {
     @AuthPassport
     public ModelAndView exportUserExcel(User condition) {
         Map<String, Object> model = new HashMap<String, Object>();
-        model.put("list", userService.findByCondition(condition));
-        return new ModelAndView(new UserExcel(), model);
-        /* ViewExcel通用处理类
-        Map<String, Object> model = new HashMap<String, Object>();
         model.put("list", userService.findUserExcelByCondition(condition));
         return new ModelAndView(new ViewExcel<UserModel>(), model);
-        * */
     }
 
 }

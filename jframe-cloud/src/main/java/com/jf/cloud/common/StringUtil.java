@@ -1,13 +1,5 @@
 package com.jf.cloud.common;
 
-import org.apache.commons.lang3.StringUtils;
-
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
-import java.text.SimpleDateFormat;
-import java.util.Random;
-
 /**
  * 字符处理工具类
  *

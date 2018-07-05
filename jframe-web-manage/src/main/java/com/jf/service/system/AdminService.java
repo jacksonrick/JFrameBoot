@@ -2,10 +2,10 @@ package com.jf.service.system;
 
 import com.github.pagehelper.PageInfo;
 import com.jf.encrypt.PasswordUtil;
-import com.jf.database.mapper.AdminMapper;
-import com.jf.database.mapper.MsgMapper;
-import com.jf.database.model.Admin;
-import com.jf.database.model.Msg;
+import com.jf.database.mapper.manage.AdminMapper;
+import com.jf.database.mapper.manage.MsgMapper;
+import com.jf.database.model.manage.Admin;
+import com.jf.database.model.manage.Msg;
 import com.jf.string.StringUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

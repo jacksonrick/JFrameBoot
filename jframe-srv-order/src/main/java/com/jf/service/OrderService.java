@@ -1,6 +1,6 @@
 package com.jf.service;
 
-import com.jf.database.mapper.UserMapper;
+import com.jf.database.mapper.TestMapper;
 import com.jf.database.model.User;
 import com.jf.string.StringUtil;
 import org.springframework.stereotype.Service;
@@ -19,7 +19,7 @@ import java.util.Date;
 public class OrderService {
 
     @Resource
-    private UserMapper userMapper;
+    private TestMapper testMapper;
 
     @Resource
     private UserService userService;
@@ -52,7 +52,7 @@ public class OrderService {
 
         User user = new User(10001);
         user.setMoney(150d);
-        userMapper.update(user);
+        testMapper.update(user);
 
         long endTime = System.currentTimeMillis(); //获取结束时间
         System.out.println("运行时间： " + (endTime - startTime) + "ms");
@@ -69,7 +69,7 @@ public class OrderService {
 
         User user = new User(10000);
         user.setMoney(50d);
-        userMapper.update(user);
+        testMapper.update(user);
 
         long endTime = System.currentTimeMillis(); //获取结束时间
         System.out.println("运行时间： " + (endTime - startTime) + "ms");

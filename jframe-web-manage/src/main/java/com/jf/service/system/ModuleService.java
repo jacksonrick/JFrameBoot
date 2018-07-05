@@ -1,11 +1,11 @@
 package com.jf.service.system;
 
-import com.jf.database.mapper.AdminMapper;
-import com.jf.database.mapper.ModuleMapper;
-import com.jf.database.mapper.RoleMapper;
-import com.jf.database.model.Admin;
-import com.jf.database.model.Module;
-import com.jf.database.model.Role;
+import com.jf.database.mapper.manage.AdminMapper;
+import com.jf.database.mapper.manage.ModuleMapper;
+import com.jf.database.mapper.manage.RoleMapper;
+import com.jf.database.model.manage.Admin;
+import com.jf.database.model.manage.Module;
+import com.jf.database.model.manage.Role;
 import com.jf.string.StringUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;

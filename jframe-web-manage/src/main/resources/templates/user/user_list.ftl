@@ -12,7 +12,7 @@
         <div class="row">
             <div class="col-md-8">
                 <form class="form-inline" method="post" id="queryForm">
-                    <label> 昵称/邮箱/手机号:<input type="text" name="keywords" class="form-control input-sm"></label>
+                    <label> 昵称/手机号:<input type="text" name="keywords" class="form-control input-sm"></label>
                     <label> 真实姓名:<input type="text" name="realname" class="form-control input-sm"></label>
                     <label> 注册时间:
                         <input type="text" class="form-control input-sm" id="startDate" name="startDate" placeholder="开始时间">
