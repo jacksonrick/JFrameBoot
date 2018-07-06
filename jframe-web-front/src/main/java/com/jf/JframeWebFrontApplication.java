@@ -1,6 +1,6 @@
 package com.jf;
 
-import com.jf.system.LogManager;
+import com.jf.commons.LogManager;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 

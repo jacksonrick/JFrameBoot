@@ -36,7 +36,12 @@ public enum ResCode {
     APP_ERROR(102, "APP服务错误"),
     TIMEOUT(408, "请求超时"),
     REFUSE(403, "请求拒绝"),
-    ERROR(500, "服务器开小差了，请稍后再试");
+    ERROR(500, "服务器开小差了，请稍后再试"),
+
+    // http
+    HTTP_OK(0, "OK"),
+    HTTP_ERROR(1, "ERROR"),
+    HTTP_TIMEOUT(2, "TIMEOUT");
 
     private Integer code;
     private String msg;

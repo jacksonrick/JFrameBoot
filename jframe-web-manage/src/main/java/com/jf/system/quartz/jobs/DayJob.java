@@ -1,11 +1,9 @@
 package com.jf.system.quartz.jobs;
 
-import com.jf.system.LogManager;
+import com.jf.commons.LogManager;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.springframework.scheduling.quartz.QuartzJobBean;
-
-import javax.annotation.Resource;
 
 /**
  * Created with IntelliJ IDEA.

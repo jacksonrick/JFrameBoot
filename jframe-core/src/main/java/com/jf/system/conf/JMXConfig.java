@@ -1,6 +1,6 @@
 package com.jf.system.conf;
 
-import com.jf.system.LogManager;
+import com.jf.commons.LogManager;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;

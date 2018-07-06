@@ -1,7 +1,7 @@
 package com.jf.system.springsch;
 
+import com.jf.commons.LogManager;
 import com.jf.service.JobService;
-import com.jf.system.LogManager;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.Scheduled;

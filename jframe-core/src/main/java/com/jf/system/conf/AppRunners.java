@@ -1,6 +1,6 @@
 package com.jf.system.conf;
 
-import com.jf.system.LogManager;
+import com.jf.commons.LogManager;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 

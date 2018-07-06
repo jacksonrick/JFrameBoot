@@ -166,6 +166,26 @@ spring:
         concurrency: 10 # 消费者数量
         prefetch: 50 # 每个消费者获取最大投递数量
         acknowledge-mode: manual # 开启ACK
+  quartz: # quartz配置
+    job-store-type: jdbc
+    properties:
+      org:
+        quartz:
+          scheduler:
+            instanceName: DefaultQuartzScheduler
+            instanceId: AUTO
+          jobStore: # jdbc
+            class: org.quartz.impl.jdbcjobstore.JobStoreTX
+            driverDelegateClass: org.quartz.impl.jdbcjobstore.StdJDBCDelegate
+            tablePrefix: qz_
+            #isClustered: true
+            #clusterCheckinInterval: 10000
+            useProperties: false
+          threadPool:
+            class: org.quartz.simpl.SimpleThreadPool
+            threadCount: 10 # 并发数
+            threadPriority: 5 # 优先级
+            threadsInheritContextClassLoaderOfInitializingThread: true
 fdfs: # fastDFS配置
   so-timeout: 3000
   connect_timeout: 3000

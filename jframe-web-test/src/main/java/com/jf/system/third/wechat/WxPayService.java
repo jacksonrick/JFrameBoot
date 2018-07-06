@@ -2,7 +2,7 @@ package com.jf.system.third.wechat;
 
 import com.github.wxpay.sdk.WXPay;
 import com.github.wxpay.sdk.WXPayConfig;
-import com.jf.system.LogManager;
+import com.jf.commons.LogManager;
 import com.jf.system.conf.SysConfig;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;

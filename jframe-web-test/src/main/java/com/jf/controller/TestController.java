@@ -1,12 +1,12 @@
 package com.jf.controller;
 
 import com.jf.common.BaseController;
+import com.jf.commons.LogManager;
 import com.jf.database.model.User;
 import com.jf.entity.ResMsg;
 import com.jf.entity.enums.ResCode;
 import com.jf.service.UserService;
 import com.jf.string.StringUtil;
-import com.jf.system.LogManager;
 import com.jf.system.async.service.EmailService;
 import com.jf.system.async.service.PDFService;
 import com.jf.system.async.service.SMService;

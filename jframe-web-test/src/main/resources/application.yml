@@ -3,7 +3,7 @@ server:
 spring:
   profiles:
     active: dev
-    #include: cloud # 加载springcloud配置
+    include: cloud # 加载springcloud配置
   application:
     name: JFRAME-WEB-TEST
 info: # 定义各种额外的详情给服务端显示

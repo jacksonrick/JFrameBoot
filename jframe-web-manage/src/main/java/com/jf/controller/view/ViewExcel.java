@@ -1,7 +1,7 @@
 package com.jf.controller.view;
 
+import com.jf.commons.LogManager;
 import com.jf.date.DateUtil;
-import com.jf.system.LogManager;
 import com.jf.system.annotation.excel.Excel;
 import com.jf.system.annotation.excel.Fields;
 import com.jf.system.annotation.excel.TypeValue;

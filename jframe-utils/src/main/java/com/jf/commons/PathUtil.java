@@ -1,4 +1,4 @@
-package com.jf.system;
+package com.jf.commons;
 
 import com.jf.json.JacksonUtil;
 

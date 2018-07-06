@@ -1,6 +1,6 @@
 package com.jf.http;
 
-import com.jf.system.LogManager;
+import com.jf.commons.LogManager;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;

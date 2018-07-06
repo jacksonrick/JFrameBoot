@@ -1,6 +1,6 @@
 package com.jf.system.exception;
 
-import com.jf.system.LogManager;
+import com.jf.commons.LogManager;
 
 /**
  * 自定义系统异常

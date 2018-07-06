@@ -1,6 +1,7 @@
 package com.jf.controller;
 
 import com.jf.common.BaseController;
+import com.jf.commons.SystemUtil;
 import com.jf.database.model.manage.Admin;
 import com.jf.database.model.manage.Module;
 import com.jf.database.model.manage.Msg;
@@ -10,7 +11,6 @@ import com.jf.service.system.AdminService;
 import com.jf.service.system.ModuleService;
 import com.jf.service.system.SystemService;
 import com.jf.string.StringUtil;
-import com.jf.system.SystemUtil;
 import com.jf.system.annotation.AuthPassport;
 import com.jf.system.conf.SysConfig;
 import com.jf.system.geetest.GeetestLib;
