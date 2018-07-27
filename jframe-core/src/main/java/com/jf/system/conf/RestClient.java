@@ -46,6 +46,31 @@ public class RestClient {
     }
 
     /**
+     * 普通请求
+     *
+     * @param url
+     * @param method
+     * @param clz
+     * @param <T>
+     * @return
+     */
+    public <T> ResMsg request(String url, HttpMethod method, Class<T> clz) {
+        try {
+            ResponseEntity<T> response = restTemplate.exchange(url, method, null, clz);
+            return new ResMsg(ResCode.HTTP_OK.code(), ResCode.HTTP_OK.msg(), response.getBody());
+        } catch (Exception e) {
+            e.printStackTrace();
+            if (e.getCause() instanceof SocketTimeoutException) {
+                return new ResMsg(ResCode.HTTP_TIMEOUT.code(), ResCode.HTTP_TIMEOUT.msg());
+            }
+            if (e instanceof RestException) {
+                return new ResMsg(ResCode.HTTP_ERROR.code(), ResCode.HTTP_ERROR.msg() + ":" + ((RestException) e).getCode());
+            }
+            return new ResMsg(ResCode.HTTP_ERROR.code(), ResCode.HTTP_ERROR.msg());
+        }
+    }
+
+    /**
      * requestBody请求
      *
      * @param url
@@ -59,6 +84,34 @@ public class RestClient {
             headers.setContentType(MediaType.APPLICATION_JSON);
             HttpEntity<String> entity = new HttpEntity<String>(body, headers);
             ResponseEntity<String> response = restTemplate.exchange(url, method, entity, String.class);
+            return new ResMsg(ResCode.HTTP_OK.code(), ResCode.HTTP_OK.msg(), response.getBody());
+        } catch (Exception e) {
+            if (e.getCause() instanceof SocketTimeoutException) {
+                return new ResMsg(ResCode.HTTP_TIMEOUT.code(), ResCode.HTTP_TIMEOUT.msg());
+            }
+            if (e instanceof RestException) {
+                return new ResMsg(ResCode.HTTP_ERROR.code(), ResCode.HTTP_ERROR.msg() + ":" + ((RestException) e).getCode());
+            }
+            return new ResMsg(ResCode.HTTP_ERROR.code(), ResCode.HTTP_ERROR.msg());
+        }
+    }
+
+    /**
+     * requestBody请求
+     *
+     * @param url
+     * @param body
+     * @param method
+     * @param clz
+     * @param <T>
+     * @return
+     */
+    public <T> ResMsg request(String url, String body, HttpMethod method, Class<T> clz) {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+            HttpEntity<String> entity = new HttpEntity<String>(body, headers);
+            ResponseEntity<T> response = restTemplate.exchange(url, method, entity, clz);
             return new ResMsg(ResCode.HTTP_OK.code(), ResCode.HTTP_OK.msg(), response.getBody());
         } catch (Exception e) {
             if (e.getCause() instanceof SocketTimeoutException) {

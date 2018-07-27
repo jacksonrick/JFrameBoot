@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.jf.database.mapper.manage.ModuleMapper">
+
+	<sql id="baseColumn">
+		id,
+		parent_id,
+		mod_name,
+		mod_path,
+		mod_icon,
+		mod_flag,
+		mod_sort
+	</sql>
+
+	<resultMap type="module" id="moduleResultMap">
+		<id property="id" column="id" />
+		<result property="parentId" column="parent_id" />
+		<result property="modName" column="mod_name" />
+		<result property="modPath" column="mod_path" />
+		<result property="modIcon" column="mod_icon" />
+		<result property="modFlag" column="mod_flag" />
+		<result property="modSort" column="mod_sort" />
+	</resultMap>
+
+	<select id="findByCondition" resultMap="moduleResultMap" parameterType="baseVo">
+		SELECT <include refid="baseColumn" />
+		FROM s_module
+		<where>
+            <if test="flags != null">
+                AND mod_flag IN <foreach item="idx" collection="flags" open="(" separator="," close=")"> #{idx} </foreach>
+            </if>
+            <if test="roleId != null">
+				AND ARRAYCONTAINED(ARRAY[CAST(id AS TEXT)], (SELECT STRING_TO_ARRAY(role_rights, ',') FROM s_role WHERE id = #{roleId}))
+            </if>
+			<if test="adminId != null">
+				AND ARRAYCONTAINED(ARRAY[CAST(id AS TEXT)], (SELECT STRING_TO_ARRAY(role_rights, ',') FROM s_role WHERE id = #{adminId}))
+			</if>
+			<if test="ids != null and ids != ''">
+				AND ARRAYCONTAINED(ARRAY[CAST(id AS TEXT)], STRING_TO_ARRAY(#{ids}), ',')
+			</if>
+			AND NOT deleted
+		</where>
+		ORDER BY mod_sort ASC
+	</select>
+
+	<select id="findIdByPath" resultType="int" parameterType="string">
+		SELECT id
+		FROM s_module
+		WHERE mod_path = #{path}
+	</select>
+
+	<update id="update" parameterType="module">
+		UPDATE s_module
+		<set>
+			<if test="modName != null and modName != ''">mod_name = #{modName},</if>
+			<if test="modPath != null and modPath != ''">mod_path = #{modPath},</if>
+			<if test="modIcon != null">mod_icon = #{modIcon},</if>
+			<if test="modSort != null">mod_sort = #{modSort},</if>
+		</set>
+		WHERE id = #{id}
+	</update>
+
+	<insert id="insert" parameterType="module">
+		INSERT INTO s_module(
+			parent_id,
+			mod_name,
+			mod_path,
+			mod_icon,
+			mod_flag,
+			mod_sort
+		)
+		VALUES (
+			#{parentId},
+			#{modName},
+			#{modPath},
+			#{modIcon},
+			#{modFlag},
+			#{modSort}
+		)
+	</insert>
+
+    <delete id="delete" parameterType="int">
+		DELETE FROM s_module
+		WHERE id = #{id}
+    </delete>
+
+</mapper>

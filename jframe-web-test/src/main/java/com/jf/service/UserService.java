@@ -4,7 +4,6 @@ import com.github.pagehelper.PageInfo;
 import com.jf.database.mapper.TestMapper;
 import com.jf.database.model.User;
 import com.jf.database.model.custom.IdText;
-import com.jf.database.secondary.Test2Mapper;
 import com.jf.encrypt.PasswordUtil;
 import com.jf.string.StringUtil;
 import com.jf.system.redisson.RedisLocker;
@@ -39,8 +38,8 @@ public class UserService {
     // 多数据源
     @Resource
     private TestMapper testMapper;
-    @Autowired(required = false)
-    private Test2Mapper test2Mapper;
+    //@Autowired(required = false)
+    //private Test2Mapper test2Mapper;
 
     // RedisLocker
     @Autowired(required = false)
@@ -221,7 +220,7 @@ public class UserService {
     /**
      * 测试事务回滚 testRollbackA & testRollbackB
      */
-    @Transactional(value = "primaryTransactionManager")
+    /*@Transactional(value = "primaryTransactionManager")
     public void testRollbackA() {
         User user = testMapper.findById(10000);
         user.setNickname("primary_rollback");
@@ -230,9 +229,9 @@ public class UserService {
         user = new User(10001);
         user.setNickname("secondary_rollback");
         testMapper.update(user);
-    }
+    }*/
 
-    @Transactional(value = "secondaryTransactionManager")
+    /*@Transactional(value = "secondaryTransactionManager")
     public void testRollbackB() {
         User user = test2Mapper.findById(10000);
         user.setNickname("secondary_rollback");
@@ -241,7 +240,7 @@ public class UserService {
         user = new User(10001);
         user.setNickname("primary_rollback");
         test2Mapper.update(user);
-    }
+    }*/
 
     /**
      * 测试多数据源
@@ -249,7 +248,7 @@ public class UserService {
      * @param source
      * @return
      */
-    public User testMutilSource(String source) {
+    /*public User testMutilSource(String source) {
         User user = null;
         if ("primary".equals(source)) {
             user = testMapper.findById(10000);
@@ -258,7 +257,7 @@ public class UserService {
             user = test2Mapper.findById(10000);
         }
         return user;
-    }
+    }*/
 
     /**
      * 按id查询用户

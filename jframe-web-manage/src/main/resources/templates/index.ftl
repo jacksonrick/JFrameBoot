@@ -58,6 +58,7 @@
                 <div class="navbar-header">
                     <a class="minimalize-styl-2 btn btn-default navbar-minimalize tp" title="收起菜单"><i class="fa fa-bars"></i></a>
                     <a class="minimalize-styl-2 btn btn-default tp" id="goBack" title="返回上一级"><i class="fa fa-arrow-left"></i></a>
+                    <a class="minimalize-styl-2 btn btn-default tp" id="fullscreen" title="全屏"><i class="fa fa-tv"></i></a>
                 <#--<a class="navbar-chat minimalize-styl-2 btn btn-warning" title="即时通讯" data-toggle="tooltip" data-placement="bottom"><i class="fa fa-comments"></i></a>-->
                 </div>
                 <ul class="nav navbar-top-links navbar-right">
@@ -77,7 +78,8 @@
                         <ul class="dropdown-menu m-t-xs">
                             <li onclick="newTab('云服务器监控', 'http://127.0.0.1:10000')"><a><i class="fa fa-server"></i>云服务器监控</a></li>
                             <li onclick="newTab('数据源监控', '/druid/index.html')"><a><i class="fa fa-database"></i>数据源监控</a></li>
-                            <li onclick="newTab('Redis Cachecloud', 'http://192.168.24.200:20010')"><a><i class="fa fa-cloud"></i>Redis Cachecloud</a></li>
+                            <li onclick="newTab('Redis Cachecloud', 'http://192.168.24.200:20010')"><a><i class="fa fa-cloud"></i>Redis
+                                Cachecloud</a></li>
                             <li onclick="newTab('ELK', 'http://192.168.24.200:5601')"><a><i class="fa fa-history"></i>ELK</a></li>
                         </ul>
                     </li>
@@ -193,6 +195,21 @@
             container: "html"
         });
 
+        $("#fullscreen").click(function () {
+            var docElm = document.documentElement;
+            if (docElm.requestFullscreen) {
+                docElm.requestFullscreen();
+            }
+            else if (docElm.mozRequestFullScreen) {
+                docElm.mozRequestFullScreen();
+            }
+            else if (docElm.webkitRequestFullScreen) {
+                docElm.webkitRequestFullScreen();
+            }
+            else if (elem.msRequestFullscreen) {
+                elem.msRequestFullscreen();
+            }
+        });
     });
 </script>
 </body>

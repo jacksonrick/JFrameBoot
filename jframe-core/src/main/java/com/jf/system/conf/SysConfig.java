@@ -31,6 +31,8 @@ public class SysConfig {
 
     //###### 以下来自 application.yml 自定义配置 ######
 
+    // 是否开发环境
+    private Boolean dev;
     // app key
     private String appkey;
     // 静态文件IP地址
@@ -54,6 +56,14 @@ public class SysConfig {
     private SysConfig.Jpush jpush;
     // 上传
     private SysConfig.Upload upload;
+
+    public Boolean dev() {
+        return dev;
+    }
+
+    public void setDev(Boolean dev) {
+        this.dev = dev;
+    }
 
     public String getAppkey() {
         return appkey;
@@ -106,7 +116,8 @@ public class SysConfig {
     @Override
     public String toString() {
         return "SysConfig{" +
-                "appkey='" + appkey + '\'' +
+                "dev='" + dev + '\'' +
+                ", appkey='" + appkey + '\'' +
                 ", staticHost='" + staticHost + '\'' +
                 ", staticPath='" + staticPath + '\'' +
                 ", logPath='" + logPath + '\'' +

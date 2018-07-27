@@ -658,46 +658,83 @@ public class SystemBackController extends BaseController {
     }
 
     /**
-     * 下载日志（需配置好服务器日志文件路径@config.properties）
+     * 系统日志列表
+     *
+     * @param condition
+     * @param map
+     * @return
+     */
+    @RequestMapping("/syslogList")
+    @AuthPassport
+    public String syslogList(Log condition, ModelMap map) {
+        PageInfo pageInfo = systemService.findLogByPage(condition);
+        map.addAttribute("pageInfo", pageInfo);
+        map.addAllAttributes(BeanUtil.beanToMap(condition));
+        map.put("logCount", systemService.findLogCount());
+        return "system/syslog";
+    }
+
+    /**
+     * 获取系统日志目录
+     *
+     * @param path
+     * @return
+     */
+    @RequestMapping("/getLogDirectory")
+    @AuthPassport
+    @ResponseBody
+    public ResMsg getLogDirectory(String path) {
+        if (StringUtil.isBlank(path)) {
+            return new ResMsg(1, "未指定路径", null);
+        }
+        if (!path.startsWith("/")) {
+            return new ResMsg(2, "路径必须以斜杠/开头", null);
+        }
+        List<Directory> list = FileUtil.getDirectory(path, config.getLogPath());
+        if (list == null) {
+            return new ResMsg(3, "路径不存在", null);
+        }
+        return new ResMsg(ResCode.SUCCESS.code(), ResCode.SUCCESS.msg(), list);
+    }
+
+    /**
+     * 读取系统日志
+     * <p>流式输出</p>
      *
      * @param response
      * @param request
      * @return
      */
-    @Deprecated
     @RequestMapping("/downLog")
     @AuthPassport
-    public String downLog(HttpServletResponse response, HttpServletRequest request) {
+    public void downLog(HttpServletResponse response, HttpServletRequest request) {
         String fileName = request.getParameter("fileName");
         if (fileName == null || "".equals(fileName)) {
-            return "error";
+            return;
         }
-        // windows D:/Developer/Java/apache-tomcat-6.0/logs
-        // linux /data/wwwlogs
-        String path = config.getLogPath() + "/";
-        // 以流的方式下载
-        response.setContentType("multipart/form-data");
-        response.setHeader("Content-Disposition", "attachment;fileName=" + fileName);
-
         try {
-            InputStream inputStream = new FileInputStream(new File(path + File.separator + fileName));
+            InputStream inputStream = new FileInputStream(new File(config.getLogPath() + fileName));
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
             OutputStream os = response.getOutputStream();
-            byte[] b = new byte[2048];
-            int length;
-            while ((length = inputStream.read(b)) > 0) {
-                os.write(b, 0, length);
+
+            os.write("<div id='main' style='font-family: Consolas;font-size: 14px;'>".getBytes("UTF-8"));
+            String str = null;
+            while ((str = bufferedReader.readLine()) != null) {
+                os.write(("<p>" + str + "</p>").getBytes());
             }
+            os.write("</div><script src=\"/static/library/plugins/ansi/ansi_up.js\" type=\"text/javascript\"></script><script type=\"text/javascript\">var txt  = document.getElementById('main').innerHTML;var ansi_up = new AnsiUp;ansi_up.escape_for_html = false;var html = ansi_up.ansi_to_html(txt);var cdiv = document.getElementById('main');cdiv.innerHTML = html;</script>".getBytes("UTF-8"));
+
             os.close();
             inputStream.close();
+            bufferedReader.close();
         } catch (Exception e) {
             e.printStackTrace();
-            return null;
         }
-        return null;
+        return;
     }
 
     /**
-     * 日志列表
+     * 操作日志列表
      *
      * @param condition
      * @param map
@@ -714,7 +751,7 @@ public class SystemBackController extends BaseController {
     }
 
     /**
-     * 日志备份
+     * 操作日志备份
      *
      * @param monthAgo
      * @return

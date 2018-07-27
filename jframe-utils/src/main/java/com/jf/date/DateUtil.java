@@ -47,6 +47,26 @@ public class DateUtil {
     }
 
     /**
+     * 获取当前小时
+     *
+     * @return
+     */
+    public static String getCurrentHour() {
+        Calendar cal = Calendar.getInstance();
+        return String.valueOf(cal.get(Calendar.HOUR_OF_DAY));
+    }
+
+    /**
+     * 获取当前分钟
+     *
+     * @return
+     */
+    public static String getCurrentMinute() {
+        Calendar cal = Calendar.getInstance();
+        return String.valueOf(cal.get(Calendar.MINUTE));
+    }
+
+    /**
      * date转string
      *
      * @param date

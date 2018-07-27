@@ -1,6 +1,5 @@
 package com.jf.system.db;
 
-import com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceBuilder;
 import com.github.pagehelper.PageInterceptor;
 import org.apache.ibatis.plugin.Interceptor;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -11,7 +10,6 @@ import org.mybatis.spring.boot.autoconfigure.SpringBootVFS;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -33,26 +31,19 @@ import java.util.Properties;
  * @version 2.0
  */
 @Configuration
-@MapperScan(basePackages = DbPrimaryConfig.mapperPackage, sqlSessionFactoryRef = "primarySqlSessionFactory")
+@MapperScan(basePackages = DataConfig.mapperPackage, sqlSessionFactoryRef = "sqlSessionFactory")
 @EnableTransactionManagement
-public class DbPrimaryConfig {
+public class DataConfig {
 
-    private Logger logger = LoggerFactory.getLogger(DbPrimaryConfig.class);
+    private Logger logger = LoggerFactory.getLogger(DataConfig.class);
 
     public final static String mapperPackage = "com.jf.database.mapper";
     public final static String modelPackage = "com.jf.database.model";
     public final static String xmlMapperLocation = "classpath:mapper/**/*.xml";
 
-    @Bean(name = "primaryDataSource")
+    @Bean(name = "sqlSessionFactory")
     @Primary
-    @ConfigurationProperties("spring.datasource.druid.primary")
-    public DataSource dataSource() {
-        return DruidDataSourceBuilder.create().build();
-    }
-
-    @Bean(name = "primarySqlSessionFactory")
-    @Primary
-    public SqlSessionFactory sqlSessionFactory(@Qualifier("primaryDataSource") DataSource dataSource) {
+    public SqlSessionFactory sqlSessionFactory(DataSource dataSource) {
         try {
             SqlSessionFactoryBean bean = new SqlSessionFactoryBean();
             bean.setDataSource(dataSource);
@@ -76,14 +67,14 @@ public class DbPrimaryConfig {
 
             return bean.getObject();
         } catch (Exception e) {
-            logger.error("DB [primary] sqlSessionFactory create error!", e);
+            logger.error("Database sqlSessionFactory create error!", e);
             return null;
         }
     }
 
-    @Bean(name = "primarySqlSessionTemplate")
+    @Bean(name = "sqlSessionTemplate")
     @Primary
-    public SqlSessionTemplate sqlSessionTemplate(@Qualifier("primarySqlSessionFactory") SqlSessionFactory sqlSessionFactory) {
+    public SqlSessionTemplate sqlSessionTemplate(@Qualifier("sqlSessionFactory") SqlSessionFactory sqlSessionFactory) {
         return new SqlSessionTemplate(sqlSessionFactory);
     }
 
@@ -92,9 +83,9 @@ public class DbPrimaryConfig {
      *
      * @return
      */
-    @Bean(name = "primaryTransactionManager")
+    @Bean(name = "transactionManager")
     @Primary
-    public PlatformTransactionManager transactionManager(@Qualifier("primaryDataSource") DataSource dataSource) {
+    public PlatformTransactionManager transactionManager(DataSource dataSource) {
         return new DataSourceTransactionManager(dataSource);
     }
 

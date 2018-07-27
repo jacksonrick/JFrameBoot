@@ -3,17 +3,26 @@ server:
 spring:
   application:
     name: JFRAME-SRV-GATEWAY
-eureka:
+eureka: # 注册到Eureka
   client:
     service-url:
       defaultZone: http://eureka:eureka1234@127.0.0.1:10000/eureka/
   instance:
     prefer-ip-address: true
 zuul:
-  routes:
+  routes: # 服务路由
     api-a:
-      path: /api-a/**
       serviceId: JFRAME-SRV-ORDER-01
+      path: /api-a/**
+      sensitiveHeaders: Cookie, Set-Cookie, Authorization
     api-b:
-      path: /api-b/**
       serviceId: JFRAME-SRV-ORDER-02
+      path: /api-b/**
+      sensitiveHeaders: Cookie, Set-Cookie, Authorization
+hystrix: # 超时设置
+  command:
+    myusers-service:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 60000

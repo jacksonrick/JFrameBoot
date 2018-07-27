@@ -1,57 +1,6 @@
-/** 更改此文档后，请允许mvn命令，以更新yml配置.*/
+/** 更改此文档后，请重新运行mvn命令，以更新yml配置.*/
 {
   "properties": [
-    {
-      "name": "spring.datasource.druid.primary.url",
-      "type": "java.lang.String",
-      "description": "主数据库地址.",
-      "sourceType": "com.jf.system.db.DbPrimaryConfig"
-    },
-    {
-      "name": "spring.datasource.druid.primary.username",
-      "type": "java.lang.String",
-      "description": "主数据库用户名.",
-      "sourceType": "com.jf.system.db.DbPrimaryConfig"
-    },
-    {
-      "name": "spring.datasource.druid.primary.password",
-      "type": "java.lang.String",
-      "description": "主数据库密码.",
-      "sourceType": "com.jf.system.db.DbPrimaryConfig"
-    },
-    {
-      "name": "spring.datasource.druid.secondary.url",
-      "type": "java.lang.String",
-      "description": "从数据库地址.",
-      "sourceType": "com.jf.system.db.DbSecondaryConfig"
-    },
-    {
-      "name": "spring.datasource.druid.secondary.username",
-      "type": "java.lang.String",
-      "description": "从数据库用户名.",
-      "sourceType": "com.jf.system.db.DbSecondaryConfig"
-    },
-    {
-      "name": "spring.datasource.druid.secondary.password",
-      "type": "java.lang.String",
-      "description": "从数据库密码.",
-      "sourceType": "com.jf.system.db.DbSecondaryConfig"
-    },
-    {
-      "name": "spring.datasource.druid.loadbalance.url",
-      "type": "java.lang.String",
-      "description": "集群数据库地址."
-    },
-    {
-      "name": "spring.datasource.druid.loadbalance.username",
-      "type": "java.lang.String",
-      "description": "集群数据库用户名."
-    },
-    {
-      "name": "spring.datasource.druid.loadbalance.password",
-      "type": "java.lang.String",
-      "description": "集群数据库密码."
-    },
     {
       "name": "spring.task.corePoolSize",
       "type": "java.lang.Integer",
@@ -101,6 +50,12 @@
       "sourceType": "com.jf.system.conf.FdfsConfig"
     },
     {
+      "name": "system.dev",
+      "type": "java.lang.Boolean",
+      "description": "是否开发环境.",
+      "sourceType": "com.jf.system.conf.SysConfig"
+    },
+    {
       "name": "system.appkey",
       "type": "java.lang.String",
       "description": "APP请求验证串.",
@@ -139,133 +94,220 @@
       "name": "system.aliyun.partner",
       "type": "java.lang.String",
       "description": "支付宝-合作身份者ID，以2088开头由16位纯数字组成的字符串.",
-      "sourceType": "com.jf.system.conf.SysConfig"
+      "sourceType": "com.jf.system.conf.SysConfig$Aliyun"
     },
     {
       "name": "system.aliyun.seller",
       "type": "java.lang.String",
       "description": "支付宝-账号.",
-      "sourceType": "com.jf.system.conf.SysConfig"
+      "sourceType": "com.jf.system.conf.SysConfig$Aliyun"
     },
     {
       "name": "system.aliyun.app_id",
       "type": "java.lang.String",
       "description": "支付宝-APPID.",
-      "sourceType": "com.jf.system.conf.SysConfig"
+      "sourceType": "com.jf.system.conf.SysConfig$Aliyun"
     },
     {
       "name": "system.aliyun.rsa_private_key",
       "type": "java.lang.String",
       "description": "支付宝-商户私钥,需要PKCS8格式,使用支付宝提供工具生成.",
-      "sourceType": "com.jf.system.conf.SysConfig"
+      "sourceType": "com.jf.system.conf.SysConfig$Aliyun"
     },
     {
       "name": "system.aliyun.public_key",
       "type": "java.lang.String",
       "description": "支付宝-公钥，使用支付宝提供工具生成后上传至开发者平台=>点击查看支付宝公钥=>复制.",
-      "sourceType": "com.jf.system.conf.SysConfig"
+      "sourceType": "com.jf.system.conf.SysConfig$Aliyun"
     },
     {
       "name": "system.aliyun.notify_url",
       "type": "java.lang.String",
       "description": "支付宝-接收通知的接口.",
-      "sourceType": "com.jf.system.conf.SysConfig"
+      "sourceType": "com.jf.system.conf.SysConfig$Aliyun"
     },
     {
       "name": "system.aliyun.return_url",
       "type": "java.lang.String",
       "description": "支付宝-通知页面跳转.",
-      "sourceType": "com.jf.system.conf.SysConfig"
+      "sourceType": "com.jf.system.conf.SysConfig$Aliyun"
     },
     {
       "name": "system.aliyun.gateway",
       "type": "java.lang.String",
       "description": "支付宝网关-生产环境 | 沙箱环境.",
-      "sourceType": "com.jf.system.conf.SysConfig"
+      "sourceType": "com.jf.system.conf.SysConfig$Aliyun"
     },
     {
       "name": "system.wechat.appid",
       "type": "java.lang.String",
       "description": "微信-在开发平台登记的app应用.",
-      "sourceType": "com.jf.system.conf.SysConfig"
+      "sourceType": "com.jf.system.conf.SysConfig$Wechat"
     },
     {
       "name": "system.wechat.partner",
       "type": "java.lang.String",
       "description": "微信-商户号、MCH_ID.",
-      "sourceType": "com.jf.system.conf.SysConfig"
+      "sourceType": "com.jf.system.conf.SysConfig$Wechat"
     },
     {
       "name": "system.wechat.partner_key",
       "type": "java.lang.String",
       "description": "微信-商户在微信平台设置的32位长度的api秘钥、API_KEY.",
-      "sourceType": "com.jf.system.conf.SysConfig"
+      "sourceType": "com.jf.system.conf.SysConfig$Wechat"
     },
     {
       "name": "system.wechat.notify_url",
       "type": "java.lang.String",
       "description": "微信-异步通知地址.",
-      "sourceType": "com.jf.system.conf.SysConfig"
+      "sourceType": "com.jf.system.conf.SysConfig$Wechat"
     },
     {
       "name": "system.geetest.id",
       "type": "java.lang.String",
       "description": "geet验证-id.",
-      "sourceType": "com.jf.system.conf.SysConfig"
+      "sourceType": "com.jf.system.conf.SysConfig$Geetest"
     },
     {
       "name": "system.geetest.key",
       "type": "java.lang.String",
       "description": "geet验证-key.",
-      "sourceType": "com.jf.system.conf.SysConfig"
+      "sourceType": "com.jf.system.conf.SysConfig$Geetest"
     },
     {
       "name": "system.jpush.appkey",
       "type": "java.lang.String",
       "description": "appkey.",
-      "sourceType": "com.jf.system.conf.SysConfig"
+      "sourceType": "com.jf.system.conf.SysConfig$Jpush"
     },
     {
       "name": "system.jpush.secret",
       "type": "java.lang.String",
       "description": "secret.",
-      "sourceType": "com.jf.system.conf.SysConfig"
+      "sourceType": "com.jf.system.conf.SysConfig$Jpush"
     },
     {
       "name": "system.jpush.ios_product",
       "type": "java.lang.Boolean",
       "description": "IOS开发环境-false，生产环境-true.",
-      "sourceType": "com.jf.system.conf.SysConfig"
+      "sourceType": "com.jf.system.conf.SysConfig$Jpush"
     },
     {
       "name": "system.upload.fdfs",
       "type": "java.lang.Boolean",
       "description": "fdfs enable，如果为false,则启用spring上传到本地指定目录.",
-      "sourceType": "com.jf.system.conf.SysConfig"
+      "sourceType": "com.jf.system.conf.SysConfig$Upload"
     },
     {
       "name": "system.upload.img_size",
       "type": "java.lang.Integer",
       "description": "图片大小.",
-      "sourceType": "com.jf.system.conf.SysConfig"
+      "sourceType": "com.jf.system.conf.SysConfig$Upload"
     },
     {
       "name": "system.upload.img_type",
       "type": "java.lang.String[]",
       "description": "图片类型.",
-      "sourceType": "com.jf.system.conf.SysConfig"
+      "sourceType": "com.jf.system.conf.SysConfig$Upload"
     },
     {
       "name": "system.upload.file_size",
       "type": "java.lang.Integer",
       "description": "文件大小【非图片】.",
-      "sourceType": "com.jf.system.conf.SysConfig"
+      "sourceType": "com.jf.system.conf.SysConfig$Upload"
     },
     {
       "name": "system.upload.file_type",
       "type": "java.lang.String[]",
       "description": "文件类型.",
-      "sourceType": "com.jf.system.conf.SysConfig"
+      "sourceType": "com.jf.system.conf.SysConfig$Upload"
+    },
+    {
+      "name": "app.static_path",
+      "type": "java.lang.String",
+      "description": "[core][pro]静态文件目录."
+    },
+    {
+      "name": "app.static_host",
+      "type": "java.lang.String",
+      "description": "[core][pro]静态文件地址-用于文件上传返回绝对路径."
+    },
+    {
+      "name": "app.eureka.enabled",
+      "type": "java.lang.Boolean",
+      "description": "[core]Eureka注册中心."
+    },
+    {
+      "name": "app.monitor.enabled",
+      "type": "java.lang.Boolean",
+      "description": "[core]监控."
+    },
+    {
+      "name": "app.druid.enabled",
+      "type": "java.lang.Boolean",
+      "description": "[core]druid数据源监控."
+    },
+    {
+      "name": "app.springsch.enabled",
+      "type": "java.lang.Boolean",
+      "description": "spring定时器."
+    },
+    {
+      "name": "app.quartz.enabled",
+      "type": "java.lang.Boolean",
+      "description": "Quartz定时任务."
+    },
+    {
+      "name": "app.cache.enabled",
+      "type": "java.lang.Boolean",
+      "description": "[core]redis缓存支持."
+    },
+    {
+      "name": "app.redisson.enabled",
+      "type": "java.lang.Boolean",
+      "description": "分布式锁."
+    },
+    {
+      "name": "app.activemq.enabled",
+      "type": "java.lang.Boolean",
+      "description": "ActiveMQ."
+    },
+    {
+      "name": "app.rabbitmq.enabled",
+      "type": "java.lang.Boolean",
+      "description": "RabbitMQ."
+    },
+    {
+      "name": "app.socket.enabled",
+      "type": "java.lang.Boolean",
+      "description": "spring websocket."
+    },
+    {
+      "name": "app.fdfs.enabled",
+      "type": "java.lang.Boolean",
+      "description": "[core]FastDFS,false则使用本地上传."
+    },
+    {
+      "name": "app.ssl.enabled",
+      "type": "java.lang.Boolean",
+      "description": "[core]启用SSL."
+    },
+    {
+      "name": "rmi.enabled",
+      "type": "java.lang.Boolean",
+      "description": "[core]启用rmi监控."
+    },
+    {
+      "name": "rmi.host",
+      "type": "java.lang.String",
+      "description": "rmi地址.",
+      "sourceType": "com.jf.system.conf.JMXConfig"
+    },
+    {
+      "name": "rmi.port",
+      "type": "java.lang.String",
+      "description": "rmi端口.",
+      "sourceType": "com.jf.system.conf.JMXConfig"
     }
   ]
 }

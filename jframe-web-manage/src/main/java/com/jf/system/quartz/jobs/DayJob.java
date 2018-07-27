@@ -1,6 +1,7 @@
 package com.jf.system.quartz.jobs;
 
 import com.jf.commons.LogManager;
+import org.quartz.DisallowConcurrentExecution;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.springframework.scheduling.quartz.QuartzJobBean;
@@ -12,6 +13,7 @@ import org.springframework.scheduling.quartz.QuartzJobBean;
  * Date: 2018-03-02
  * Time: 16:09
  */
+@DisallowConcurrentExecution // 不允许并行
 public class DayJob extends QuartzJobBean {
 
     @Override

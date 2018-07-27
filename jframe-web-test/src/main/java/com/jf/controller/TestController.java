@@ -2,11 +2,9 @@ package com.jf.controller;
 
 import com.jf.common.BaseController;
 import com.jf.commons.LogManager;
-import com.jf.database.model.User;
 import com.jf.entity.ResMsg;
 import com.jf.entity.enums.ResCode;
 import com.jf.service.UserService;
-import com.jf.string.StringUtil;
 import com.jf.system.async.service.EmailService;
 import com.jf.system.async.service.PDFService;
 import com.jf.system.async.service.SMService;
@@ -62,40 +60,6 @@ public class TestController extends BaseController {
     @ResponseBody
     public ResMsg testMysqlCluster() {
         return new ResMsg(ResCode.SUCCESS.code(), ResCode.SUCCESS.msg(), userService.testMysqlCluster());
-    }
-
-    /**
-     * 多数据源回滚
-     *
-     * @param source
-     * @return
-     */
-    @RequestMapping("/testRollback")
-    @ResponseBody
-    public ResMsg testRollback(String source) {
-        if ("primary".equals(source)) {
-            userService.testRollbackA();
-        }
-        if ("secondary".equals(source)) {
-            userService.testRollbackB();
-        }
-        return new ResMsg(0, "");
-    }
-
-    /**
-     * 多数据源
-     *
-     * @param source
-     * @return
-     */
-    @RequestMapping("/testMutilSource")
-    @ResponseBody
-    public ResMsg testMutilSource(String source) {
-        if (StringUtil.isBlank(source)) {
-            return new ResMsg(-1, "source is empty");
-        }
-        User user = userService.testMutilSource(source);
-        return new ResMsg(ResCode.SUCCESS.code(), ResCode.SUCCESS.msg(), user);
     }
 
     @RequestMapping("/transfer")

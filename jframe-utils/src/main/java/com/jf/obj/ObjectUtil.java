@@ -1,8 +1,5 @@
 package com.jf.obj;
 
-import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.io.xml.DomDriver;
-
 import java.io.*;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -10,34 +7,9 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 一般类工具类
+ * Object工具类
  */
 public class ObjectUtil {
-
-    private ObjectUtil() {
-    }
-
-    /**
-     * 将对象序列化成 XML 字符串
-     *
-     * @param obj 待序列化的对象
-     * @return String 序列化后的 XML 字符串
-     */
-    public static String serializeToXml(Object obj) {
-        XStream xstream = new XStream();
-        return xstream.toXML(obj);
-    }
-
-    /**
-     * 反序列化，将序列化的字符串反序列化成对象
-     *
-     * @param xml 待反序列化的字符串
-     * @return Object 反序列化后的对象
-     */
-    public static Object deSerializeFromXml(String xml) {
-        XStream xs = new XStream(new DomDriver());
-        return xs.fromXML(xml);
-    }
 
     /**
      * 深度克隆，将传入对象以及其中的自对象全部克隆<br/>

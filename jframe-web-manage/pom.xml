@@ -72,8 +72,9 @@
                             <Class-Path>./</Class-Path>
                         </manifestEntries>
                     </archive>
-                    <excludes>
+                    <excludes> <!-- 排除 -->
                         <exclude>static/**</exclude>
+                        <exclude>*.yml</exclude>
                     </excludes>
                 </configuration>
             </plugin>

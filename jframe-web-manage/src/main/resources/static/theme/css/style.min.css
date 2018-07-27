@@ -6132,7 +6132,8 @@ img.circle-border {
 .breadcrumb {
     background-color: #fff;
     padding: 0;
-    margin-bottom: 0
+    margin-bottom: 0;
+    margin-left: 70px
 }
 
 .breadcrumb > .active, .breadcrumb > li a {

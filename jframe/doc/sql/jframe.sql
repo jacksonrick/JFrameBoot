@@ -99,7 +99,7 @@ CREATE TABLE `s_admin` (
 -- Records of s_admin
 -- ----------------------------
 BEGIN;
-INSERT INTO `s_admin` VALUES (10000, 10000, 'admin', '超管', 'e10adc3949ba59abbe56e057f20f883e', '17730215422', NULL, '2016-04-23 15:36:55', '2018-06-28 11:20:38', '127.0.0.1', b'0');
+INSERT INTO `s_admin` VALUES (10000, 10000, 'admin', '超管', 'e10adc3949ba59abbe56e057f20f883e', '17730215422', NULL, '2016-04-23 15:36:55', '2018-07-13 10:34:35', '127.0.0.1', b'0');
 INSERT INTO `s_admin` VALUES (10001, 10001, 'huang', '老黄', 'e10adc3949ba59abbe56e057f20f883e', '17732125421', '1,100,101,102,104', '2016-05-13 10:58:17', '2018-06-27 17:58:47', '127.0.0.1', b'0');
 INSERT INTO `s_admin` VALUES (10002, 10002, 'zhang', '老张', 'e10adc3949ba59abbe56e057f20f883e', '17730215512', '1,100,101,102', '2016-05-13 11:37:13', '2018-05-24 14:54:10', '127.0.0.1', b'0');
 INSERT INTO `s_admin` VALUES (10003, NULL, 'test', 'test', 'e10adc3949ba59abbe56e057f20f883e', '17726736171', '1,100,101', '2018-05-24 14:40:46', '2018-05-25 15:10:51', '127.0.0.1', b'0');
@@ -117,7 +117,7 @@ CREATE TABLE `s_log` (
   `log_params` varchar(255) DEFAULT NULL COMMENT '参数',
   `log_create_time` datetime DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=57 DEFAULT CHARSET=utf8 COMMENT='日志表';
+) ENGINE=InnoDB AUTO_INCREMENT=62 DEFAULT CHARSET=utf8 COMMENT='日志表';
 
 -- ----------------------------
 -- Table structure for s_module
@@ -131,6 +131,8 @@ CREATE TABLE `s_module` (
   `mod_icon` varchar(128) DEFAULT NULL COMMENT '模块图标',
   `mod_flag` tinyint(2) DEFAULT NULL COMMENT '1,2表示层级 | 3表示功能',
   `mod_sort` tinyint(4) DEFAULT NULL COMMENT '排序',
+  `mod_create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `deleted` bit(1) DEFAULT b'0' COMMENT '是否删除',
   PRIMARY KEY (`id`),
   UNIQUE KEY `module_path` (`mod_path`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=127 DEFAULT CHARSET=utf8 COMMENT='后台模块';
@@ -139,35 +141,35 @@ CREATE TABLE `s_module` (
 -- Records of s_module
 -- ----------------------------
 BEGIN;
-INSERT INTO `s_module` VALUES (1, 0, '用户管理', NULL, 'fa fa-user', 1, 1);
-INSERT INTO `s_module` VALUES (2, 0, '系统管理', NULL, 'fa fa-gear', 1, 10);
-INSERT INTO `s_module` VALUES (100, 1, '会员列表', '/admin/user/userList', 'fa fa-group', 2, 1);
-INSERT INTO `s_module` VALUES (101, 100, '用户数据', '/admin/user/userListData', NULL, 3, NULL);
-INSERT INTO `s_module` VALUES (102, 100, '用户编辑', '/admin/user/userEdit', NULL, 3, NULL);
-INSERT INTO `s_module` VALUES (103, 100, '用户禁用/解封', '/admin/user/userEnable', NULL, 3, NULL);
-INSERT INTO `s_module` VALUES (104, 100, '用户详情', '/admin/user/userDetail', NULL, 3, NULL);
-INSERT INTO `s_module` VALUES (105, 100, '导出用户Excel', '/admin/user/exportUserExcel', NULL, 3, NULL);
-INSERT INTO `s_module` VALUES (106, 2, '管理员列表', '/admin/system/adminList', 'fa fa-user', 2, 1);
-INSERT INTO `s_module` VALUES (107, 106, '管理员编辑', '/admin/system/adminEdit', NULL, 3, NULL);
-INSERT INTO `s_module` VALUES (108, 106, '管理员冻结', '/admin/system/adminEnable', NULL, 3, NULL);
-INSERT INTO `s_module` VALUES (109, 2, '权限管理', '/admin/system/rights', 'fa fa-delicious', 2, 2);
-INSERT INTO `s_module` VALUES (110, 109, '编辑组', '/admin/system/roleEdit', NULL, 3, NULL);
-INSERT INTO `s_module` VALUES (111, 109, '禁用/启用组', '/admin/system/roleEnable', NULL, 3, NULL);
-INSERT INTO `s_module` VALUES (112, 109, '查看权限', '/admin/system/permits', NULL, 3, NULL);
-INSERT INTO `s_module` VALUES (113, 109, '授权组', '/admin/system/permit', NULL, 3, NULL);
-INSERT INTO `s_module` VALUES (114, 2, '日志管理', '/admin/system/logList', 'fa fa-laptop', 2, 3);
-INSERT INTO `s_module` VALUES (115, 114, '日志备份', '/admin/system/backupLog', NULL, 3, NULL);
-INSERT INTO `s_module` VALUES (116, 2, '文件管理', '/admin/system/file', 'fa fa-archive', 2, 4);
-INSERT INTO `s_module` VALUES (117, 116, '获取目录', '/admin/system/getDirectory', NULL, 3, NULL);
-INSERT INTO `s_module` VALUES (118, 2, '系统工具', '/admin/system/tools', 'fa fa-crop', 2, 5);
-INSERT INTO `s_module` VALUES (119, 118, 'SQL编辑', '/admin/system/executeUpdate', NULL, 3, NULL);
-INSERT INTO `s_module` VALUES (120, 118, 'SQL查询', '/admin/system/executeQuery', NULL, 3, NULL);
-INSERT INTO `s_module` VALUES (121, 2, '地址管理', '/admin/system/address', 'fa fa-map', 2, 7);
-INSERT INTO `s_module` VALUES (122, 121, '编辑地址', '/admin/system/addrEdit', NULL, 3, NULL);
-INSERT INTO `s_module` VALUES (123, 121, '删除地址', '/admin/system/addrDel', NULL, 3, NULL);
-INSERT INTO `s_module` VALUES (124, 2, '模块管理', '/admin/system/module', 'fa fa-desktop', 2, 6);
-INSERT INTO `s_module` VALUES (125, 124, '模块编辑', '/admin/system/moduleEdit', '', 3, NULL);
-INSERT INTO `s_module` VALUES (126, 124, '模块删除', '/admin/system/moduleDel', '', 3, NULL);
+INSERT INTO `s_module` VALUES (1, 0, '用户管理', NULL, 'fa fa-user', 1, 1, '2018-07-17 17:39:43', b'0');
+INSERT INTO `s_module` VALUES (2, 0, '系统管理', NULL, 'fa fa-gear', 1, 10, '2018-07-17 17:39:43', b'0');
+INSERT INTO `s_module` VALUES (100, 1, '会员列表', '/admin/user/userList', 'fa fa-group', 2, 1, '2018-07-17 17:39:43', b'0');
+INSERT INTO `s_module` VALUES (101, 100, '用户数据', '/admin/user/userListData', NULL, 3, NULL, '2018-07-17 17:39:43', b'0');
+INSERT INTO `s_module` VALUES (102, 100, '用户编辑', '/admin/user/userEdit', NULL, 3, NULL, '2018-07-17 17:39:43', b'0');
+INSERT INTO `s_module` VALUES (103, 100, '用户禁用/解封', '/admin/user/userEnable', NULL, 3, NULL, '2018-07-17 17:39:43', b'0');
+INSERT INTO `s_module` VALUES (104, 100, '用户详情', '/admin/user/userDetail', NULL, 3, NULL, '2018-07-17 17:39:43', b'0');
+INSERT INTO `s_module` VALUES (105, 100, '导出用户Excel', '/admin/user/exportUserExcel', NULL, 3, NULL, '2018-07-17 17:39:43', b'0');
+INSERT INTO `s_module` VALUES (106, 2, '管理员列表', '/admin/system/adminList', 'fa fa-user', 2, 1, '2018-07-17 17:39:43', b'0');
+INSERT INTO `s_module` VALUES (107, 106, '管理员编辑', '/admin/system/adminEdit', NULL, 3, NULL, '2018-07-17 17:39:43', b'0');
+INSERT INTO `s_module` VALUES (108, 106, '管理员冻结', '/admin/system/adminEnable', NULL, 3, NULL, '2018-07-17 17:39:43', b'0');
+INSERT INTO `s_module` VALUES (109, 2, '权限管理', '/admin/system/rights', 'fa fa-delicious', 2, 2, '2018-07-17 17:39:43', b'0');
+INSERT INTO `s_module` VALUES (110, 109, '编辑组', '/admin/system/roleEdit', NULL, 3, NULL, '2018-07-17 17:39:43', b'0');
+INSERT INTO `s_module` VALUES (111, 109, '禁用/启用组', '/admin/system/roleEnable', NULL, 3, NULL, '2018-07-17 17:39:43', b'0');
+INSERT INTO `s_module` VALUES (112, 109, '查看权限', '/admin/system/permits', NULL, 3, NULL, '2018-07-17 17:39:43', b'0');
+INSERT INTO `s_module` VALUES (113, 109, '授权组', '/admin/system/permit', NULL, 3, NULL, '2018-07-17 17:39:43', b'0');
+INSERT INTO `s_module` VALUES (114, 2, '日志管理', '/admin/system/logList', 'fa fa-laptop', 2, 3, '2018-07-17 17:39:43', b'0');
+INSERT INTO `s_module` VALUES (115, 114, '日志备份', '/admin/system/backupLog', NULL, 3, NULL, '2018-07-17 17:39:43', b'0');
+INSERT INTO `s_module` VALUES (116, 2, '文件管理', '/admin/system/file', 'fa fa-archive', 2, 4, '2018-07-17 17:39:43', b'0');
+INSERT INTO `s_module` VALUES (117, 116, '获取目录', '/admin/system/getDirectory', NULL, 3, NULL, '2018-07-17 17:39:43', b'0');
+INSERT INTO `s_module` VALUES (118, 2, '系统工具', '/admin/system/tools', 'fa fa-crop', 2, 5, '2018-07-17 17:39:43', b'0');
+INSERT INTO `s_module` VALUES (119, 118, 'SQL编辑', '/admin/system/executeUpdate', NULL, 3, NULL, '2018-07-17 17:39:43', b'0');
+INSERT INTO `s_module` VALUES (120, 118, 'SQL查询', '/admin/system/executeQuery', NULL, 3, NULL, '2018-07-17 17:39:43', b'0');
+INSERT INTO `s_module` VALUES (121, 2, '地址管理', '/admin/system/address', 'fa fa-map', 2, 7, '2018-07-17 17:39:43', b'0');
+INSERT INTO `s_module` VALUES (122, 121, '编辑地址', '/admin/system/addrEdit', NULL, 3, NULL, '2018-07-17 17:39:43', b'0');
+INSERT INTO `s_module` VALUES (123, 121, '删除地址', '/admin/system/addrDel', NULL, 3, NULL, '2018-07-17 17:39:43', b'0');
+INSERT INTO `s_module` VALUES (124, 2, '模块管理', '/admin/system/module', 'fa fa-desktop', 2, 6, '2018-07-17 17:39:43', b'0');
+INSERT INTO `s_module` VALUES (125, 124, '模块编辑', '/admin/system/moduleEdit', '', 3, NULL, '2018-07-17 17:39:43', b'0');
+INSERT INTO `s_module` VALUES (126, 124, '模块删除', '/admin/system/moduleDel', '', 3, NULL, '2018-07-17 17:39:43', b'0');
 COMMIT;
 
 -- ----------------------------
@@ -183,14 +185,6 @@ CREATE TABLE `s_msg` (
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='系统消息';
 
 -- ----------------------------
--- Records of s_msg
--- ----------------------------
-BEGIN;
-INSERT INTO `s_msg` VALUES (1, 10000, '欢迎进入后台管理系统', '2017-09-11 11:16:48');
-INSERT INTO `s_msg` VALUES (2, 10000, '任务计划【***】已完成', '2017-09-11 11:35:07');
-COMMIT;
-
--- ----------------------------
 -- Table structure for s_role
 -- ----------------------------
 DROP TABLE IF EXISTS `s_role`;
@@ -199,6 +193,7 @@ CREATE TABLE `s_role` (
   `role_name` varchar(16) NOT NULL COMMENT '用户组名称',
   `role_rights` varchar(1024) DEFAULT NULL COMMENT '权限',
   `role_flag` tinyint(2) NOT NULL DEFAULT '1' COMMENT '是否可编辑 1-可编辑 0-不可编辑',
+  `role_create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `deleted` bit(1) DEFAULT b'0' COMMENT '是否删除 1-是 0-否',
   PRIMARY KEY (`id`),
   UNIQUE KEY `t_role_name` (`role_name`) USING BTREE
@@ -208,9 +203,9 @@ CREATE TABLE `s_role` (
 -- Records of s_role
 -- ----------------------------
 BEGIN;
-INSERT INTO `s_role` VALUES (10000, '超级管理组', NULL, 0, b'0');
-INSERT INTO `s_role` VALUES (10001, '财务组', '1,100,105', 1, b'1');
-INSERT INTO `s_role` VALUES (10002, '运维组', '2,124,125', 1, b'0');
+INSERT INTO `s_role` VALUES (10000, '超级管理组', NULL, 0, '2018-07-17 17:38:59', b'0');
+INSERT INTO `s_role` VALUES (10001, '财务组', '1,100,105', 1, '2018-07-17 17:38:59', b'1');
+INSERT INTO `s_role` VALUES (10002, '运维组', '2,124,125', 1, '2018-07-17 17:38:59', b'0');
 COMMIT;
 
 -- ----------------------------

@@ -40,6 +40,7 @@
 			<if test="ids != null and ids != ''">
 				AND FIND_IN_SET(id, #{ids})
 			</if>
+			AND !deleted
 		</where>
 		ORDER BY mod_sort ASC
 	</select>
@@ -51,18 +52,18 @@
 	</select>
 
 	<update id="update" parameterType="module">
-		update s_module
+		UPDATE s_module
 		<set>
 			<if test="modName != null and modName != ''">mod_name = #{modName},</if>
 			<if test="modPath != null and modPath != ''">mod_path = #{modPath},</if>
 			<if test="modIcon != null">mod_icon = #{modIcon},</if>
 			<if test="modSort != null">mod_sort = #{modSort},</if>
 		</set>
-		where id = #{id}
+		WHERE id = #{id}
 	</update>
 
 	<insert id="insert" parameterType="module">
-		insert into s_module(
+		INSERT INTO s_module(
 			parent_id,
 			mod_name,
 			mod_path,
@@ -70,7 +71,7 @@
 			mod_flag,
 			mod_sort
 		)
-		value (
+		VALUE (
 			#{parentId},
 			#{modName},
 			#{modPath},

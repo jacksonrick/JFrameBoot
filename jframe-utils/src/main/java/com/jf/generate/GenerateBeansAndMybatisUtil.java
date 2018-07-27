@@ -40,6 +40,8 @@ public class GenerateBeansAndMybatisUtil {
 
     private static String type_double = "double";
 
+    private static String type_numeric = "numeric";
+
     private static String type_bit = "bit";
 
     private static String type_blob = "blob";
@@ -177,6 +179,8 @@ public class GenerateBeansAndMybatisUtil {
             return "Double";
         } else if (type.indexOf(type_double) > -1) {
             return "Double";
+        } else if (type.indexOf(type_numeric) > -1) {
+            return "Double";
         } else if (type.indexOf(type_int) > -1) {
             return "Integer";
         } else if (type.indexOf(type_date) > -1) {
@@ -213,6 +217,7 @@ public class GenerateBeansAndMybatisUtil {
 
     /**
      * 处理字段
+     * user_id -> userId
      *
      * @param field
      * @return
@@ -233,19 +238,21 @@ public class GenerateBeansAndMybatisUtil {
     }
 
     /**
-     * 处理html文件名
+     * 处理文件名
+     * t_user_info -> user_info
      *
      * @param table
      * @return
      * @author rick
      * @date 2016年8月10日 上午8:55:21
      */
-    private String processHtmlFile(String table) {
+    private String processFile(String table) {
         return table.substring(table.indexOf("_") + 1, table.length());
     }
 
     /**
      * 将实体类名首字母改为小写
+     * user -> User
      *
      * @param beanName
      * @return
@@ -326,7 +333,7 @@ public class GenerateBeansAndMybatisUtil {
         }
 
         // form表单
-        File htmlEditFile = new File(html_path, processHtmlFile(tableName) + "_edit.ftl");
+        File htmlEditFile = new File(html_path, processFile(tableName) + "_edit.ftl");
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(htmlEditFile)));
         bw.write("<!DOCTYPE html>\n<html>\n<head>\n\t<meta charset=\"utf-8\">\n\t<title>" + tableComment + "</title>\n");
         bw.write("<#include \"include.ftl\"/>\n</head>\n");
@@ -355,11 +362,11 @@ public class GenerateBeansAndMybatisUtil {
                 bw.write("\t\t\t\t</div>\n\t\t\t\t<div class=\"radio radio-info radio-inline\">\n");
                 bw.write("\t\t\t\t\t<input type=\"radio\" name=\"" + name + "\" id=\"" + name + "0\" value=\"0\" ${map." + name + "?string('checked','') }>\n\t\t\t\t\t<label for=\"" + name + "0\">0</label>\n\t\t\t\t</div>");
             } else if ("Date".equals(processType(types.get(i)))) { // 时间类型添加时间选择插件
-                bw.write("\t\t\t\t<input type=\"text\" id=\"" + name + "\" name=\"" + name + "\" value=\"${map." + name + "?string('yyyy-MM-dd HH:mm:ss') }\" class=\"form-control\" placeholder=\"" + comment + "\">");
+                bw.write("\t\t\t\t<input type=\"text\" id=\"" + name + "\" name=\"" + name + "\" value=\"${map." + name + "?string('yyyy-MM-dd HH:mm:ss') }\" class=\"form-control\" placeholder=\"" + label + "\">");
                 hasDate = true;
                 dateIds.add("#" + name);
             } else { // 否则为普通文本框
-                bw.write("\t\t\t\t<input type=\"text\" name=\"" + name + "\" value=\"${map." + name + " }\" class=\"form-control\" placeholder=\"" + comment + "\">");
+                bw.write("\t\t\t\t<input type=\"text\" name=\"" + name + "\" value=\"${map." + name + " }\" class=\"form-control\" placeholder=\"" + label + "\">");
             }
             bw.newLine();
             bw.write("\t\t\t</div>\n\t\t</div>\n");
@@ -397,7 +404,7 @@ public class GenerateBeansAndMybatisUtil {
         bw.close();
 
         // 列表-DataTables
-        File htmlListFile = new File(html_path, processHtmlFile(tableName) + "_list.ftl");
+        File htmlListFile = new File(html_path, processFile(tableName) + "_list.ftl");
         BufferedWriter bw2 = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(htmlListFile)));
         bw2.write("<!DOCTYPE html>\n" +
                 "<html>\n" +
@@ -760,7 +767,7 @@ public class GenerateBeansAndMybatisUtil {
             }
         }
         bw.write("\t\t)\n");
-        bw.write("\t\tVALUE (\n");
+        bw.write("\t\tVALUES (\n");
         for (int i = 0; i < size; i++) {
             if (i < size - 1) {
                 bw.write("\t\t\t#{" + processField(columns.get(i)) + "},\n");
@@ -867,6 +874,9 @@ public class GenerateBeansAndMybatisUtil {
         bw.write("\tprivate " + beanName + "Mapper " + mapper + ";\n\n");
         // 分页查询
         bw.write("\tpublic PageInfo find" + beanName + "ByPage(" + beanName + " condition) {\n");
+        bw.write("\t\tif (StringUtil.isBlank(condition.getPageSort())) {\n");
+        bw.write("\t\t\tcondition.setPageSort(\"id DESC\");\n");
+        bw.write("\t\t}\n");
         bw.write("\t\tcondition.setPage(true);\n");
         bw.write("\t\tList<" + beanName + "> list = " + mapper + ".findByCondition(condition);\n");
         bw.write("\t\treturn new PageInfo(list);\n");
@@ -940,7 +950,7 @@ public class GenerateBeansAndMybatisUtil {
         bw.write("\t@RequestMapping(\"/" + bean + "List\")\n");
         bw.write("\t@AuthPassport(right = false)\n");
         bw.write("\tpublic String " + bean + "List() {\n");
-        bw.write("\t\treturn \"" + bean + "/" + bean + "_list\";\n");
+        bw.write("\t\treturn \"" + bean + "/" + processFile(tableName) + "_list\";\n");
         bw.write("\t}\n\n");
         // JSON数据
         bw.write("\t@RequestMapping(\"/" + bean + "ListData\")\n");
@@ -957,7 +967,7 @@ public class GenerateBeansAndMybatisUtil {
         bw.write("\t\t\t" + beanName + " map" + " = " + service + ".find" + beanName + "ById(id);\n");
         bw.write("\t\t\tmodel.addAttribute(\"map\", map);\n");
         bw.write("\t\t}\n");
-        bw.write("\t\treturn \"" + bean + "/" + bean + "_edit\";\n");
+        bw.write("\t\treturn \"" + bean + "/" + processFile(tableName) + "_edit\";\n");
         bw.write("\t}\n\n");
         // 编辑-新增/更新
         bw.write("\t@RequestMapping(\"/" + bean + "Edit\")\n");

@@ -27,12 +27,17 @@ spring:
     date-format: yyyy-MM-dd HH:mm:ss
   profiles: # 本地配置
     active: native
-  cloud: # springcloud配置
+  cloud: # ConfigServer
     config:
       server:
-        native:
+        native: # 本地
           search-locations: classpath:/configs/
         prefix: /cfg # 配置地址前缀
+        #git: # Git远程仓库
+          #uri: https://github.com/
+          #username:
+          #password:
+          #search-paths: dir,dir2*
 management:
   endpoints:
     enabled-by-default: false

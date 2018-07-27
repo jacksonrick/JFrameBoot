@@ -1,5 +1,5 @@
 # JFrame
-##### JFrame - SpringBoot & Cloud Project `v5.0.5 beta`
+##### JFrame - SpringBoot & Cloud Project `v5.0.6 beta`
 made by @jackson-rick   <br>
 本架构是对技术框架的整合及开发的规范
 
@@ -28,11 +28,19 @@ made by @jackson-rick   <br>
 * Spring-WebSocket、Openfire、Actuator健康监控、数据源监控
 * Util包：字符、时间、数字转换/JSON/Http/PDF+Excel/分页/文件/对象/验证器...
 * JS插件：封装：Ajax/DataTables/CityPicker/Layer/DatePicker...
-* 可开关服务：db、scheduler[springsch|quartz]、cache、activemq、socket、fdfs、endpoint、eureka、feign...
+* 服务：scheduler[springsch|quartz]、cache、activemq、socket、fdfs、actuator、eureka、feign、oauth2、zuul、ssl...
 * 测试模块：[jframe-web-test]DEMO、组件等测试
-* Jenkins自动化部署、脚本
+* Jenkins&Docker自动化部署
 
 ### 更新日志：
+* v5.0.6 beta `20180727`
+    * 1.移除多数据源功能
+    * 2.新增对额外yml配置的说明
+    * 3.新增网关模块[待完善]
+    * 4.新增对postgres的支持
+    * 5.优化mybaits生成工具和其他工具类
+    * 6.新增Quartz数据库支持和图形化界面、日志可视化
+    * 7.其他日志、任务等**配置**优化
 * v5.0.5 beta `20180706`
     * 1.新增Quartz任务管理器及界面
     * 2.修改utils包名
@@ -189,13 +197,17 @@ made by @jackson-rick   <br>
 ### 环境与配置
 * Jdk 1.8
 * MySQL 5.6 +
+* Postgresql 9 +
 * Maven 3.3.9
 * Redis 2.8.9
 * Linux CentOS 7
 * IDEA 2017+
+
 ---
+
 * application-dev.yml 开发环境
 * application-pro.yml 生产环境
+* application-test.yml 测试环境[如果有]
 * application-cloud.yml SpringCloud支持
 
 ### 运行
@@ -207,8 +219,8 @@ made by @jackson-rick   <br>
 * 注意：运行脚本前，请先查看注释，需要按照指定的命名方式
 
 #### Docker
-* 直接运行打包命令，将上传到服务器目录，如:/opt/jframe/front
-* 运行`docker-compose up -d`
+* 直接运行打包命令，将上传到服务器目录，如:/home/jframe/front
+* 运行`docker-compose up -d` | `docker-compose restart web`
 
 ### 其他
 * 使用maven下载Jar包时，请先在`maven-.../conf/setting.xml`的mirrors标签内加入以下：

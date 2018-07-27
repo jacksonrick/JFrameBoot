@@ -108,11 +108,16 @@ public class HomeBackController extends BaseController {
         if (StringUtil.isBlank(validNum)) {
             return new ResMsg(1, "请输入验证码");
         }
-        // 验证码验证
-        /*String sessionCode = (String) session.getAttribute(VERSION.SESSION_RAND);
-        if (sessionCode == null || !sessionCode.equals(validNum)) {
-            return new ResMsg(2, "验证码错误");
-        }*/
+        if (config.dev()) { // dev
+            username = "admin";
+            password = "123456";
+        } else {
+            // 验证码验证
+            String sessionCode = (String) session.getAttribute(SysConfig.SESSION_RAND);
+            if (sessionCode == null || !sessionCode.equals(validNum)) {
+                return new ResMsg(2, "验证码错误");
+            }
+        }
         if (StringUtil.isBlank(username)) {
             return new ResMsg(3, "用户名不能为空 ");
         }

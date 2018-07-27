@@ -21,20 +21,21 @@ import java.nio.charset.StandardCharsets;
 public class RestConfig {
 
     @Bean
-    public RestTemplate restTemplate(ClientHttpRequestFactory factory) {
-        RestTemplate restTemplate = new RestTemplate(factory);
-        restTemplate.getMessageConverters().set(1, new StringHttpMessageConverter(StandardCharsets.UTF_8)); // 中文乱码
-        restTemplate.setErrorHandler(new RestErrorHandler()); // 错误处理器
-        return restTemplate;
-    }
-
-    @Bean
     public ClientHttpRequestFactory simpleClientHttpRequestFactory() {
         SimpleClientHttpRequestFactory factory = new SimpleClientHttpRequestFactory();
         // 超时时间设置
         factory.setConnectTimeout(15000);
         factory.setReadTimeout(5000);
         return factory;
+    }
+
+    @Bean
+    public RestTemplate restTemplate(ClientHttpRequestFactory factory) {
+        RestTemplate restTemplate = new RestTemplate(factory);
+        restTemplate.getMessageConverters().set(1, new StringHttpMessageConverter(StandardCharsets.UTF_8)); // 中文乱码
+        // restTemplate.getMessageConverters().add(new MyJsonHttpMessageConverter()); // html -> json
+        restTemplate.setErrorHandler(new RestErrorHandler()); // 错误处理器
+        return restTemplate;
     }
 
 }

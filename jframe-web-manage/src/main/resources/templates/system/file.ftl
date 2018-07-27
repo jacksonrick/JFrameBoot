@@ -65,22 +65,25 @@
     <div class="ibox float-e-margins">
         <div class="ibox-title">
             <h5>文件管理</h5>
+            <ol class="breadcrumb">
+                <li><a title="/" href="javascript:;" onclick="openDirectory(this.title,1)">static</a></li>
+            </ol>
         </div>
         <div class="alert alert-warning mb0">
             <i class="fa fa-exclamation-circle"></i>文件管理只查看站点静态目录(/static/...)，双击查看。
         </div>
         <div class="ibox-content">
             <div class="row">
-                <!-- <div id="tree"></div> -->
-                <ol class="breadcrumb">
-                    <li><a title="/" href="javascript:;" onclick="openDirectory(this.title,1)">static</a></li>
-                </ol>
                 <div id="data">
                     <ul class="dataList"></ul>
                 </div>
             </div>
         </div>
     </div>
+</div>
+
+<div class="layer-win" style="width: 600px;height:500px;overflow: scroll;">
+    <img src="" id="layer-img">
 </div>
 
 <script type="text/javascript">
@@ -162,8 +165,8 @@
 
     function openPicture(file) {
         var src = '/static/' + file + '';
-        openLayerHTML('<img src="' + src + '" width="100%">', 500, 500, function () {
-        });
+        $("#layer-img").attr("src", src);
+        openLayerContent("图片预览", 500, 500, $(".layer-win"));
     }
 
     function downLoad(file) {

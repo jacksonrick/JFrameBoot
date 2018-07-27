@@ -7,17 +7,21 @@ server:
     min-spare-threads: 20
     max-connections: 2000
   undertow: # undertow容器
-    io-threads: 4
-    worker-threads: 20
-    buffer-size: 1024
+    io-threads: 4 # 设置IO线程数，主要执行非阻塞的任务,负责多个连接，默认设置每个CPU核心一个线程
+    worker-threads: 20 # 阻塞任务线程池, 执行类似servlet请求阻塞IO操作，默认是IO线程数*8
+    buffer-size: 1024 # 用于服务器连接的IO操作，越小的空间被利用越充分
+    direct-buffers: true # 是否分配的直接内存(NIO直接分配的堆外内存)
   servlet:
     session:
       timeout: 30m # session过期时间
+#      cookie:
+#        name: SESSIONID
+#    context-path:
 #  ssl:
-#    key-store: classpath:.keystore
-#    key-store-type: jks
-#    key-password: 111111
-#    key-alias: tomcat
+#    enabled: false
+#    key-store: classpath:test.jks
+#    key-store-type: JKS
+#    key-password: 123456
 spring:
   cache: # 缓存设置
     type: REDIS # 缓存类型 NONE | REDIS
@@ -57,31 +61,22 @@ spring:
   datasource:
     druid: # Druid数据源配置
       driver-class-name: com.mysql.jdbc.Driver
-      primary: # 主库
-        url: jdbc:mysql://127.0.0.1:3306/jframe?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false
-        username: root
-        password: 12345678
-      secondary: # 备或从库
-        url: jdbc:mysql://127.0.0.1:3306/test?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false
-        username: root
-        password: 12345678
-      loadbalance: # 集群
-        url: jdbc:mysql:loadbalance://192.168.1.191:3306,192.168.1.192:3306/test?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&roundRobinLoadBalance=true
-        username: root
-        password: 12345678
-      initial-size: 5
-      max-active: 20
-      max-wait: 60000
-      min-idle: 5
-      time-between-eviction-runs-millis: 60000
+      url: jdbc:mysql://127.0.0.1:3306/jframe?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false
+      username: root
+      password: 12345678
+      initial-size: 5 # 初始化时建立物理连接的个数。初始化发生在显示调用init方法，或者第一次getConnection时
+      max-active: 20 # 最大连接池数量 Default:8
+      max-wait: 60000 # 获取连接时最大等待时间
+      min-idle: 5 # 最小连接池数量
+      time-between-eviction-runs-millis: 60000 # 1.Destroy线程会检测连接的间隔时间 2.test-while-idle的判断依据
       min-evictable-idle-time-millis: 300000
-      validation-query: SELECT 1 FROM DUAL
-      max-open-prepared-statements: 20
-      remove-abandoned: true
-      remove-abandoned-timeout-millis: 1800
-      test-on-borrow: false
-      test-on-return: false
-      test-while-idle: true
+      validation-query: SELECT 1 # 用来检测连接是否有效的sql，要求是一个查询语句
+      max-open-prepared-statements: 20 # 要启用PSCache，必须配置大于0，当大于0时，poolPreparedStatements自动触发修改为true
+      remove-abandoned: true # 连接使用超过时间限制是否回收
+      remove-abandoned-timeout-millis: 60000 # 超过时间限制时间（s）,Default:300s
+      test-on-borrow: false # 申请连接时执行validationQuery检测连接是否有效,会降低性能
+      test-on-return: false # 归还连接时执行validationQuery检测连接是否有效,会降低性能
+      test-while-idle: true # 申请连接的时候检测，如果空闲时间大于timeBetweenEvictionRunsMillis，执行validationQuery检测连接是否有效
       filter: # 自定义StatFilter配置
         stat:
           enabled: ${app.druid.enabled:false}
@@ -101,14 +96,14 @@ spring:
         exclusions: "*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*"
       aop-patterns: com.jf.service.* # Spring监控AOP切入点
   aop:
-    proxy-target-class: true
+    proxy-target-class: true # 开启AOP，使用CGLIB代理
   task: # 线程池设置
     corePoolSize: 10 # 维护线程的最少数量
-    maxPoolSize: 30
+    maxPoolSize: 30 # 线程池最大的线程数，只有在缓冲队列满了之后才会申请超过核心线程数的线程
     queueCapacity: 200 # 线程池所使用的缓冲队列
     keepAliveSeconds: 60 # 维护线程所允许的空闲时间
-    waitOnShutdown: true
-    awaitTerminationSeconds: 60
+    waitOnShutdown: true # 设置线程池关闭的时候等待所有任务都完成再继续销毁其他的Bean
+    awaitTerminationSeconds: 60 # 设置线程池中任务的等待时间，如果超过这个时候还没有销毁就强制销毁
   mail: # 邮件服务器设置
     host: smtp.qq.com
     username: 1@qq.com
@@ -167,20 +162,20 @@ spring:
         prefetch: 50 # 每个消费者获取最大投递数量
         acknowledge-mode: manual # 开启ACK
   quartz: # quartz配置
-    job-store-type: jdbc
-    properties:
+    job-store-type: memory # jdbc | memory
+    properties: # Quartz属性配置
       org:
         quartz:
           scheduler:
             instanceName: DefaultQuartzScheduler
             instanceId: AUTO
-          jobStore: # jdbc
-            class: org.quartz.impl.jdbcjobstore.JobStoreTX
-            driverDelegateClass: org.quartz.impl.jdbcjobstore.StdJDBCDelegate
-            tablePrefix: qz_
+          #jobStore: # jdbc支持(需先导入SQL)
+            #class: org.quartz.impl.jdbcjobstore.JobStoreTX
+            #driverDelegateClass: org.quartz.impl.jdbcjobstore.StdJDBCDelegate
+            #tablePrefix: qz_
             #isClustered: true
             #clusterCheckinInterval: 10000
-            useProperties: false
+            #useProperties: false
           threadPool:
             class: org.quartz.simpl.SimpleThreadPool
             threadCount: 10 # 并发数
@@ -192,6 +187,7 @@ fdfs: # fastDFS配置
   tracker-list: # 可设置多个
     - 192.168.1.199:22122
 system: # 系统自定义配置
+  dev: true # 是否开发环境
   appkey: ${app.appkey:0}
   static_host: http://127.0.0.1:${server.port}/ # 静态服务器地址
   static_path: /Users/xujunfei/Downloads/static/ # 静态文件目录

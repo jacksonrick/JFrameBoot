@@ -1,17 +1,14 @@
-version: '2.2'
-services:
-  web:
-    build: .
-    image: jackson/web/test:latest
-    container_name: web_test
-    environment:
-      TZ: Asia/Shanghai
-    external_links:
-      - mysql:mysql
-      - redis:redis
-    volumes:
-      - /home/docker/jframe/logs:/data/wwwlogs
-      - /home/docker/jframe/test/static:/data/wwwroot/test/static
-    ports:
-      - "8888:8888"
-    command: java -server -jar /data/wwwroot/test/jframe-web-test.jar --spring.profiles.active=pro
+web:
+  image: hub.c.163.com/library/java:8u111-jre
+  container_name: web_test
+  environment:
+    TZ: Asia/Shanghai
+  external_links:
+    - mysql:mysql
+    - redis:redis
+  volumes:
+    - /home/docker/jframe/logs:/data/wwwlogs
+    - /home/docker/jframe/test:/data/wwwroot/test
+  ports:
+    - "8888:8888"
+  command: java -server -jar /data/wwwroot/test/jframe-web-test.jar --spring.profiles.active=pro

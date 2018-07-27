@@ -1,25 +1,22 @@
-version: '2.2'
-services:
-  redis:
-    image: hub.c.163.com/library/redis
-    container_name: web_app_redis
-    volumes:
-      - /home/docker/jframe/app/redis:/data
-  web:
-    #build: .
-    #image: jackson/web/app:latest
-    image: hub.c.163.com/library/java:8u111-jre
-    container_name: web_app
-    environment:
-      TZ: Asia/Shanghai
-    links:
-      - redis:redis
-    external_links:
-      - mysql:mysql
-    volumes:
-      - /home/docker/jframe/logs:/data/wwwlogs
-      - /home/docker/jframe/app/static:/data/wwwroot/app/static
-      - /home/docker/jframe/app:/data/wwwroot/app # if no build
-    ports:
-      - "8082:8082"
-    command: java -server -jar /data/wwwroot/app/jframe-web-app.jar --spring.profiles.active=pro
+redis:
+  image: hub.c.163.com/library/redis
+  container_name: web_app_redis
+  volumes:
+    - /home/docker/jframe/app/redis:/data
+web:
+  #build: .
+  #image: jackson/web/app:latest
+  image: hub.c.163.com/library/java:8u111-jre
+  container_name: web_app
+  environment:
+    TZ: Asia/Shanghai
+  links:
+    - redis
+  external_links:
+    - mysql:mysql
+  volumes:
+    - /home/docker/jframe/logs:/data/wwwlogs
+    - /home/docker/jframe/app:/data/wwwroot/app # if no build
+  ports:
+    - "8082:8082"
+  command: java -server -jar /data/wwwroot/app/jframe-web-app.jar --spring.profiles.active=pro

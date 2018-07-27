@@ -16,24 +16,52 @@ import java.util.zip.GZIPOutputStream;
  * 文件处理工具类
  *
  * @author rick
- * @version 3.0
+ * @version 4.0
  */
 public class FileUtil {
+
+    /**
+     * 读取文件内容
+     *
+     * @param filepath
+     * @return
+     */
+    public static String getContent(String filepath) {
+        File f = new File(filepath);
+        if (!f.isFile()) {
+            return "";
+        }
+        Reader reader = null;
+        StringBuffer sb = new StringBuffer();
+        try {
+            reader = new FileReader(f);
+            char[] flush = new char[10];
+            int len = 0;
+            while ((len = reader.read(flush)) != -1) {
+                sb.append(new String(flush, 0, len));
+            }
+        } catch (Exception e) {
+            return e.getMessage();
+        }
+        return sb.toString();
+    }
 
     /**
      * 获取文件目录
      *
      * @param path
+     * @param parent
      * @return
      */
     public static List<Directory> getDirectory(String path, String parent) {
-        parent += path;
         List<Directory> list = new ArrayList<Directory>();
-        File f = new File(parent);
+        File f = new File(parent + path);
         File[] files = f.listFiles();
         if (files == null) {
             return null;
         }
+        Arrays.sort(files, new CompratorByName());
+
         for (File file : files) {
             Directory directory = new Directory();
             // 统一正斜杠 /
@@ -45,7 +73,7 @@ public class FileUtil {
                 if (ft.endsWith(".jpg") || ft.endsWith(".jpeg") || ft.endsWith(".png") || ft.endsWith(".gif") || ft
                         .endsWith(".ico")) {
                     directory.setType("picture");
-                } else if (ft.endsWith(".txt") || ft.endsWith(".html")) {
+                } else if (ft.endsWith(".txt") || ft.endsWith(".html") || ft.endsWith(".log")) {
                     directory.setType("text");
                 } else if (ft.endsWith(".avi") || ft.endsWith(".mp4") || ft.endsWith(".swf")) {
                     directory.setType("video");
@@ -56,7 +84,7 @@ public class FileUtil {
                 }
             }
             directory.setName(file.getName());
-            directory.setPath(p.substring(p.lastIndexOf("static") + 6, p.length()));
+            directory.setPath(p.substring(parent.length() - 1, p.length()));
             list.add(directory);
         }
         return list;
@@ -92,6 +120,7 @@ public class FileUtil {
         return list;
     }
 
+    // 最近修改时间排序
     static class CompratorByLastModified implements Comparator<File> {
         public int compare(File f1, File f2) {
             long diff = f2.lastModified() - f1.lastModified();
@@ -101,6 +130,21 @@ public class FileUtil {
                 return 0;
             else
                 return -1;
+        }
+
+        public boolean equals(Object obj) {
+            return true;
+        }
+    }
+
+    // 名称排序
+    static class CompratorByName implements Comparator<File> {
+        public int compare(File f1, File f2) {
+            if (f1.isDirectory() && f2.isFile())
+                return -1;
+            if (f1.isFile() && f2.isDirectory())
+                return 1;
+            return f2.getName().compareTo(f1.getName());
         }
 
         public boolean equals(Object obj) {

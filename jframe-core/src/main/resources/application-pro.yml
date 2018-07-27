@@ -11,9 +11,15 @@ server:
     io-threads: 4
     worker-threads: 20
     buffer-size: 1024
+    direct-buffers: true
   servlet:
     session:
       timeout: 30m
+  ssl:
+    enabled: ${app.ssl.enabled:false}
+    key-store: classpath:test.jks
+    key-store-type: JKS
+    key-password: 123456
 spring:
   cache:
     type: NONE
@@ -53,24 +59,19 @@ spring:
   datasource:
     druid:
       driver-class-name: com.mysql.jdbc.Driver
-      primary:
-        url: jdbc:mysql://mysql:3306/jframe?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false
-        username: root
-        password: 12345678
-      secondary:
-        url: jdbc:mysql://mysql:3306/test?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false
-        username: root
-        password: 12345678
+      url: jdbc:mysql://mysql:3306/jframe?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false
+      username: root
+      password: 12345678
       initial-size: 5
       max-active: 20
       max-wait: 60000
       min-idle: 5
       time-between-eviction-runs-millis: 60000
       min-evictable-idle-time-millis: 300000
-      validation-query: SELECT 1 FROM DUAL
+      validation-query: SELECT 1
       max-open-prepared-statements: 20
       remove-abandoned: true
-      remove-abandoned-timeout-millis: 1800
+      remove-abandoned-timeout-millis: 60000
       test-on-borrow: false
       test-on-return: false
       test-while-idle: true
@@ -145,19 +146,22 @@ spring:
         concurrency: 10
         prefetch: 50
         acknowledge-mode: manual
+  quartz:
+    job-store-type: memory
 fdfs:
   so-timeout: 3000
   connect_timeout: 3000
   tracker-list:
     - fdfs:22122
 system:
+  dev: false
   appkey: ${app.appkey:0}
   static_host: ${app.static_host}
   static_path: ${app.static_path}
   log_path: /data/wwwlogs/
   server_id: ${spring.application.name}
   fdfs_nginx: http://192.168.1.199/
-  aliyun: # 支付宝
+  aliyun:
     partner: 2088
     seller: nf@sandbox.com
     app_id: 2016
@@ -166,12 +170,12 @@ system:
     notify_url: http://xjf.s1.natapp.cc/alipay_callback
     return_url: http://xjf.s1.natapp.cc/alipay_return
     gateway: https://openapi.alipaydev.com/gateway.do
-  wechat: # 微信
+  wechat:
     appid: wx47
     partner: 1482
     partner_key: ad8b6
     notify_url: http://xjf.s1.natapp.cc/wxpay_callback
-  geetest: # 极验验证
+  geetest:
     id: a53178
     key: 51dbc8
   jpush:

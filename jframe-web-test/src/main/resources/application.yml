@@ -17,8 +17,6 @@ info: # 定义各种额外的详情给服务端显示
 app:
   static_path: /data/wwwroot/test/static/ # (生产)静态文件目录
   static_host: http://192.168.1.199:8088/ # (生产)静态文件地址-用于文件上传返回绝对路径
-  secondb: # 从或备数据库
-    enabled: false
   eureka: # Eureka注册服务
     enabled: false
   monitor: # 监控端点
@@ -40,6 +38,8 @@ app:
   socket: # spring websocket
     enabled: false
   fdfs: # FastDFS,false则使用本地上传
+    enabled: false
+  ssl: # 启用SSL
     enabled: false
 rmi: # 启用rmi监控
   enabled: false

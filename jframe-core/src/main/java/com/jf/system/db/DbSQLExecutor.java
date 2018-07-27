@@ -13,11 +13,11 @@ import java.util.List;
 @Configuration
 public class DbSQLExecutor {
 
-    @Value("${spring.datasource.druid.primary.url}")
+    @Value("${spring.datasource.druid.url}")
     private String url;
-    @Value("${spring.datasource.druid.primary.username}")
+    @Value("${spring.datasource.druid.username}")
     private String username;
-    @Value("${spring.datasource.druid.primary.password}")
+    @Value("${spring.datasource.druid.password}")
     private String password;
     @Value("${spring.datasource.druid.driver-class-name}")
     private String driver;

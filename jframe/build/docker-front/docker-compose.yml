@@ -1,16 +1,13 @@
-version: '2.2'
-services:
-  web:
-    build: .
-    image: jackson/web/front:latest
-    container_name: web_front
-    environment:
-      TZ: Asia/Shanghai
-    external_links:
-      - mysql:mysql
-    volumes:
-      - /home/docker/jframe/logs:/data/wwwlogs
-      - /home/docker/jframe/front/static:/data/wwwroot/front/static
-    ports:
-      - "8081:8081"
-    command: java -server -jar /data/wwwroot/front/jframe-web-front.jar --spring.profiles.active=pro
+web:
+  image: hub.c.163.com/library/java:8u111-jre
+  container_name: web_front
+  environment:
+    TZ: Asia/Shanghai
+  external_links:
+    - mysql:mysql
+  volumes:
+    - /home/docker/jframe/logs:/data/wwwlogs
+    - /home/docker/jframe/front:/data/wwwroot/front
+  ports:
+    - "8081:8081"
+  command: java -server -jar /data/wwwroot/front/jframe-web-front.jar --spring.profiles.active=pro

@@ -7,3 +7,4 @@ spring:
       uri: http://eureka:eureka1234@127.0.0.1:10000/cfg
       name: sys # 获取config server的sys-dev.properties
       profile: dev
+      #label: master # git分支
