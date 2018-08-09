@@ -1,11 +1,12 @@
 package com.jf.controller;
 
-import com.alibaba.druid.support.json.JSONUtils;
 import com.jf.common.BaseController;
 import com.jf.database.model.User;
 import com.jf.entity.ResMsg;
 import com.jf.entity.enums.ResCode;
+import com.jf.json.JacksonUtil;
 import com.jf.system.mq.rabbitmq.RabbitMQService;
+import org.springframework.amqp.rabbit.support.CorrelationData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -49,9 +50,11 @@ public class MQController extends BaseController {
         for (int i = 1; i <= 50; i++) {
             User user = new User(i);
             user.setNickname("fei");
-            String json = JSONUtils.toJSONString(user);
+            String json = JacksonUtil.objectToJson(user);
             System.out.println("A Sender : " + json);
-            producer2.send("topic.msg.a", json);
+
+            CorrelationData correlationData = new CorrelationData(String.valueOf(i));
+            producer2.send("topic.msg.a", json, correlationData);
         }
 
         /*System.out.println("########################");

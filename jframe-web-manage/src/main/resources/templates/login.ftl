@@ -23,7 +23,7 @@
 <div class="middle-box text-center loginscreen animated fadeInDown">
     <div>
         <h1 class="logo-name"> 平台管理中心 </h1>
-        <h5>版本：${version}</h5>
+        <h5>version：${version}</h5>
 
         <form style="opacity: .8;" role="form" method="post" id="loginForm">
             <div class="form-group">

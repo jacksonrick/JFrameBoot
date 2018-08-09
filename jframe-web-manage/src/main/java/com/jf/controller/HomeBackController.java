@@ -14,7 +14,6 @@ import com.jf.string.StringUtil;
 import com.jf.system.annotation.AuthPassport;
 import com.jf.system.conf.SysConfig;
 import com.jf.system.geetest.GeetestLib;
-import com.jf.system.util.VERSION;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -87,7 +86,7 @@ public class HomeBackController extends BaseController {
         if (admin != null) {
             return "redirect:index";
         }
-        map.put("version", VERSION.SYS_VER);
+        map.put("version", config.getVersion());
         return "login";
     }
 
@@ -108,8 +107,7 @@ public class HomeBackController extends BaseController {
         if (StringUtil.isBlank(validNum)) {
             return new ResMsg(1, "请输入验证码");
         }
-        if (config.dev()) { // dev
-            username = "admin";
+        if (config.dev() && "admin".equals(username)) { // dev
             password = "123456";
         } else {
             // 验证码验证
@@ -169,8 +167,7 @@ public class HomeBackController extends BaseController {
         List<Msg> msgs = adminService.findByTodayMsg(admin.getId());
         map.addAttribute("msgs", msgs);
         map.addAttribute("size", msgs.size());
-        map.put("version", VERSION.SYS_VER);
-        map.put("upgrade", VERSION.UPGRADE);
+        map.put("version", config.getVersion());
         return "index";
     }
 
@@ -184,8 +181,7 @@ public class HomeBackController extends BaseController {
     public String home(ModelMap map, HttpServletRequest request) {
         map.put("date", new Date().getTime());
         map.put("arr", new SystemUtil().getSpace());
-        map.put("sysname", VERSION.SYS_NAME);
-        map.put("version", VERSION.SYS_VER);
+        map.put("version", config.getVersion());
         map.put("info", request.getSession().getServletContext().getServerInfo());
         return "home/home";
     }

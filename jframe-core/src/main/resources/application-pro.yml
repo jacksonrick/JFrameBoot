@@ -137,23 +137,39 @@ spring:
     port: 5672
     username: rabbitmq
     password: 12345678
-    virtual-host: /rmq
+    virtual-host: /rmq2
     requested-heartbeat: 10s
     publisher-confirms: true
     publisher-returns: true
     listener:
       simple:
+        acknowledge-mode: manual
         concurrency: 10
         prefetch: 50
-        acknowledge-mode: manual
+        retry:
+          enabled: true
+          initial-interval: 10s
+          max-attempts: 2
   quartz:
     job-store-type: memory
+    properties:
+      org:
+        quartz:
+          scheduler:
+            instanceName: DefaultQuartzScheduler
+            instanceId: AUTO
+          threadPool:
+            class: org.quartz.simpl.SimpleThreadPool
+            threadCount: 10
+            threadPriority: 5
+            threadsInheritContextClassLoaderOfInitializingThread: true
 fdfs:
   so-timeout: 3000
   connect_timeout: 3000
   tracker-list:
     - fdfs:22122
 system:
+  version: 'v5.0.6 beta'
   dev: false
   appkey: ${app.appkey:0}
   static_host: ${app.static_host}

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="COMMON">
+
+	<!-- pagination -->
+	<sql id="PAGE">
+		<if test="pageSort != null and pageSort != ''"> ORDER BY ${pageSort} </if>
+		<if test="page">
+			<if test="pageStart != null and pageSize != null"> LIMIT #{pageStart},#{pageSize} </if>
+		</if>
+	</sql>
+
+	<sql id="ORDER">
+		<if test="pageSort != null and pageSort != ''"> ORDER BY ${pageSort} </if>
+	</sql>
+
+	<sql id="DATE">
+		<if test="startDate != null and startDate != ''">
+			AND TO_CHAR(${column}, 'YYYY-MM-DD') &gt;= #{startDate}
+		</if>
+		<if test="endDate != null and endDate != ''">
+			AND TO_CHAR(${column}, 'YYYY-MM-DD') &lt;= #{endDate}
+		</if>
+	</sql>
+
+</mapper>

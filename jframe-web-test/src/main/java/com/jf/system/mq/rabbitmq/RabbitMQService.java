@@ -1,13 +1,7 @@
 package com.jf.system.mq.rabbitmq;
 
-import com.jf.database.model.User;
-import com.jf.json.JacksonUtil;
-import com.rabbitmq.client.Channel;
 import org.springframework.amqp.core.*;
-import org.springframework.amqp.rabbit.connection.ConnectionFactory;
-import org.springframework.amqp.rabbit.core.ChannelAwareMessageListener;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
 import org.springframework.amqp.rabbit.support.CorrelationData;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,42 +38,9 @@ public class RabbitMQService implements RabbitTemplate.ConfirmCallback, RabbitTe
         return factory;
     }*/
 
-    @Bean
-    public SimpleMessageListenerContainer messageListenerContainer(ConnectionFactory connectionFactory) {
-        SimpleMessageListenerContainer container = new SimpleMessageListenerContainer(connectionFactory);
-        container.setQueues(queueMsgA());
-        container.setAcknowledgeMode(AcknowledgeMode.MANUAL); // 设置确认模式 手工确认
-        container.setMessageListener(new ChannelAwareMessageListener() {
-            @Override
-            public void onMessage(Message message, Channel channel) throws Exception {
-                byte[] body = message.getBody();
-                System.out.println("receive msg : " + new String(body));
-                boolean success = true;
-                long id = 0;
-                try {
-                    User user = JacksonUtil.jsonToBean(new String(body), User.class);
-                    id = user.getId();
-                    if (id == 31) {
-                        success = false;
-                    }
-                } finally {
-                    if (success) {
-                        System.out.println("ACK-" + id);
-                        // 确认消息成功消费
-                        channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
-                    } else {
-                        System.out.println("NACK-" + id);
-                        channel.basicNack(message.getMessageProperties().getDeliveryTag(), false, true);
-                    }
-                }
-            }
-        });
-        return container;
-    }
-
     final static String msgA = "topic.msg.a";
     final static String msgB = "topic.msg.b";
-    final static String msgs = "topic.msgs";
+    //final static String msgs = "topic.msgs";
 
     // Queue
     @Bean
@@ -93,10 +54,10 @@ public class RabbitMQService implements RabbitTemplate.ConfirmCallback, RabbitTe
         return new Queue(RabbitMQService.msgB);
     }
 
-    @Bean
+    /*@Bean
     public Queue queueMsgs() {
         return new Queue(RabbitMQService.msgs);
-    }
+    }*/
 
 
     // Exchange (Topic) 绑定队列
@@ -115,16 +76,14 @@ public class RabbitMQService implements RabbitTemplate.ConfirmCallback, RabbitTe
         return BindingBuilder.bind(queueMsgB).to(exchange).with("topic.msg.b");
     }
 
-    @Bean
+    /*@Bean
     Binding bindMsgs(Queue queueMsgs, TopicExchange exchange) {
         // 通配符，接收来自队列topic.msg.*的所有消息
         return BindingBuilder.bind(queueMsgs).to(exchange).with("topic.msg.#");
-    }
+    }*/
 
     @Autowired
     private RabbitTemplate rabbitTemplate;
-    @Autowired
-    private AmqpTemplate amqpTemplate;
 
     /**
      * 发送者
@@ -132,17 +91,16 @@ public class RabbitMQService implements RabbitTemplate.ConfirmCallback, RabbitTe
      * @param topic  指定队列
      * @param object
      */
-    public void send(String topic, Object object) {
-        rabbitTemplate.convertAndSend("exchange", topic, object);
+    public void send(String topic, Object object, CorrelationData data) {
+        rabbitTemplate.convertAndSend("exchange", topic, object, data);
     }
 
     @Override
-    public void confirm(CorrelationData correlationData, boolean ack, String cause) {
-        System.out.println(" 回调id:" + correlationData);
+    public void confirm(CorrelationData data, boolean ack, String cause) {
         if (ack) {
-            System.out.println("消息成功消费");
+            System.out.println("Correlationid:" + data.getId() + ", 消息确认成功");
         } else {
-            System.out.println("消息消费失败:" + cause);
+            System.out.println("Correlationid:" + data.getId() + ", 消息确认失败:" + cause);
         }
     }
 

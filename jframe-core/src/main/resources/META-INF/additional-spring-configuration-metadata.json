@@ -50,6 +50,12 @@
       "sourceType": "com.jf.system.conf.FdfsConfig"
     },
     {
+      "name": "system.version",
+      "type": "java.lang.String",
+      "description": "系统版本.",
+      "sourceType": "com.jf.system.conf.SysConfig"
+    },
+    {
       "name": "system.dev",
       "type": "java.lang.Boolean",
       "description": "是否开发环境.",

@@ -106,6 +106,17 @@ INSERT INTO `s_admin` VALUES (10003, NULL, 'test', 'test', 'e10adc3949ba59abbe56
 COMMIT;
 
 -- ----------------------------
+-- Table structure for s_config
+-- ----------------------------
+
+CREATE TABLE `s_config` (
+  `key` varchar(65) NOT NULL COMMENT '键',
+  `val` varchar(255) DEFAULT NULL COMMENT '值',
+  `descr` varchar(255) DEFAULT NULL COMMENT '描述',
+  PRIMARY KEY (`key`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='配置表';
+
+-- ----------------------------
 -- Table structure for s_log
 -- ----------------------------
 DROP TABLE IF EXISTS `s_log`;

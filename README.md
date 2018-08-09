@@ -1,5 +1,5 @@
 # JFrame
-##### JFrame - SpringBoot & Cloud Project `v5.0.6 beta`
+##### JFrame - SpringBoot & Cloud Project `v5.0.7 beta`
 made by @jackson-rick   <br>
 本架构是对技术框架的整合及开发的规范
 
@@ -33,6 +33,9 @@ made by @jackson-rick   <br>
 * Jenkins&Docker自动化部署
 
 ### 更新日志：
+* v5.0.7 beta `20180809`
+    * 1.优化配置
+    * 2.新增RabbitMQ的ACK机制
 * v5.0.6 beta `20180727`
     * 1.移除多数据源功能
     * 2.新增对额外yml配置的说明

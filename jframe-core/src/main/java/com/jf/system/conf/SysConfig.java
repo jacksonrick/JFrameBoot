@@ -31,6 +31,8 @@ public class SysConfig {
 
     //###### 以下来自 application.yml 自定义配置 ######
 
+    // version
+    private String version;
     // 是否开发环境
     private Boolean dev;
     // app key
@@ -56,6 +58,14 @@ public class SysConfig {
     private SysConfig.Jpush jpush;
     // 上传
     private SysConfig.Upload upload;
+
+    public String getVersion() {
+        return version;
+    }
+
+    public void setVersion(String version) {
+        this.version = version;
+    }
 
     public Boolean dev() {
         return dev;
@@ -116,7 +126,8 @@ public class SysConfig {
     @Override
     public String toString() {
         return "SysConfig{" +
-                "dev='" + dev + '\'' +
+                "version='" + version + '\'' +
+                ", dev='" + dev + '\'' +
                 ", appkey='" + appkey + '\'' +
                 ", staticHost='" + staticHost + '\'' +
                 ", staticPath='" + staticPath + '\'' +

@@ -56,6 +56,24 @@ INSERT INTO "public"."s_admin" VALUES (10000, 10000, 'admin', '超管', 'e10adc3
 COMMIT;
 
 -- ----------------------------
+-- Table structure for s_config
+-- ----------------------------
+
+CREATE TABLE "public"."s_config" (
+  "key" varchar(64) COLLATE "pg_catalog"."default" NOT NULL,
+  "val" varchar(255) COLLATE "pg_catalog"."default",
+  "descr" varchar(255) COLLATE "pg_catalog"."default",
+  CONSTRAINT "s_config_pkey" PRIMARY KEY ("key")
+)
+;
+
+ALTER TABLE "public"."s_config" OWNER TO "postgres";
+COMMENT ON COLUMN "public"."s_config"."key" IS '键';
+COMMENT ON COLUMN "public"."s_config"."val" IS '值';
+COMMENT ON COLUMN "public"."s_config"."descr" IS '描述';
+COMMENT ON TABLE "public"."s_config" IS '配置表';
+
+-- ----------------------------
 -- Table structure for s_log
 -- ----------------------------
 DROP TABLE IF EXISTS "public"."s_log";
@@ -171,7 +189,7 @@ DROP TABLE IF EXISTS "public"."s_role";
 CREATE TABLE "public"."s_role" (
   "id" int4 NOT NULL DEFAULT nextval('s_role_id_seq'::regclass),
   "role_name" varchar(16) COLLATE "pg_catalog"."default",
-  "role_flag" int2,
+  "role_flag" int2 DEFAULT 1,
   "role_rights" varchar(1000) COLLATE "pg_catalog"."default",
   "role_create_time" timestamp(6) DEFAULT now(),
   "deleted" bool DEFAULT false

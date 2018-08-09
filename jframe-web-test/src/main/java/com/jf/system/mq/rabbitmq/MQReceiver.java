@@ -2,10 +2,13 @@ package com.jf.system.mq.rabbitmq;
 
 import com.jf.database.model.User;
 import com.jf.json.JacksonUtil;
+import com.rabbitmq.client.Channel;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.stereotype.Component;
+
+import java.io.IOException;
 
 /**
  * Created with IntelliJ IDEA.
@@ -19,20 +22,28 @@ import org.springframework.stereotype.Component;
 public class MQReceiver {
 
     @RabbitListener(queues = "topic.msg.a", containerFactory = "rabbitListenerContainerFactory")
-    public void process(String message) {
-        System.out.println("A Receiver: " + message);
+    public void process(Message message, Channel channel) {
+        String msg = new String(message.getBody());
+        System.out.println("A Receiver: " + msg + " ,channelno: " + channel.getChannelNumber());
         try {
             Thread.sleep(5000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
         try {
-            User user = JacksonUtil.jsonToBean(message, User.class);
+            User user = JacksonUtil.jsonToBean(msg, User.class);
             if (user.getId() == 30) {
                 System.out.println(1 / 0);
+            } else {
+                channel.basicAck(message.getMessageProperties().getDeliveryTag(), true);
             }
         } catch (Exception e) {
-            System.out.println("消费错误：" + e.getMessage());
+            System.out.println("A Receiver错误：" + e.getMessage());
+            try {
+                channel.basicNack(message.getMessageProperties().getDeliveryTag(), false, true);
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
         }
     }
 
@@ -41,10 +52,10 @@ public class MQReceiver {
         System.out.println("B Receiver: " + str);
     }
 
-    @RabbitListener(queues = "topic.msgs", containerFactory = "rabbitListenerContainerFactory")
+    /*@RabbitListener(queues = "topic.msgs", containerFactory = "rabbitListenerContainerFactory")
     public void process3(Object obj) {
         Message message = (Message) obj;
         System.out.println("All Receivers: " + message.getBody() + " ,type: " + message.getMessageProperties().getContentType());
-    }
+    }*/
 
 }

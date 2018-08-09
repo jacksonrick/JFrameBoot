@@ -115,7 +115,7 @@
                         </ul>
                     </li>
                     <!-- 更新日志 -->
-                    <li class="dropdown">
+                    <#--<li class="dropdown">
                         <a class="dropdown-toggle tp" data-toggle="dropdown" title="更新日志">
                             <i class="fa fa-cloud-upload fa-lg"></i>
                         </a>
@@ -134,7 +134,7 @@
                                 </div>
                             </div>
                         </div>
-                    </li>
+                    </li>-->
                     <!-- 设置 -->
                     <li class="dropdown">
                         <a class="dropdown-toggle tp" data-toggle="dropdown" title="设置">

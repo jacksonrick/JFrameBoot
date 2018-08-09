@@ -38,7 +38,7 @@
 				AND ARRAYCONTAINED(ARRAY[CAST(id AS TEXT)], (SELECT STRING_TO_ARRAY(role_rights, ',') FROM s_role WHERE id = #{adminId}))
 			</if>
 			<if test="ids != null and ids != ''">
-				AND ARRAYCONTAINED(ARRAY[CAST(id AS TEXT)], STRING_TO_ARRAY(#{ids}), ',')
+				AND ARRAYCONTAINED(ARRAY[CAST(id AS TEXT)], STRING_TO_ARRAY(#{ids}, ','))
 			</if>
 			AND NOT deleted
 		</where>
