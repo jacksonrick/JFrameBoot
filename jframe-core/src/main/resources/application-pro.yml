@@ -86,12 +86,11 @@ spring:
         url-pattern: /druid/*
         reset-enable: true
         login-username: admin
-        login-password: 123456
-        allow: 127.0.0.1
+        login-password: 1ead34fjf48adsjvnm323
       web-stat-filter:
         enabled: ${app.druid.enabled:false}
         url-pattern: /*
-        exclusions: "*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*"
+        exclusions: "*.js,*.gif,*.jpg,*.png,*.css,*.ico,*.woff,/druid/*"
       aop-patterns: com.jf.service.*
   aop:
     proxy-target-class: true

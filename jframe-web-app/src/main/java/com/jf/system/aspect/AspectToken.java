@@ -123,7 +123,11 @@ public class AspectToken {
                 throw new AppException("APP接口异常: Invalid token type.");
             }
         } catch (Throwable throwable) {
-            throw new AppException(throwable.getMessage());
+            if (throwable instanceof AppTokenException) {
+                throw new AppTokenException(throwable.getMessage());
+            } else {
+                throw new AppException(throwable.getMessage());
+            }
         }
     }
 

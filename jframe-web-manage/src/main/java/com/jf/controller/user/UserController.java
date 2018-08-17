@@ -9,18 +9,23 @@ import com.jf.entity.ResMsg;
 import com.jf.entity.enums.ResCode;
 import com.jf.service.system.SystemService;
 import com.jf.service.user.UserService;
+import com.jf.string.StringUtil;
 import com.jf.system.annotation.AuthPassport;
+import com.jf.view.ExcelRead;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -152,6 +157,32 @@ public class UserController extends BaseController {
         Map<String, Object> model = new HashMap<String, Object>();
         model.put("list", userService.findUserExcelByCondition(condition));
         return new ModelAndView(new ViewExcel<UserModel>(), model);
+    }
+
+    /**
+     * 用户导入
+     *
+     * @param file
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping("/userImport")
+    @ResponseBody
+    @AuthPassport
+    public ResMsg userImport(@RequestParam("file") MultipartFile file) throws Exception {
+        // 判断类型和大小
+        String suffix = StringUtil.getFileType(file.getOriginalFilename());
+        if (!"xlsx".equals(suffix)) {
+            return new ResMsg(ResCode.FAIL.code(), "仅支持xlsx文件格式");
+        }
+        if (file.getSize() > 10 * 1024 * 1024) {
+            return new ResMsg(ResCode.FAIL.code(), "文件最大10M");
+        }
+
+        ExcelRead read = new ExcelRead();
+        Map<Integer, List> maps = read.readExcelContent(file.getInputStream());
+        // return userService.generate(maps);
+        return new ResMsg(ResCode.SUCCESS.code(), ResCode.SUCCESS.msg());
     }
 
 }

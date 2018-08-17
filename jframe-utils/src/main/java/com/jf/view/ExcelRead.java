@@ -1,31 +1,30 @@
 package com.jf.view;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import org.apache.poi.poifs.filesystem.POIFSFileSystem;
+import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFDateUtil;
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.poifs.filesystem.POIFSFileSystem;
-
 /**
  * 读取Excel
+ * <p>支持excel2007以上版本</p>
  *
  * @author rick
- * @version 1.1
+ * @version 1.2
  */
 public class ExcelRead {
 
     private POIFSFileSystem fs;
-    private HSSFWorkbook wb;
-    private HSSFSheet sheet;
-    private HSSFRow row;
+    private XSSFWorkbook wb;
+    private XSSFSheet sheet;
+    private XSSFRow row;
 
     /**
      * 读取Excel表格表头的内容
@@ -35,8 +34,7 @@ public class ExcelRead {
      */
     public String[] readExcelTitle(InputStream is) {
         try {
-            fs = new POIFSFileSystem(is);
-            wb = new HSSFWorkbook(fs);
+            wb = new XSSFWorkbook(is);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -62,8 +60,7 @@ public class ExcelRead {
     public Map<Integer, List> readExcelContent(InputStream is) {
         Map<Integer, List> map = new HashMap<Integer, List>();
         try {
-            fs = new POIFSFileSystem(is);
-            wb = new HSSFWorkbook(fs);
+            wb = new XSSFWorkbook(is);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -96,8 +93,7 @@ public class ExcelRead {
     public Map<Integer, List> readExcelContent(InputStream is, Integer[] cells) {
         Map<Integer, List> map = new HashMap<Integer, List>();
         try {
-            fs = new POIFSFileSystem(is);
-            wb = new HSSFWorkbook(fs);
+            wb = new XSSFWorkbook(is);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -129,19 +125,19 @@ public class ExcelRead {
      * @param cell Excel单元格
      * @return String 单元格数据内容
      */
-    private String getStringCellValue(HSSFCell cell) {
+    private String getStringCellValue(XSSFCell cell) {
         String strCell = "";
         switch (cell.getCellType()) {
-            case HSSFCell.CELL_TYPE_STRING:
+            case XSSFCell.CELL_TYPE_STRING:
                 strCell = cell.getStringCellValue();
                 break;
-            case HSSFCell.CELL_TYPE_NUMERIC:
+            case XSSFCell.CELL_TYPE_NUMERIC:
                 strCell = String.valueOf(cell.getNumericCellValue());
                 break;
-            case HSSFCell.CELL_TYPE_BOOLEAN:
+            case XSSFCell.CELL_TYPE_BOOLEAN:
                 strCell = String.valueOf(cell.getBooleanCellValue());
                 break;
-            case HSSFCell.CELL_TYPE_BLANK:
+            case XSSFCell.CELL_TYPE_BLANK:
                 strCell = "";
                 break;
             default:
@@ -160,17 +156,17 @@ public class ExcelRead {
      * @param cell Excel单元格
      * @return String 单元格数据内容
      */
-    private String getDateCellValue(HSSFCell cell) {
+    private String getDateCellValue(XSSFCell cell) {
         String result = "";
         try {
             int cellType = cell.getCellType();
-            if (cellType == HSSFCell.CELL_TYPE_NUMERIC) {
+            if (cellType == XSSFCell.CELL_TYPE_NUMERIC) {
                 Date date = cell.getDateCellValue();
                 result = (date.getYear() + 1900) + "-" + (date.getMonth() + 1) + "-" + date.getDate();
-            } else if (cellType == HSSFCell.CELL_TYPE_STRING) {
+            } else if (cellType == XSSFCell.CELL_TYPE_STRING) {
                 String date = getStringCellValue(cell);
                 result = date.replaceAll("[年月]", "-").replace("日", "").trim();
-            } else if (cellType == HSSFCell.CELL_TYPE_BLANK) {
+            } else if (cellType == XSSFCell.CELL_TYPE_BLANK) {
                 result = "";
             }
         } catch (Exception e) {
@@ -180,45 +176,43 @@ public class ExcelRead {
     }
 
     /**
-     * 根据HSSFCell类型设置数据
+     * 根据XSSFCell类型设置数据
      *
      * @param cell
      * @return
      */
-    private String getCellFormatValue(HSSFCell cell) {
+    private String getCellFormatValue(XSSFCell cell) {
         String cellvalue = "";
-        if (cell != null) {
+        if (cell == null) {
+            return cellvalue;
+        }
+
+        try {
             // 判断当前Cell的Type
             switch (cell.getCellType()) {
-                // 如果当前Cell的Type为NUMERIC
-                case HSSFCell.CELL_TYPE_NUMERIC:
-                case HSSFCell.CELL_TYPE_FORMULA: {
+                case XSSFCell.CELL_TYPE_FORMULA: {
                     // 判断当前的cell是否为Date
-                    if (HSSFDateUtil.isCellDateFormatted(cell)) {
+                    if (org.apache.poi.ss.usermodel.DateUtil.isCellDateFormatted(cell)) {
                         // 如果是Date类型则，转化为Data格式
                         Date date = cell.getDateCellValue();
                         SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
                         cellvalue = sdf.format(date);
 
-                    }
-                    // 如果是纯数字
-                    else {
+                    } else { // 如果是纯数字
                         // 取得当前Cell的数值
                         cellvalue = String.valueOf(cell.getNumericCellValue());
                     }
                     break;
                 }
-                // 如果当前Cell的Type为STRIN
-                case HSSFCell.CELL_TYPE_STRING:
-                    // 取得当前的Cell字符串
+                case XSSFCell.CELL_TYPE_STRING:
                     cellvalue = cell.getRichStringCellValue().getString();
                     break;
-                // 默认的Cell值
                 default:
-                    cellvalue = " ";
+                    cell.setCellType(CellType.STRING);
+                    cellvalue = cell.getRichStringCellValue().getString();
             }
-        } else {
-            cellvalue = "";
+        } catch (Exception e) {
+            cellvalue = cell.getRichStringCellValue().getString();
         }
         return cellvalue;
     }

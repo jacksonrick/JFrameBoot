@@ -23,6 +23,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 @ConfigurationProperties(prefix = "spring.task")
 @EnableAsync
 //@EnableAspectJAutoProxy(exposeProxy = true) // 解决异步方法同步调用的问题
+// XXService service = (XXService) AopContext.currentProxy(); service.async();
 public class TaskExecutePool implements AsyncConfigurer {
 
     private int corePoolSize;

@@ -1983,7 +1983,7 @@
                     maxFiles: maxFile,
                     maxFilesize: maxSize,
                     addRemoveLinks: true,
-                    acceptedFiles: ".xls,.xlsx",
+                    acceptedFiles: ".xlsx",
                     autoProcessQueue: false,
                     init: function () {
                         this.on("success", function (file, data, e) {

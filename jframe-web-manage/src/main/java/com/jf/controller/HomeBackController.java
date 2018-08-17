@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -179,7 +178,7 @@ public class HomeBackController extends BaseController {
     @RequestMapping("/home")
     @AuthPassport(right = false)
     public String home(ModelMap map, HttpServletRequest request) {
-        map.put("date", new Date().getTime());
+        map.put("date", System.currentTimeMillis());
         map.put("arr", new SystemUtil().getSpace());
         map.put("version", config.getVersion());
         map.put("info", request.getSession().getServletContext().getServerInfo());

@@ -4,6 +4,8 @@ import com.jf.po.TestUser;
 
 import java.net.URI;
 import java.util.Date;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * Created with IntelliJ IDEA.
@@ -14,7 +16,38 @@ import java.util.Date;
  */
 public class MainTest {
 
+    static class MyThread implements Runnable {
+
+        @Override
+        public void run() {
+            System.out.println(Thread.currentThread().getName() + " executing...");
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     public static void main(String[] args) {
+        ExecutorService service = Executors.newFixedThreadPool(2);
+
+        MyThread thread1 = new MyThread();
+        MyThread thread2 = new MyThread();
+        MyThread thread3 = new MyThread();
+        MyThread thread4 = new MyThread();
+        MyThread thread5 = new MyThread();
+        service.execute(thread1);
+        service.execute(thread2);
+        service.execute(thread3);
+        service.execute(thread4);
+        service.execute(thread5);
+
+        service.shutdown();
+    }
+
+
+    public static void testEqual() {
         Integer a = 100;
         Integer b = 100;
         System.out.println(a == b);
