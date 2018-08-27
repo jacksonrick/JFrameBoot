@@ -1,5 +1,5 @@
 # JFrame
-##### JFrame - SpringBoot & Cloud Project `v5.0.8 beta`
+##### JFrame - SpringBoot & Cloud Project `v5.1`
 made by @jackson-rick   <br>
 本架构是对技术框架的整合及开发的规范
 
@@ -11,8 +11,9 @@ made by @jackson-rick   <br>
 * jframe-web-app `App端`
 * jframe-web-front `PC端`
 * jframe-web-manage `后台管理端`
-* jframe-web-test `模块测试`
-* jframe-service-order `微服务模块测试`
+* jframe-web-test `测试模块`
+* jframe-cloud `注册中心`
+* jframe-micro-srvs `微服务模块`
 * jframe-service-oauth `OAuth2.0模块`
 
 ### 集成
@@ -33,6 +34,9 @@ made by @jackson-rick   <br>
 * Jenkins&Docker自动化部署
 
 ### 更新日志：
+* v5.1 `20180827`
+    * 1.新增限流模块[RedisLimit]
+    * 2.新增网关链路追踪、优化网关路由
 * v5.0.8 beta `20180817`
     * 1.添加LICENSE
     * 2.优化一些配置和JS
@@ -231,7 +235,7 @@ made by @jackson-rick   <br>
 
 ### 其他
 * 使用maven下载Jar包时，请先在`maven-.../conf/setting.xml`的mirrors标签内加入以下：
-    ```
+    ``` xml
     <mirror>
         <id>alimaven</id>
         <name>aliyun maven</name>

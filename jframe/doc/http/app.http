@@ -1,0 +1,18 @@
+# For a quick start check out our HTTP Requests collection (Tools|HTTP Client|Open HTTP Requests Collection).
+#
+# Following HTTP Request Live Templates are available:
+# * 'gtrp' and 'gtr' create a GET request with or without query parameters;
+# * 'ptr' and 'ptrp' create a POST request with a simple or parameter-like body;
+# * 'mptr' and 'fptr' create a POST request to submit a form with a text or file field (multipart/form-data);
+
+######## For APP ########
+
+GET http://192.168.24.200:8082/app/get
+Req-Type: APP
+
+###
+GET http://192.168.24.200:8082/app/token
+Req-Type: APP
+token: AEAED2682D2C3D45EE3672DF6BE8DB9F
+
+###

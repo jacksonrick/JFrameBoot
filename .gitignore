@@ -19,5 +19,4 @@ jframe-*/target/
 cloud-server/target/
 
 # this project
-/jframe/doc/http/*.http
 /jframe-web-demo/

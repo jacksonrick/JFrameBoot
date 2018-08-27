@@ -163,7 +163,7 @@ spring:
         retry: # 是否支持重试
           enabled: true
           initial-interval: 10s
-          max-attempts: 2
+          max-attempts: 3
   quartz: # quartz配置
     job-store-type: memory # jdbc | memory
     properties: # Quartz属性配置
@@ -190,7 +190,7 @@ fdfs: # fastDFS配置
   tracker-list: # 可设置多个
     - 192.168.1.199:22122
 system: # 系统自定义配置
-  version: 'v5.0.6 beta'
+  version: 'v5.1'
   dev: true # 是否开发环境
   appkey: ${app.appkey:0}
   static_host: http://127.0.0.1:${server.port}/ # 静态服务器地址

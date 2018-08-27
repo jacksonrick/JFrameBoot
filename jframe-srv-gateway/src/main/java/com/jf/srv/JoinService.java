@@ -22,7 +22,7 @@ public class JoinService {
     @HystrixCommand(fallbackMethod = "fallback")
     public Observable<Object> getOne(String id) {
         return Observable.create(observer -> {
-            Object object = restTemplate.getForObject("http://JFRAME-SRV-ORDER-01/{id}", Object.class, id);
+            Object object = restTemplate.getForObject("http://JFRAME-SRV-ORDER-01/order?userId=1&productId={id}", Object.class, id);
             observer.onNext(object);
             observer.onCompleted();
         });
@@ -31,7 +31,7 @@ public class JoinService {
     @HystrixCommand(fallbackMethod = "fallback")
     public Observable<Object> getTwo(String id) {
         return Observable.create(observer -> {
-            Object object = restTemplate.getForObject("http://JFRAME-SRV-ORDER-02/{id}", Object.class, id);
+            Object object = restTemplate.getForObject("http://JFRAME-SRV-ORDER-02/order?userId=2&productId={id}", Object.class, id);
             observer.onNext(object);
             observer.onCompleted();
         });

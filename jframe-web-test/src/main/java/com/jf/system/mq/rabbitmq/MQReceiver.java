@@ -26,7 +26,7 @@ public class MQReceiver {
         String msg = new String(message.getBody());
         System.out.println("A Receiver: " + msg + " ,channelno: " + channel.getChannelNumber());
         try {
-            Thread.sleep(5000);
+            Thread.sleep(5000); // 模拟处理时间
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

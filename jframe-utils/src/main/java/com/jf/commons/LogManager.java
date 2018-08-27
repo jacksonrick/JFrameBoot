@@ -80,7 +80,7 @@ public class LogManager {
         double minMem = 0.3;
         if (space[0] < minSpace || space[3] < minMem) {
             LogManager.error("磁盘或内存空间不足【minSpace:" + minSpace + "GB, minMem:" + minMem + "GB】");
-            System.exit(0);
+            //System.exit(0);
         }
     }
 

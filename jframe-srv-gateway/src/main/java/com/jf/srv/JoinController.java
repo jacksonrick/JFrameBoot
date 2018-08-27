@@ -15,7 +15,7 @@ import java.util.HashMap;
 
 /**
  * Created with IntelliJ IDEA.
- * Description:
+ * Description: 聚合微服务
  * User: xujunfei
  * Date: 2018-07-06
  * Time: 17:32

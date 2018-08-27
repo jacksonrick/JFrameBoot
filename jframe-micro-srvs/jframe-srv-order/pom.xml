@@ -5,15 +5,12 @@
 
     <parent>
         <groupId>com.jf</groupId>
-        <artifactId>jframe</artifactId>
-        <version>4.0</version>
-        <relativePath>../jframe/pom.xml</relativePath>
+        <artifactId>jframe-micro-srvs</artifactId>
+        <version>0.0.1</version>
     </parent>
 
     <artifactId>jframe-srv-order</artifactId>
-    <version>0.0.1</version>
     <packaging>jar</packaging>
-    <name>jframe-srv-order</name>
 
     <dependencies>
         <dependency>
@@ -47,10 +44,15 @@
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-config</artifactId>
         </dependency>
-
+        <!-- oauth2 -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-oauth2</artifactId>
+        </dependency>
+        <!-- zipkin client -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-zipkin</artifactId>
         </dependency>
     </dependencies>
 
