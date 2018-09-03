@@ -3078,14 +3078,15 @@ h1, h2, h3, h4, h5 {
     font-weight: bold
 }
 
+.dropdown-toggle.tp {
+    padding: 18px;
+}
+
 .nav > li > a {
+    display: block;
     color: #a7b1c2;
     font-weight: 600;
     padding: 20px 20px 18px 25px
-}
-
-.nav li > a {
-    display: block
 }
 
 .nav.navbar-right > li > a {
@@ -3222,6 +3223,45 @@ h1, h2, h3, h4, h5 {
 .nav-header {
     padding: 35px 25px 25px;
     background: url(patterns/header-profile.png) no-repeat
+}
+
+/* skin - default-skin | blue-skin | yellow-skin */
+.blue-skin .nav-header {
+    background: url(patterns/header-profile-skin-1.png) no-repeat
+}
+
+.blue-skin .minimalize-styl-2 {
+    background: #0e9aef;
+    border-color: #0e9aef;
+    color: #fff;
+}
+
+.blue-skin .page-tabs a.active {
+    background: #39aef5;
+    color: #fff;
+}
+
+.blue-skin .content-tabs {
+    border-color: #39aef5;
+}
+
+.yellow-skin .nav-header {
+    background: url(patterns/header-profile-skin-3.png) no-repeat
+}
+
+.yellow-skin .minimalize-styl-2 {
+    background: #ecba52;
+    border-color: #ecba52;
+    color: #FFFFFF;
+}
+
+.yellow-skin .page-tabs a.active {
+    background: #3e2c42;
+    color: #fff;
+}
+
+.yellow-skin .content-tabs {
+    border-color: #3e2c42;
 }
 
 .nav > li.active {
@@ -3717,6 +3757,11 @@ body.canvas-menu.mini-navbar nav.navbar-static-side {
 
 .form-control, .form-control:focus, .has-error .form-control:focus, .has-success .form-control:focus, .has-warning .form-control:focus, .navbar-collapse, .navbar-form, .navbar-form-custom .form-control:focus, .navbar-form-custom .form-control:hover, .open .btn.dropdown-toggle, .panel, .popover, .progress, .progress-bar {
     box-shadow: none
+}
+
+button {
+    transition: all .5s ease-in-out;
+    -webkit-transition: all .5s ease-in-out;
 }
 
 .btn-outline {
@@ -5496,6 +5541,7 @@ a.forum-item-title:hover {
 }
 
 #right-sidebar {
+    display: none;
     background-color: #fff;
     border-left: 1px solid #e7eaec;
     border-top: 1px solid #e7eaec;
@@ -5505,16 +5551,7 @@ a.forum-item-title:hover {
     width: 260px !important;
     z-index: 1009;
     bottom: 0;
-    right: -260px
-}
-
-#right-sidebar.sidebar-open {
     right: 0
-}
-
-#right-sidebar.sidebar-open.sidebar-top {
-    top: 0;
-    border-top: none
 }
 
 .sidebar-container ul.nav-tabs {
@@ -8796,9 +8833,7 @@ body.rtls .top-navigation #page-wrapper, body.rtls .top-navigation .footer.fixed
 }
 
 .skin-setttings {
-    width: 220px;
-    margin-left: 40px;
-    background: #f3f3f4
+
 }
 
 .skin-setttings .title {
@@ -8812,10 +8847,10 @@ body.rtls .top-navigation #page-wrapper, body.rtls .top-navigation .footer.fixed
 }
 
 .setings-item {
-    padding: 10px 30px
+    padding: 10px 30px;
 }
 
-.setings-item.skin {
+.setings-item.nb {
     text-align: center
 }
 
@@ -8828,20 +8863,16 @@ body.rtls .top-navigation #page-wrapper, body.rtls .top-navigation .footer.fixed
 }
 
 .setings-item a {
-    color: #fff
-}
-
-.blue-skin, .default-skin, .ultra-skin, .yellow-skin {
-    text-align: center
+    color: #fff;
 }
 
 .default-skin {
     font-weight: 600;
-    background: #1ab394
+    background: url(patterns/header-profile.png) repeat scroll 0 0
 }
 
 .default-skin:hover {
-    background: #199d82
+    background: #2f4050
 }
 
 .blue-skin {
@@ -8870,18 +8901,13 @@ body.rtls .top-navigation #page-wrapper, body.rtls .top-navigation .footer.fixed
     color: #999
 }
 
-.page-tabs a i {
+/*.page-tabs a i {
     color: #ccc
-}
+}*/
 
 .page-tabs a.active {
     background: #2f4050;
     color: #a7b1c2
-}
-
-.page-tabs a.active i:hover, .page-tabs a.active:hover {
-    background: #293846;
-    color: #fff
 }
 
 @media ( min-width: 768px) {
@@ -9230,9 +9256,10 @@ body.rtls .top-navigation #page-wrapper, body.rtls .top-navigation .footer.fixed
 
 a .badge {
     position: absolute;
-    top: 8px;
-    right: 0px;
-    border: solid 1px
+    top: 9px;
+    right: 5px;
+    border: solid 1px;
+    padding: 1px 7px;
 }
 
 .pagination-ul {

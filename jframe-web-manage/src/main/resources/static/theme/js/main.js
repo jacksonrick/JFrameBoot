@@ -1,7 +1,9 @@
+// 收起菜单
 function NavToggle() {
     $(".navbar-minimalize").trigger("click")
 }
 
+// 菜单初始化
 function SmoothlyMenu() {
     $("body").hasClass("mini-navbar") ? $("body").hasClass("fixed-sidebar") ? ($("#side-menu").hide(), setTimeout(function () {
         $("#side-menu").fadeIn(500)
@@ -10,8 +12,15 @@ function SmoothlyMenu() {
     }, 100))
 }
 
-layer.config({moveType: 1}), $(document).ready(function () {
-    autoHeight();
+// 浏览器存储
+function localStorageSupport() {
+    return "localStorage" in window && null !== window.localStorage
+}
+
+// layer配置
+layer.config({moveType: 1});
+$(document).ready(function () {
+    autoHeight();// 自动高度
 
     function a() {
         var a = $("body > #wrapper").height() - 61;
@@ -24,22 +33,70 @@ layer.config({moveType: 1}), $(document).ready(function () {
         $(function () {
             // slimScroll
             $(".sidebar-collapse").slimScroll({height: "100%", railOpacity: .9, alwaysVisible: !1})
-        }), $(".navbar-minimalize").click(function () {
-        $("body").toggleClass("mini-navbar"), SmoothlyMenu()
-    }), a(), $(window).bind("load resize click scroll", function () {
-        $("body").hasClass("body-small") || a()
-    }), $(window).scroll(function () {
-        $(window).scrollTop() > 0 && !$("body").hasClass("fixed-nav") ? $("#right-sidebar").addClass("sidebar-top") : $("#right-sidebar").removeClass("sidebar-top")
-    }), $(".full-height-scroll").slimScroll({height: "100%"}), $("#side-menu>li").click(function () {
-        $("body").hasClass("mini-navbar") && NavToggle()
-    }), $("#side-menu>li li a").click(function () {
-        $(window).width() < 769 && NavToggle()
-    }), $(".nav-close").click(NavToggle)
-}), $(window).bind("load resize", function () {
-    $(this).width() < 769 && ($("body").addClass("mini-navbar"), $(".navbar-static-side").fadeIn());
-}), $(window).bind("resize", function () {
-    autoHeight();
-});
+        }),
+        $(".navbar-minimalize").click(function () {
+            $("body").toggleClass("mini-navbar"), SmoothlyMenu()
+        }),
+        $(".right-sidebar-toggle").click(function () {
+            // 右上角菜单
+            $("#right-sidebar").toggle()
+        }),
+        a(),
+        $(window).bind("load resize click scroll", function () {
+            // 浏览器窗口变化自适应
+            $("body").hasClass("body-small") || a()
+        }),
+        $(window).scroll(function () {
+            $(window).scrollTop() > 0 && !$("body").hasClass("fixed-nav") ? $("#right-sidebar").addClass("sidebar-top") : $("#right-sidebar").removeClass("sidebar-top")
+        }),
+        $(".full-height-scroll").slimScroll({height: "100%"}),
+        $("#side-menu>li").click(function () {
+            $("body").hasClass("mini-navbar") && NavToggle()
+        }),
+        $("#side-menu>li li a").click(function () {
+            $(window).width() < 769 && NavToggle()
+        }),
+        $(".nav-close").click(NavToggle)
+}),
+    $(window).bind("load resize", function () {
+        $(this).width() < 769 && ($("body").addClass("mini-navbar"), $(".navbar-static-side").fadeIn());
+    }),
+    $(window).bind("resize", function () {
+        autoHeight();
+    }),
+    $(function () {
+        // 皮肤设置
+        $(".default-skin").click(function () {
+            $(".body").removeClass("blue-skin").removeClass("yellow-skin").addClass("default-skin");
+            localStorageSupport && localStorage.setItem("skin", "default-skin");
+        }), $(".blue-skin").click(function () {
+            $(".body").removeClass("default-skin").removeClass("yellow-skin").addClass("blue-skin");
+            localStorageSupport && localStorage.setItem("skin", "blue-skin");
+        }), $(".yellow-skin").click(function () {
+            $(".body").removeClass("default-skin").removeClass("blue-skin").addClass("yellow-skin");
+            localStorageSupport && localStorage.setItem("skin", "yellow-skin");
+        });
+        // 皮肤设置
+        $("#collapsemenu").click(function () {
+            $("#collapsemenu").is(":checked") ? ($("body").addClass("mini-navbar"), SmoothlyMenu(), localStorageSupport && localStorage.setItem("collapse_menu", "on")) : ($("body").removeClass("mini-navbar"), SmoothlyMenu(), localStorageSupport && localStorage.setItem("collapse_menu", "off"))
+        });
+        if (localStorageSupport) {
+            var e = localStorage.getItem("collapse_menu");
+            if ("on" == e) {
+                $("body").addClass("mini-navbar");
+                $("#collapsemenu").prop("checked", "checked");
+                SmoothlyMenu()
+            }
+            var skin = localStorage.getItem("skin");
+            if ("default-skin" == skin) {
+                $(".body").removeClass("blue-skin").removeClass("yellow-skin").addClass("default-skin");
+            } else if ("blue-skin" == skin) {
+                $(".body").removeClass("default-skin").removeClass("yellow-skin").addClass("blue-skin");
+            } else if ("yellow-skin" == skin) {
+                $(".body").removeClass("default-skin").removeClass("blue-skin").addClass("yellow-skin");
+            }
+        }
+    });
 
 function autoHeight() {
     //$("#wrapper").css("height",$(document).height());
@@ -47,6 +104,7 @@ function autoHeight() {
     $("#content-main").css("height", $(window).height() - 107);
 }
 
+// 新建标签页
 function newTab(name, url) {
     var flag = false;
     $(".J_menuTab").each(function () {
@@ -71,7 +129,8 @@ function newTab(name, url) {
     var o = layer.load(0, {time: 5000});
     $(".J_mainContent iframe:visible").load(function () {
         layer.close(o)
-    }), $(".J_menuTabs .page-tabs-content").append(s)
+    }),
+        $(".J_menuTabs .page-tabs-content").append(s)
 }
 
 $(function () {
@@ -119,10 +178,10 @@ $(function () {
         var t = $(this).attr("href"), a = $(this).data("index"), i = $.trim($(this).text()), n = !0;
         if (void 0 == t || 0 == $.trim(t).length) return !1;
         if ($(".J_menuTab").each(function () {
-                return $(this).data("id") == t ? ($(this).hasClass("active") || ($(this).addClass("active").siblings(".J_menuTab").removeClass("active"), e(this), $(".J_mainContent .J_iframe").each(function () {
-                    return $(this).data("id") == t ? ($(this).show().siblings(".J_iframe").hide(), !1) : void 0
-                })), n = !1, !1) : void 0
-            }), n) {
+            return $(this).data("id") == t ? ($(this).hasClass("active") || ($(this).addClass("active").siblings(".J_menuTab").removeClass("active"), e(this), $(".J_mainContent .J_iframe").each(function () {
+                return $(this).data("id") == t ? ($(this).show().siblings(".J_iframe").hide(), !1) : void 0
+            })), n = !1, !1) : void 0
+        }), n) {
             var s = '<a href="javascript:;" class="active J_menuTab" data-id="' + t + '">' + i + ' <i class="b-re fa fa-repeat"></i> <i class="b-cl fa fa-times-circle"></i></a>';
             $(".J_menuTab").removeClass("active");
             var r = '<iframe class="J_iframe" name="iframe' + a + '" width="100%" height="100%" src="' + t + '?v=' + Math.floor(Math.random() * 10000) + '" frameborder="0" data-id="' + t + '" seamless></iframe>';
@@ -206,7 +265,7 @@ $(function () {
             }), $(".page-tabs-content").css("margin-left", "0")
         });
 
-
+    // 浏览器检测
     if (!window.applicationCache) {
         showTopTips("您的浏览器不支持HTML5，为提升您的浏览体验，请使用新版Chrome或Firefox浏览器！");
     } else {
@@ -217,6 +276,7 @@ $(function () {
         }
     }
 
+    // 将属性data-open='modal'的href以layer方式打开
     $("body").on("click", "[data-open='modal']", function (event) {
         event.preventDefault();
         var width, height;
@@ -239,6 +299,7 @@ $(function () {
         openLayerUrl(title, width, height, $(this).attr("href"), true);
     });
 
+    // 图片打开
     var imgs = {
         "title": "", //相册标题
         "id": '', //相册id
@@ -261,6 +322,7 @@ $(function () {
         });
     });
 
+    // bs tooltip初始化
     $("body").tooltip({
         placement: "top",
         selector: ".btn-circle",
@@ -274,6 +336,7 @@ $(function () {
 });
 
 !(function ($) {
+    // 自定义排序
     $.Sort = function (settings) {
         var def = settings.default;
         var ps = $("input[name='pageSort']");

@@ -9,15 +9,16 @@
     <#include "include.ftl"/>
 </head>
 
-<body class="fixed-sidebar full-height-layout gray-bg">
+<body class="body fixed-sidebar full-height-layout gray-bg">
 <div id="wrapper">
-    <nav class="navbar-default navbar-static-side" role="navigation">
+    <nav class="navbar-default navbar-static-side animated fadeInLeft" role="navigation">
         <div class="nav-close">
             <i class="fa fa-times-circle"></i>
         </div>
         <div class="sidebar-collapse">
             <ul class="nav" id="side-menu">
-                <li class="nav-header">
+                <!-- admin -->
+                <li class="nav-header animated fadeInDown">
                     <div class="profile-element">
                         <span><img alt="image" class="img-circle img-thumbnail" src="/static/theme/images/avatar.jpg" width="60px"/></span>
                         <a>
@@ -32,13 +33,13 @@
 
                 <#list modules as module>
                     <#if module.modFlag == 1>
-                        <li class="animated fadeInLeft">
+                        <li class="animated flipInX">
                             <a> <i class="${module.modIcon } f14"></i> <span class="nav-label">${module.modName }</span></a>
                             <ul class="nav nav-second-level">
                                 <#assign parent = module.id />
                                 <#list modules as module2>
                                     <#if module2.modFlag ==2 && module2.parentId == parent>
-                                        <li class="animated fadeInDown">
+                                        <li class="animated flipInX">
                                             <a class="J_menuItem" href="${module2.modPath}"><i class="${module2.modIcon }"></i>${module2.modName }
                                             </a>
                                         </li>
@@ -62,20 +63,13 @@
                 <#--<a class="navbar-chat minimalize-styl-2 btn btn-warning" title="即时通讯" data-toggle="tooltip" data-placement="bottom"><i class="fa fa-comments"></i></a>-->
                 </div>
                 <ul class="nav navbar-top-links navbar-right">
-                    <!-- 自动化部署 -->
-                    <#if admin.role.roleFlag == 0>
-                        <li class="dropdown">
-                            <a class="tp" onclick="newTab('自动化部署', '/admin/system/jenkins')" title="自动化部署">
-                                <i class="fa fa-sitemap fa-lg"></i>
-                            </a>
-                        </li>
-                    </#if>
-                    <!-- 监控 -->
+                    <!-- 自动化运维 -->
                     <li class="dropdown">
-                        <a class="dropdown-toggle tp" data-toggle="dropdown" title="监控">
-                            <i class="fa fa-server fa-lg"></i>
+                        <a class="dropdown-toggle tp" data-toggle="dropdown" title="自动化运维">
+                            <i class="fa fa-tachometer fa-lg"></i>
                         </a>
-                        <ul class="dropdown-menu m-t-xs">
+                        <ul class="dropdown-menu animated fadeInDown m-t-xs">
+                            <li onclick="newTab('Jenkins部署', '/admin/system/jenkins')"><a><i class="fa fa-sitemap"></i>Jenkins部署</a></li>
                             <li onclick="newTab('云服务器监控', 'http://127.0.0.1:10000')"><a><i class="fa fa-server"></i>云服务器监控</a></li>
                             <li onclick="newTab('数据源监控', '/druid/index.html')"><a><i class="fa fa-database"></i>数据源监控</a></li>
                             <li onclick="newTab('Redis Cachecloud', 'http://192.168.24.200:20010')"><a><i class="fa fa-cloud"></i>Redis
@@ -89,8 +83,9 @@
                         <a class="dropdown-toggle count-info tp" data-toggle="dropdown" title="系统消息">
                             <i class="fa fa-envelope fa-lg"></i> <span class="badge badge-info">${size }</span>
                         </a>
-                        <ul class="dropdown-menu dropdown-messages">
-                            <#list msgs as m>
+                        <ul class="dropdown-menu animated fadeInDown dropdown-messages">
+                            <#if msgs?? && (msgs?size > 0)>
+                                <#list msgs as m>
                                 <li class="m-t-xs">
                                     <div class="dropdown-messages-box">
                                         <a class="pull-left">
@@ -105,46 +100,56 @@
                                 </li>
                                 <li class="divider"></li>
                             </#list>
-                        <#--<li>
-                            <div class="text-center link-block">
-                                <a class="J_menuItem" href="admin/msgList">
-                                    <i class="fa fa-envelope"></i> <strong> 查看所有消息</strong>
-                                </a>
-                            </div>
-                        </li>-->
+                            <#else>
+                                <div class="text-muted text-center">暂无消息</div>
+                            </#if>
+
+                            <li>
+                                <div class="text-center link-block">
+                                    <a class="J_menuItem" href="admin/msgList">
+                                        <i class="fa fa-envelope"></i> <strong> 查看所有消息</strong>
+                                    </a>
+                                </div>
+                            </li>
                         </ul>
                     </li>
                     <!-- 更新日志 -->
-                    <#--<li class="dropdown">
-                        <a class="dropdown-toggle tp" data-toggle="dropdown" title="更新日志">
-                            <i class="fa fa-cloud-upload fa-lg"></i>
-                        </a>
-                        <div class="dropdown-menu m-t-xs">
-                            <div class="float-e-margins">
-                                <div class="ibox-title">
-                                    <h5>
-                                        更新日志
-                                        <small>&nbsp;当前版本:${version}</small>
-                                    </h5>
-                                </div>
-                                <div class="ibox-content no-padding">
-                                    <div class="panel-body" id="version">
-                                        <div class="panel-group">${upgrade}</div>
-                                    </div>
+                <#--<li class="dropdown">
+                    <a class="dropdown-toggle tp" data-toggle="dropdown" title="更新日志">
+                        <i class="fa fa-cloud-upload fa-lg"></i>
+                    </a>
+                    <div class="dropdown-menu animated bounceInDown m-t-xs">
+                        <div class="float-e-margins">
+                            <div class="ibox-title">
+                                <h5>
+                                    更新日志
+                                    <small>&nbsp;当前版本:${version}</small>
+                                </h5>
+                            </div>
+                            <div class="ibox-content no-padding">
+                                <div class="panel-body" id="version">
+                                    <div class="panel-group">${upgrade}</div>
                                 </div>
                             </div>
                         </div>
-                    </li>-->
+                    </div>
+                </li>-->
                     <!-- 设置 -->
                     <li class="dropdown">
                         <a class="dropdown-toggle tp" data-toggle="dropdown" title="设置">
                             <i class="fa fa-cogs fa-lg"></i>
                         </a>
-                        <ul class="dropdown-menu m-t-xs">
+                        <ul class="dropdown-menu animated fadeInDown m-t-xs">
                             <li><a href="javascript:;" id="changePwd"><i class="fa fa-lock"></i>修改密码</a></li>
                             <li><a href="javascript:;" class="logout"><i class="fa fa-sign-out"></i>安全退出</a></li>
                             <li><a href="/"><i class="fa fa-home"></i>网站首页</a></li>
                         </ul>
+                    </li>
+
+                    <li class="dropdown">
+                        <a class="dropdown-toggle tp right-sidebar-toggle" data-toggle="dropdown" title="主题">
+                            <i class="fa fa-tasks fa-lg"></i>
+                        </a>
                     </li>
                 </ul>
             </nav>
@@ -165,7 +170,7 @@
             <button class="roll-nav roll-right J_tabClose dropdown-toggle" data-toggle="dropdown">
                 关闭操作<span class="caret"></span>
             </button>
-            <ul class="dropdown-menu dropdown-menu-right mr60">
+            <ul class="dropdown-menu dropdown-menu-right">
                 <li class="J_tabCloseAll"><a>关闭全部选项卡</a></li>
                 <li class="J_tabCloseOther"><a>关闭其他选项卡</a></li>
             </ul>
@@ -173,6 +178,111 @@
         </div>
         <div class="row J_mainContent" id="content-main">
             <iframe class="J_iframe" name="iframe_home" width="100%" height="100%" data-id="/admin/home" src="/admin/home" frameborder="0" seamless></iframe>
+        </div>
+    </div>
+</div>
+
+<div id="right-sidebar" class="animated fadeInRight">
+    <div class="sidebar-container">
+        <ul class="nav nav-tabs navs-3">
+            <li class="active">
+                <a data-toggle="tab" href="#tab-1">
+                    <i class="fa fa-gear"></i> 主题
+                </a>
+            </li>
+            <li class=""><a data-toggle="tab" href="#tab-2">
+                通知
+            </a>
+            </li>
+            <li><a data-toggle="tab" href="#tab-3">
+                项目进度
+            </a>
+            </li>
+        </ul>
+
+        <div class="tab-content">
+            <div id="tab-1" class="tab-pane active">
+                <div class="sidebar-title">
+                    <h3><i class="fa fa-comments-o"></i> 主题设置</h3>
+                    <small><i class="fa fa-tim"></i> 你可以从这里选择和预览主题的布局和样式，这些设置会被保存在本地，下次打开的时候会直接应用这些设置。</small>
+                </div>
+                <div class="skin-setttings">
+                    <div class="title">主题设置</div>
+                    <div class="setings-item">
+                        <span>收起左侧菜单</span>
+                        <div class="switch">
+                            <div class="onoffswitch">
+                                <input type="checkbox" name="collapsemenu" class="onoffswitch-checkbox" id="collapsemenu">
+                                <label class="onoffswitch-label" for="collapsemenu">
+                                    <span class="onoffswitch-inner"></span>
+                                    <span class="onoffswitch-switch"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="title">皮肤选择</div>
+                    <div class="setings-item default-skin nb">
+                        <span class="skin-name ">
+                         <a href="#" class="s-skin-0">默认皮肤</a>
+                        </span>
+                    </div>
+                    <div class="setings-item blue-skin nb">
+                        <span class="skin-name ">
+                        <a href="#" class="s-skin-1">蓝色主题</a>
+                        </span>
+                    </div>
+                    <div class="setings-item yellow-skin nb">
+                        <span class="skin-name ">
+                        <a href="#" class="s-skin-3">橙色主题</a>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div id="tab-2" class="tab-pane">
+                <div class="sidebar-title">
+                    <h3><i class="fa fa-comments-o"></i> 最新通知</h3>
+                    <small><i class="fa fa-tim"></i> 您当前有1条未读信息</small>
+                </div>
+
+                <div>
+                    <div class="sidebar-message">
+                        <a href="#">
+                            <div class="pull-left text-center">
+                                <img alt="image" class="img-circle message-avatar" src="/static/theme/images/avatar.jpg">
+                                <div class="m-t-xs">
+                                    <i class="fa fa-star text-warning"></i>
+                                    <i class="fa fa-star text-warning"></i>
+                                </div>
+                            </div>
+                            <div class="media-body">
+                                未读消息。。。
+                                <br>
+                                <small class="text-muted">今天 14:21</small>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div id="tab-3" class="tab-pane">
+                <div class="sidebar-title">
+                    <h3><i class="fa fa-cube"></i> 最新任务</h3>
+                    <small><i class="fa fa-tim"></i> 您当前有1个任务，0个已完成</small>
+                </div>
+
+                <ul class="sidebar-list">
+                    <li>
+                        <a href="#">
+                            <div class="small pull-right m-t-xs">9小时以后</div>
+                            <h4>市场调研</h4> 按要求接收教材；
+                            <div class="small">已完成： 22%</div>
+                            <div class="progress progress-mini">
+                                <div style="width: 22%;" class="progress-bar progress-bar-warning"></div>
+                            </div>
+                            <div class="small text-muted m-t-xs">项目截止： 4:00 - 2015.10.01</div>
+                        </a>
+                    </li>
+                </ul>
+            </div>
         </div>
     </div>
 </div>

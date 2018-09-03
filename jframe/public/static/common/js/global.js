@@ -329,7 +329,7 @@ function openLayerUrl(title, width, height, url, maxmin) {
         type: 2,
         title: title,
         closeBtn: 1,
-        shift: 5,
+        shift: 0,
         shade: [0.5, '#393D49'],
         shadeClose: false,
         maxmin: maxmin,

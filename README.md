@@ -1,5 +1,5 @@
 # JFrame
-##### JFrame - SpringBoot & Cloud Project `v5.1`
+##### JFrame - SpringBoot & Cloud Project `v5.1.1`
 made by @jackson-rick   <br>
 本架构是对技术框架的整合及开发的规范
 
@@ -34,6 +34,9 @@ made by @jackson-rick   <br>
 * Jenkins&Docker自动化部署
 
 ### 更新日志：
+* v5.1.1 `20180903`
+    * 1.后台UI更新
+    * 2.新增Excel通过配置读取数据工具类
 * v5.1 `20180827`
     * 1.新增限流模块[RedisLimit]
     * 2.新增网关链路追踪、优化网关路由

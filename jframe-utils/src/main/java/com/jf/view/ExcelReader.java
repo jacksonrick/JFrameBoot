@@ -1,270 +1,220 @@
 package com.jf.view;
 
-import org.apache.poi.hssf.usermodel.*;
+import org.apache.poi.poifs.filesystem.POIFSFileSystem;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
- * 针对于表格后缀为 xlsx的Excel表格进行解析读取的工具类
+ * 读取Excel
+ * <p>支持excel2007以上版本</p>
+ *
+ * @author rick
+ * @version 1.2
  */
 public class ExcelReader {
 
-    /**
-     * Excel 对象
-     */
-    private HSSFWorkbook workbook;
+    private POIFSFileSystem fs;
+    private XSSFWorkbook wb;
+    private XSSFSheet sheet;
+    private XSSFRow row;
 
     /**
-     * 当前操作 Sheet 对象
-     */
-    private HSSFSheet sheet;
-
-    /**
-     * <b>构造方法</b>
-     * <br/>
+     * 读取Excel表格表头的内容
      *
-     * @param excelURI Excel路径
+     * @param is
+     * @return String 表头内容的数组
      */
-    public ExcelReader(String excelURI) {
-        if (excelURI == null || excelURI.trim().length() <= 0) {
-            System.out.println("传入路径为空");
-        }
-
-        //文件输入流
-        InputStream inputStream = null;
+    public String[] readExcelTitle(InputStream is) {
         try {
-            //获取文件输入流
-            inputStream = new FileInputStream(excelURI);
-
-            //获取 Excel 对象
-            workbook = new HSSFWorkbook(inputStream);
-        } catch (FileNotFoundException e) {
-            System.out.println("文件不存在");
+            wb = new XSSFWorkbook(is);
         } catch (IOException e) {
-            System.out.println("读取文件失败");
-        } finally {
-            if (inputStream != null) {
-                try {
-                    inputStream.close();
-                } catch (Exception e) {
+            e.printStackTrace();
+        }
+        sheet = wb.getSheetAt(0);
+        row = sheet.getRow(0);
+        // 标题总列数
+        int colNum = row.getPhysicalNumberOfCells();
+        // System.out.println("******总列数:" + colNum);
+        String[] title = new String[colNum];
+        for (int i = 0; i < colNum; i++) {
+            // title[i] = getStringCellValue(row.getCell(i));
+            title[i] = getCellFormatValue(row.getCell(i));
+        }
+        return title;
+    }
+
+    /**
+     * 读取Excel数据内容
+     *
+     * @param is
+     * @return Map 包含单元格数据内容的Map对象
+     */
+    public Map<Integer, List> readExcelContent(InputStream is) {
+        Map<Integer, List> map = new HashMap<Integer, List>();
+        try {
+            wb = new XSSFWorkbook(is);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        sheet = wb.getSheetAt(0);
+        // 得到总行数
+        int rowNum = sheet.getLastRowNum();
+        row = sheet.getRow(0);
+        int colNum = row.getPhysicalNumberOfCells();
+        // 正文内容应该从第二行开始,第一行为表头的标题
+        for (int i = 1; i <= rowNum; i++) {
+            row = sheet.getRow(i);
+            List list = new ArrayList();
+            int j = 0;
+            while (j < colNum) {
+                list.add(getCellFormatValue(row.getCell(j)).trim());
+                j++;
+            }
+            map.put(i, list);
+        }
+        return map;
+    }
+
+    /**
+     * 读取对应列的数据
+     *
+     * @param is
+     * @param cells 如指定多个列，则返回多个列数据
+     * @return
+     */
+    public Map<Integer, List> readExcelContent(InputStream is, Integer[] cells) {
+        Map<Integer, List> map = new HashMap<Integer, List>();
+        try {
+            wb = new XSSFWorkbook(is);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        sheet = wb.getSheetAt(0);
+        // 得到总行数
+        int rowNum = sheet.getLastRowNum();
+        row = sheet.getRow(0);
+        int colNum = row.getPhysicalNumberOfCells();
+        // 正文内容应该从第二行开始,第一行为表头的标题
+        for (int i = 1; i <= rowNum; i++) {
+            row = sheet.getRow(i);
+            List list = new ArrayList();
+            // 指定列-对应
+            for (int j = 0; j < cells.length; j++) {
+                if (cells[j] < colNum) {
+                    list.add(getCellFormatValue(row.getCell(cells[j])).trim());
+                } else {
+                    throw new RuntimeException("超过最大列");
                 }
             }
+            map.put(i, list);
         }
+        return map;
     }
 
     /**
-     * <b>构造方法</b>
-     * <br/>
+     * 获取单元格数据内容为字符串类型的数据
      *
-     * @param inputStream Excel文件输入流
+     * @param cell Excel单元格
+     * @return String 单元格数据内容
      */
-    public ExcelReader(InputStream inputStream) {
-        //获取 Excel 对象
-        try {
-            workbook = new HSSFWorkbook(inputStream);
-        } catch (IOException e) {
-            System.out.println("读取文件失败");
+    private String getStringCellValue(XSSFCell cell) {
+        String strCell = "";
+        switch (cell.getCellType()) {
+            case XSSFCell.CELL_TYPE_STRING:
+                strCell = cell.getStringCellValue();
+                break;
+            case XSSFCell.CELL_TYPE_NUMERIC:
+                strCell = String.valueOf(cell.getNumericCellValue());
+                break;
+            case XSSFCell.CELL_TYPE_BOOLEAN:
+                strCell = String.valueOf(cell.getBooleanCellValue());
+                break;
+            case XSSFCell.CELL_TYPE_BLANK:
+                strCell = "";
+                break;
+            default:
+                strCell = "";
+                break;
         }
-    }
-
-    public Object readPoint(int rowNum, int cellNum) {
-        //有数据信息总行数
-        int totalRow = getTotalRow();
-
-        //如果要读取的行大于有数据行，则返回空字符串
-        if (rowNum >= totalRow) {
+        if (strCell.equals("") || strCell == null) {
             return "";
         }
-
-        //获取行信息
-        HSSFRow rows = this.getSheet().getRow(rowNum);
-
-        //返回列信息
-        return getValue(rows.getCell(cellNum));
+        return strCell;
     }
 
-    public Object[] readCell(int cellNum) {
-        //获取总行数
-        int totalRow = getTotalRow();
-
-        //生成列信息集合
-        Object[] result = new Object[totalRow];
-
-        //遍历行号，获取每行的列信息
-        for (int i = 0; i < totalRow; i++) {
-            result[i] = readPoint(i, cellNum);
-        }
-        return result;
-    }
-
-    public Object[] readRow(int rowNum) {
-        //获取总行数
-        int totalRow = getTotalRow();
-
-        //如果要查询行信息大于
-        if (rowNum >= totalRow) {
-            return new String[0];
-        }
-
-        HSSFRow row = this.getSheet().getRow(rowNum);
-
-        //获取第一行的列数
-        int cellNum = this.getSheet().getRow(rowNum).getPhysicalNumberOfCells();
-
-        //返回行信息
-        Object[] result = new Object[cellNum];
-
-        //遍历列信息
-        for (int i = 0; i < cellNum; i++) {
-            //当前行的当前列信息
-            result[i] = getValue(row.getCell(i));
-        }
-        return result;
-    }
-
-    public List<Object[]> readPage(int startRowIndex, int endRowIndex) {
-        if (startRowIndex < 0) {
-            startRowIndex = 0;
-        }
-
-        int totalRow = this.getTotalRow();
-
-        if (endRowIndex < 0 || endRowIndex > totalRow) {
-            endRowIndex = totalRow;
-        }
-
-        //返回用的值
-        List<Object[]> result = new ArrayList<Object[]>();
-
-        //每行信息
-        Object[] cells = null;
-
-        //便利各行
-        for (int i = startRowIndex; i < endRowIndex; i++) {
-
-            //获取当前行
-            HSSFRow row = this.getSheet().getRow(i);
-
-            //如果当前行为空则返回空数组
-            if (row == null) {
-                cells = new Object[0];
-                result.add(cells);
-                continue;
+    /**
+     * 获取单元格数据内容为日期类型的数据
+     *
+     * @param cell Excel单元格
+     * @return String 单元格数据内容
+     */
+    private String getDateCellValue(XSSFCell cell) {
+        String result = "";
+        try {
+            int cellType = cell.getCellType();
+            if (cellType == XSSFCell.CELL_TYPE_NUMERIC) {
+                Date date = cell.getDateCellValue();
+                result = (date.getYear() + 1900) + "-" + (date.getMonth() + 1) + "-" + date.getDate();
+            } else if (cellType == XSSFCell.CELL_TYPE_STRING) {
+                String date = getStringCellValue(cell);
+                result = date.replaceAll("[年月]", "-").replace("日", "").trim();
+            } else if (cellType == XSSFCell.CELL_TYPE_BLANK) {
+                result = "";
             }
-
-            //当前行有数据的列个数
-            int cellNum = row.getPhysicalNumberOfCells();
-
-            //生成行数组
-            cells = new Object[cellNum];
-
-            //便利当前行
-            for (short j = 0; j < cellNum; j++) {
-                //获取当前行的当前列
-                cells[j] = getValue(row.getCell(j));
-            }
-            result.add(cells);
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
         }
         return result;
     }
 
     /**
-     * <b>方法说明：</b>
-     * <ul>
-     * 获取Excel中某一行某一列的值
-     * </ul>
+     * 根据XSSFCell类型设置数据
      *
      * @param cell
-     * @return Object
+     * @return
      */
-    private Object getValue(HSSFCell cell) {
-        if (null == cell) {
-            return "";
-        }
-        switch (cell.getCellType()) {
-            case HSSFCell.CELL_TYPE_BLANK://空值
-                return "";
-            case HSSFCell.CELL_TYPE_ERROR:// 故障
-                return "";
-            case HSSFCell.CELL_TYPE_STRING://字符串类型
-                return cell.getStringCellValue();
-            case HSSFCell.CELL_TYPE_BOOLEAN:// 布尔类型
-                return cell.getBooleanCellValue();
-            case XSSFCell.CELL_TYPE_NUMERIC://数值型
-                //如果是日期，则转换成日期返回
-                if (HSSFDateUtil.isCellDateFormatted(cell)) {
-                    return cell.getDateCellValue();
-                }
-                return cell.getStringCellValue();
-            // 公式类型
-            case HSSFCell.CELL_TYPE_FORMULA:
-                //读公式计算值
-                try {
-                    String value = String.valueOf(cell.getNumericCellValue());
-                    //解决double数值过大出现科学计数法
-                    if (value.indexOf("E") != -1) {
-                        BigDecimal bd = new BigDecimal(cell.getNumericCellValue());
-                        bd.setScale(2);
-                        value = bd.toString();
-                    }
-                    if (value.equals("NaN")) {// 如果获取的数据值为非法值,则转换为获取字符串
-                        value = cell.getStringCellValue().toString();
-                    }
-                } catch (Exception e) {
-                    return cell.getStringCellValue();
-                }
-            default:
-                return cell.getStringCellValue();
+    private String getCellFormatValue(XSSFCell cell) {
+        String cellvalue = "";
+        if (cell == null) {
+            return cellvalue;
         }
 
-    }
+        try {
+            // 判断当前Cell的Type
+            switch (cell.getCellType()) {
+                case XSSFCell.CELL_TYPE_FORMULA: {
+                    // 判断当前的cell是否为Date
+                    if (org.apache.poi.ss.usermodel.DateUtil.isCellDateFormatted(cell)) {
+                        // 如果是Date类型则，转化为Data格式
+                        Date date = cell.getDateCellValue();
+                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+                        cellvalue = sdf.format(date);
 
-    /**
-     * <b>方法说明：</b>
-     * <ul>
-     * 获取当前操作的 Sheet<br/>
-     * 如果没有设置当前操作 Sheet，则默认当前操作 Sheet 为第一个
-     * </ul>
-     *
-     * @return XSSFSheet
-     */
-    private HSSFSheet getSheet() {
-        if (sheet == null) {
-            synchronized (this) {
-                if (sheet == null) {
-                    sheet = this.workbook.getSheetAt(0);
+                    } else { // 如果是纯数字
+                        // 取得当前Cell的数值
+                        cellvalue = String.valueOf(cell.getNumericCellValue());
+                    }
+                    break;
                 }
+                case XSSFCell.CELL_TYPE_STRING:
+                    cellvalue = cell.getRichStringCellValue().getString();
+                    break;
+                default:
+                    cell.setCellType(CellType.STRING);
+                    cellvalue = cell.getRichStringCellValue().getString();
             }
+        } catch (Exception e) {
+            cellvalue = cell.getRichStringCellValue().getString();
         }
-        return sheet;
-    }
-
-    public void setSheetName(String sheetName) {
-        HSSFSheet getSheet = this.workbook.getSheet(sheetName);
-        if (getSheet == null) {
-            throw new IllegalArgumentException("将要获取的页面[" + sheetName + "]不存在");
-        }
-        sheet = getSheet;
-    }
-
-    public void setSheetIndex(int index) {
-        HSSFSheet getSheet = this.workbook.getSheetAt(index);
-        if (getSheet == null) {
-            throw new IllegalArgumentException("将要获取的页面下标[" + index + "]不存在");
-        }
-        sheet = getSheet;
-    }
-
-    public int getTotalRow() {
-        return this.getSheet().getPhysicalNumberOfRows();
+        return cellvalue;
     }
 
 }
