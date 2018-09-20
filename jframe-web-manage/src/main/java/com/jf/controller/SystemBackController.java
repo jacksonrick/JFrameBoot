@@ -1,5 +1,7 @@
 package com.jf.controller;
 
+import ch.qos.logback.classic.Level;
+import ch.qos.logback.classic.LoggerContext;
 import com.github.pagehelper.PageInfo;
 import com.jf.common.BaseController;
 import com.jf.controller.view.ViewExcel;
@@ -20,6 +22,7 @@ import com.jf.service.system.SystemService;
 import com.jf.string.StringUtil;
 import com.jf.system.annotation.AuthPassport;
 import com.jf.system.conf.SysConfig;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -578,7 +581,7 @@ public class SystemBackController extends BaseController {
             map.put("msg", msg);
             return map;
         }
-        if (!sql.contains("select")) {
+        if (!sql.startsWith("select") && !sql.startsWith("SELECT")) {
             msg = new ResMsg(2, "sql非查询语句");
             map.put("msg", msg);
             return map;
@@ -666,11 +669,10 @@ public class SystemBackController extends BaseController {
      */
     @RequestMapping("/syslogList")
     @AuthPassport
-    public String syslogList(Log condition, ModelMap map) {
-        PageInfo pageInfo = systemService.findLogByPage(condition);
-        map.addAttribute("pageInfo", pageInfo);
-        map.addAllAttributes(BeanUtil.beanToMap(condition));
-        map.put("logCount", systemService.findLogCount());
+    public String syslogList(ModelMap map) {
+        LoggerContext loggerContext = (LoggerContext) LoggerFactory.getILoggerFactory();
+        String level = loggerContext.getLogger("com.jf.database.mapper").getLevel().toString();
+        map.addAttribute("level", level);
         return "system/syslog";
     }
 
@@ -695,6 +697,34 @@ public class SystemBackController extends BaseController {
             return new ResMsg(3, "路径不存在", null);
         }
         return new ResMsg(ResCode.SUCCESS.code(), ResCode.SUCCESS.msg(), list);
+    }
+
+    /**
+     * 打印SQL开关
+     *
+     * @param level
+     * @param request
+     * @return
+     */
+    @RequestMapping("/sqlLevel")
+    @AuthPassport
+    @ResponseBody
+    public ResMsg sqlLevel(String level, HttpServletRequest request) {
+        if (StringUtil.isBlank(level)) {
+            return new ResMsg(1, "level is null");
+        }
+        if (!"INFO".equals(level) && !"DEBUG".equals(level)) {
+            return new ResMsg(1, "level must be INFO or DEBUG");
+        }
+        Admin admin = getSession(request, SysConfig.SESSION_ADMIN);
+        if (admin == null || admin.getRole().getRoleFlag() != 0) {
+            return new ResMsg(1, "refuse if superadmin");
+        }
+
+        LoggerContext loggerContext = (LoggerContext) LoggerFactory.getILoggerFactory();
+        loggerContext.getLogger("com.jf.database.mapper").setLevel(Level.valueOf(level));
+
+        return new ResMsg(ResCode.SUCCESS.code(), ResCode.SUCCESS.msg());
     }
 
     /**

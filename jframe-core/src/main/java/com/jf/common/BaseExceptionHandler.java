@@ -16,9 +16,8 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
 import java.lang.annotation.Annotation;
 import java.net.URLEncoder;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.text.MessageFormat;
+import java.util.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -49,20 +48,29 @@ public class BaseExceptionHandler {
     @ExceptionHandler
     @ResponseBody
     public Object exceptionHandler(Throwable e, HttpServletRequest request) {
+        TreeMap<String, String> rvs = new TreeMap<String, String>();
+        Enumeration paramNames = request.getParameterNames();
+        while (paramNames.hasMoreElements()) {
+            String name = (String) paramNames.nextElement();
+            String value = request.getParameter(name);
+            rvs.put(name, value);
+        }
         // 如果异常类有`@Unstack`注解，则不输出Stacktrace
         Annotation[] annotations = e.getClass().getDeclaredAnnotations();
+        String s = "Error: {0}, Msg: {1}, Caused by {2}.{3}:{4}, Uri: {5}, Params: {6}";
+        s = MessageFormat.format(s,
+                e.getClass().getName(),
+                e.getMessage(),
+                e.getStackTrace()[0].getClassName(),
+                e.getStackTrace()[0].getMethodName(),
+                e.getStackTrace()[0].getLineNumber(),
+                request.getRequestURI(),
+                rvs);
+
         if (annotations.length > 0 && annotations[0] instanceof UnStack) {
-            log.error("Error: {}, Caused by {}.{}:{}",
-                    e.getMessage(),
-                    e.getStackTrace()[0].getClassName(),
-                    e.getStackTrace()[0].getMethodName(),
-                    e.getStackTrace()[0].getLineNumber());
+            log.error(s);
         } else {
-            log.error("Error: {}, Caused by {}.{}:{}",
-                    e.getMessage(),
-                    e.getStackTrace()[0].getClassName(),
-                    e.getStackTrace()[0].getMethodName(),
-                    e.getStackTrace()[0].getLineNumber(), e);
+            log.error(s, e);
         }
 
         // 自定义的系统异常

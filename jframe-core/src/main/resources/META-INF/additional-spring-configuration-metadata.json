@@ -240,66 +240,79 @@
     },
     {
       "name": "app.eureka.enabled",
+      "defaultValue": false,
       "type": "java.lang.Boolean",
       "description": "[core]Eureka注册中心."
     },
     {
       "name": "app.monitor.enabled",
+      "defaultValue": false,
       "type": "java.lang.Boolean",
       "description": "[core]监控."
     },
     {
       "name": "app.druid.enabled",
+      "defaultValue": false,
       "type": "java.lang.Boolean",
       "description": "[core]druid数据源监控."
     },
     {
       "name": "app.springsch.enabled",
+      "defaultValue": false,
       "type": "java.lang.Boolean",
       "description": "spring定时器."
     },
     {
       "name": "app.quartz.enabled",
+      "defaultValue": false,
       "type": "java.lang.Boolean",
       "description": "Quartz定时任务."
     },
     {
       "name": "app.cache.enabled",
+      "defaultValue": false,
       "type": "java.lang.Boolean",
       "description": "[core]redis缓存支持."
     },
     {
       "name": "app.redisson.enabled",
+      "defaultValue": false,
       "type": "java.lang.Boolean",
       "description": "分布式锁."
     },
     {
       "name": "app.activemq.enabled",
+      "defaultValue": false,
       "type": "java.lang.Boolean",
       "description": "ActiveMQ."
     },
     {
       "name": "app.rabbitmq.enabled",
+      "defaultValue": false,
       "type": "java.lang.Boolean",
       "description": "RabbitMQ."
     },
     {
       "name": "app.socket.enabled",
+      "defaultValue": false,
       "type": "java.lang.Boolean",
       "description": "spring websocket."
     },
     {
       "name": "app.fdfs.enabled",
+      "defaultValue": false,
       "type": "java.lang.Boolean",
       "description": "[core]FastDFS,false则使用本地上传."
     },
     {
       "name": "app.ssl.enabled",
+      "defaultValue": false,
       "type": "java.lang.Boolean",
       "description": "[core]启用SSL."
     },
     {
       "name": "rmi.enabled",
+      "defaultValue": false,
       "type": "java.lang.Boolean",
       "description": "[core]启用rmi监控."
     },

@@ -74,7 +74,7 @@ public class AspectLog {
             param = "-";
         }
         // String method = point.getSignature().getDeclaringTypeName() + "." + point.getSignature().getName();
-        log.info("{} => {}, Params: {}", remote, request.getRequestURI(), param);
+        log.info("{} => {}, Params: {}, Method: {}", remote, request.getRequestURI(), param, request.getMethod());
     }
 
     // 异常在每个端下的切点进行捕捉
@@ -82,9 +82,8 @@ public class AspectLog {
     @AfterReturning(pointcut = "ctl()", returning = "ret")
     public void ret(Object ret) {
         if (ret != null) {
-            String cn = ret.getClass().getSimpleName();
-            // 仅打印以下类型，否则打印类名
-            if ("String".equals(cn) || "ResMsg".equals(cn) || "ArrayList".equals(cn)) {
+            // 开发环境下打印具体信息，否则打印类名
+            if (config.dev()) {
                 log.info("Returns: {}", ret);
             } else {
                 log.info("Returns: {}", ret.getClass().getName());

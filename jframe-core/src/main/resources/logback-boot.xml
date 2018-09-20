@@ -132,6 +132,8 @@
             <appender-ref ref="syslog"/>
             <appender-ref ref="errorlog"/>
         </root>
+
+        <logger name="com.jf.database.mapper" level="OFF"></logger>
     </springProfile>
 
 </configuration>

@@ -4,8 +4,8 @@ import com.jf.po.TestUser;
 
 import java.net.URI;
 import java.util.Date;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created with IntelliJ IDEA.
@@ -30,7 +30,7 @@ public class MainTest {
     }
 
     public static void main(String[] args) {
-        ExecutorService service = Executors.newFixedThreadPool(2);
+        /*ExecutorService service = Executors.newFixedThreadPool(2);
 
         MyThread thread1 = new MyThread();
         MyThread thread2 = new MyThread();
@@ -43,8 +43,28 @@ public class MainTest {
         service.execute(thread4);
         service.execute(thread5);
 
-        service.shutdown();
+        service.shutdown();*/
+
+        System.out.println(underline("bBindAdsd"));
     }
+
+    public static StringBuffer underline(String str) {
+        Pattern pattern = Pattern.compile("[A-Z]");
+        Matcher matcher = pattern.matcher(str);
+        StringBuffer sb = new StringBuffer(str);
+        if(matcher.find()) {
+            sb = new StringBuffer();
+            //将当前匹配子串替换为指定字符串，并且将替换后的子串以及其之前到上次匹配子串之后的字符串段添加到一个StringBuffer对象里。
+            //正则之前的字符和被替换的字符
+            matcher.appendReplacement(sb,"_"+matcher.group(0).toLowerCase());
+            //把之后的也添加到StringBuffer对象里
+            matcher.appendTail(sb);
+        }else {
+            return sb;
+        }
+        return underline(sb.toString());
+    }
+
 
 
     public static void testEqual() {

@@ -6170,7 +6170,8 @@ img.circle-border {
     background-color: #fff;
     padding: 0;
     margin-bottom: 0;
-    margin-left: 70px
+    margin-left: 10px;
+    display: inline-block;
 }
 
 .breadcrumb > .active, .breadcrumb > li a {

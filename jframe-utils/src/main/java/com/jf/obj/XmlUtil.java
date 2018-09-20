@@ -35,6 +35,7 @@ public class XmlUtil {
      */
     public static <T> T deSerializeFromXml(String xml, String alias, Class<T> clazz) {
         XStream xstream = new XStream(new DomDriver());
+        xstream.ignoreUnknownElements();
         xstream.alias(alias, clazz);
         return (T) xstream.fromXML(xml);
     }

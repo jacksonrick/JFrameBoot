@@ -7,12 +7,42 @@
 
 ######## For APP ########
 
-GET http://192.168.24.200:8082/app/get
+POST http://127.0.0.1:8081/test?name=fei&type=123
+Accept: */*
+Cache-Control: no-cache
+
+###
+POST http://127.0.0.1:8081/testError2
+Accept: */*
+Cache-Control: no-cache
+X-Requested-With: XMLHttpRequest
+
+###
+GET http://127.0.0.1:8082/app/token?param=1234
+Accept: */*
+Cache-Control: no-cache
+Req-Type: APP
+token: 4F88FA216F6EDEDE8230770EAAD56608
+
+###
+GET http://127.0.0.1:8082/app/get
+Accept: */*
+Cache-Control: no-cache
+Req-Type: APP
+X-Requested-With: XMLHttpRequest
+
+
+
+GET http://127.0.0.1:8082/app/get
 Req-Type: APP
 
 ###
-GET http://192.168.24.200:8082/app/token
+GET http://127.0.0.1:8082/app/token
 Req-Type: APP
 token: AEAED2682D2C3D45EE3672DF6BE8DB9F
+
+###
+GET https://wx.809573150.cn/app/test?a=1&b=2&c=abc
+Req-Type: APP
 
 ###

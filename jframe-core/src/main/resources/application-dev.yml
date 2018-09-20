@@ -23,6 +23,8 @@ server:
 #    key-store-type: JKS
 #    key-password: 123456
 spring:
+  jmx:
+    enabled: true
   cache: # 缓存设置
     type: REDIS # 缓存类型 NONE | REDIS
     cache-names: user,order # 缓存的名称(多个)
@@ -88,7 +90,7 @@ spring:
         url-pattern: /druid/*
         reset-enable: true
         login-username: admin
-        login-password: 1ead34fjf48adsjvnm323
+        login-password: admin
       web-stat-filter:
         enabled: ${app.druid.enabled:false}
         url-pattern: /*
@@ -137,7 +139,7 @@ spring:
 #        - 192.168.1.199:7004
 #        - 192.168.1.199:7005
 #        - 192.168.1.199:7006
-  activemq: # activemq
+  activemq: # activemq[弃用]
     broker-url: tcp://192.168.1.199:61616 # 服务器地址
     in-memory: true
     pool:
@@ -190,7 +192,7 @@ fdfs: # fastDFS配置
   tracker-list: # 可设置多个
     - 192.168.1.199:22122
 system: # 系统自定义配置
-  version: 'v5.1'
+  version: 'v5.2'
   dev: true # 是否开发环境
   appkey: ${app.appkey:0}
   static_host: http://127.0.0.1:${server.port}/ # 静态服务器地址

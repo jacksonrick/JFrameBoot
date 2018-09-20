@@ -55,6 +55,17 @@
             <ol class="breadcrumb">
                 <li><a title="/" href="javascript:;" onclick="openDirectory(this.title, 1)">logs</a></li>
             </ol>
+            <div class="pull-right">
+                SQL输出：
+                <div class="radio radio-inline">
+                    <input type="radio" name="level-sql" id="level-sql1" value="DEBUG" ${(level=="DEBUG")?string("checked","")}>
+                    <label for="level-sql1">是</label>
+                </div>
+                <div class="radio radio-inline">
+                    <input type="radio" name="level-sql" id="level-sql2" value="INFO" ${(level=="INFO")?string("checked","")}>
+                    <label for="level-sql2">否</label>
+                </div>
+            </div>
         </div>
         <div class="ibox-content">
             <div class="row">
@@ -88,6 +99,19 @@
                     showMsg(res.msg, 2);
                 }
             }
+        });
+
+        $("input[name='level-sql']").click(function () {
+            var level = $(this).val();
+            Ajax.ajax({
+                url: "/admin/system/sqlLevel",
+                params: {"level": level},
+                success: function (data) {
+                    if (data.code == 0) {
+                        showMsg("修改成功，请重新打开日志文件查看", 1);
+                    }
+                }
+            });
         });
     });
 

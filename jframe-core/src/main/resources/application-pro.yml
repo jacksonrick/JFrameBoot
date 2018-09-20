@@ -1,6 +1,6 @@
 logging:
   config: classpath:logback-boot.xml
-  file: ${system.log_path}${app.name:jframe}.log
+  #file: ${system.log_path}${app.name:jframe}.log
 server:
   tomcat:
     uri-encoding: UTF-8
@@ -21,6 +21,8 @@ server:
     key-store-type: JKS
     key-password: 123456
 spring:
+  jmx:
+    enabled: false
   cache:
     type: NONE
     cache-names: user,order
@@ -122,15 +124,6 @@ spring:
         max-idle: 50
         min-idle: 10
         max-active: 10
-  activemq:
-    broker-url: tcp://activemq:61616
-    in-memory: true
-    pool:
-      enabled: false
-    user: activemq
-    password: 12345678
-    packages:
-      trust-all: true
   rabbitmq:
     host: rabbitmq
     port: 5672
@@ -168,7 +161,7 @@ fdfs:
   tracker-list:
     - fdfs:22122
 system:
-  version: 'v5.1'
+  version: 'v5.2'
   dev: false
   appkey: ${app.appkey:0}
   static_host: ${app.static_host}

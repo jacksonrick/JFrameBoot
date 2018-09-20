@@ -1,0 +1,44 @@
+# For a quick start check out our HTTP Requests collection (Tools|HTTP Client|Open HTTP Requests Collection).
+#
+# Following HTTP Request Live Templates are available:
+# * 'gtrp' and 'gtr' create a GET request with or without query parameters;
+# * 'ptr' and 'ptrp' create a POST request with a simple or parameter-like body;
+# * 'mptr' and 'fptr' create a POST request to submit a form with a text or file field (multipart/form-data);
+
+########## OAuth2.0 ##########
+
+###client模式?
+POST http://127.0.0.1:8090/oauth/token?grant_type=client_credentials&scope=all&client_id=client&client_secret=123456
+Accept: */*
+Cache-Control: no-cache
+
+###password模式
+POST http://127.0.0.1:8090/oauth/token?username=spring&password=123456&grant_type=password&scope=all&client_id=pwd&client_secret=123456
+Accept: */*
+Cache-Control: no-cache
+
+###授权码模式 - 浏览器访问
+POST http://127.0.0.1:8090/oauth/authorize?response_type=code&client_id=client&client_secret=123456&state=states
+    &redirect_uri=http://www.baidu.com
+Accept: */*
+Cache-Control: no-cache
+
+###check_token
+POST http://127.0.0.1:8090/oauth/check_token?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzY29wZSI6WyJhbGwiXSwiZXhwIjoxNTM3NDE3NTQyLCJhdXRob3JpdGllcyI6WyJST0xFX1VTRVIiXSwianRpIjoiYTgzZWE3YTQtYTU2Zi00NTAxLWIyOTItNmQzN2I0MzViYzEyIiwiY2xpZW50X2lkIjoiY2xpZW50In0.vD61Y1RL3oxd-qnS_y9TUAjw7aeQsdeCzz9FrUAQZPI
+Accept: */*
+Cache-Control: no-cache
+
+###auth server
+POST http://127.0.0.1:8090/authentication/user?access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzY29wZSI6WyJhbGwiXSwiZXhwIjoxNTM3NDE3NTQyLCJhdXRob3JpdGllcyI6WyJST0xFX1VTRVIiXSwianRpIjoiYTgzZWE3YTQtYTU2Zi00NTAxLWIyOTItNmQzN2I0MzViYzEyIiwiY2xpZW50X2lkIjoiY2xpZW50In0.vD61Y1RL3oxd-qnS_y9TUAjw7aeQsdeCzz9FrUAQZPI
+Accept: */*
+Cache-Control: no-cache
+
+###
+#POST http://127.0.0.1:8090/hello?access_token=471d240b-7401-43e1-9d50-6e5ce5efdfcf
+#Accept: */*
+#Cache-Control: no-cache
+
+###
+GET http://127.0.0.1:8090/oauth/token_key
+Accept: */*
+Cache-Control: no-cache

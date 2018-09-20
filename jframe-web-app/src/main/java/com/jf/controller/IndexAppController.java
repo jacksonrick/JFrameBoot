@@ -31,6 +31,8 @@ public class IndexAppController extends BaseController {
 
     @GetMapping("/test")
     public ResMsg test() {
+        String a = null;
+        System.out.println(a.length());
         return new ResMsg(ResCode.SUCCESS.code(), ResCode.SUCCESS.msg());
     }
 
