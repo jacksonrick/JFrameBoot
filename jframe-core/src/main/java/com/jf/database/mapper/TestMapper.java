@@ -38,8 +38,6 @@ public interface TestMapper {
 
 
 
-	List<IdText> findAll();
-
 	User findUserById(Integer id);
 
 	User findUserById2(Integer id);

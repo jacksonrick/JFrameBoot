@@ -21,7 +21,7 @@ import java.io.IOException;
 @ConditionalOnBean(RabbitMQService.class)
 public class MQReceiver {
 
-    @RabbitListener(queues = "topic.msg.a", containerFactory = "rabbitListenerContainerFactory")
+    @RabbitListener(queues = "TOPIC.MSG.A", containerFactory = "rabbitListenerContainerFactory")
     public void process(Message message, Channel channel) {
         String msg = new String(message.getBody());
         System.out.println("A Receiver: " + msg + " ,channelno: " + channel.getChannelNumber());
@@ -47,12 +47,12 @@ public class MQReceiver {
         }
     }
 
-    @RabbitListener(queues = "topic.msg.b", containerFactory = "rabbitListenerContainerFactory")
+    @RabbitListener(queues = "TOPIC.MSG.B", containerFactory = "rabbitListenerContainerFactory")
     public void process2(String str) {
         System.out.println("B Receiver: " + str);
     }
 
-    /*@RabbitListener(queues = "topic.msgs", containerFactory = "rabbitListenerContainerFactory")
+    /*@RabbitListener(queues = "TOPIC.MSGS", containerFactory = "rabbitListenerContainerFactory")
     public void process3(Object obj) {
         Message message = (Message) obj;
         System.out.println("All Receivers: " + message.getBody() + " ,type: " + message.getMessageProperties().getContentType());

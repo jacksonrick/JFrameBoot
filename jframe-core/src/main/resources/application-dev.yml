@@ -153,7 +153,7 @@ spring:
     port: 5672
     username: rabbitmq
     password: 12345678
-    virtual-host: /rmq2 # 虚拟Host,需要预先创建 '/hostname'并设置权限
+    virtual-host: /rmq # 虚拟Host,需要预先创建 '/hostname'并设置权限
     requested-heartbeat: 10s
     publisher-confirms: true # 开启发送确认
     publisher-returns: true # 开启发送失败退回
@@ -192,7 +192,7 @@ fdfs: # fastDFS配置
   tracker-list: # 可设置多个
     - 192.168.1.199:22122
 system: # 系统自定义配置
-  version: 'v5.2'
+  version: 'v5.2.1'
   dev: true # 是否开发环境
   appkey: ${app.appkey:0}
   static_host: http://127.0.0.1:${server.port}/ # 静态服务器地址

@@ -214,7 +214,8 @@ public class UserService {
      * @return
      */
     public List<IdText> testMysqlCluster() {
-        return testMapper.findAll();
+//        return testMapper.findAll();
+        return null;
     }
 
     /**

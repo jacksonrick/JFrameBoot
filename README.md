@@ -1,11 +1,11 @@
 # JFrame
-##### JFrame - SpringBoot & Cloud Project `v5.2`
+##### JFrame - SpringBoot & Cloud Project `v5.2.1`
 made by @jackson-rick   <br>
 本架构是对技术框架的整合及开发的规范
 
 
 ### 模块
-* jframe `文档/配置/共享静态资源/Docker`
+* jframe `文档/配置/静态资源/部署脚本`
 * jframe-core `实体对象/服务类/系统相关`
 * jframe-utils `工具类`
 * jframe-web-app `App端`
@@ -34,6 +34,9 @@ made by @jackson-rick   <br>
 * Jenkins&Docker自动化部署
 
 ### 更新日志：
+* v5.2.1 `20181019`
+    * 1.新增服务器备份脚本，支持定时、Docker
+    * 2.RabbitMQ支持延迟队列等特性
 * v5.2 `20180920`
     * 1.升级Springboot2.0.5
     * 2.优化Oauth2服务
@@ -221,7 +224,8 @@ made by @jackson-rick   <br>
 * Redis 2.8.9
 * Linux CentOS 7
 * IDEA 2017+
-
+* Docker CE 18+
+* 其他：RabbitMQ、Jenkins
 ---
 
 * application-dev.yml 开发环境
@@ -242,16 +246,9 @@ made by @jackson-rick   <br>
 * 运行`docker-compose up -d` | `docker-compose restart web`
 
 ### 其他
-* 使用maven下载Jar包时，请先在`maven-.../conf/setting.xml`的mirrors标签内加入以下：
-    ``` xml
-    <mirror>
-        <id>alimaven</id>
-        <name>aliyun maven</name>
-        <url>http://maven.aliyun.com/nexus/content/groups/public/</url>
-        <mirrorOf>central</mirrorOf>
-    </mirror>
-    ```
+* 使用maven下载Jar包时，请先在Maven中添加阿里的镜像源
 * 数据库脚本：`jframe/doc/jframe.sql`
 * 操作手册说明：`jframe/doc/系统架构.docx`
+* 默认为MySQL数据库，如使用Postgres，将相关代码替换为`jframe/doc/postdb`
 
 `*注：项目中的Demo可能需要去除相关注释后方可正常运行`

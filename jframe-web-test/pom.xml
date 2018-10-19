@@ -15,6 +15,12 @@
         <relativePath/>
     </parent>
 
+    <modules>
+        <module>mq-producer</module>
+        <module>mq-consumer1</module>
+        <module>mq-consumer2</module>
+    </modules>
+
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -143,12 +149,6 @@
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-config</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.jcraft</groupId>
-            <artifactId>jsch</artifactId>
-            <version>0.1.54</version>
-            <scope>compile</scope>
         </dependency>
     </dependencies>
 

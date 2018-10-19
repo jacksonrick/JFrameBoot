@@ -104,7 +104,7 @@
 
 	<insert id="insert" parameterType="user" keyProperty="id" useGeneratedKeys="true">
         INSERT INTO t_user (
-          nickname,
+          nick,
           phone,
           email,
           password,
@@ -147,10 +147,6 @@
 		DELETE FROM t_user
 		WHERE id IN <foreach item="id" collection="ids" open="(" separator="," close=")"> #{id} </foreach>
 	</delete>
-
-	<select id="findAll" resultType="idText">
-		SELECT * FROM test1
-	</select>
 
 	<resultMap type="user" id="userResultMapper1">
 		<id property="id" column="id" />

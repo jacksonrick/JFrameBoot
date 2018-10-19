@@ -161,7 +161,7 @@ fdfs:
   tracker-list:
     - fdfs:22122
 system:
-  version: 'v5.2'
+  version: 'v5'
   dev: false
   appkey: ${app.appkey:0}
   static_host: ${app.static_host}

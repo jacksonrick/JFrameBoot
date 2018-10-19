@@ -19,4 +19,7 @@ GET http://127.0.0.1:10080/api-a/order?userId=1&productId=100
 GET http://127.0.0.1:10080/get/1
 
 
+###
+GET http://127.0.0.1:8888/testAsyncRequest
 
+###

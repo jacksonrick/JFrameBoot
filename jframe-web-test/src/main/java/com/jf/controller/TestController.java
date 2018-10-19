@@ -15,6 +15,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import javax.servlet.AsyncContext;
+import javax.servlet.AsyncEvent;
+import javax.servlet.AsyncListener;
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -123,6 +128,49 @@ public class TestController extends BaseController {
     public ResMsg jpush() {
         jPushService.sendPush("alert", "content", "10001");
         return new ResMsg(ResCode.SUCCESS.code(), ResCode.SUCCESS.msg());
+    }
+
+    @RequestMapping("/testAsyncRequest")
+    public void testAsyncRequest(HttpServletRequest request) {
+        AsyncContext context = request.startAsync();
+        context.setTimeout(60000L);
+        context.addListener(new AsyncListener() {
+            @Override
+            public void onComplete(AsyncEvent asyncEvent) throws IOException {
+                System.out.println("over");
+            }
+
+            @Override
+            public void onTimeout(AsyncEvent asyncEvent) throws IOException {
+
+            }
+
+            @Override
+            public void onError(AsyncEvent asyncEvent) throws IOException {
+
+            }
+
+            @Override
+            public void onStartAsync(AsyncEvent asyncEvent) throws IOException {
+
+            }
+        });
+        context.start(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(5000);
+                    System.out.println("内部线程：" + Thread.currentThread().getName());
+
+                    context.getResponse().setContentType("text/html;charset=UTF-8");
+                    context.getResponse().getWriter().write("Hello");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                context.complete();
+            }
+        });
+        System.out.println("主线程：" + Thread.currentThread().getName());
     }
 
 }

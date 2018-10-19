@@ -1,7 +1,9 @@
 /********************
  * @Author jfxu
- * <p> need:jquery.js </p>
- * <p> plugins:layer.js/dropzone.js/toastr.js </p>
+ * <p>need: jquery.js </p>
+ * <p>need plugins: layer.js/dropzone.js/toastr.js </p>
+ * <p>modify plugins: city-picker/city-picker2/dropzone</p>
+ * <p>incoming plugins: formload</p>
  ********************/
 
 /*******************************************************************************
@@ -252,7 +254,7 @@ var CONSTANT = {
  * toast
  * @param type 1-success 2-error
  * @param title
- * @param content
+ * @param content - 可空
  */
 function toast(type, title, content) {
     toastr.options = {
@@ -301,7 +303,8 @@ function layerConfirm(title, url, func) {
 }
 
 /**
- * 显示提示层
+ * 显示提示层-一段时间后消失
+ *  layer.alert('内容') 显示弹出框
  * @param msg
  * @param type 1-success 2-fail
  * @param func 结束后回调
