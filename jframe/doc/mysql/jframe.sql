@@ -16,7 +16,7 @@
 
 /*
   Modules:
-    - JFrame
+    - JFrame Core
     - OAuth2
     - Quartz
  */
@@ -62,8 +62,9 @@ CREATE TABLE `oauth_client_details` (
 -- Records of oauth_client_details
 -- ----------------------------
 BEGIN;
-INSERT INTO `oauth_client_details` VALUES ('client', NULL, '$2a$10$2QaFSy4T84/06c2uREOqxeTSNRsA1z6YYsGM/NJl..ZbjrOP9lL02', 'all', 'client_credentials', NULL, 'ROLE_USER', 1800, 86400, NULL, 'true');
-INSERT INTO `oauth_client_details` VALUES ('sso', NULL, '$2a$10$2QaFSy4T84/06c2uREOqxeTSNRsA1z6YYsGM/NJl..ZbjrOP9lL02', 'all', NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `oauth_client_details`(`client_id`, `resource_ids`, `client_secret`, `scope`, `authorized_grant_types`, `web_server_redirect_uri`, `authorities`, `access_token_validity`, `refresh_token_validity`, `additional_information`, `autoapprove`) VALUES ('client', NULL, '$2a$10$2QaFSy4T84/06c2uREOqxeTSNRsA1z6YYsGM/NJl..ZbjrOP9lL02', 'all', 'client_credentials', NULL, 'ROLE_USER', 1800, 86400, NULL, 'true');
+INSERT INTO `oauth_client_details`(`client_id`, `resource_ids`, `client_secret`, `scope`, `authorized_grant_types`, `web_server_redirect_uri`, `authorities`, `access_token_validity`, `refresh_token_validity`, `additional_information`, `autoapprove`) VALUES ('pwd', NULL, '$2a$10$2QaFSy4T84/06c2uREOqxeTSNRsA1z6YYsGM/NJl..ZbjrOP9lL02', 'all', 'password', NULL, NULL, NULL, NULL, NULL, 'true');
+INSERT INTO `oauth_client_details`(`client_id`, `resource_ids`, `client_secret`, `scope`, `authorized_grant_types`, `web_server_redirect_uri`, `authorities`, `access_token_validity`, `refresh_token_validity`, `additional_information`, `autoapprove`) VALUES ('sso', NULL, '$2a$10$2QaFSy4T84/06c2uREOqxeTSNRsA1z6YYsGM/NJl..ZbjrOP9lL02', 'all', NULL, NULL, NULL, NULL, NULL, NULL, 'true');
 COMMIT;
 
 -- ----------------------------
@@ -101,9 +102,7 @@ CREATE TABLE `s_admin` (
 -- ----------------------------
 BEGIN;
 INSERT INTO `s_admin` VALUES (10000, 10000, 'admin', '超管', 'e10adc3949ba59abbe56e057f20f883e', '17730215422', NULL, '2016-04-23 15:36:55', '2018-07-13 10:34:35', '127.0.0.1', b'0');
-INSERT INTO `s_admin` VALUES (10001, 10001, 'huang', '老黄', 'e10adc3949ba59abbe56e057f20f883e', '17732125421', '1,100,101,102,104', '2016-05-13 10:58:17', '2018-06-27 17:58:47', '127.0.0.1', b'0');
-INSERT INTO `s_admin` VALUES (10002, 10002, 'zhang', '老张', 'e10adc3949ba59abbe56e057f20f883e', '17730215512', '1,100,101,102', '2016-05-13 11:37:13', '2018-05-24 14:54:10', '127.0.0.1', b'0');
-INSERT INTO `s_admin` VALUES (10003, NULL, 'test', 'test', 'e10adc3949ba59abbe56e057f20f883e', '17726736171', '1,100,101', '2018-05-24 14:40:46', '2018-05-25 15:10:51', '127.0.0.1', b'0');
+INSERT INTO `s_admin` VALUES (10003, NULL, 'test', '测试', 'e10adc3949ba59abbe56e057f20f883e', '17726736171', '1,100,101', '2018-05-24 14:40:46', '2018-05-25 15:10:51', '127.0.0.1', b'0');
 COMMIT;
 
 -- ----------------------------
@@ -216,8 +215,7 @@ CREATE TABLE `s_role` (
 -- ----------------------------
 BEGIN;
 INSERT INTO `s_role` VALUES (10000, '超级管理组', NULL, 0, '2018-07-17 17:38:59', b'0');
-INSERT INTO `s_role` VALUES (10001, '财务组', '1,100,105', 1, '2018-07-17 17:38:59', b'1');
-INSERT INTO `s_role` VALUES (10002, '运维组', '2,124,125', 1, '2018-07-17 17:38:59', b'0');
+INSERT INTO `s_role` VALUES (10001, '运维组', '2,124,125', 1, '2018-07-17 17:38:59', b'0');
 COMMIT;
 
 -- ----------------------------
@@ -249,19 +247,12 @@ CREATE TABLE `t_user` (
 -- Records of t_user
 -- ----------------------------
 BEGIN;
-INSERT INTO `t_user` VALUES (10000, 'test', '15515556993', '11@qq.com', '5d24bbbe2fe58aba66827aa870004c79', '/static/theme/images/avatar.jpg', 1000.00, '2016-09-27 17:53:50', '2016-12-21 13:29:21', '1', '340123199311012774', b'0', '安徽省/合肥市/瑶海区', '2016-12-21', b'1', NULL);
-INSERT INTO `t_user` VALUES (10001, 'test0', '17730215423', '22@qq.com', 'c4ca4238a0b923820dcc509a6f75849b', '/static/theme/images/avatar.jpg', 1000.00, '2016-09-27 11:04:17', NULL, '22', '340123199311012774', b'1', NULL, NULL, b'0', NULL);
-INSERT INTO `t_user` VALUES (10002, 'test0', '17734901234', '33@qq.com', 'c4ca4238a0b923820dcc509a6f75849b', '/static/theme/images/avatar.jpg', 1000.00, '2016-10-14 15:04:06', NULL, '22', '340123199311012774', b'1', '安徽省/合肥市/瑶海区', NULL, b'1', NULL);
-INSERT INTO `t_user` VALUES (10003, 'test1', '17734901231', '44@qq.com', 'c4ca4238a0b923820dcc509a6f75849b', '/static/theme/images/avatar.jpg', 1000.00, '2017-04-20 16:35:11', NULL, '44', '340123199311012774', b'1', NULL, '2016-12-21', b'0', NULL);
-INSERT INTO `t_user` VALUES (10004, 'test2', '17734901232', '55@qq.com', 'c4ca4238a0b923820dcc509a6f75849b', '/static/theme/images/avatar.jpg', 1000.00, '2017-06-07 16:13:24', NULL, '55', '340123199311012774', b'1', '安徽省/合肥市/瑶海区', NULL, b'0', NULL);
-INSERT INTO `t_user` VALUES (10005, 'test3', '17734901233', '66@qq.com', 'c4ca4238a0b923820dcc509a6f75849b', '/static/theme/images/avatar.jpg', 1000.00, '2017-06-07 16:13:27', NULL, '22', '340123199311012774', b'1', NULL, NULL, b'0', NULL);
-INSERT INTO `t_user` VALUES (10006, 'test4', '17734901235', '77@qq.com', 'c4ca4238a0b923820dcc509a6f75849b', '/static/theme/images/avatar.jpg', 0.00, '2017-06-07 16:13:29', NULL, '66', '340123199311012774', b'1', NULL, '2016-12-21', b'0', NULL);
-INSERT INTO `t_user` VALUES (10007, 'test5', '17734901236', '88@qq.com', 'c4ca4238a0b923820dcc509a6f75849b', '/static/theme/images/avatar.jpg', 1000.00, '2017-06-07 16:13:32', NULL, '33', '340123199311012774', b'1', '安徽省/合肥市/瑶海区', NULL, b'1', NULL);
-INSERT INTO `t_user` VALUES (10008, 'test6', '17734901237', '99@qq.com', 'c4ca4238a0b923820dcc509a6f75849b', '/static/theme/images/avatar.jpg', 0.00, '2017-06-07 16:13:34', NULL, '33', '340123199311012774', b'1', NULL, '2016-12-21', b'1', NULL);
-INSERT INTO `t_user` VALUES (10009, 'test7', '17734901238', '00@qq.com', 'c4ca4238a0b923820dcc509a6f75849b', '/static/theme/images/avatar.jpg', 0.00, '2017-06-07 16:13:37', NULL, '77', '340123199311012774', b'1', '安徽省/合肥市/瑶海区', NULL, b'1', NULL);
-INSERT INTO `t_user` VALUES (10010, 'test8', '17734901239', '111@qq.com', 'c4ca4238a0b923820dcc509a6f75849b', '/static/theme/images/avatar.jpg', 0.00, '2017-06-07 16:13:39', NULL, '44', '340123199311012774', b'1', NULL, '2016-12-21', b'1', NULL);
-INSERT INTO `t_user` VALUES (10011, 'test9', '17734901200', '222@qq.com', 'c4ca4238a0b923820dcc509a6f75849b', '/static/theme/images/avatar.jpg', 0.00, '2017-06-07 16:13:42', NULL, '88', '340123199311012774', b'1', '安徽省/合肥市/瑶海区', NULL, b'1', NULL);
-INSERT INTO `t_user` VALUES (10012, 'test10', '17734901321', '3333333@qq.com', 'c4ca4238a0b923820dcc509a6f75849b', '/static/theme/images/avatar.jpg', 0.00, '2017-06-07 16:13:44', NULL, '55', '340123199311012774', b'1', '340000/340100/340103', '2016-12-21', b'0', NULL);
+INSERT INTO `t_user` VALUES (10000, 'test', '17700000000', '11@qq.com', '5d24bbbe2fe58aba66827aa870004c79', '/static/theme/images/avatar.jpg', 1000.00, '2016-09-27 17:53:50', '2016-12-21 13:29:21', '1', '340123199311012774', b'0', '安徽省/合肥市/瑶海区', '2016-12-21', b'1', NULL);
+INSERT INTO `t_user` VALUES (10001, 'test0', '17700000001', '22@qq.com', 'c4ca4238a0b923820dcc509a6f75849b', '/static/theme/images/avatar.jpg', 1000.00, '2016-09-27 11:04:17', NULL, '22', '340123199311012774', b'1', NULL, NULL, b'0', NULL);
+INSERT INTO `t_user` VALUES (10002, 'test0', '17700000002', '33@qq.com', 'c4ca4238a0b923820dcc509a6f75849b', '/static/theme/images/avatar.jpg', 1000.00, '2016-10-14 15:04:06', NULL, '22', '340123199311012774', b'1', '安徽省/合肥市/瑶海区', NULL, b'1', NULL);
+INSERT INTO `t_user` VALUES (10003, 'test1', '17700000003', '44@qq.com', 'c4ca4238a0b923820dcc509a6f75849b', '/static/theme/images/avatar.jpg', 1000.00, '2017-04-20 16:35:11', NULL, '44', '340123199311012774', b'1', NULL, '2016-12-21', b'0', NULL);
+INSERT INTO `t_user` VALUES (10004, 'test2', '17700000004', '55@qq.com', 'c4ca4238a0b923820dcc509a6f75849b', '/static/theme/images/avatar.jpg', 1000.00, '2017-06-07 16:13:24', NULL, '55', '340123199311012774', b'1', '安徽省/合肥市/瑶海区', NULL, b'0', NULL);
+INSERT INTO `t_user` VALUES (10005, 'test3', '17700000005', '66@qq.com', 'c4ca4238a0b923820dcc509a6f75849b', '/static/theme/images/avatar.jpg', 1000.00, '2017-06-07 16:13:27', NULL, '22', '340123199311012774', b'1', NULL, NULL, b'0', NULL);
 COMMIT;
 
 
