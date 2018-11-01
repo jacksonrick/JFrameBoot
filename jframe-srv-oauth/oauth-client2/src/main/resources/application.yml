@@ -6,7 +6,7 @@ server:
     context-path: /
     session:
       cookie:
-        name: JSESSIONID2
+        name: JSAUID
 security:
   oauth2:
     sso:

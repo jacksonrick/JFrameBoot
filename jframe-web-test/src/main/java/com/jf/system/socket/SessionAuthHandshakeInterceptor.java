@@ -12,7 +12,7 @@ import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
- * Description:
+ * Description: 定义handshake握手拦截器
  * User: xujunfei
  * Date: 2018-01-10
  * Time: 15:18
@@ -20,21 +20,20 @@ import java.util.Map;
 public class SessionAuthHandshakeInterceptor implements HandshakeInterceptor {
 
     @Override
-    public boolean beforeHandshake(ServerHttpRequest request, ServerHttpResponse response, WebSocketHandler handler,
-                                   Map<String, Object> map) throws Exception {
-
+    public boolean beforeHandshake(ServerHttpRequest request, ServerHttpResponse response, WebSocketHandler handler, Map<String, Object> map) throws Exception {
         HttpSession session = getSession(request);
         if (session == null || session.getAttribute(SysConfig.SESSION_USER) == null) {
-            System.out.println("【WebSocket Session Interceptor】用户未登录");
+            System.out.println("【WebSocket】用户未登录");
             return false;
         }
+        System.out.println("【WebSocket】握手开始");
         map.put(SysConfig.SESSION_USER, session.getAttribute(SysConfig.SESSION_USER));
         return true;
     }
 
     @Override
     public void afterHandshake(ServerHttpRequest request, ServerHttpResponse response, WebSocketHandler handler, Exception e) {
-
+        System.out.println("【WebSocket】握手结束");
     }
 
     private HttpSession getSession(ServerHttpRequest request) {

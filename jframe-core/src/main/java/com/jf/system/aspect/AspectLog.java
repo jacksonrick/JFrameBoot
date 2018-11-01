@@ -49,6 +49,10 @@ public class AspectLog {
     @Before("ctl()")
     public void log(JoinPoint point) {
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        if (attributes == null) {
+            log.info("Non def Request, Class: {}, Method: {}()", point.getSignature().getDeclaringTypeName(), point.getSignature().getName());
+            return;
+        }
         HttpServletRequest request = attributes.getRequest();
 
         // 请求ID

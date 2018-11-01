@@ -22,7 +22,11 @@
                     </div>
 
                     <div class="form_text_ipt">
-                        <input name="password" type="password" placeholder="密码" value="123456">
+                        <input name="password" type="password" placeholder="密码" value="">
+                    </div>
+
+                    <div class="form_text_ipt">
+                        <input name="verify" type="password" placeholder="验证码" value="">
                     </div>
 
                     <div class="form_check_ipt">
@@ -31,7 +35,7 @@
 
                     <div class="form_btn">
                         <button type="submit">登录</button>
-                        <div>${msg!''}</div>
+                        <div><font color="red">${msg!''}</font></div>
                     </div>
                     <div class="form_reg_btn">
                         <span>还没有帐号？</span><a href="/">马上注册</a>

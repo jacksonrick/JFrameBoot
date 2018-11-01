@@ -1,5 +1,5 @@
 # JFrame
-##### JFrame - SpringBoot & Cloud Project `v5.2.1`
+##### JFrame - SpringBoot & Cloud Project `v5.2.2`
 made by @jackson-rick   <br>
 本架构是对技术框架的整合及开发的规范
 
@@ -34,6 +34,9 @@ made by @jackson-rick   <br>
 * Jenkins&Docker自动化部署
 
 ### 更新日志：
+* v5.2.2 `20181101`
+    * 1.升级WebSocket与OAuth模块配置，并优化注释
+    * 2.优化其他配置
 * v5.2.1 `20181019`
     * 1.新增服务器备份脚本，支持定时、Docker
     * 2.RabbitMQ支持延迟队列等特性

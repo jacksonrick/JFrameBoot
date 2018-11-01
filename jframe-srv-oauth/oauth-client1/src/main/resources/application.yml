@@ -6,7 +6,7 @@ server:
     context-path: /
     session:
       cookie:
-        name: JSESSIONID1
+        name: JSAUID
 security:
   oauth2:
     sso:
@@ -16,8 +16,6 @@ security:
       client-secret: 123456
       user-authorization-uri: ${auth-server}/oauth/authorize
       access-token-uri: ${auth-server}/oauth/token
-#      pre-established-redirect-uri: ${local-server}/a/hello
-#      use-current-uri: false
     resource:
       jwt:
         key-uri: ${auth-server}/oauth/token_key

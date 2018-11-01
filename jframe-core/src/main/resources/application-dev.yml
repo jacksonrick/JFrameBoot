@@ -31,7 +31,7 @@ spring:
     redis:
       time-to-live: 20m
   session: # session存储类型 NONE | REDIS
-    store-type: NONE
+    store-type: REDIS
   mvc:
     static-path-pattern: /static/** # 静态地址映射
   servlet:

@@ -52,6 +52,7 @@ public class SwaggerConfig extends WebMvcConfigurerAdapter {
         parameters.add(param2.build());
 
         return new Docket(DocumentationType.SWAGGER_2)
+                .enable(true)
                 .apiInfo(apiInfo())
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.jf.controller")) // controller扫描路径

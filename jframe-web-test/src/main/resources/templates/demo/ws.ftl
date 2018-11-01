@@ -58,7 +58,7 @@
         stompClient.connect({}, function (frame) {
             setConnected(true);
             //console.log('Connected: ' + frame);
-            stompClient.subscribe('/jf/chat', function (ret) {
+            stompClient.subscribe('/topic/chat', function (ret) {
                 console.log(ret);
                 //{"username":"feifei","target":"feifei2","message":"qwert2","date":"2018-01-10 08:34:54"}
                 var json = JSON.parse(ret.body);
@@ -101,7 +101,7 @@
             disconnect();
         });
         $("#send").click(function () {
-            stompClient.send("/app/say", {}, JSON.stringify({'target': $("#target").val(), 'message': $("#msg").val()}));
+            stompClient.send("/ws/send", {}, JSON.stringify({'target': $("#target").val(), 'message': $("#msg").val()}));
         });
     });
 </script>

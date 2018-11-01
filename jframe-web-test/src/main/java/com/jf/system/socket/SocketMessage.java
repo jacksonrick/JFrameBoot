@@ -5,19 +5,20 @@ import java.util.Date;
 
 /**
  * Created with IntelliJ IDEA.
- * Description:
+ * Description: WebSocket接收对象
  * User: xujunfei
  * Date: 2018-01-09
  * Time: 15:49
  */
 public class SocketMessage implements Serializable {
 
+    /** 当前用户 */
     private String username;
-
+    /** 目标用户 */
     private String target;
-
+    /** 信息内容 */
     private String message;
-
+    /** 发送时间 */
     private Date date;
 
     public String getUsername() {

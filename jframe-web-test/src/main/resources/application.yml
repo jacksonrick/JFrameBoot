@@ -36,7 +36,7 @@ app:
   rabbitmq: # RabbitMQ
     enabled: false
   socket: # spring websocket
-    enabled: false
+    enabled: true
   fdfs: # FastDFS,false则使用本地上传
     enabled: false
   ssl: # 启用SSL
