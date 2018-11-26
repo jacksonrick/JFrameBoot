@@ -1,11 +1,15 @@
 package com.jf.service;
 
-import com.jf.po.User;
+import com.jf.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.UUID;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -19,25 +23,31 @@ public class OUserService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
-
-    // 模拟账户登录
-    private static final String un = "17730215423";
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
     /**
+     * @param username
      * @return
      */
     public User findByUsername(String username) {
         System.out.println("OUserService ----------------- " + username);
-        if (!un.equals(username)) {
+
+        List<User> list = jdbcTemplate.query("SELECT id, role_id, admin_name, admin_password FROM s_admin WHERE admin_name = '" + username + "'", new RowMapper<User>() {
+            @Override
+            public User mapRow(ResultSet rs, int i) throws SQLException {
+                User user = new User();
+                user.setId(rs.getInt(1));
+                user.setRoles(rs.getString(2));
+                user.setUsername(rs.getString(3));
+                user.setPassword(rs.getString(4));
+                return user;
+            }
+        });
+
+        if (list.isEmpty()) {
             return null;
         }
-
-        User user = new User();
-        user.setUsername(username);
-        user.setPassword(passwordEncoder.encode("123456"));
-        user.setUuid(UUID.randomUUID().toString());
-        user.setUserType("1");
-        return user;
+        return list.get(0);
     }
-
 }

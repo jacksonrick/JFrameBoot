@@ -913,14 +913,14 @@ public class SystemBackController extends BaseController {
     @ResponseBody
     public ResMsg getDirectory(String path) {
         if (StringUtil.isBlank(path)) {
-            return new ResMsg(1, "未指定路径", null);
+            return new ResMsg(1, "未指定路径");
         }
         if (!path.startsWith("/")) {
-            return new ResMsg(2, "路径必须以斜杠/开头", null);
+            return new ResMsg(2, "路径必须以斜杠/开头");
         }
         List<Directory> list = FileUtil.getDirectory(path, config.getStaticPath());
         if (list == null) {
-            return new ResMsg(3, "路径不存在", null);
+            return new ResMsg(3, "路径不存在");
         }
         return new ResMsg(ResCode.SUCCESS.code(), ResCode.SUCCESS.msg(), list);
     }

@@ -11,7 +11,7 @@ import com.jf.service.system.SystemService;
 import com.jf.service.user.UserService;
 import com.jf.string.StringUtil;
 import com.jf.system.annotation.AuthPassport;
-import com.jf.view.ExcelReader;
+import com.jf.poi.ExcelReaderXSS;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -179,7 +179,7 @@ public class UserController extends BaseController {
             return new ResMsg(ResCode.FAIL.code(), "文件最大10M");
         }
 
-        ExcelReader read = new ExcelReader();
+        ExcelReaderXSS read = new ExcelReaderXSS();
         Map<Integer, List> maps = read.readExcelContent(file.getInputStream());
         // return userService.generate(maps);
         return new ResMsg(ResCode.SUCCESS.code(), ResCode.SUCCESS.msg());

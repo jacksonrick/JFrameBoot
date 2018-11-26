@@ -1,5 +1,6 @@
 package com.jf.system.aspect;
 
+import com.jf.commons.LogManager;
 import com.jf.entity.enums.ResCode;
 import com.jf.string.StringUtil;
 import com.jf.system.annotation.Token;
@@ -71,7 +72,7 @@ public class AspectToken {
                     if (StringUtil.isBlank(token)) {
                         return pjp.proceed();
                     } else {
-                        String uid = (String) redisTemplate.opsForValue().get(token);
+                        Integer uid = (Integer) redisTemplate.opsForValue().get(token);
                         if (uid != null) {
                             args[0] = dealToken(token);
                             return pjp.proceed(args);
@@ -98,7 +99,7 @@ public class AspectToken {
                         if (StringUtil.isBlank(token)) {
                             return pjp.proceed();
                         }
-                        String uid = (String) redisTemplate.opsForValue().get(token);
+                        Integer uid = (Integer) redisTemplate.opsForValue().get(token);
                         if (uid != null) {
                             args[0] = dealToken(token);
                             return pjp.proceed(args);
@@ -126,18 +127,21 @@ public class AspectToken {
             if (throwable instanceof AppTokenException) {
                 throw new AppTokenException(throwable.getMessage());
             } else {
+                if (throwable.getCause() != null) {
+                    throwable.getCause().printStackTrace();
+                }
                 throw new AppException(throwable.getMessage());
             }
         }
     }
 
-    private Long dealToken(String token) {
+    private Integer dealToken(String token) {
         if (token == null || token.length() < 1) {
             throw new AppTokenException(ResCode.TOKEN_EXP.msg());
         }
-        String uid = (String) redisTemplate.opsForValue().get(token);
+        Integer uid = (Integer) redisTemplate.opsForValue().get(token);
         if (uid != null) {
-            return Long.parseLong(uid);
+            return uid;
         } else {
             throw new AppTokenException(ResCode.TOKEN_EXP.msg());
         }

@@ -24,13 +24,13 @@ public class BaseController {
      *
      * @param userId
      */
-    public String bindToken(Long userId) {
+    public String bindToken(Integer userId) {
         String newToken = StringUtil.getTokenId();
         String oldToken = (String) redisTemplate.opsForValue().getAndSet(SysConfig.PREFIX + userId, newToken);
         if (oldToken != null) {
             redisTemplate.delete(oldToken); // 删除旧token
         }
-        redisTemplate.opsForValue().set(newToken, userId + ""); // 绑定用户唯一token
+        redisTemplate.opsForValue().set(newToken, userId); // 绑定用户唯一token
         return newToken;
     }
 

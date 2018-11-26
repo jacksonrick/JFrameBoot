@@ -184,6 +184,9 @@ public class RabbitMQService implements InitializingBean {
         // 用来确认消息是否有送达消息队列
         rabbitTemplate.setConfirmCallback((correlationData, ack, cause) -> {
             log.info("消息发送成功:correlationData({}), ack({}), cause({})", correlationData, ack, cause);
+            if (!ack) {
+                // try to resend msg
+            }
         });
 
         // 若消息找不到对应的Exchange会被触发

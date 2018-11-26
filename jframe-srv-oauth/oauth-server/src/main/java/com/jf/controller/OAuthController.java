@@ -1,6 +1,6 @@
 package com.jf.controller;
 
-import com.jf.po.ICONSTANT;
+import com.jf.model.ICONSTANT;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,12 +27,8 @@ public class OAuthController {
     @GetMapping("/authentication/require")
     public ModelAndView require(@RequestParam(value = "error", required = false) String error, ModelMap map, HttpSession session) {
         if (error != null) {
-            map.addAttribute("msg", "登录失败");
+            map.addAttribute("msg", error);
         }
-
-        // 图形验证码
-        session.setAttribute(ICONSTANT.SE_VERIFY, "1234");
-        System.out.println("login page ----------------- 验证码为：1234");
         return new ModelAndView("login", map);
     }
 

@@ -170,7 +170,7 @@ public class AppPayController extends BaseController {
      */
     @RequestMapping("/wx_qrcode")
     public void wx_qrcode(HttpServletResponse response) throws Exception {
-        String code_url = wxPayService.order_qrcode(StringUtil.getOrderCode(), "商品", 0.01, "114.114.114.114");
+        String code_url = wxPayService.orderQrcode(StringUtil.getOrderCode(), "商品", 0.01, "114.114.114.114");
         // 生成二维码
         Qrcode.write(code_url, response);
     }

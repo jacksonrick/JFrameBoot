@@ -1,7 +1,7 @@
 # JFrame
-##### JFrame - SpringBoot & Cloud Project `v5.2.2`
+##### JFrame - SpringBoot & Cloud Project `v5.2.3`
 made by @jackson-rick   <br>
-本架构是对技术框架的整合及开发的规范
+本架构是对技术框架的整合及开发的规范，适合多端项目和微服务
 
 
 ### 模块
@@ -15,6 +15,7 @@ made by @jackson-rick   <br>
 * jframe-cloud `注册中心`
 * jframe-micro-srvs `微服务模块`
 * jframe-service-oauth `OAuth2.0模块`
+* jframe-srv-gateway `网关模块`
 
 ### 集成
 * Spring/SpringMVC/MyBatis/SpringBoot/SpringCloud
@@ -34,6 +35,11 @@ made by @jackson-rick   <br>
 * Jenkins&Docker自动化部署
 
 ### 更新日志：
+* v5.2.3 `20181113`
+    * 1.更新utils包
+    * 2.优化OAuth单点登录模块
+    * 3.优化Redis&Session序列化
+    * 4.优化APP Token
 * v5.2.2 `20181101`
     * 1.升级WebSocket与OAuth模块配置，并优化注释
     * 2.优化其他配置

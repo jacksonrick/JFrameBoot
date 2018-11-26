@@ -27,4 +27,9 @@ public @interface AuthPassport {
 	 */
 	boolean right() default true;
 
+	/**
+	 * 暂未实现，与OAuth搭配使用
+	 */
+	boolean getid() default false;
+
 }

@@ -29,6 +29,8 @@
         </plugins>
     </build>
 
+    <!-- 如果以下包没有在实际生产中用到，可以将scope设置为provided -->
+
     <dependencies>
         <!-- mysql&postgres test -->
         <dependency>

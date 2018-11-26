@@ -32,6 +32,8 @@ spring:
       time-to-live: 20m
   session: # session存储类型 NONE | REDIS
     store-type: REDIS
+    redis:
+      namespace: spring:sessions # 命名空间
   mvc:
     static-path-pattern: /static/** # 静态地址映射
   servlet:
@@ -139,15 +141,6 @@ spring:
 #        - 192.168.1.199:7004
 #        - 192.168.1.199:7005
 #        - 192.168.1.199:7006
-  activemq: # activemq[弃用]
-    broker-url: tcp://192.168.1.199:61616 # 服务器地址
-    in-memory: true
-    pool:
-      enabled: false # 如果此处设置为true，需要加依赖包:org.apache.activemq > activemq-pool
-    user: activemq
-    password: 12345678
-    packages:
-      trust-all: true
   rabbitmq: # rabbitmq
     host: 192.168.24.200 # 服务器地址
     port: 5672
@@ -166,6 +159,9 @@ spring:
           enabled: true
           initial-interval: 10s
           max-attempts: 3
+#    cache:
+#      channel:
+#        size: 100
   quartz: # quartz配置
     job-store-type: memory # jdbc | memory
     properties: # Quartz属性配置
@@ -192,7 +188,7 @@ fdfs: # fastDFS配置
   tracker-list: # 可设置多个
     - 192.168.1.199:22122
 system: # 系统自定义配置
-  version: 'v5.2.1'
+  version: 'v5.2.3'
   dev: true # 是否开发环境
   appkey: ${app.appkey:0}
   static_host: http://127.0.0.1:${server.port}/ # 静态服务器地址
@@ -204,20 +200,21 @@ system: # 系统自定义配置
     partner: 2088
     seller: nf@sandbox.com
     app_id: 2016
-    rsa_private_key: MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCAbqwHTigw8Bs0czuAwy4Y8zyqdIhzVCMn9H4/oBF0J+t2eTxlAUCuXjX/vrf+X2bGVMiCym54s1IGQ3Himaon30thys4FxM7QVvH6UC6OefZLkaG1i4mpvYUK3gzsT+PHqbpK/lkQ6RoYwg3mHSHSl2Td/08SIJ326W8Ujs29YOID2OzUusupSly+acdHVwf/IRiuP9FkL/f0e9jwUzGTMhTuP2DXWU9frd0D2n9DHL+BL3kmQm2NToAJ+2xvhiqI5nPixQxe9ua38N2i3xMNY5N2/6nCmvpj7UZzVWdYkcmNQLPNvUeLNbohX4U/R+HYZ1SeTiIgIaog9nX6ctW3AgMBAAECggEAKOSUK8NL8sEQuHOUV5xN2i3gfBmctLPuebNUW2fZBtYLF+7kNvjeImbm5KZSKVExBSdLrLFN2WqnTE0/PrpUvltPwjRzwsx2WUnFxECxgjX9IPSeu5JRY9VvPhWToc6SJSm6olQ4AbVm1Mk86a8O7OG9gR3gjFIMWejbsH0Dry9qtsSD4byYuLXwQ/yy7CC9ZV/v76veCBwZxYiG1LzRLn82qCl5B3QwTj1K7wyGpYE2OHflTDBe05H82eUpnbUb1xKt8y7TdquJWheInDDxvt7OthHFwNVJhp7zui9s580WiXP6DtrEtmINaYYHDgOGR2SmleygXloNIUQ02xSZAQKBgQDhMMobbS67dqMQ5JzYvErj8xbhVhSk3wiKm7+MBpCtpM40HNLy5Z82JqlngN6CkJdHBybqWmvDjER07MvzKjX3VuyYM/jFkuyOCpBHzjbXSnFk7xn5UKqlQFKoW5v8XJB8qwksxpBlvHNmFedwVMU0mOfDD4uoF1axEt7cDs5+NwKBgQCSAPZrv07KVs/eEFU+nqGu9UpmQ0D6ZITgEiDoQwPecSO2uKovY8TsCKYgfTAntY2oJ51Jqf6lV8cKr6Fm6CoWm687BT4E5gljoyWj7iGgt/WPhki+ocWcQkGbkFGN7wNel56+3/TCrnKWcgNqoh8BqpaMERT23QCqLdaNy8akgQKBgBGCobSQQNoC15swq6GOwqQG+vh6oRBQ53Efuz1AJW/bKM2UkDKi+EZVq0aJFsRASgMT40rFzStfdNNCtnkqBxg8ghkzsVxrmElTOPTcbBdBip+2l+ZzB1HiNosw1GhDKlkHU6dPqVq/1JlTirOJY+w7F4prYwinB+6s8Pdbj2LxAoGANFXr/wuAbr9Xm743EE9EnbaHiMiqzhaiGr/k09zR0ja0GpdvSbV1rTYcdqDpVhKaSKCKnRE2moYwbwAt1vl5vMjpszpZ1N+wleqxX2XI4BeRCnWUNeE/OJf3dI/y6/G1P38SBFG7Jt3pbUxJNTwP6UUA2gx1e1gVGOt9cS6OcgECgYEAvxHdlmsyMWU0dZmXA6Pgs4Nl4JE7gVuVkuo9eXVIEtM7Er6uopkmvQItvb0Jp7aCDZi/eblGS7HiFoxh5YFIO9AGzWgMbDPjBbFcaD2+ucqG/0FYqi4pNV3NX4PuEEAyywH9L8G/pv/WwfYBMckwvwtqh6wdf7HgYuLXgVXuduA=
-    public_key: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA2F1OBxmr8/7Dd+uPMQoTzqJdldBG31c5YE8EpIdk+pxwyM0BGMXV1SETynt1br7Pw8MKOC+oJOTxD9hcqx7OOhsZhiqFH2iL5F4ejK9VNEPDxjwkZXjgYqnacK5cFRWq6iMn4tw5xTsxa1sSNtEoxjK4AZnpgTiTTT2hlB2TN6e78zW2ZMeyZ+ocb9jy5oa/xqMAv1Srgp2PIa1dQ5qDp52xxzs6PxjTZJwTh6v+Z2zJJaBu2lzkk/cY4LAYAkr2rxKRVseT4Xt5m8zRVA62rDlTd1/D7MoCS9ybGQ8IaGe/8XM+3FJtNjk1JKk6OQa2YWHgzqZz+BQQSZzeSGFn4QIDAQAB
-    notify_url: http://xjf.s1.natapp.cc/alipay_callback
-    return_url: http://xjf.s1.natapp.cc/alipay_return
+    rsa_private_key: xxx
+    public_key: xxx
+    notify_url: http://xxx/alipay_callback
+    return_url: http://xxx/alipay_return
     gateway: https://openapi.alipaydev.com/gateway.do
   wechat: # 微信
     appid: wx47
     partner: 1482
-    partner_key: ad8b6
-    notify_url: http://xjf.s1.natapp.cc/wxpay_callback
+    partner_key: xxx
+    notify_url: http://xxx/wxpay_callback
   geetest: # 极验验证
     id: a53178
     key: 51dbc8
   jpush: # jpush推送
+    name: xxx
     appkey: appkey
     secret: secret
     ios_product: false

@@ -2,9 +2,9 @@ package com.jf.controller;
 
 import com.jf.common.BaseController;
 import com.jf.database.model.User;
-import com.jf.string.StringUtil;
 import com.jf.system.conf.SysConfig;
 import com.jf.system.socket.SocketMessage;
+import com.jf.system.socket.WebSocketConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -37,6 +37,15 @@ public class WebSocketController extends BaseController {
     @Autowired(required = false)
     private SimpUserRegistry simpUserRegistry;
 
+    @RequestMapping("/wst")
+    @ResponseBody
+    public String wst(HttpSession session) {
+        User user = new User(1);
+        user.setNickname("USER" + 1);
+        session.setAttribute("A", user);
+        return "OK";
+    }
+
     /**
      * 模拟登录
      *
@@ -45,13 +54,13 @@ public class WebSocketController extends BaseController {
      * @return
      */
     @RequestMapping("/ws")
-    public String ws(String name, HttpSession session) {
-        if (StringUtil.isBlank(name)) {
-            System.out.println("name is empty!");
+    public String ws(Integer id, HttpSession session) {
+        if (id == null) {
+            System.out.println("id is empty!");
             return "error/400";
         }
-        User user = new User();
-        user.setNickname(name);
+        User user = new User(id);
+        user.setNickname("USER" + id);
         session.setAttribute(SysConfig.SESSION_USER, user);
         return "demo/ws";
     }
@@ -66,10 +75,11 @@ public class WebSocketController extends BaseController {
     @MessageMapping("/send")
     // @SendoTo对应前台的订阅地址，使用messagingTemplate最为灵活
     public void send(SocketMessage message, Principal principal) {
+        User user = ((WebSocketConfig.SocketPrincipal) principal).getUser();
+        message.setId(user.getId());
+        message.setUsername(user.getNickname());
         message.setDate(new Date());
-        message.setUsername(principal.getName());
         System.out.println(message.toString());
-        System.out.println("principal name:" + principal.getName());
 
         // 发送消息到目标 /topic/username/chat
         messagingTemplate.convertAndSendToUser(message.getTarget(), "/chat", message);

@@ -1,20 +1,4 @@
 /*
- Navicat Premium Data Transfer
-
- Source Server         : localhost
- Source Server Type    : MySQL
- Source Server Version : 50716
- Source Host           : localhost:3306
- Source Schema         : jframe
-
- Target Server Type    : MySQL
- Target Server Version : 50716
- File Encoding         : 65001
-
- Date: 03/07/2018 14:34:13
-*/
-
-/*
   Modules:
     - JFrame Core
     - OAuth2

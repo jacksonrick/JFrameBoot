@@ -19,4 +19,4 @@ spring:
       password: 12345678
 logging:
   level:
-    org.springframework: debug
+    org.springframework: info

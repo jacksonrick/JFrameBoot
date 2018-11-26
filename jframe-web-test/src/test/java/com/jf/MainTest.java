@@ -1,6 +1,6 @@
 package com.jf;
 
-import com.jf.po.TestUser;
+import com.jf.model.TestUser;
 
 import java.net.URI;
 import java.util.Date;

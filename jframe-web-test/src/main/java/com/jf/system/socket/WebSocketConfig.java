@@ -40,9 +40,9 @@ public class WebSocketConfig extends AbstractSessionWebSocketMessageBrokerConfig
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
-        registry.setApplicationDestinationPrefixes("/ws"); // 客户端发送地址的前缀
-        registry.setUserDestinationPrefix("/topic"); // 客户端订阅地址的前缀
-        registry.enableSimpleBroker("/chat"); // 客户端订阅地址(后缀),可以设置多个
+        registry.setApplicationDestinationPrefixes("/ws"); // 客户端发送地址的前缀，如ws/send
+        registry.setUserDestinationPrefix("/topic"); // 客户端订阅地址的前缀 subscribe("/topic/chat")
+        registry.enableSimpleBroker("/chat"); // 客户端订阅地址(后缀),可以设置多个 "/chat1,/chat2"
     }
 
     /**
@@ -56,7 +56,8 @@ public class WebSocketConfig extends AbstractSessionWebSocketMessageBrokerConfig
         registry.addEndpoint("/websocket").addInterceptors(new SessionAuthHandshakeInterceptor()).setHandshakeHandler(new DefaultHandshakeHandler() {
             @Override
             protected Principal determineUser(ServerHttpRequest request, WebSocketHandler wsHandler, Map<String, Object> attributes) {
-                // 定义用户从Session获取，Session名称为SysConfig.SESSION_USER
+                // 定义用户
+                // 从Session获取，Session名称为SysConfig.SESSION_USER
                 return new SocketPrincipal((User) attributes.get(SysConfig.SESSION_USER));
             }
         });
@@ -128,17 +129,27 @@ public class WebSocketConfig extends AbstractSessionWebSocketMessageBrokerConfig
         registration.setSendTimeLimit(200000);
     }
 
-    class SocketPrincipal implements Principal {
+    public class SocketPrincipal implements Principal {
 
+        // 自定义的用户实体类，实现PrincipalgetName方法
         private User user;
 
         public SocketPrincipal(User user) {
             this.user = user;
         }
 
+        public User getUser() {
+            return user;
+        }
+
+        /**
+         * 可自定义绑定的用户id
+         *
+         * @return
+         */
         @Override
         public String getName() {
-            return String.valueOf(user.getNickname());
+            return String.valueOf(user.getId());
         }
 
     }

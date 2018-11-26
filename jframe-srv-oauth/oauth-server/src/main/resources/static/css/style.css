@@ -617,6 +617,12 @@ header {
     font-family: "微软雅黑";
     font-size: 15px;
     color: #666;
+    outline: none;
+}
+
+.form_text_ipt input.valid {
+    float: left;
+    width: 185px;
 }
 
 .form_btn {

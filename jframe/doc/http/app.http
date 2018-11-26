@@ -33,6 +33,11 @@ X-Requested-With: XMLHttpRequest
 
 
 ###
+GET http://127.0.0.1:8082/app/findUser
+Req-Type: APP
+token: E34851ED318DD31515FF0E900FA51BD0
+
+###
 GET http://127.0.0.1:8082/app/get
 Req-Type: APP
 

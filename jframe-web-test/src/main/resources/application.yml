@@ -1,5 +1,9 @@
 server:
   port: 8888
+  servlet:
+    session:
+      cookie:
+        name: JSAUID
 spring:
   profiles:
     active: dev
@@ -50,3 +54,17 @@ wx: # 微信公众号API
   token: qwertyuiopqwertyuiopqwertyuiopqw
   appsecret: 111111
   callback-url:
+#auth-server: http://127.0.0.1:8090
+#local-server: http://127.0.0.1:8091
+#security:
+#  oauth2:
+#    sso:
+#      login-path: /sso/login
+#    client:
+#      client-id: sso
+#      client-secret: 123456
+#      user-authorization-uri: ${auth-server}/oauth/authorize
+#      access-token-uri: ${auth-server}/oauth/token
+#    resource:
+#      jwt:
+#        key-uri: ${auth-server}/oauth/token_key

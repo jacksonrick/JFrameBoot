@@ -99,6 +99,12 @@ public class AspectLog {
     /* 环绕方法
     @Around("log()")
     public Object around(ProceedingJoinPoint pjp) {
+        //Signature signature = point.getSignature();
+        //MethodSignature methodSignature = (MethodSignature) signature;
+        //String[] strings = methodSignature.getParameterNames();
+        //System.out.println(Arrays.toString(strings));
+
+
         Object[] objects = pjp.getArgs();
         MethodSignature signature = (MethodSignature) pjp.getSignature();
         Method method = signature.getMethod();

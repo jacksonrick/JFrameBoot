@@ -77,7 +77,7 @@ public class WxPayService implements WXPayConfig {
      * @param ip
      * @return 微信返回的参数集
      */
-    public Map<String, String> order_app(String orderNum, String body, Double orderPrice, String ip) throws Exception {
+    public Map<String, String> orderApp(String orderNum, String body, Double orderPrice, String ip) throws Exception {
         WXPay wxpay = new WXPay(this);
         Map<String, String> data = new HashMap<String, String>();
         data.put("body", body);
@@ -107,7 +107,7 @@ public class WxPayService implements WXPayConfig {
      * @param ip
      * @return 二维码地址
      */
-    public String order_qrcode(String orderNum, String body, Double orderPrice, String ip) throws Exception {
+    public String orderQrcode(String orderNum, String body, Double orderPrice, String ip) throws Exception {
         WXPay wxpay = new WXPay(this);
         Map<String, String> data = new HashMap<String, String>();
         data.put("body", body);
@@ -136,7 +136,7 @@ public class WxPayService implements WXPayConfig {
      * @param openid
      * @return
      */
-    public Map<String, String> order_jsapi(String orderNum, String body, Double orderPrice, String ip, String openid) throws Exception {
+    public Map<String, String> orderJsapi(String orderNum, String body, Double orderPrice, String ip, String openid) throws Exception {
         WXPay wxpay = new WXPay(this);
         Map<String, String> data = new HashMap<String, String>();
         data.put("body", body);

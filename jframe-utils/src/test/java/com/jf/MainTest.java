@@ -2,8 +2,8 @@ package com.jf;
 
 import com.jf.json.JacksonUtil;
 import com.jf.obj.BeanUtil;
-import com.jf.po.TRole;
-import com.jf.po.TUser;
+import com.jf.model.TRole;
+import com.jf.model.TUser;
 import org.joda.time.Days;
 import org.joda.time.LocalDate;
 

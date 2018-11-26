@@ -12,6 +12,7 @@ import java.util.Date;
  */
 public class SocketMessage implements Serializable {
 
+    private Integer id;
     /** 当前用户 */
     private String username;
     /** 目标用户 */
@@ -20,6 +21,14 @@ public class SocketMessage implements Serializable {
     private String message;
     /** 发送时间 */
     private Date date;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public String getUsername() {
         return username;
@@ -56,7 +65,8 @@ public class SocketMessage implements Serializable {
     @Override
     public String toString() {
         return "SocketMessage{" +
-                "username='" + username + '\'' +
+                "id=" + id +
+                ", username='" + username + '\'' +
                 ", target='" + target + '\'' +
                 ", message='" + message + '\'' +
                 ", date=" + date +

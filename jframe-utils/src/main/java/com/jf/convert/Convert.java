@@ -1,6 +1,7 @@
 package com.jf.convert;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.DecimalFormat;
 
 /**
@@ -49,6 +50,19 @@ public class Convert {
         BigDecimal b1 = new BigDecimal(Double.toString(d1));
         BigDecimal b2 = new BigDecimal(Double.toString(d2));
         return doubleFormat(b1.multiply(b2).doubleValue());
+    }
+
+    /**
+     * 浮点数相除
+     *
+     * @param d1
+     * @param d2
+     * @return
+     */
+    public static double doubleDivide(double d1, double d2) {
+        BigDecimal b1 = new BigDecimal(Double.toString(d1));
+        BigDecimal b2 = new BigDecimal(Double.toString(d2));
+        return doubleFormat(b1.divide(b2, 10, RoundingMode.HALF_DOWN).doubleValue());
     }
 
     /**

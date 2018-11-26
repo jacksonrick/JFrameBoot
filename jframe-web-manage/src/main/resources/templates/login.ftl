@@ -6,19 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>登录</title>
     <script type="text/javascript">if (window != top) {parent.location.reload();}</script>
-    <link rel="stylesheet" href="/static/library/plugins/camera/camera.css"/>
     <#include "include.ftl"/>
 </head>
 
-<body class="gray-bg">
-<div id="templatemo_banner_slide" class="container_wapper">
-    <div class="camera_wrap camera_emboss" id="camera_slide">
-        <div data-src="/static/theme/images/login/2.jpg"></div>
-        <div data-src="/static/theme/images/login/3.jpg"></div>
-        <div data-src="/static/theme/images/login/4.jpg"></div>
-        <div data-src="/static/theme/images/login/5.jpg"></div>
-    </div>
-</div>
+<body class="gray-bg" style="background-image: url('/static/theme/images/login/2.jpg'); background-size: cover;">
 
 <div class="middle-box text-center loginscreen animated fadeInDown">
     <div>
@@ -56,9 +47,7 @@
         </form>
     </div>
 </div>
-<script src="/static/library/jquery/jquery.easing.min.js"></script>
-<script src="/static/library/plugins/camera/camera.min.js"></script>
-<script src="/static/library/plugins/camera/templatemo_script.js"></script>
+
 <script>
     $(function () {
         $('#loginForm').bootstrapValidator({

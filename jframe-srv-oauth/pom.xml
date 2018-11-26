@@ -19,8 +19,8 @@
         <module>oauth-server</module>
         <module>oauth-resource</module>
         <module>oauth-client</module>
-        <module>oauth-client1</module>
-        <module>oauth-client2</module>
+        <module>oauth-sso1</module>
+        <module>oauth-sso2</module>
     </modules>
 
 </project>

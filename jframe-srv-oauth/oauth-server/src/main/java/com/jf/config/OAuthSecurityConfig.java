@@ -1,5 +1,7 @@
 package com.jf.config;
 
+import com.jf.config.handler.AuthFailureHandler;
+import com.jf.config.provider.OAuthAuthenticationProvider;
 import com.jf.service.OUserDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -34,6 +36,8 @@ public class OAuthSecurityConfig extends WebSecurityConfigurerAdapter {
     private OUserDetailService oUserDetailService;
     @Autowired
     private OAuthAuthenticationProvider oAuthAuthenticationProvider;
+    @Autowired
+    private AuthFailureHandler authFailureHandler;
 
     @Autowired
     @Qualifier("oauthAuthenticationDetailsSource")
@@ -50,6 +54,8 @@ public class OAuthSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     /**
+     * 密码加密方式
+     *
      * @return
      */
     @Bean
@@ -79,6 +85,8 @@ public class OAuthSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     /**
+     * 登录表单验证配置
+     *
      * @param http
      * @throws Exception
      */
@@ -86,12 +94,27 @@ public class OAuthSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .formLogin().loginPage("/authentication/require").loginProcessingUrl("/authentication/form")
+                .failureHandler(authFailureHandler)
                 .authenticationDetailsSource(authenticationDetailsSource)
-                .and()
-                .antMatcher("/**").authorizeRequests().antMatchers("/oauth/**").permitAll()
                 .and()
                 .csrf().disable()
         ;
     }
+    //.antMatcher("/**").authorizeRequests().antMatchers("/oauth/**").permitAll()
+
+    /* 记住我
+    http
+        .rememberMe()
+			.rememberMeServices(rememberMeServices());
+
+    @Bean
+    public SpringSessionRememberMeServices rememberMeServices() {
+        SpringSessionRememberMeServices rememberMeServices =
+                new SpringSessionRememberMeServices();
+        // optionally customize
+        rememberMeServices.setAlwaysRemember(true);
+        return rememberMeServices;
+    }
+    * */
 
 }

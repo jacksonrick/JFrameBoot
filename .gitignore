@@ -14,6 +14,8 @@
 Thumbs.db
 
 # for maven
+target/
+*/target/
 jframe-*/*/target/
 jframe-*/target/
 cloud-server/target/

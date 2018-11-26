@@ -266,14 +266,10 @@ $(function () {
         });
 
     // 浏览器检测
-    if (!window.applicationCache) {
-        showTopTips("您的浏览器不支持HTML5，为提升您的浏览体验，请使用新版Chrome或Firefox浏览器！");
-    } else {
-        if ((navigator.userAgent.indexOf('MSIE') >= 0)
-            && (navigator.userAgent.indexOf('Opera') < 0)
-            || navigator.userAgent.indexOf('NET') >= 0) {
-            showTopTips("您使用的是IE浏览器，为提升您的浏览体验，请使用新版Chrome或Firefox浏览器！");
-        }
+    if ((navigator.userAgent.indexOf('MSIE') >= 0)
+        && (navigator.userAgent.indexOf('Opera') < 0)
+        || navigator.userAgent.indexOf('NET') >= 0) {
+        showTopTips("您使用的是IE浏览器，为提升您的浏览体验，请使用新版Chrome或Firefox浏览器！");
     }
 
     // 将属性data-open='modal'的href以layer方式打开
