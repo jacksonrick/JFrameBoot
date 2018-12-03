@@ -17,7 +17,7 @@ import java.io.IOException;
 public class Generate {
 
     public static void main(String[] args) throws IOException {
-        generateMybatis();
+//        generateMybatis();
 //        generateDict();
     }
 
@@ -33,7 +33,7 @@ public class Generate {
         }
         GenInfo info = new GenInfo()
                 .url("jdbc:mysql://127.0.0.1:3306/jframe?characterEncoding=utf8&useSSL=false")
-                //.url("jdbc:postgresql://192.168.24.200:5432/pay?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull")
+                //.url("jdbc:postgresql://127.0.0.1:5432/jframe")
                 .driver("com.mysql.jdbc.Driver")
                 //.driver("org.postgresql.Driver")
                 //.schema("public")
@@ -55,7 +55,6 @@ public class Generate {
 
     /**
      * 生成数据字典
-     * 仅支持MySQL
      */
     public static void generateDict() throws IOException {
         File directory = new File("");
@@ -65,9 +64,11 @@ public class Generate {
             f.mkdir();
         }
         GenInfo info = new GenInfo()
-                .name("Jframe")
                 .url("jdbc:mysql://127.0.0.1:3306/jframe?characterEncoding=utf8&useSSL=false")
+//                .url("jdbc:postgresql://127.0.0.1:5432/paygw")
                 .driver("com.mysql.jdbc.Driver")
+//                .driver("org.postgresql.Driver")
+//                .schema("public")
                 .username("root")
                 .password("12345678")
                 .path(target)

@@ -9,7 +9,6 @@ package com.jf.generate;
  */
 public class GenInfo {
 
-    private String dbName;
     private String dbUrl;
     private String driver;
     private String schema;
@@ -17,11 +16,6 @@ public class GenInfo {
     private String password;
     private String globalPath;
     private String author;
-
-    public GenInfo name(String dbName) {
-        this.dbName = dbName;
-        return this;
-    }
 
     public GenInfo url(String dbUrl) {
         this.dbUrl = dbUrl;
@@ -56,14 +50,6 @@ public class GenInfo {
     public GenInfo author(String author) {
         this.author = author;
         return this;
-    }
-
-    public String getDbName() {
-        return dbName;
-    }
-
-    public void setDbName(String dbName) {
-        this.dbName = dbName;
     }
 
     public String getDbUrl() {
