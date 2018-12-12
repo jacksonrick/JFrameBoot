@@ -1,10 +1,8 @@
 package com.jf.mq.producer;
 
-import org.springframework.amqp.rabbit.support.CorrelationData;
+import org.springframework.amqp.rabbit.connection.CorrelationData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.text.SimpleDateFormat;
@@ -38,7 +36,7 @@ public class Tester {
     public Integer send2() throws InterruptedException {
         for (int i = 1; i <= 10; i++) {
             Thread.sleep(1000); // 每1秒发一个
-            String str = String.valueOf(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
+            String str = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
             producer.senDealy(RabbitMQService.DELAY_ROUTING_KEY, str, 5);
         }
         return 1;

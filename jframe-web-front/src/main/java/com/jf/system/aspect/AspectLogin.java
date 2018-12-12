@@ -31,7 +31,7 @@ public class AspectLogin {
 
     private final static Logger log = LoggerFactory.getLogger(AspectLogin.class);
 
-    @Pointcut("@annotation(com.jf.system.annotation.Login)")
+    @Pointcut("@annotation(com.jf.annotation.Login)")
     public void login() {
     }
 

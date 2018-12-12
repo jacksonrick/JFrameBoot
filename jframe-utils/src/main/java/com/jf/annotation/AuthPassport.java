@@ -1,4 +1,4 @@
-package com.jf.system.annotation;
+package com.jf.annotation;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;

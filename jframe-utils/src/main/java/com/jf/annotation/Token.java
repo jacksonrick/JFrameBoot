@@ -1,6 +1,4 @@
-package com.jf.system.annotation;
-
-import com.jf.system.conf.SysConfig;
+package com.jf.annotation;
 
 import java.lang.annotation.*;
 
@@ -14,8 +12,8 @@ public @interface Token {
 
     boolean need() default true;
 
-    String name() default SysConfig.TOKEN;
+    String name() default "token";
 
-    String type() default SysConfig.TOKEN_HEADER;
+    String type() default "header";
 
 }

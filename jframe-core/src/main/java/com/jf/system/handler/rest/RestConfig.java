@@ -1,4 +1,4 @@
-package com.jf.system.conf;
+package com.jf.system.handler.rest;
 
 import com.jf.system.handler.rest.RestErrorHandler;
 import org.springframework.context.annotation.Bean;

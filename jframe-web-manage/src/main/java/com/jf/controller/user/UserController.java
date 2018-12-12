@@ -10,7 +10,7 @@ import com.jf.entity.enums.ResCode;
 import com.jf.service.system.SystemService;
 import com.jf.service.user.UserService;
 import com.jf.string.StringUtil;
-import com.jf.system.annotation.AuthPassport;
+import com.jf.annotation.AuthPassport;
 import com.jf.poi.ExcelReaderXSS;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;

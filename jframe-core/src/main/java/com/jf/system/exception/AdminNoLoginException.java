@@ -1,6 +1,6 @@
 package com.jf.system.exception;
 
-import com.jf.system.annotation.UnStack;
+import com.jf.annotation.UnStack;
 
 /**
  * Admin未登录

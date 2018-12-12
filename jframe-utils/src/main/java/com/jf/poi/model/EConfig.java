@@ -1,4 +1,4 @@
-package com.jf.excel;
+package com.jf.poi.model;
 
 import java.util.Arrays;
 import java.util.List;
@@ -16,7 +16,7 @@ public class EConfig {
     private String type;
     private Content content;
 
-    static class Content {
+    public static class Content {
         List<Fields> fields;
         String[] jsons;
 
@@ -45,7 +45,7 @@ public class EConfig {
         }
     }
 
-    static class Fields {
+    public static class Fields {
         String name;
         String field;
 

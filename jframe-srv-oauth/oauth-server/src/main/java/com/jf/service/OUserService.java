@@ -33,7 +33,7 @@ public class OUserService {
     public User findByUsername(String username) {
         System.out.println("OUserService ----------------- " + username);
 
-        List<User> list = jdbcTemplate.query("SELECT id, role_id, admin_name, admin_password FROM s_admin WHERE admin_name = '" + username + "'", new RowMapper<User>() {
+        List<User> list = jdbcTemplate.query("SELECT id, role, name, pwd FROM oauth_user WHERE name = '" + username + "'", new RowMapper<User>() {
             @Override
             public User mapRow(ResultSet rs, int i) throws SQLException {
                 User user = new User();

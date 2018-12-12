@@ -1,5 +1,7 @@
 package com.jf.excel;
 
+import com.jf.poi.ExcelReaderConfig;
+
 import java.io.File;
 import java.io.FileInputStream;
 
@@ -14,7 +16,7 @@ public class Test {
 
     public static void main(String[] args) {
         File file = new File("/Users/xujunfei/Downloads/合肥项目8.27-2.xlsx");
-        ExcelReader read = new ExcelReader();
+        ExcelReaderConfig read = new ExcelReaderConfig();
         try {
             String jsonConfig = getConfig();
             read.read(new FileInputStream(file), jsonConfig, BankList.class);

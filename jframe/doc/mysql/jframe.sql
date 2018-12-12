@@ -62,6 +62,25 @@ CREATE TABLE `oauth_refresh_token` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
+-- Table structure for oauth_user
+-- ----------------------------
+DROP TABLE IF EXISTS `oauth_user`;
+CREATE TABLE `oauth_user` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `role` varchar(255) DEFAULT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `pwd` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of oauth_user
+-- ----------------------------
+BEGIN;
+INSERT INTO `oauth_user` VALUES (1, 'USER', 'test', '$2a$10$2QaFSy4T84/06c2uREOqxeTSNRsA1z6YYsGM/NJl..ZbjrOP9lL02');
+COMMIT;
+
+-- ----------------------------
 -- Table structure for s_admin
 -- ----------------------------
 DROP TABLE IF EXISTS `s_admin`;

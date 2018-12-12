@@ -1,4 +1,6 @@
-package com.jf.system.annotation.excel;
+package com.jf.annotation.excel;
+
+import com.jf.poi.AbstractCellRender;
 
 import java.lang.annotation.*;
 
@@ -20,5 +22,7 @@ public @interface Fields {
     FieldType type() default FieldType.STRING;
 
     TypeValue[] typeValues() default @TypeValue(name = "", value = "");
+
+    Class<? extends AbstractCellRender> render() default AbstractCellRender.None.class;
 
 }

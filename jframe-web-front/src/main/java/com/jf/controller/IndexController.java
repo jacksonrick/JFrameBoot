@@ -3,7 +3,7 @@ package com.jf.controller;
 import com.jf.database.model.User;
 import com.jf.entity.ResMsg;
 import com.jf.entity.enums.ResCode;
-import com.jf.system.annotation.Login;
+import com.jf.annotation.Login;
 import com.jf.system.conf.SysConfig;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;

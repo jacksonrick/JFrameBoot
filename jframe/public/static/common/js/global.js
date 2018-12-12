@@ -127,6 +127,8 @@ var CONSTANT = {
         autoWidth: false,// 自动列宽
         searching: false,// 禁用datatables搜索
         lengthChange: false,// 是否可以修改页面显示行数
+        // lengthChange: true,// 是否可以修改页面显示行数
+        // lengthMenu: [ 20, 50, 75, 100 ]
         pageLength: 20,  // 首次加载的数据条数
         //stateSave: true,// 保持翻页状态，和comTable.fnDraw(false);结合使用
         //select: true // 可多选
@@ -137,7 +139,8 @@ var CONSTANT = {
         var sort = CONSTANT.GETCOLUMN(data.order[0], orders);
         var param = {
             pageNo: data.start / 20 + 1,
-            pageSort: sort
+            pageSort: sort,
+            pageSize: data.length
         };
         var formData = $("#queryForm").serializeArray();// 把form里面的数据序列化成数组
         formData.forEach(function (e) {

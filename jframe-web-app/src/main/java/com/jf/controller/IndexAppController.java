@@ -4,7 +4,7 @@ import com.jf.common.BaseController;
 import com.jf.entity.ResMsg;
 import com.jf.entity.enums.ResCode;
 import com.jf.service.UserService;
-import com.jf.system.annotation.Token;
+import com.jf.annotation.Token;
 import com.jf.system.conf.SysConfig;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;

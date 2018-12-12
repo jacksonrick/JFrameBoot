@@ -1,5 +1,5 @@
 # JFrame
-##### JFrame - SpringBoot & Cloud Project `v5.2.3`
+##### JFrame - SpringBoot & Cloud Project `v5.4`
 made by @jackson-rick   <br>
 本架构是对技术框架的整合及开发的规范，适合多端项目和微服务
 
@@ -35,6 +35,13 @@ made by @jackson-rick   <br>
 * Jenkins&Docker自动化部署
 
 ### 更新日志：
+* v5.4 `20181212`
+    * 1.Excel导出支持JSON配置、实体类注解
+    * 2.Excel导入支持实体类注解
+    * 3.新增Nacos分布式配置[TEST]
+* v5.3 `20181203&20181203`
+    * 1.升级Springboot2.1.0
+    * 2.生成数据字典现支持Postgresql
 * v5.2.3 `20181113`
     * 1.更新utils包
     * 2.优化OAuth单点登录模块
@@ -257,7 +264,7 @@ made by @jackson-rick   <br>
 ### 其他
 * 使用maven下载Jar包时，请先在Maven中添加阿里的镜像源
 * 数据库脚本：`jframe/doc/jframe.sql`
-* 操作手册说明：`jframe/doc/系统架构.docx`
+* 操作手册说明：`jframe/doc/框架使用手册.docx`
 * 默认为MySQL数据库，如使用Postgres，将相关代码替换为`jframe/doc/postdb`
 
-`*注：项目中的Demo可能需要去除相关注释后方可正常运行`
+*如有任何问题或者疑问，请留言。

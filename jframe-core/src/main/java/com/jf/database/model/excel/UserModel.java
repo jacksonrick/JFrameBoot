@@ -1,9 +1,11 @@
 package com.jf.database.model.excel;
 
-import com.jf.system.annotation.excel.Excel;
-import com.jf.system.annotation.excel.FieldType;
-import com.jf.system.annotation.excel.Fields;
-import com.jf.system.annotation.excel.TypeValue;
+import com.jf.annotation.excel.Excel;
+import com.jf.annotation.excel.FieldType;
+import com.jf.annotation.excel.Fields;
+import com.jf.annotation.excel.TypeValue;
+import com.jf.json.DoubleSerialize;
+import com.jf.poi.render.StateRender;
 
 /**
  * Created with IntelliJ IDEA.
@@ -40,10 +42,7 @@ public class UserModel {
     private String address;
     @Fields(value = "生日")
     private String birthday;
-    @Fields(value = "状态", type = FieldType.ENUM, typeValues = {
-            @TypeValue(name = "正常", value = "1"),
-            @TypeValue(name = "冻结", value = "0")
-    })
+    @Fields(value = "状态", type = FieldType.ENUM, render = StateRender.class)
     private String deleted;
 
     public String getNickname() {

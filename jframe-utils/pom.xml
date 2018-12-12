@@ -32,7 +32,7 @@
     <!-- 如果以下包没有在实际生产中用到，可以将scope设置为provided -->
 
     <dependencies>
-        <!-- mysql&postgres test -->
+        <!-- provided | test -->
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
@@ -45,8 +45,6 @@
             <version>42.2.2</version>
             <scope>test</scope>
         </dependency>
-
-        <!-- provided start -->
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
@@ -192,7 +190,7 @@
         <dependency>
             <groupId>joda-time</groupId>
             <artifactId>joda-time</artifactId>
-            <version>2.9.9</version>
+            <version>2.10.1</version>
         </dependency>
 
         <!-- java mail -->

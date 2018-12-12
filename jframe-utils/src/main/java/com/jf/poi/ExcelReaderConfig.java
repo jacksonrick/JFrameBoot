@@ -1,9 +1,8 @@
-package com.jf.excel;
+package com.jf.poi;
 
 import com.jf.json.JacksonUtil;
-import org.apache.commons.lang3.ArrayUtils;
+import com.jf.poi.model.EConfig;
 import org.apache.poi.poifs.filesystem.POIFSFileSystem;
-import org.apache.poi.ss.formula.functions.T;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
@@ -19,12 +18,12 @@ import java.util.*;
 
 /**
  * Created with IntelliJ IDEA.
- * Description:
+ * Description: 配置式读取
  * User: xujunfei
  * Date: 2018-08-30
  * Time: 11:10
  */
-public class ExcelReader {
+public class ExcelReaderConfig {
 
     private POIFSFileSystem fs;
     private XSSFWorkbook wb;

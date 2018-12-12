@@ -20,7 +20,7 @@ import com.jf.service.system.AdminService;
 import com.jf.service.system.ModuleService;
 import com.jf.service.system.SystemService;
 import com.jf.string.StringUtil;
-import com.jf.system.annotation.AuthPassport;
+import com.jf.annotation.AuthPassport;
 import com.jf.system.conf.SysConfig;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;

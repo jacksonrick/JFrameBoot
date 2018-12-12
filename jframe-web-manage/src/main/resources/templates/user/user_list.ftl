@@ -69,6 +69,8 @@
         var $table = $('#table');
         // 默认查询表单id为queryForm
         tables = $table.DataTable($.extend(true, {}, CONSTANT.DEFAULT_OPTION, {
+            // lengthChange: true,
+            // lengthMenu: [ 20, 50, 75, 100 ],
             columns: columns,
             ajax: function (data, callback, settings) {
                 CONSTANT.AJAX("/admin/user/userListData", [[1, "u.id"], [2, "u.nickname"], [3, "u.phone"], [8, "u.id"], [9, "u.is_delete"]], data, callback, settings);

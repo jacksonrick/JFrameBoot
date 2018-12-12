@@ -7,6 +7,9 @@ server:
     session:
       cookie:
         name: JSAUID
+spring:
+  main:
+    allow-bean-definition-overriding: true
 security:
   oauth2:
     sso:

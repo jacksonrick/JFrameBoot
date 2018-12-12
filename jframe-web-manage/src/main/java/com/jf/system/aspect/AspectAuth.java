@@ -3,7 +3,7 @@ package com.jf.system.aspect;
 import com.jf.database.model.manage.Admin;
 import com.jf.entity.enums.ResCode;
 import com.jf.service.system.ModuleService;
-import com.jf.system.annotation.AuthPassport;
+import com.jf.annotation.AuthPassport;
 import com.jf.system.conf.SysConfig;
 import com.jf.system.exception.AdminNoLoginException;
 import com.jf.system.exception.NotAllowException;
@@ -38,7 +38,7 @@ public class AspectAuth {
     @Resource
     private ModuleService moduleService;
 
-    @Pointcut("@annotation(com.jf.system.annotation.AuthPassport)")
+    @Pointcut("@annotation(com.jf.annotation.AuthPassport)")
     public void auth() {
     }
 

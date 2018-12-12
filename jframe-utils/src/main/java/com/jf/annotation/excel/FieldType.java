@@ -1,4 +1,4 @@
-package com.jf.system.annotation.excel;
+package com.jf.annotation.excel;
 
 /**
  * Created with IntelliJ IDEA.
@@ -10,6 +10,7 @@ package com.jf.system.annotation.excel;
 public enum FieldType {
 
     STRING,
+    INTEGER,
     DATE,
     BOOLEAN,
     ENUM

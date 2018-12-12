@@ -1,14 +1,16 @@
 package com.jf.controller.view;
 
+import com.fasterxml.jackson.databind.util.ClassUtil;
+import com.jf.annotation.excel.Excel;
+import com.jf.annotation.excel.Fields;
+import com.jf.annotation.excel.TypeValue;
 import com.jf.commons.LogManager;
-import com.jf.date.DateUtil;
-import com.jf.system.annotation.excel.Excel;
-import com.jf.system.annotation.excel.Fields;
-import com.jf.system.annotation.excel.TypeValue;
+import com.jf.poi.AbstractCellRender;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.streaming.SXSSFSheet;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
+import org.joda.time.DateTime;
 import org.springframework.web.servlet.view.document.AbstractXlsView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -22,18 +24,17 @@ import java.util.Map;
 /**
  * 生成Excel视图
  * <p>1.map{name:表格名称,list:List类型}</p>
- * <p>2.SpringMvc用法:return new ModelAndView(new ViewExcel(), model);</p>
+ * <p>2.SpringMvc用法:return new ModelAndView(new ViewExcel<UserModel>(), model);</p>
  *
  * @author rick
  * @version 2.0
  */
 public class ViewExcel<T> extends AbstractXlsView {
 
+    private final String NULL_VALUE = "--";
+
     @Override
     protected Workbook createWorkbook(Map<String, Object> model, HttpServletRequest request) {
-        // XSSFWorkbook
-        // HSSFWorkbook default
-        // SXSSFWorkbook
         return new SXSSFWorkbook();
     }
 
@@ -54,7 +55,7 @@ public class ViewExcel<T> extends AbstractXlsView {
 
         // 表名
         String excelName = new StringBuilder(excel.name())
-                .append(DateUtil.getCurrentTime(2))
+                .append(new DateTime(System.currentTimeMillis()).toString("yyyy-MM-dd-HH-mm-ss"))
                 .append(".xlsx").toString(); // 文件后缀为xlsx(excel 2010)
         // 设置response方式,使执行此controller时候自动出现下载页面,而非直接使用excel打开
         response.setContentType("APPLICATION/OCTET-STREAM");
@@ -88,10 +89,9 @@ public class ViewExcel<T> extends AbstractXlsView {
             }
         }
 
-        int total = cell; // 总列
-
         // SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
+        int total = cell; // 总列
         int line = 1; // 行序号，第二行开始
         for (T model : list) {
             Row row = sheet.createRow(line++); // 创建行
@@ -105,30 +105,38 @@ public class ViewExcel<T> extends AbstractXlsView {
                     Object obj = getMethod.invoke(model, new Object[]{}); // 执行get方法
                     String val = String.valueOf(obj);
                     if ("null".equals(val) || "".equals(val)) {
-                        row.createCell(cell).setCellValue("--"); // 默认值
+                        row.createCell(cell).setCellValue(NULL_VALUE); // 默认值
                     } else {
-                        switch (field.type()) {
-                            // 其他类型暂定
-                            case ENUM: // 枚举
-                                TypeValue[] values = field.typeValues();
-                                for (int j = 0; j < values.length; j++) {
-                                    if (values[j].value().equals(val)) {
-                                        row.createCell(cell).setCellValue(values[j].name());
+                        // 转换器(优先)
+                        Class<? extends AbstractCellRender> render = field.render();
+                        if (render != AbstractCellRender.None.class) {
+                            AbstractCellRender r = ClassUtil.createInstance(render, true);
+                            String result = r.render(val);
+                            row.createCell(cell).setCellValue(result);
+                        } else {
+                            switch (field.type()) {
+                                // 其他类型暂定
+                                case ENUM: // 枚举
+                                    TypeValue[] values = field.typeValues();
+                                    for (int j = 0; j < values.length; j++) {
+                                        if (values[j].value().equals(val)) {
+                                            row.createCell(cell).setCellValue(values[j].name());
+                                        }
                                     }
-                                }
-                                break;
-                            case BOOLEAN:
-                                if ("1".equals(val)) {
-                                    row.createCell(cell).setCellValue("是");
-                                } else if ("0".equals(val)) {
-                                    row.createCell(cell).setCellValue("否");
-                                } else {
-                                    row.createCell(cell).setCellValue("--");
-                                }
-                                break;
-                            default: // 字符
-                                row.createCell(cell).setCellValue(val);
-                                break;
+                                    break;
+                                case BOOLEAN:
+                                    if ("1".equals(val)) {
+                                        row.createCell(cell).setCellValue("是");
+                                    } else if ("0".equals(val)) {
+                                        row.createCell(cell).setCellValue("否");
+                                    } else {
+                                        row.createCell(cell).setCellValue(NULL_VALUE);
+                                    }
+                                    break;
+                                default: // 字符
+                                    row.createCell(cell).setCellValue(val);
+                                    break;
+                            }
                         }
                     }
                     cell++;

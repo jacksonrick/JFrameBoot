@@ -1,9 +1,8 @@
 package com.jf.system.aspect;
 
-import com.jf.commons.LogManager;
 import com.jf.entity.enums.ResCode;
 import com.jf.string.StringUtil;
-import com.jf.system.annotation.Token;
+import com.jf.annotation.Token;
 import com.jf.system.conf.SysConfig;
 import com.jf.system.exception.AppException;
 import com.jf.system.exception.AppTokenException;
@@ -41,7 +40,7 @@ public class AspectToken {
     @Autowired(required = false)
     private RedisTemplate redisTemplate;
 
-    @Pointcut("@annotation(com.jf.system.annotation.Token)")
+    @Pointcut("@annotation(com.jf.annotation.Token)")
     public void token() {
     }
 
@@ -130,7 +129,7 @@ public class AspectToken {
                 if (throwable.getCause() != null) {
                     throwable.getCause().printStackTrace();
                 }
-                throw new AppException(throwable.getMessage());
+                throw new AppException(StringUtil.isBlank(throwable.getMessage()) ? "Null" : throwable.getMessage());
             }
         }
     }

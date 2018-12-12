@@ -90,12 +90,24 @@ public class DateUtil {
 
     /**
      * string转date
+     * YYYY_MM_DD_HH_MM_SS
      *
      * @param dateString
      * @return
      */
     public static Date strToDate(String dateString) {
         return FMT_YYYY_MM_DD_HH_MM_SS.parseDateTime(dateString).toDate();
+    }
+
+    /**
+     * string转date
+     * YYYY_MM_DD
+     *
+     * @param dateString
+     * @return
+     */
+    public static Date strToDate2(String dateString) {
+        return FMT_YYYY_MM_DD.parseDateTime(dateString).toDate();
     }
 
     /**

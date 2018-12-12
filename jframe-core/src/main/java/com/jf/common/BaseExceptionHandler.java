@@ -2,7 +2,7 @@ package com.jf.common;
 
 import com.jf.entity.ResMsg;
 import com.jf.entity.enums.ResCode;
-import com.jf.system.annotation.UnStack;
+import com.jf.annotation.UnStack;
 import com.jf.system.aspect.AspectLog;
 import com.jf.system.exception.*;
 import org.slf4j.Logger;
