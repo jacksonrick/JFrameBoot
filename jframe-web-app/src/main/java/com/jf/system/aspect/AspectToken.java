@@ -125,10 +125,10 @@ public class AspectToken {
         } catch (Throwable throwable) {
             if (throwable instanceof AppTokenException) {
                 throw new AppTokenException(throwable.getMessage());
+            } else if (throwable instanceof NullPointerException) {
+                throwable.printStackTrace();
+                throw new AppTokenException("NullPointerException");
             } else {
-                if (throwable.getCause() != null) {
-                    throwable.getCause().printStackTrace();
-                }
                 throw new AppException(StringUtil.isBlank(throwable.getMessage()) ? "Null" : throwable.getMessage());
             }
         }

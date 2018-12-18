@@ -20,6 +20,7 @@
                     </label>
                     <button type="button" id="search" class="btn btn-sm btn-info"><i class="fa fa-search"></i></button>
                     <button type="button" id="export" class="btn btn-sm btn-info"><i class="fa fa-share"></i>导出到Excel</button>
+                    <button type="button" id="export2" class="btn btn-sm btn-info"><i class="fa fa-share"></i>导出到Pdf</button>
                 </form>
             </div>
             <div class="col-md-4 text-right">
@@ -71,6 +72,7 @@
         tables = $table.DataTable($.extend(true, {}, CONSTANT.DEFAULT_OPTION, {
             // lengthChange: true,
             // lengthMenu: [ 20, 50, 75, 100 ],
+            // dom: '<"top"i>rt<"bottom"flp><"clear">'
             columns: columns,
             ajax: function (data, callback, settings) {
                 CONSTANT.AJAX("/admin/user/userListData", [[1, "u.id"], [2, "u.nickname"], [3, "u.phone"], [8, "u.id"], [9, "u.is_delete"]], data, callback, settings);
@@ -103,6 +105,10 @@
         $("#export").click(function () {// 导出到Excel
             var formData = $("#queryForm").serialize();
             location.href = '/admin/user/exportUserExcel?' + formData;
+        });
+        $("#export2").click(function () {// 导出到Pdf
+            var formData = $("#queryForm").serialize();
+            location.href = '/admin/user/exportUserPdf?' + formData;
         });
 
         $("#btn-del").click(function () {// 批量删除

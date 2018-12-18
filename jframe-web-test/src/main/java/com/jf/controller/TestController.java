@@ -6,7 +6,6 @@ import com.jf.entity.ResMsg;
 import com.jf.entity.enums.ResCode;
 import com.jf.service.UserService;
 import com.jf.system.async.service.EmailService;
-import com.jf.system.async.service.PDFService;
 import com.jf.system.async.service.SMService;
 import com.jf.system.conf.SysConfig;
 import com.jf.system.third.jpush.JPushService;
@@ -80,8 +79,6 @@ public class TestController extends BaseController {
     @Resource
     private EmailService emailService;
     @Resource
-    private PDFService pdfService;
-    @Resource
     private JPushService jPushService;
 
     @Resource
@@ -105,7 +102,7 @@ public class TestController extends BaseController {
         return new ResMsg(ResCode.SUCCESS.code(), ResCode.SUCCESS.msg());
     }
 
-    @RequestMapping("/htmltopdf")
+   /* @RequestMapping("/htmltopdf")
     @ResponseBody
     public ResMsg htmltopdf() {
         try {
@@ -121,7 +118,7 @@ public class TestController extends BaseController {
             e.printStackTrace();
             return new ResMsg(ResCode.ERROR.code(), ResCode.ERROR.msg());
         }
-    }
+    }*/
 
     @RequestMapping("/jpush")
     @ResponseBody

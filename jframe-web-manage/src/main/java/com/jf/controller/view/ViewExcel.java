@@ -66,8 +66,6 @@ public class ViewExcel<T> extends AbstractXlsView {
         // 产生Excel表头
         Row header = sheet.createRow(0);
 
-        Field[] fs = t.getClass().getDeclaredFields(); // 所有字段
-
         CellStyle style = workbook.createCellStyle();
         Font font = workbook.createFont();
         font.setBold(true);
@@ -78,6 +76,7 @@ public class ViewExcel<T> extends AbstractXlsView {
         style.setBorderRight(BorderStyle.THIN);
         style.setFont(font);
 
+        Field[] fs = t.getClass().getDeclaredFields(); // 所有字段
         int cell = 0; // 列序号，从0开始
         for (int i = 0; i < fs.length; i++) {
             Fields field = fs[i].getAnnotation(Fields.class); // 获取Fields注解信息

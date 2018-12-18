@@ -1,5 +1,5 @@
 # JFrame
-##### JFrame - SpringBoot & Cloud Project `v5.4`
+##### JFrame - SpringBoot & Cloud Project `v5.4.1`
 made by @jackson-rick   <br>
 本架构是对技术框架的整合及开发的规范，适合多端项目和微服务
 
@@ -35,6 +35,10 @@ made by @jackson-rick   <br>
 * Jenkins&Docker自动化部署
 
 ### 更新日志：
+* v5.4.1 `20181218`
+    * 1.新增springmvc与itextpdf快速导出fm模板
+    * 2.导入Excel支持注解
+    * 3.其它报错、依赖问题解决
 * v5.4 `20181212`
     * 1.Excel导出支持JSON配置、实体类注解
     * 2.Excel导入支持实体类注解

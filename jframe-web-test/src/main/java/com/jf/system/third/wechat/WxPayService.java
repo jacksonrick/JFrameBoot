@@ -91,7 +91,7 @@ public class WxPayService implements WXPayConfig {
         //data.put("product_id", "1");
 
         Map<String, String> resp = wxpay.unifiedOrder(data);
-        LogManager.info(resp.toString());
+        LogManager.info(resp.toString(), WxPayService.class);
         if ("SUCCESS".equals(resp.get("result_code"))) {
             return resp;
         }
@@ -119,7 +119,7 @@ public class WxPayService implements WXPayConfig {
         data.put("trade_type", "NATIVE");
 
         Map<String, String> resp = wxpay.unifiedOrder(data);
-        LogManager.info(resp.toString());
+        LogManager.info(resp.toString(), WxPayService.class);
         if ("SUCCESS".equals(resp.get("result_code"))) {
             return resp.get("code_url");
         }
@@ -149,7 +149,7 @@ public class WxPayService implements WXPayConfig {
         data.put("trade_type", "JSAPI");
 
         Map<String, String> resp = wxpay.unifiedOrder(data);
-        LogManager.info(resp.toString());
+        LogManager.info(resp.toString(), WxPayService.class);
         if ("SUCCESS".equals(resp.get("result_code"))) {
             return resp;
         }
@@ -168,7 +168,7 @@ public class WxPayService implements WXPayConfig {
         data.put("out_trade_no", outTradeNo);
         // 或 transaction_id
         Map<String, String> resp = wxpay.orderQuery(data);
-        LogManager.info(resp.toString());
+        LogManager.info(resp.toString(), WxPayService.class);
         return resp;
     }
 
@@ -183,7 +183,7 @@ public class WxPayService implements WXPayConfig {
         Map<String, String> data = new HashMap<String, String>();
         data.put("out_trade_no", outTradeNo);
         Map<String, String> resp = wxpay.closeOrder(data);
-        LogManager.info(resp.toString());
+        LogManager.info(resp.toString(), WxPayService.class);
         return resp;
     }
 
@@ -205,7 +205,7 @@ public class WxPayService implements WXPayConfig {
         data.put("refund_fee", (int) (refundPrice * 100) + "");
 
         Map<String, String> resp = wxpay.refund(data);
-        LogManager.info(resp.toString());
+        LogManager.info(resp.toString(), WxPayService.class);
         if ("SUCCESS".equals(resp.get("result_code"))) {
             return true;
         }
@@ -226,7 +226,7 @@ public class WxPayService implements WXPayConfig {
         // 或 out_refund_no transaction_id refund_id
 
         Map<String, String> resp = wxpay.refundQuery(data);
-        LogManager.info(resp.toString());
+        LogManager.info(resp.toString(), WxPayService.class);
         return resp;
     }
 }

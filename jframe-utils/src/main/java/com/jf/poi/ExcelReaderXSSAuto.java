@@ -21,7 +21,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * 读取Excel
+ * 注解式导入Excel
  * <p>支持excel2007以上版本</p>
  *
  * @author rick
@@ -29,14 +29,10 @@ import java.util.List;
  */
 public class ExcelReaderXSSAuto {
 
-    /*public static void main(String[] args) throws Exception {
-        File file = new File("/Users/xujunfei/Downloads/test.xlsx");
-        InputStream is = new FileInputStream(file);
+    /*
         ExcelReaderXSSAuto xss = new ExcelReaderXSSAuto();
         List<Wage> list = xss.read(is, Wage.class);
-        System.out.println("list size: " + list.size());
-        System.out.println(list);
-    }*/
+    */
 
     private POIFSFileSystem fs;
     private XSSFWorkbook wb;

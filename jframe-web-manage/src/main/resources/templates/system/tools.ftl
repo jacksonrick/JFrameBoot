@@ -278,7 +278,7 @@
                 </div>
                 <div class="panel-body">
                     <a class="btn btn-sm btn-info btn-tools" data-url="http://at.alicdn.com/t/font_374397_f02glb18zvdeu3di.css">IconFont图标库[jframe]</a>
-                    <a class="btn btn-sm btn-info btn-tools" data-url="http://fontawesome.dashgame.com/">FontAwesome图标库</a>
+                    <a class="btn btn-sm btn-info btn-tools" data-type="redirect" data-url="https://fontawesome.com/icons">FontAwesome图标库</a>
                     <span class="help-block">Icon-font会定期更新，URL也会更新</span>
                 </div>
             </div>
@@ -377,8 +377,12 @@
         $(".btn-tools").click(function () {
             var name = $(this).attr("title");
             var url = $(this).attr("data-url");
-            var index = openLayerUrl(name, document.body.scrollWidth - 100 + "px", "600px", url, true);
-            layer.full(index);
+            if($(this).attr("data-type") == "redirect") {
+                window.open(url);
+            } else {
+                var index = openLayerUrl(name, document.body.scrollWidth - 100 + "px", "600px", url, true);
+                layer.full(index);
+            }
         });
     });
 </script>

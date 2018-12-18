@@ -2,6 +2,7 @@ package com.jf.controller.user;
 
 import com.github.pagehelper.PageInfo;
 import com.jf.common.BaseController;
+import com.jf.controller.view.ViewPDF;
 import com.jf.controller.view.ViewExcel;
 import com.jf.database.model.User;
 import com.jf.database.model.excel.UserModel;
@@ -157,6 +158,21 @@ public class UserController extends BaseController {
         Map<String, Object> model = new HashMap<String, Object>();
         model.put("list", userService.findUserExcelByCondition(condition));
         return new ModelAndView(new ViewExcel<UserModel>(), model);
+    }
+
+    /**
+     * 导出用户信息PDF
+     *
+     * @param condition
+     * @return
+     */
+    @RequestMapping("/exportUserPdf")
+    @AuthPassport
+    public ModelAndView exportUserPdf(User condition) {
+        Map<String, Object> model = new HashMap<String, Object>();
+        model.put("list", userService.findUserExcelByCondition(condition));
+        model.put("ftl", "pdf/users.ftl");
+        return new ModelAndView(new ViewPDF(), model);
     }
 
     /**
