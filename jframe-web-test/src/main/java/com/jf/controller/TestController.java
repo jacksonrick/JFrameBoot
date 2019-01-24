@@ -2,6 +2,7 @@ package com.jf.controller;
 
 import com.jf.common.BaseController;
 import com.jf.commons.LogManager;
+import com.jf.database.mapper.ITestMapper;
 import com.jf.entity.ResMsg;
 import com.jf.entity.enums.ResCode;
 import com.jf.service.UserService;
@@ -19,8 +20,6 @@ import javax.servlet.AsyncEvent;
 import javax.servlet.AsyncListener;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
@@ -34,6 +33,15 @@ public class TestController extends BaseController {
 
     @Resource
     private UserService userService;
+
+    @Resource
+    private ITestMapper iTestMapper;
+
+    @RequestMapping("/testMutilMapper")
+    @ResponseBody
+    public ResMsg testMutilMapper() {
+        return new ResMsg(ResCode.SUCCESS.code(), ResCode.SUCCESS.msg(), iTestMapper.find());
+    }
 
     @RequestMapping("/testError")
     @ResponseBody

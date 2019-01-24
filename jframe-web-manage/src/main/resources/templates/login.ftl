@@ -11,7 +11,7 @@
 
 <body class="gray-bg" style="background-image: url('/static/theme/images/login/2.jpg'); background-size: cover;">
 
-<div class="middle-box text-center loginscreen animated fadeInDown">
+<div class="middle-box text-center">
     <div>
         <h1 class="logo-name"> 平台管理中心 </h1>
         <h5>version：${version}</h5>

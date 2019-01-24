@@ -1,25 +1,17 @@
-
 ###
-GET http://127.0.0.1:8099/test2
+GET {{host}}/test2
 Accept: */*
 Cache-Control: no-cache
 
 ###
-GET http://127.0.0.1:8888/testLog
+GET {{host}}/testLog
 Accept: */*
 Cache-Control: no-cache
 
 ###
-GET http://127.0.0.1:8888/mq_send
+GET {{host}}/mq_send
 
 ###
-GET http://127.0.0.1:10080/api-a/order?userId=1&productId=100
-
-###
-GET http://127.0.0.1:10080/get/1
-
-
-###
-GET http://127.0.0.1:8888/testAsyncRequest
+GET {{host}}/testAsyncRequest
 
 ###

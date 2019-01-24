@@ -220,33 +220,6 @@ public class AppPayController extends BaseController {
         }
     }
 
-    /*@RequestMapping("/wxpay_callback_old")
-    public void wxpay_callback_old(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        // 创建支付应答对象
-        ResponseHandler resHandler = new ResponseHandler(request, response, config.getWechat().getPartner());
-        // 判断签名
-        if (resHandler.isTenpaySign()) {
-            SortedMap<String, String> queryRes = resHandler.getAllParameters();
-            String result_code = queryRes.get("result_code");
-            if ("SUCCESS".equals(result_code)) {
-                // 取结果参数做业务处理
-                String out_trade_no = queryRes.get("out_trade_no");
-                String attach = queryRes.get("attach");
-                String tfee = queryRes.get("total_fee");
-                int type = Convert.stringToInt(attach, -1);
-                double total_fee = Double.parseDouble(tfee);
-                *//*if (chargeService.callback(queryRes.get("out_trade_no")) == 0) {
-                    log.info("###################wxpay_callback_shop charge_service callback success.");
-                    resHandler.sendBack("SUCCESS");
-                }*//*
-            } else {
-                resHandler.sendBack("FAIL");
-            }
-        } else {
-            resHandler.sendBack("FAIL");
-        }
-    }*/
-
     @RequestMapping("/wx_login")
     @ResponseBody
     public ResMsg wx_login() {

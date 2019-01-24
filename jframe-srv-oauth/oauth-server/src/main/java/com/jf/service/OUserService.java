@@ -31,8 +31,6 @@ public class OUserService {
      * @return
      */
     public User findByUsername(String username) {
-        System.out.println("OUserService ----------------- " + username);
-
         List<User> list = jdbcTemplate.query("SELECT id, role, name, pwd FROM oauth_user WHERE name = '" + username + "'", new RowMapper<User>() {
             @Override
             public User mapRow(ResultSet rs, int i) throws SQLException {

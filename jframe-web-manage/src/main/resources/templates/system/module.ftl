@@ -23,7 +23,7 @@
                     <ul id="tree" class="ztree"></ul>
                 </div>
                 <div class="col-md-6" style="position: fixed;right: 10px;top: 140px;">
-                    <div class="animated fadeInDown">
+                    <div>
                         <div class="ibox-title">
                             <h5>添加/编辑模块</h5>
                         </div>

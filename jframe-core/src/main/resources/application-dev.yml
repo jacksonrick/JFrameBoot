@@ -119,7 +119,7 @@ spring:
           auth: true
           timeout: 25000
   redis: # spring redis
-    host: 192.168.24.200
+    host: dev
     port: 6379
     password:  # 密码
     timeout: 5s
@@ -142,7 +142,7 @@ spring:
 #        - 192.168.1.199:7005
 #        - 192.168.1.199:7006
   rabbitmq: # rabbitmq
-    host: 192.168.24.200 # 服务器地址
+    host: dev # 服务器地址
     port: 5672
     username: rabbitmq
     password: 12345678

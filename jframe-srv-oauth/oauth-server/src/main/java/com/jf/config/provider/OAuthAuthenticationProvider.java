@@ -41,17 +41,15 @@ public class OAuthAuthenticationProvider implements AuthenticationProvider {
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         // 验证码等校验
         OUserExtDetail detail = (OUserExtDetail) authentication.getDetails();
-        System.out.println(detail.getVerify() + " ----------------- " + detail.getVerifySession());
         if (!detail.getVerify().equalsIgnoreCase(detail.getVerifySession())) {
             throw new BadCredentialsException("验证码错误");
         }
 
         // 用户名密码校验
         UserDetail userDetail = (UserDetail) oUserDetailService.loadUserByUsername(authentication.getName());
-        System.out.println(authentication.getName() + " ----------------- " + authentication.getCredentials());
         if (!userDetail.getUsername().equals(authentication.getName()) ||
                 !passwordEncoder.matches(String.valueOf(authentication.getCredentials()), userDetail.getPassword())) {
-            throw new BadCredentialsException("用户名或密码错误");
+            throw new BadCredentialsException("密码错误");
         }
 
         Collection<? extends GrantedAuthority> authorities = userDetail.getAuthorities();

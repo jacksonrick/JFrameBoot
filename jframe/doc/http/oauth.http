@@ -8,37 +8,37 @@
 ########## OAuth2.0 ##########
 
 ###client模式
-POST http://127.0.0.1:8090/oauth/token?grant_type=client_credentials&scope=all&client_id=client&client_secret=123456
+POST {{host}}/oauth/token?grant_type=client_credentials&scope=all&client_id=client&client_secret=123456
 Accept: */*
 Cache-Control: no-cache
 
 ###password模式
-POST http://127.0.0.1:8090/oauth/token?grant_type=password&scope=all&client_id=pwd&client_secret=123456&username=17730215423&password=123456
+POST {{host}}/oauth/token?grant_type=password&scope=all&client_id=pwd&client_secret=123456&username=17730215423&password=123456
 Accept: */*
 Cache-Control: no-cache
 
 ###授权码模式 - 浏览器访问
-POST http://127.0.0.1:8090/oauth/authorize?client_id=sso&client_secret=123456&response_type=code&state=states&redirect_uri=http://www.baidu.com
+POST {{host}}/oauth/authorize?client_id=sso&client_secret=123456&response_type=code&state=states&redirect_uri=http://www.baidu.com
 Accept: */*
 Cache-Control: no-cache
 
 
 ###check_token
-POST http://127.0.0.1:8090/oauth/check_token?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzY29wZSI6WyJhbGwiXSwiZXhwIjoxNTQwOTcwMTU0LCJhdXRob3JpdGllcyI6WyJST0xFX1VTRVIiXSwianRpIjoiNDhhOWFlNjAtMzJjNi00NTRkLWIzNzEtZjFhMDFhNGI3NGIxIiwiY2xpZW50X2lkIjoiY2xpZW50In0.SUm-53zHvH6OmoNKMt6lGoCIdmxyrvhnmzGAvcxK7NE
+POST {{host}}/oauth/check_token?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzY29wZSI6WyJhbGwiXSwiZXhwIjoxNTQwOTcwMTU0LCJhdXRob3JpdGllcyI6WyJST0xFX1VTRVIiXSwianRpIjoiNDhhOWFlNjAtMzJjNi00NTRkLWIzNzEtZjFhMDFhNGI3NGIxIiwiY2xpZW50X2lkIjoiY2xpZW50In0.SUm-53zHvH6OmoNKMt6lGoCIdmxyrvhnmzGAvcxK7NE
 Accept: */*
 Cache-Control: no-cache
 
 ###auth server
-POST http://127.0.0.1:8090/authentication/user?access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzY29wZSI6WyJhbGwiXSwiZXhwIjoxNTQwOTcwMTU0LCJhdXRob3JpdGllcyI6WyJST0xFX1VTRVIiXSwianRpIjoiNDhhOWFlNjAtMzJjNi00NTRkLWIzNzEtZjFhMDFhNGI3NGIxIiwiY2xpZW50X2lkIjoiY2xpZW50In0.SUm-53zHvH6OmoNKMt6lGoCIdmxyrvhnmzGAvcxK7NE
+POST {{host}}/authentication/user?access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzY29wZSI6WyJhbGwiXSwiZXhwIjoxNTQwOTcwMTU0LCJhdXRob3JpdGllcyI6WyJST0xFX1VTRVIiXSwianRpIjoiNDhhOWFlNjAtMzJjNi00NTRkLWIzNzEtZjFhMDFhNGI3NGIxIiwiY2xpZW50X2lkIjoiY2xpZW50In0.SUm-53zHvH6OmoNKMt6lGoCIdmxyrvhnmzGAvcxK7NE
 Accept: */*
 Cache-Control: no-cache
 
 ###
-#POST http://127.0.0.1:8090/hello?access_token=471d240b-7401-43e1-9d50-6e5ce5efdfcf
+#POST {{host}}/hello?access_token=471d240b-7401-43e1-9d50-6e5ce5efdfcf
 #Accept: */*
 #Cache-Control: no-cache
 
 ###
-GET http://127.0.0.1:8090/oauth/token_key
+GET {{host}}/oauth/token_key
 Accept: */*
 Cache-Control: no-cache

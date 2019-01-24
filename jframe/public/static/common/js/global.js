@@ -196,7 +196,7 @@ var CONSTANT = {
             return "<a class='label label-info btn-edit' title='详情' data-open='modal' data-width='800px' data-height='500px' href='" + url + "'>详情</a>";
         },
         ENABLE: function () {
-            return "<a class='label label-info btn-enable' title='启用'>启用</a>";
+            return "<a class='label label-primary btn-enable' title='启用'>启用</a>";
         },
         DISABLE: function () {
             return "<a class='label label-warning btn-enable' title='禁用'>禁用</a>";
@@ -626,6 +626,17 @@ function getQueryString(name) {
     if (r != null)
         return unescape(r[2]);
     return null;
+}
+
+/**
+ * 只能输入数字金额
+ * @param this
+ */
+function clearNoNum(obj) {
+    obj.value = obj.value.replace(/[^\d.]/g, "");
+    obj.value = obj.value.replace(/^\./g, "");
+    obj.value = obj.value.replace(/\.{2,}/g, ".");
+    obj.value = obj.value.replace(".", "$#$").replace(/\./g, "").replace("$#$", ".");
 }
 
 /**

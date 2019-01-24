@@ -11,14 +11,14 @@
 
 <body class="body fixed-sidebar full-height-layout gray-bg">
 <div id="wrapper">
-    <nav class="navbar-default navbar-static-side animated fadeInLeft" role="navigation">
+    <nav class="navbar-default navbar-static-side" role="navigation">
         <div class="nav-close">
             <i class="fa fa-times-circle"></i>
         </div>
         <div class="sidebar-collapse">
             <ul class="nav" id="side-menu">
                 <!-- admin -->
-                <li class="nav-header animated fadeInDown">
+                <li class="nav-header">
                     <div class="profile-element">
                         <span><img alt="image" class="img-circle img-thumbnail" src="/static/theme/images/avatar.jpg" width="60px"/></span>
                         <a>
@@ -33,16 +33,13 @@
 
                 <#list modules as module>
                     <#if module.modFlag == 1>
-                        <li class="animated flipInX">
+                        <li>
                             <a> <i class="${module.modIcon } f14"></i> <span class="nav-label">${module.modName }</span></a>
                             <ul class="nav nav-second-level">
                                 <#assign parent = module.id />
                                 <#list modules as module2>
                                     <#if module2.modFlag ==2 && module2.parentId == parent>
-                                        <li class="animated flipInX">
-                                            <a class="J_menuItem" href="${module2.modPath}"><i class="${module2.modIcon }"></i>${module2.modName }
-                                            </a>
-                                        </li>
+                                        <li><a class="J_menuItem" href="${module2.modPath}"><i class="${module2.modIcon }"></i>${module2.modName }</a></li>
                                     </#if>
                                 </#list>
                             </ul>
@@ -68,7 +65,7 @@
                         <a class="dropdown-toggle tp" data-toggle="dropdown" title="自动化运维">
                             <i class="fa fa-tachometer fa-lg"></i>
                         </a>
-                        <ul class="dropdown-menu animated fadeInDown m-t-xs">
+                        <ul class="dropdown-menu m-t-xs">
                             <li onclick="newTab('Jenkins部署', '/admin/system/jenkins')"><a><i class="fa fa-sitemap"></i>Jenkins部署</a></li>
                             <li onclick="newTab('云服务器监控', 'http://127.0.0.1:10000')"><a><i class="fa fa-server"></i>云服务器监控</a></li>
                             <li onclick="newTab('数据源监控', '/druid/index.html')"><a><i class="fa fa-database"></i>数据源监控</a></li>
@@ -83,7 +80,7 @@
                         <a class="dropdown-toggle count-info tp" data-toggle="dropdown" title="系统消息">
                             <i class="fa fa-envelope fa-lg"></i> <span class="badge badge-info">${size }</span>
                         </a>
-                        <ul class="dropdown-menu animated fadeInDown dropdown-messages">
+                        <ul class="dropdown-menu dropdown-messages">
                             <#if msgs?? && (msgs?size > 0)>
                                 <#list msgs as m>
                                 <li class="m-t-xs">
@@ -114,32 +111,32 @@
                         </ul>
                     </li>
                     <!-- 更新日志 -->
-                <#--<li class="dropdown">
-                    <a class="dropdown-toggle tp" data-toggle="dropdown" title="更新日志">
-                        <i class="fa fa-cloud-upload fa-lg"></i>
-                    </a>
-                    <div class="dropdown-menu animated bounceInDown m-t-xs">
-                        <div class="float-e-margins">
-                            <div class="ibox-title">
-                                <h5>
-                                    更新日志
-                                    <small>&nbsp;当前版本:${version}</small>
-                                </h5>
-                            </div>
-                            <div class="ibox-content no-padding">
-                                <div class="panel-body" id="version">
-                                    <div class="panel-group">${upgrade}</div>
+                    <#--<li class="dropdown">
+                        <a class="dropdown-toggle tp" data-toggle="dropdown" title="更新日志">
+                            <i class="fa fa-cloud-upload fa-lg"></i>
+                        </a>
+                        <div class="dropdown-menu m-t-xs">
+                            <div class="float-e-margins">
+                                <div class="ibox-title">
+                                    <h5>
+                                        更新日志
+                                        <small>&nbsp;当前版本:${version}</small>
+                                    </h5>
+                                </div>
+                                <div class="ibox-content no-padding">
+                                    <div class="panel-body" id="version">
+                                        <div class="panel-group">${upgrade}</div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </li>-->
+                    </li>-->
                     <!-- 设置 -->
                     <li class="dropdown">
                         <a class="dropdown-toggle tp" data-toggle="dropdown" title="设置">
                             <i class="fa fa-cogs fa-lg"></i>
                         </a>
-                        <ul class="dropdown-menu animated fadeInDown m-t-xs">
+                        <ul class="dropdown-menu m-t-xs">
                             <li><a href="javascript:;" id="changePwd"><i class="fa fa-lock"></i>修改密码</a></li>
                             <li><a href="javascript:;" class="logout"><i class="fa fa-sign-out"></i>安全退出</a></li>
                             <li><a href="/"><i class="fa fa-home"></i>网站首页</a></li>
@@ -182,7 +179,7 @@
     </div>
 </div>
 
-<div id="right-sidebar" class="animated fadeInRight">
+<div id="right-sidebar" style="display: none;">
     <div class="sidebar-container">
         <ul class="nav nav-tabs navs-3">
             <li class="active">

@@ -20,6 +20,22 @@ public class MainTest {
 
     }
 
+    public static void testReflect() {
+        try {
+            TUser user = new TUser();
+            user.setAge(10);
+            System.out.println(BeanUtil.getEntityValue("age", user));
+            BeanUtil.setEntityValue("name", "xujunfei", user);
+            System.out.println(user);
+
+            System.out.println(BeanUtil.doMethod("getName", user));
+            System.out.println(BeanUtil.doMethod("setName", user, "haha"));
+            System.out.println(user);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public static void testBeanToJson() {
         TUser user = new TUser();
         user.setName("xujunfei");

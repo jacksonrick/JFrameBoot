@@ -39,7 +39,7 @@ public class DataConfig {
 
     public final static String mapperPackage = "com.jf.database.mapper";
     public final static String modelPackage = "com.jf.database.model";
-    public final static String xmlMapperLocation = "classpath:mapper/**/*.xml";
+    public final static String xmlMapperLocation = "classpath*:mapper/**/*.xml";
 
     @Bean(name = "sqlSessionFactory")
     @Primary

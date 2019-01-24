@@ -1,5 +1,6 @@
 package com.jf.system.aspect;
 
+import com.jf.entity.ResMsg;
 import com.jf.system.conf.SysConfig;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
@@ -86,11 +87,15 @@ public class AspectLog {
     @AfterReturning(pointcut = "ctl()", returning = "ret")
     public void ret(Object ret) {
         if (ret != null) {
-            // 开发环境下打印具体信息，否则打印类名
+            // 开发环境下打印具体信息
             if (config.dev()) {
-                log.info("Returns: {}", ret);
+                if (ret instanceof ResMsg) {
+                    log.info("Returns: {}, Data: {}", ret, ((ResMsg) ret).getData());
+                } else {
+                    log.info("Returns: {}", ret);
+                }
             } else {
-                log.info("Returns: {}", ret.getClass().getName());
+                log.info("Returns: {}", ret);
             }
         }
         MDC.clear();

@@ -20,6 +20,8 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 /**
@@ -141,6 +143,50 @@ public class CommonController {
             String filePath = config.getFdfsNginx() + storePath.getFullPath();
             return new UploadRet(0, filePath, "SUCCESS");
         }
+    }
+
+    /**
+     * Ueditor上传
+     *
+     * @param action
+     * @param file
+     * @param request
+     * @return
+     * @throws IOException
+     */
+    @RequestMapping(value = "/uploadwithUE")
+    @ResponseBody
+    public Map<String, Object> uploadwithUE(String action, @RequestParam(name = "imgFile", required = false) MultipartFile file, HttpServletRequest request) throws IOException {
+        Map<String, Object> map = new HashMap();
+        if ("config".equals(action)) {
+            map.put("imageActionName", "uploadimage");
+            map.put("imageFieldName", "imgFile");
+            map.put("imageAllowFiles", new String[]{".png", ".jpg", ".jpeg"});
+            map.put("imageMaxSize", "2048000");
+            map.put("imagePath", "");
+            map.put("imageUrlPrefix", "");
+            return map;
+        }
+
+        if (!config.getUpload().getFdfs()) {
+            String basePathFormat = DateUtil.getYearAndMonth(false);
+            String uploadPath = config.getStaticPath() + "upload/" + basePathFormat;
+            String filename = StringUtil.randomFilename(file.getOriginalFilename());
+            File filePath = new File(uploadPath);
+            if (!filePath.exists()) {
+                filePath.mkdirs();
+            }
+            FileUtils.copyInputStreamToFile(file.getInputStream(), new File(filePath, filename));
+            map.put("url", config.getStaticHost() + "static/upload/" + basePathFormat + "/" + filename);
+        } else {
+            // 文件后缀
+            String suffix = StringUtil.getFileType(file.getOriginalFilename());
+            StorePath storePath = storageClient.uploadFile(file.getBytes(), suffix);
+            String filePath = config.getFdfsNginx() + storePath.getFullPath();
+            map.put("url", filePath);
+        }
+        map.put("state", "SUCCESS");
+        return map;
     }
 
     /**

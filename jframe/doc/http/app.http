@@ -7,25 +7,25 @@
 
 ######## For APP ########
 
-POST http://127.0.0.1:8081/test?name=fei&type=123
+POST {{host}}/test?name=fei&type=123
 Accept: */*
 Cache-Control: no-cache
 
 ###
-POST http://127.0.0.1:8081/testError2
+POST {{host}}/testError2
 Accept: */*
 Cache-Control: no-cache
 X-Requested-With: XMLHttpRequest
 
 ###
-GET http://127.0.0.1:8082/app/token?param=1234
+GET {{host}}/app/token?param=1234
 Accept: */*
 Cache-Control: no-cache
 Req-Type: APP
-token: 4F88FA216F6EDEDE8230770EAAD56608
+token: {{token}}
 
 ###
-GET http://127.0.0.1:8082/app/get
+GET {{host}}/app/get
 Accept: */*
 Cache-Control: no-cache
 Req-Type: APP
@@ -33,21 +33,15 @@ X-Requested-With: XMLHttpRequest
 
 
 ###
-GET http://127.0.0.1:8082/app/findUser
+GET {{host}}/app/findUser
 Req-Type: APP
-token: E34851ED318DD31515FF0E900FA51BD0
+token: {{token}}
 
 ###
-GET http://127.0.0.1:8082/app/get
-Req-Type: APP
-
-###
-GET http://127.0.0.1:8082/app/token
-Req-Type: APP
-token: AEAED2682D2C3D45EE3672DF6BE8DB9F
-
-###
-GET https://wx.809573150.cn/app/test?a=1&b=2&c=abc
+GET {{host}}/app/get
 Req-Type: APP
 
 ###
+GET {{host}}/app/token
+Req-Type: APP
+token: {{token}}

@@ -61,7 +61,8 @@ public class ResMsg {
 
 	@Override
 	public String toString() {
-		return "ResMsg [code=" + code + ", msg=" + msg + ", data=" + data + "]";
+		// return "ResMsg [code=" + code + ", msg=" + msg + ", data=" + data + "]";
+		return "ResMsg [code=" + code + ", msg=" + msg + "]";
 	}
 
 }
