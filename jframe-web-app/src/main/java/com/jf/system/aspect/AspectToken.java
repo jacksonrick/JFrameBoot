@@ -127,7 +127,7 @@ public class AspectToken {
                 throw new AppTokenException(throwable.getMessage());
             } else if (throwable instanceof NullPointerException) {
                 throwable.printStackTrace();
-                throw new AppTokenException("NullPointerException");
+                throw new AppException("NullPointerException");
             } else {
                 throw new AppException(StringUtil.isBlank(throwable.getMessage()) ? "Null" : throwable.getMessage());
             }

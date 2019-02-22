@@ -1,12 +1,12 @@
 package com.jf.system.exception;
 
-import com.jf.annotation.UnStack;
+import com.jf.annotation.Except;
 
 /**
- * Front未登录
+ * 未登录
  * Created by xujunfei on 2018/5/24.
  */
-@UnStack
+@Except(error = false, stack = false)
 public class NoLoginException extends RuntimeException {
 
     public NoLoginException(String message) {

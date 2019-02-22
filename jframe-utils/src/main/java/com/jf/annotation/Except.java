@@ -13,5 +13,16 @@ import java.lang.annotation.*;
 @Inherited
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface UnStack {
+public @interface Except {
+
+    /**
+     * 是否是Error日志
+     */
+    boolean error() default true;
+
+    /**
+     * 是否打印详细日志
+     */
+    boolean stack() default true;
+
 }

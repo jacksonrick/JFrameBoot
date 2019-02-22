@@ -2,7 +2,7 @@ package com.jf.common;
 
 import com.jf.entity.ResMsg;
 import com.jf.entity.enums.ResCode;
-import com.jf.annotation.UnStack;
+import com.jf.annotation.Except;
 import com.jf.system.aspect.AspectLog;
 import com.jf.system.exception.*;
 import org.slf4j.Logger;
@@ -67,9 +67,23 @@ public class BaseExceptionHandler {
                 request.getRequestURI(),
                 rvs);
 
-        if (annotations.length > 0 && annotations[0] instanceof UnStack) {
-            log.error(s);
-        } else {
+        if (annotations.length > 0) {
+            // 注意：异常类只能有一个注解，且为Except
+            Except except = (Except) annotations[0];
+            if (except.stack()) { // 是否打印详细日志
+                if (except.error()) { // 是否是Error日志
+                    log.error(s, e);
+                } else {
+                    log.warn(s, e);
+                }
+            } else {
+                if (except.error()) {
+                    log.error(s);
+                } else {
+                    log.warn(s);
+                }
+            }
+        } else { // 无注解默认打印详细日志，且为Error
             log.error(s, e);
         }
 
@@ -87,7 +101,7 @@ public class BaseExceptionHandler {
         }
 
         String requestType = request.getHeader("X-Requested-With");
-        // 未登录
+        // 未登录(特殊处理)
         if (e instanceof NoLoginException) {
             if ("XMLHttpRequest".equalsIgnoreCase(requestType)) { // Ajax
                 return new ResMsg(ResCode.NO_LOGIN.code(), ResCode.NO_LOGIN.msg());

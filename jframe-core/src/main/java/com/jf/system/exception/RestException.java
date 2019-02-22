@@ -1,6 +1,6 @@
 package com.jf.system.exception;
 
-import com.jf.annotation.UnStack;
+import com.jf.annotation.Except;
 
 /**
  * Created with IntelliJ IDEA.
@@ -9,7 +9,7 @@ import com.jf.annotation.UnStack;
  * Date: 2018-07-05
  * Time: 18:17
  */
-@UnStack
+@Except(stack = false)
 public class RestException extends RuntimeException {
 
     private Integer code;

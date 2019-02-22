@@ -94,6 +94,12 @@ public class ExcelReaderXSSAuto {
                                 } else {
                                     setEntityValue(fieldName, val, entity);
                                 }
+                            } else if ("String".equals(fieldType)) {
+                                if (val instanceof Double || val instanceof Integer) {
+                                    setEntityValue(fieldName, String.valueOf(val), entity);
+                                } else {
+                                    setEntityValue(fieldName, val, entity);
+                                }
                             } else {
                                 setEntityValue(fieldName, val, entity);
                             }
