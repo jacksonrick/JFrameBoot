@@ -1,5 +1,6 @@
 package com.jf.controller;
 
+import com.jf.annotation.AuthPassport;
 import com.jf.common.BaseController;
 import com.jf.commons.SystemUtil;
 import com.jf.database.model.manage.Admin;
@@ -11,7 +12,7 @@ import com.jf.service.system.AdminService;
 import com.jf.service.system.ModuleService;
 import com.jf.service.system.SystemService;
 import com.jf.string.StringUtil;
-import com.jf.annotation.AuthPassport;
+import com.jf.system.conf.IConstant;
 import com.jf.system.conf.SysConfig;
 import com.jf.system.geetest.GeetestLib;
 import org.springframework.stereotype.Controller;
@@ -81,7 +82,7 @@ public class HomeBackController extends BaseController {
      */
     @RequestMapping("/login")
     public String login(HttpServletRequest request, ModelMap map) {
-        Admin admin = getSession(request, SysConfig.SESSION_ADMIN);
+        Admin admin = getSession(request, IConstant.SESSION_ADMIN);
         if (admin != null) {
             return "redirect:index";
         }
@@ -110,7 +111,7 @@ public class HomeBackController extends BaseController {
             password = "123456";
         } else {
             // 验证码验证
-            String sessionCode = (String) session.getAttribute(SysConfig.SESSION_RAND);
+            String sessionCode = (String) session.getAttribute(IConstant.SESSION_RAND);
             if (sessionCode == null || !sessionCode.equals(validNum)) {
                 return new ResMsg(2, "验证码错误");
             }
@@ -131,8 +132,8 @@ public class HomeBackController extends BaseController {
         if (admin.getDeleted()) {
             return new ResMsg(7, "账户已被冻结");
         }
-        session.setAttribute(SysConfig.SESSION_ADMIN, admin);
-        session.removeAttribute(SysConfig.SESSION_RAND);
+        session.setAttribute(IConstant.SESSION_ADMIN, admin);
+        session.removeAttribute(IConstant.SESSION_RAND);
         systemService.addAdminLog(request, "管理员登录", "username=" + username);
         return new ResMsg(0, "登录成功");
     }
@@ -145,7 +146,7 @@ public class HomeBackController extends BaseController {
      */
     @RequestMapping("/logout")
     public String logout(HttpSession session) {
-        session.removeAttribute(SysConfig.SESSION_ADMIN);
+        session.removeAttribute(IConstant.SESSION_ADMIN);
         return "redirect:login";
     }
 
@@ -159,7 +160,7 @@ public class HomeBackController extends BaseController {
     @RequestMapping("/index")
     @AuthPassport(right = false)
     public String index(ModelMap map, HttpServletRequest request) {
-        Admin admin = getSession(request, SysConfig.SESSION_ADMIN);
+        Admin admin = getSession(request, IConstant.SESSION_ADMIN);
         map.put("admin", admin);
         List<Module> list = moduleService.findModules(admin.getId());
         map.addAttribute("modules", list);
@@ -208,7 +209,7 @@ public class HomeBackController extends BaseController {
     @AuthPassport(right = false)
     @ResponseBody
     public ResMsg changePwd(String oldPwd, String newPass, String newPass2, HttpServletRequest request) {
-        Admin admin = getSession(request, SysConfig.SESSION_ADMIN);
+        Admin admin = getSession(request, IConstant.SESSION_ADMIN);
         if (StringUtil.isBlank(oldPwd)) {
             return new ResMsg(1, "旧密码不能为空");
         }

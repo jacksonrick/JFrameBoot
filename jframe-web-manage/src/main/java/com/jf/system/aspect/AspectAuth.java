@@ -1,10 +1,10 @@
 package com.jf.system.aspect;
 
+import com.jf.annotation.AuthPassport;
 import com.jf.database.model.manage.Admin;
 import com.jf.entity.enums.ResCode;
 import com.jf.service.system.ModuleService;
-import com.jf.annotation.AuthPassport;
-import com.jf.system.conf.SysConfig;
+import com.jf.system.conf.IConstant;
 import com.jf.system.exception.AdminNoLoginException;
 import com.jf.system.exception.NotAllowException;
 import org.aspectj.lang.JoinPoint;
@@ -58,7 +58,7 @@ public class AspectAuth {
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = attributes.getRequest();
 
-        Admin admin = (Admin) request.getSession().getAttribute(SysConfig.SESSION_ADMIN);
+        Admin admin = (Admin) request.getSession().getAttribute(IConstant.SESSION_ADMIN);
         if (admin == null) {
             throw new AdminNoLoginException(ResCode.NO_LOGIN.msg());
         }

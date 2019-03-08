@@ -1,6 +1,6 @@
 package com.jf.system.swagger;
 
-import com.jf.system.conf.SysConfig;
+import com.jf.system.conf.IConstant;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -44,7 +44,7 @@ public class SwaggerConfig extends WebMvcConfigurerAdapter {
         // headers
         ParameterBuilder param1 = new ParameterBuilder();
         ParameterBuilder param2 = new ParameterBuilder();
-        param1.name(SysConfig.TOKEN).description("Token")
+        param1.name(IConstant.TOKEN).description("Token")
                 .modelRef(new ModelRef("string")).parameterType("header").required(false);
         param2.name("Req-Type").description("Req-Type")
                 .modelRef(new ModelRef("string")).parameterType("header").defaultValue("APP").required(true);

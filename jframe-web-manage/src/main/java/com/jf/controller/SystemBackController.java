@@ -3,6 +3,7 @@ package com.jf.controller;
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.LoggerContext;
 import com.github.pagehelper.PageInfo;
+import com.jf.annotation.AuthPassport;
 import com.jf.common.BaseController;
 import com.jf.controller.view.ViewExcel;
 import com.jf.convert.Convert;
@@ -20,7 +21,7 @@ import com.jf.service.system.AdminService;
 import com.jf.service.system.ModuleService;
 import com.jf.service.system.SystemService;
 import com.jf.string.StringUtil;
-import com.jf.annotation.AuthPassport;
+import com.jf.system.conf.IConstant;
 import com.jf.system.conf.SysConfig;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -85,7 +86,7 @@ public class SystemBackController extends BaseController {
     @RequestMapping("/jenkins")
     @AuthPassport(right = false)
     public String jenkins(HttpServletRequest request) {
-        Admin admin = getSession(request, SysConfig.SESSION_ADMIN);
+        Admin admin = getSession(request, IConstant.SESSION_ADMIN);
         if (admin == null || admin.getRole().getRoleFlag() != 0) {
             return "error/refuse";
         }
@@ -109,7 +110,7 @@ public class SystemBackController extends BaseController {
         if (StringUtil.isBlank(ip) || StringUtil.isBlank(type) || StringUtil.isBlank(auth)) {
             return new ResMsg(1, "invalid param");
         }
-        Admin admin = getSession(request, SysConfig.SESSION_ADMIN);
+        Admin admin = getSession(request, IConstant.SESSION_ADMIN);
         if (admin == null || admin.getRole().getRoleFlag() != 0) {
             return new ResMsg(1, "refuse if superadmin");
         }
@@ -716,7 +717,7 @@ public class SystemBackController extends BaseController {
         if (!"INFO".equals(level) && !"DEBUG".equals(level)) {
             return new ResMsg(1, "level must be INFO or DEBUG");
         }
-        Admin admin = getSession(request, SysConfig.SESSION_ADMIN);
+        Admin admin = getSession(request, IConstant.SESSION_ADMIN);
         if (admin == null || admin.getRole().getRoleFlag() != 0) {
             return new ResMsg(1, "refuse if superadmin");
         }

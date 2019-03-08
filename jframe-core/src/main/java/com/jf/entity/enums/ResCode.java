@@ -9,9 +9,9 @@ package com.jf.entity.enums;
  */
 public enum ResCode {
 
-    // 成功|失败
-    SUCCESS(0, "成功"),
-    FAIL(1, "失败"),
+    // 成功|失败（建议增加业务说明）
+    SUCCESS(0, "SUCCESS"),
+    FAIL(1, "FAIL"),
 
     // 增删改 成功=0
     INSERT_SUCCESS(0, "新增成功"),

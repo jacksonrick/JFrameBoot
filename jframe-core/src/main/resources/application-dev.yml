@@ -170,13 +170,13 @@ spring:
           scheduler:
             instanceName: DefaultQuartzScheduler
             instanceId: AUTO
-          #jobStore: # jdbc支持(需先导入SQL)
-            #class: org.quartz.impl.jdbcjobstore.JobStoreTX
-            #driverDelegateClass: org.quartz.impl.jdbcjobstore.StdJDBCDelegate
-            #tablePrefix: qz_
-            #isClustered: true
-            #clusterCheckinInterval: 10000
-            #useProperties: false
+          jobStore: # jdbc支持(需先导入SQL)
+            class: org.quartz.impl.jdbcjobstore.JobStoreTX
+            driverDelegateClass: org.quartz.impl.jdbcjobstore.StdJDBCDelegate
+            tablePrefix: qz_
+            isClustered: true
+            clusterCheckinInterval: 10000
+            useProperties: false
           threadPool:
             class: org.quartz.simpl.SimpleThreadPool
             threadCount: 10 # 并发数

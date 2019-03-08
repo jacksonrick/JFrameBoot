@@ -50,15 +50,21 @@ public class MQReceiver {
                 channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
             }
         } catch (Exception e) {
-            log.info("A Receiver错误：" + e.getMessage());
+            log.info("A Receiver：" + msg + "，消费错误：" + e.getMessage());
+
+            // 必须抛出异常，重试才会生效 listener.simple.retry
+            // throw new RuntimeException("消费错误: " + msg);
 
             if (message.getMessageProperties().getRedelivered()) {
                 log.info("消息已重复处理失败,拒绝再次接收...");
-                // 拒绝消息
-                // channel.basicReject(message.getMessageProperties().getDeliveryTag(), false);
 
                 // 发到另一个队列（可以是专门接收失败消息的队列）
                 channel.basicPublish(MY_EXCHANGE, QUEUE_MSGB, null, ("msg: " + msg + " error").getBytes());
+                // 确认消息消费失败
+                channel.basicNack(message.getMessageProperties().getDeliveryTag(), false, false);
+
+                // 拒绝消息
+                // channel.basicReject(message.getMessageProperties().getDeliveryTag(), false);
             } else {
                 log.info("消息即将再次返回队列处理...");
                 // requeue为是否重新回到队列

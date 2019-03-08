@@ -1,0 +1,51 @@
+server:
+  port: 10080
+spring:
+  application:
+    name: JFRAME-SRV-GATEWAY
+  zipkin: # 链路追踪
+    base-url: http://dev:9411
+  sleuth:
+    sampler:
+      probability: 1.0
+  redis: # Redis缓存，用于限流
+    host: dev
+    port: 6379
+    timeout: 5s
+eureka: # 注册到Eureka
+  client:
+    service-url:
+      defaultZone: http://eureka:eureka1234@127.0.0.1:10000/eureka/
+  instance:
+    prefer-ip-address: true
+zuul:
+  routes: # 服务路由
+    api-a: # 服务ID
+      serviceId: JFRAME-SRV-ORDER-01
+      path: /api-a/**
+      sensitiveHeaders: Cookie, Set-Cookie, Authorization
+    api-b:
+      serviceId: JFRAME-SRV-ORDER-02
+      path: /api-b/**
+      sensitiveHeaders: Cookie, Set-Cookie, Authorization
+  ratelimit: # redis限流
+    enabled: true
+    key-prefix: redis_rate_limit
+    repository: REDIS
+    behind-proxy: true
+    policies:
+      api-a: # 服务ID↑↑↑
+        limit: 2 # 单位时间内允许访问的个数
+        quota: 1 # 单位时间内允许访问的总时间
+        refresh-interval: 3 # 单位时间设置(s)
+        type: # 限流类型
+          - user
+          - origin
+          - url
+hystrix: # 超时设置60s
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 60000

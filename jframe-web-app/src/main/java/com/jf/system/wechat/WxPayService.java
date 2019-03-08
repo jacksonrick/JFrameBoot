@@ -1,8 +1,10 @@
 package com.jf.system.wechat;
 
-import com.github.wxpay.sdk.WXPay;
-import com.github.wxpay.sdk.WXPayConfig;
 import com.jf.commons.LogManager;
+import com.jf.json.JacksonUtil;
+import com.jf.sdk.wxpay.WXPay;
+import com.jf.sdk.wxpay.WXPayConfig;
+import com.jf.sdk.wxpay.WXPayUtil;
 import com.jf.system.conf.SysConfig;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
@@ -35,8 +37,7 @@ public class WxPayService implements WXPayConfig {
         this.certData = FileCopyUtils.copyToByteArray(resource.getInputStream());
     }
 
-    // 以下通过sysconfig配置
-
+    // 以下读取application.yml配置
     @Override
     public String getAppID() {
         return config.getWechat().getAppid();
@@ -77,7 +78,7 @@ public class WxPayService implements WXPayConfig {
      * @param ip
      * @return 微信返回的参数集
      */
-    public Map<String, String> orderApp(String orderNum, String body, Double orderPrice, String ip) throws Exception {
+    public String orderApp(String orderNum, String body, Double orderPrice, String ip) throws Exception {
         WXPay wxpay = new WXPay(this);
         Map<String, String> data = new HashMap<String, String>();
         data.put("body", body);
@@ -93,7 +94,50 @@ public class WxPayService implements WXPayConfig {
         Map<String, String> resp = wxpay.unifiedOrder(data);
         LogManager.info(resp.toString());
         if ("SUCCESS".equals(resp.get("result_code"))) {
-            return resp;
+            // 二次签名
+            Map<String, String> params = new HashMap<>();
+            params.put("timestamp", String.valueOf(System.currentTimeMillis() / 1000));
+            params.put("appid", resp.get("appid"));
+            params.put("noncestr", resp.get("nonce_str"));
+            params.put("partnerid", resp.get("mch_id"));
+            params.put("package", "Sign=WXPay");
+            params.put("prepayid", resp.get("prepay_id"));
+            params.put("sign", WXPayUtil.generateSignature(params, config.getWechat().getPartnerKey()));
+            params.remove("package"); // 安卓解析问题
+            String resJson = JacksonUtil.objectToJson(params);
+            LogManager.info(resJson, WxPayService.class);
+            return resJson;
+        }
+        return null;
+    }
+
+    /**
+     * 企业付款
+     *
+     * @param orderNum
+     * @param openid
+     * @param username
+     * @param money
+     * @param desc
+     * @param ip
+     * @return
+     * @throws Exception
+     */
+    public String transfer(String orderNum, String openid, String username, Double money, String desc, String ip) throws Exception {
+        WXPay wxpay = new WXPay(this);
+        Map<String, String> data = new HashMap<String, String>();
+        data.put("partner_trade_no", orderNum);
+        data.put("openid", openid);
+        data.put("check_name", "FORCE_CHECK");
+        data.put("re_user_name", username);
+        data.put("amount", (int) (money * 100) + "");
+        data.put("desc", desc);
+        data.put("spbill_create_ip", ip);
+
+        Map<String, String> resp = wxpay.transfer(data);
+        LogManager.info(resp.toString(), WxPayService.class);
+        if ("SUCCESS".equals(resp.get("result_code"))) {
+            return JacksonUtil.objectToJson(resp);
         }
         return null;
     }

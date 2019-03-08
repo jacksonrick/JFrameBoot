@@ -13,6 +13,7 @@ import com.jf.service.user.UserService;
 import com.jf.string.StringUtil;
 import com.jf.annotation.AuthPassport;
 import com.jf.poi.ExcelReaderXSS;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -160,6 +161,9 @@ public class UserController extends BaseController {
         return new ModelAndView(new ViewExcel<UserModel>(), model);
     }
 
+    @Autowired
+    private ViewPDF viewPDF;
+
     /**
      * 导出用户信息PDF
      *
@@ -172,7 +176,7 @@ public class UserController extends BaseController {
         Map<String, Object> model = new HashMap<String, Object>();
         model.put("list", userService.findUserExcelByCondition(condition));
         model.put("ftl", "pdf/users.ftl");
-        return new ModelAndView(new ViewPDF(), model);
+        return new ModelAndView(viewPDF, model);
     }
 
     /**

@@ -4,7 +4,7 @@ import com.github.pagehelper.PageInfo;
 import com.jf.database.mapper.manage.LogMapper;
 import com.jf.database.model.manage.Admin;
 import com.jf.database.model.manage.Log;
-import com.jf.system.conf.SysConfig;
+import com.jf.system.conf.IConstant;
 import com.jf.system.db.DbSQLExecutor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.WebUtils;
@@ -42,7 +42,7 @@ public class SystemService {
      * @param params
      */
     public void addAdminLog(HttpServletRequest request, String remark, String params) {
-        Object object = WebUtils.getSessionAttribute(request, SysConfig.SESSION_ADMIN);
+        Object object = WebUtils.getSessionAttribute(request, IConstant.SESSION_ADMIN);
         Admin admin = null;
         if (object != null) {
             admin = (Admin) object;

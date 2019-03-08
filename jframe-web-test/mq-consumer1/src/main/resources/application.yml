@@ -2,7 +2,7 @@ server:
   port: 8084
 spring:
   rabbitmq:
-    host: 192.168.24.200 # 服务器地址
+    host: dev # 服务器地址
     port: 5672
     username: rabbitmq
     password: 12345678
@@ -16,4 +16,4 @@ spring:
         retry: # 是否支持重试
           enabled: true
           initial-interval: 10s
-          max-attempts: 3
+          max-attempts: 10

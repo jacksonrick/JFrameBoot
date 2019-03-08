@@ -1,9 +1,9 @@
 package com.jf.system.aspect;
 
+import com.jf.annotation.Token;
 import com.jf.entity.enums.ResCode;
 import com.jf.string.StringUtil;
-import com.jf.annotation.Token;
-import com.jf.system.conf.SysConfig;
+import com.jf.system.conf.IConstant;
 import com.jf.system.exception.AppException;
 import com.jf.system.exception.AppTokenException;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -65,7 +65,7 @@ public class AspectToken {
         boolean need = tk.need(); // 是否必须 默认：true
 
         try {
-            if (SysConfig.TOKEN_HEADER.equals(type)) {
+            if (IConstant.TOKEN_HEADER.equals(type)) {
                 String token = request.getHeader(name);
                 if (!need) {
                     if (StringUtil.isBlank(token)) {
@@ -83,12 +83,12 @@ public class AspectToken {
                     if (StringUtil.isBlank(token)) {
                         throw new AppTokenException(ResCode.TOKEN_EXP.msg());
                     } else {
-                        log.info(SysConfig.TOKEN_HEADER + " token:" + token);
+                        log.info(IConstant.TOKEN_HEADER + " token:" + token);
                         args[0] = dealToken(token);
                         return pjp.proceed(args);
                     }
                 }
-            } else if (SysConfig.TOKEN_COOKIE.equals(type)) {
+            } else if (IConstant.TOKEN_COOKIE.equals(type)) {
                 Cookie cookieValue = WebUtils.getCookie(request, name);
                 if (!need) {
                     if (cookieValue == null) {
@@ -112,7 +112,7 @@ public class AspectToken {
                     }
                     String token = cookieValue.getValue();
                     if (StringUtil.isNotBlank(token)) {
-                        log.info(SysConfig.TOKEN_COOKIE + " token:" + token);
+                        log.info(IConstant.TOKEN_COOKIE + " token:" + token);
                         args[0] = dealToken(token);
                         return pjp.proceed(args);
                     } else {

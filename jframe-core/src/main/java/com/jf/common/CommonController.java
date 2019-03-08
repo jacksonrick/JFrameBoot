@@ -3,6 +3,7 @@ package com.jf.common;
 import com.jf.date.DateUtil;
 import com.jf.entity.UploadRet;
 import com.jf.string.StringUtil;
+import com.jf.system.conf.IConstant;
 import com.jf.system.conf.SysConfig;
 import com.luhuiguo.fastdfs.domain.StorePath;
 import com.luhuiguo.fastdfs.service.FastFileStorageClient;
@@ -35,7 +36,8 @@ import java.util.Random;
 public class CommonController {
 
     @Autowired
-    private SysConfig config;
+    private SysConfig sysConfig;
+
     @Autowired(required = false)
     private FastFileStorageClient storageClient;
 
@@ -96,7 +98,7 @@ public class CommonController {
                 gg.drawString(ch[index] + "", 0, 0);
                 sb.append(ch[index]);
             }
-            request.getSession().setAttribute(SysConfig.SESSION_RAND, sb.toString());
+            request.getSession().setAttribute(IConstant.SESSION_RAND, sb.toString());
             ImageIO.write(bi, "JPG", response.getOutputStream());
             g.dispose();
         } catch (Exception e) {
@@ -116,19 +118,19 @@ public class CommonController {
     @ResponseBody
     public UploadRet uploadwithKE(@RequestParam("imgFile") MultipartFile file, HttpServletRequest request) throws IOException {
         // 文件限制
-        long imgSize = config.getUpload().getImgSize() * 1024 * 1024;
+        long imgSize = sysConfig.getUpload().getImgSize() * 1024 * 1024;
         if (file.getSize() > imgSize) {
-            return new UploadRet(1, "", "单个文件最大" + config.getUpload().getImgSize() + "M");
+            return new UploadRet(1, "", "单个文件最大" + sysConfig.getUpload().getImgSize() + "M");
         }
         // 文件后缀
         String suffix = StringUtil.getFileType(file.getOriginalFilename());
-        if (!Arrays.asList(config.getUpload().getImgType()).contains(suffix.toLowerCase())) {
+        if (!Arrays.asList(sysConfig.getUpload().getImgType()).contains(suffix.toLowerCase())) {
             return new UploadRet(1, "", "文件格式不支持");
         }
 
-        if (!config.getUpload().getFdfs()) {
+        if (!sysConfig.getUpload().getFdfs()) {
             String basePathFormat = DateUtil.getYearAndMonth(false);
-            String uploadPath = config.getStaticPath() + "upload/" + basePathFormat;
+            String uploadPath = sysConfig.getStaticPath() + "upload/" + basePathFormat;
             String filename = StringUtil.randomFilename(file.getOriginalFilename());
             // String realPath = request.getSession().getServletContext().getRealPath("/" + uploadPath + basePathFormat);
             File filePath = new File(uploadPath);
@@ -136,11 +138,11 @@ public class CommonController {
                 filePath.mkdirs();
             }
             FileUtils.copyInputStreamToFile(file.getInputStream(), new File(filePath, filename));
-            return new UploadRet(0, config.getStaticHost() + "static/upload/" + basePathFormat + "/" + filename, "SUCCESS");
+            return new UploadRet(0, sysConfig.getStaticHost() + "static/upload/" + basePathFormat + "/" + filename, "SUCCESS");
         } else {
             // 添加水印：FDFSUtil.waterMark(file.getInputStream(), suffix)
             StorePath storePath = storageClient.uploadFile(file.getBytes(), suffix);
-            String filePath = config.getFdfsNginx() + storePath.getFullPath();
+            String filePath = sysConfig.getFdfsNginx() + storePath.getFullPath();
             return new UploadRet(0, filePath, "SUCCESS");
         }
     }
@@ -158,7 +160,7 @@ public class CommonController {
     @ResponseBody
     public Map<String, Object> uploadwithUE(String action, @RequestParam(name = "imgFile", required = false) MultipartFile file, HttpServletRequest request) throws IOException {
         Map<String, Object> map = new HashMap();
-        if ("config".equals(action)) {
+        if ("sysConfig".equals(action)) {
             map.put("imageActionName", "uploadimage");
             map.put("imageFieldName", "imgFile");
             map.put("imageAllowFiles", new String[]{".png", ".jpg", ".jpeg"});
@@ -168,21 +170,21 @@ public class CommonController {
             return map;
         }
 
-        if (!config.getUpload().getFdfs()) {
+        if (!sysConfig.getUpload().getFdfs()) {
             String basePathFormat = DateUtil.getYearAndMonth(false);
-            String uploadPath = config.getStaticPath() + "upload/" + basePathFormat;
+            String uploadPath = sysConfig.getStaticPath() + "upload/" + basePathFormat;
             String filename = StringUtil.randomFilename(file.getOriginalFilename());
             File filePath = new File(uploadPath);
             if (!filePath.exists()) {
                 filePath.mkdirs();
             }
             FileUtils.copyInputStreamToFile(file.getInputStream(), new File(filePath, filename));
-            map.put("url", config.getStaticHost() + "static/upload/" + basePathFormat + "/" + filename);
+            map.put("url", sysConfig.getStaticHost() + "static/upload/" + basePathFormat + "/" + filename);
         } else {
             // 文件后缀
             String suffix = StringUtil.getFileType(file.getOriginalFilename());
             StorePath storePath = storageClient.uploadFile(file.getBytes(), suffix);
-            String filePath = config.getFdfsNginx() + storePath.getFullPath();
+            String filePath = sysConfig.getFdfsNginx() + storePath.getFullPath();
             map.put("url", filePath);
         }
         map.put("state", "SUCCESS");
@@ -208,11 +210,11 @@ public class CommonController {
 
         if (t == null) t = 1;
         if (t == 2) { // 文件
-            type = config.getUpload().getFileType();
-            size = config.getUpload().getFileSize();
+            type = sysConfig.getUpload().getFileType();
+            size = sysConfig.getUpload().getFileSize();
         } else { //图片
-            type = config.getUpload().getImgType();
-            size = config.getUpload().getImgSize();
+            type = sysConfig.getUpload().getImgType();
+            size = sysConfig.getUpload().getImgSize();
         }
         // 文件大小
         if (file.getSize() > size * 1024 * 1024) {
@@ -223,13 +225,13 @@ public class CommonController {
             return new UploadRet(1, "", "文件格式不支持");
         }
 
-        if (!config.getUpload().getFdfs()) {
+        if (!sysConfig.getUpload().getFdfs()) {
             String basePathFormat = DateUtil.getYearAndMonth(false);
             String dirPath = "upload/" + basePathFormat;
             if (t == 2) { // 文件
                 dirPath = "upload/file/" + basePathFormat;
             }
-            String uploadPath = config.getStaticPath() + dirPath;
+            String uploadPath = sysConfig.getStaticPath() + dirPath;
             String filename = StringUtil.randomFilename(file.getOriginalFilename());
             // String realPath = request.getSession().getServletContext().getRealPath("/" + uploadPath + basePathFormat);
             File filePath = new File(uploadPath);
@@ -239,11 +241,11 @@ public class CommonController {
             FileUtils.copyInputStreamToFile(file.getInputStream(), new File(filePath, filename));
             // 添加水印
             // FileUtils.copyInputStreamToFile(new ByteArrayInputStream(FDFSUtil.waterMark(file.getInputStream(), suffix)), new File(filePath, filename));
-            return new UploadRet(0, config.getStaticHost() + "static/" + dirPath + "/" + filename, "SUCCESS");
+            return new UploadRet(0, sysConfig.getStaticHost() + "static/" + dirPath + "/" + filename, "SUCCESS");
         } else {
             // 添加水印：FDFSUtil.waterMark(file.getInputStream(), suffix)
             StorePath storePath = storageClient.uploadFile(file.getBytes(), suffix);
-            String filePath = config.getFdfsNginx() + storePath.getFullPath();
+            String filePath = sysConfig.getFdfsNginx() + storePath.getFullPath();
             return new UploadRet(0, filePath, "SUCCESS");
         }
     }

@@ -7,7 +7,7 @@ import java.util.Arrays;
 
 /**
  * Created with IntelliJ IDEA.
- * Description: 系统自定义全局配置变量
+ * Description: 系统自定义全局配置变量 application.yml
  * User: xujunfei
  * Date: 2017-11-28
  * Time: 15:52
@@ -15,21 +15,6 @@ import java.util.Arrays;
 @Configuration
 @ConfigurationProperties(prefix = "system")
 public class SysConfig {
-
-    // 常量
-    public final static String PREFIX = "UID";
-    public final static String[] excludePathPatterns = {"/static/**", "/images/**", "/js/**", "/css/**", "/error/**"};
-    // SESSION
-    public final static String SESSION_USER = "user";
-    public final static String SESSION_ADMIN = "admin";
-    public final static String SESSION_RAND = "rand";
-    public final static String SESSION_SMS = "sms";
-    // TOKEN
-    public final static String TOKEN = "token";
-    public final static String TOKEN_HEADER = "header";
-    public final static String TOKEN_COOKIE = "cookie";
-
-    //###### 以下来自 application.yml 自定义配置 ######
 
     // version
     private String version;

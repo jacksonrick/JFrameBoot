@@ -1,6 +1,6 @@
 package com.jf.controller;
 
-import com.jf.model.ICONSTANT;
+import com.jf.database.model.ICONSTANT;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;

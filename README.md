@@ -1,5 +1,5 @@
 # JFrame
-##### JFrame - SpringBoot & Cloud Project `v5.4.3`
+##### JFrame - SpringBoot & Cloud Project `v5.5`
 made by @jackson-rick   <br>
 本架构是对技术框架的整合及开发的规范，适合多端项目和微服务
 
@@ -11,35 +11,45 @@ made by @jackson-rick   <br>
 * jframe-web-app `App端`
 * jframe-web-front `PC端`
 * jframe-web-manage `后台管理端`
-* jframe-web-test `测试模块`
 * jframe-cloud `注册中心`
-* jframe-micro-srvs `微服务模块`
-* jframe-service-oauth `OAuth2.0模块`
+* jframe-srvs `微服务模块`
+* jframe-srv-oauth `OAuth2.0模块`
 * jframe-srv-gateway `网关模块`
+* jframe-web-test `测试模块`
 
 ### 集成
 * Spring/SpringMVC/MyBatis/SpringBoot/SpringCloud
 * Spring Redis/Redis Session/Redisson/FastDFS
-* 拦截器/AppToken/自定义权限/SpringSecurity
-* 后台管理功能：权限管理、模块管理、地址、文件、工具等
-* 线程池、日志服务、分布式日志Flume、异常管理、多数据源、分布式事务
+* 拦截器/AppToken/自定义权限/SpringSecurity/SSO单点登录
+* 后台管理功能：权限管理、模块管理、地址、文件、工具、UI等
+* 线程池、日志服务、分布式日志Flume、异常管理、多数据源、分布式锁
 * PageHelper分页、封装分页组件
 * Freemarker模板、封装函数和指令
-* Quartz(单点/集群)、管理器、异步任务
+* Quartz(单点/集群)、图形化管理、异步任务
 * 第三方：微信SDK/支付宝SDK/推送/高德/阿里云/短信/邮件
-* Spring-WebSocket、Openfire、Actuator健康监控、数据源监控
+* 日志可视化管理、Actuator健康监控、数据源监控
 * Util包：字符、时间、数字转换/JSON/Http/PDF+Excel/分页/文件/对象/验证器...
 * JS插件：封装：Ajax/DataTables/CityPicker/Layer/DatePicker...
-* 服务：scheduler[springsch|quartz]、cache、activemq、socket、fdfs、actuator、eureka、feign、oauth2、zuul、ssl...
-* 测试模块：[jframe-web-test]DEMO、组件等测试
+* 服务：quartz、cache、rabbitmq、websocket、fdfs、eureka、oauth2、gateway、ssl、nacos...
+* 测试模块：jframe-web-test
+    * 消息队列RabbitMQ
+    * Nacos分布式配置、服务发现
+    * Quartz管理器
+    * Websocket单点和MQ集群
 * Jenkins&Docker自动化部署
 
 ### 更新日志：
+* v5.5 `20190308`
+    * 1.更新接口响应数据封装类ResMsg
+    * 2.新增Nacos分布式配置服务
+    * 3.优化测试模块，分离多个子模块
+    * 4.新增RabbitMQ和WebSocket集成
+    * 5.多个工具类优化
 * v5.4.3 `20190222`
     * 1.优化异常处理和日志打印
     * 2.修复BUG
 * v5.4.2 `20190124`
-    * 1.后台管理系统UI更新[去除动画、按钮样式]
+    * 1.后台管理系统UI更新[去除动画，按钮样式]
     * 2.PDF等工具类更新
     * 3.其他优化
 * v5.4.1 `20181218`
@@ -49,7 +59,7 @@ made by @jackson-rick   <br>
 * v5.4 `20181212`
     * 1.Excel导出支持JSON配置、实体类注解
     * 2.Excel导入支持实体类注解
-    * 3.新增Nacos分布式配置[TEST]
+    * 3.新增Nacos分布式配置
 * v5.3 `20181203&20181203`
     * 1.升级Springboot2.1.0
     * 2.生成数据字典现支持Postgresql

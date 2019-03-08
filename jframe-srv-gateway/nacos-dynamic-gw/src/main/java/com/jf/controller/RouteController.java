@@ -1,7 +1,7 @@
 package com.jf.controller;
 
-import com.jf.model.GatewayPredicateDefinition;
-import com.jf.model.GatewayRouteDefinition;
+import com.jf.database.model.GatewayPredicateDefinition;
+import com.jf.database.model.GatewayRouteDefinition;
 import com.jf.service.DynamicRouteServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gateway.handler.predicate.PredicateDefinition;

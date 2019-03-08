@@ -1,7 +1,7 @@
 package com.jf.service;
 
-import com.jf.model.User;
-import com.jf.model.UserDetail;
+import com.jf.database.model.User;
+import com.jf.database.model.UserDetail;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

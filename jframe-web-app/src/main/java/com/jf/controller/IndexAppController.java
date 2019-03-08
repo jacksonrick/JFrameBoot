@@ -1,11 +1,10 @@
 package com.jf.controller;
 
+import com.jf.annotation.Token;
 import com.jf.common.BaseController;
 import com.jf.entity.ResMsg;
-import com.jf.entity.enums.ResCode;
 import com.jf.service.UserService;
-import com.jf.annotation.Token;
-import com.jf.system.conf.SysConfig;
+import com.jf.system.conf.IConstant;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
@@ -32,31 +31,31 @@ public class IndexAppController extends BaseController {
     public ResMsg findUser(Integer id) {
         System.out.println(id);
         userService.findUserById(id);
-        return new ResMsg(0, "SUCCESS");
+        return ResMsg.success();
     }
 
     @GetMapping("/home")
     public ResMsg home() {
-        return new ResMsg(ResCode.SUCCESS.code(), ResCode.SUCCESS.msg());
+        return ResMsg.success();
     }
 
     @GetMapping("/online")
     public ResMsg online() {
-        return new ResMsg(ResCode.SUCCESS.code(), ResCode.SUCCESS.msg(), true);
+        return ResMsg.successdata(true);
     }
 
     @GetMapping("/test")
     public ResMsg test() {
         String a = null;
         System.out.println(a.length());
-        return new ResMsg(ResCode.SUCCESS.code(), ResCode.SUCCESS.msg());
+        return ResMsg.success();
     }
 
     @GetMapping("/get")
     public ResMsg get() {
         Integer userId = 10000;
         String token = bindToken(userId);
-        return new ResMsg(ResCode.SUCCESS.code(), ResCode.SUCCESS.msg(), token);
+        return ResMsg.successdata(token);
     }
 
     /**
@@ -68,19 +67,19 @@ public class IndexAppController extends BaseController {
      * @return
      */
     @GetMapping("/token")
-    @Token(type = SysConfig.TOKEN_HEADER)
+    @Token(type = IConstant.TOKEN_HEADER)
     public ResMsg token(Integer userId, String param) {
         System.out.println("/app/token param:" + param);
         System.out.println("/app/token userId:" + userId);
-        return new ResMsg(ResCode.SUCCESS.code(), ResCode.SUCCESS.msg(), userId);
+        return ResMsg.successdata(userId);
     }
 
     @GetMapping("/token2")
-    @Token(type = SysConfig.TOKEN_COOKIE, need = false)
+    @Token(type = IConstant.TOKEN_COOKIE, need = false)
     public ResMsg token2(Integer userId, String param) {
         System.out.println("/app/token param:" + param);
         System.out.println("/app/token userId:" + userId);
-        return new ResMsg(ResCode.SUCCESS.code(), ResCode.SUCCESS.msg(), userId);
+        return ResMsg.successdata(userId);
     }
 
     @GetMapping("/swagger")
@@ -90,6 +89,6 @@ public class IndexAppController extends BaseController {
             @ApiImplicitParam(name = "s2", value = "参数2", dataType = "Integer", defaultValue = "99")
     })
     public ResMsg swagger(String p1, Integer s2) {
-        return new ResMsg(ResCode.SUCCESS.code(), ResCode.SUCCESS.msg());
+        return ResMsg.success();
     }
 }

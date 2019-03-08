@@ -1,10 +1,10 @@
 package com.jf.controller;
 
+import com.jf.annotation.Login;
 import com.jf.database.model.User;
 import com.jf.entity.ResMsg;
 import com.jf.entity.enums.ResCode;
-import com.jf.annotation.Login;
-import com.jf.system.conf.SysConfig;
+import com.jf.system.conf.IConstant;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -49,14 +49,14 @@ public class IndexController {
     public ResMsg login(HttpSession session) {
         User user = new User(10000);
         user.setNickname("feifei");
-        session.setAttribute(SysConfig.SESSION_USER, user);
+        session.setAttribute(IConstant.SESSION_USER, user);
         return new ResMsg(0, "SUCCESS", user);
     }
 
     @RequestMapping("/logout")
     @ResponseBody
     public ResMsg logout(HttpSession session) {
-        session.removeAttribute(SysConfig.SESSION_USER);
+        session.removeAttribute(IConstant.SESSION_USER);
         return new ResMsg(0, "SUCCESS", "logout");
     }
 }

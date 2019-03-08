@@ -43,14 +43,17 @@ public class BaseVo {
     /**
      * 查询字段-通用-关键字
      */
+    @JsonIgnore
     private String keywords;
     /**
      * 查询字段-开始时间
      */
+    @JsonIgnore
     private String startDate;
     /**
      * 查询字段-结束时间
      */
+    @JsonIgnore
     private String endDate;
 
     public BaseVo() {

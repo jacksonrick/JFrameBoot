@@ -1,7 +1,7 @@
 package com.jf.common;
 
 import com.jf.string.StringUtil;
-import com.jf.system.conf.SysConfig;
+import com.jf.system.conf.IConstant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.util.WebUtils;
@@ -26,7 +26,7 @@ public class BaseController {
      */
     public String bindToken(Integer userId) {
         String newToken = StringUtil.getTokenId();
-        String oldToken = (String) redisTemplate.opsForValue().getAndSet(SysConfig.PREFIX + userId, newToken);
+        String oldToken = (String) redisTemplate.opsForValue().getAndSet(IConstant.PREFIX + userId, newToken);
         if (oldToken != null) {
             redisTemplate.delete(oldToken); // 删除旧token
         }

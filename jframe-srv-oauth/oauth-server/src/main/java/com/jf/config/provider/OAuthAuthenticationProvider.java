@@ -1,8 +1,8 @@
 package com.jf.config.provider;
 
 import com.jf.service.OUserDetailService;
-import com.jf.model.OUserExtDetail;
-import com.jf.model.UserDetail;
+import com.jf.database.model.OUserExtDetail;
+import com.jf.database.model.UserDetail;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;

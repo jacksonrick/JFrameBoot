@@ -222,7 +222,7 @@
         <dependency>
             <groupId>com.aliyun</groupId>
             <artifactId>aliyun-java-sdk-core</artifactId>
-            <version>3.6.0</version>
+            <version>4.0.2</version>
         </dependency>
 
         <!-- 第三方Jar包 -->

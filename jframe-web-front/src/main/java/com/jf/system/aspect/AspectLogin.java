@@ -2,7 +2,7 @@ package com.jf.system.aspect;
 
 import com.jf.database.model.User;
 import com.jf.entity.enums.ResCode;
-import com.jf.system.conf.SysConfig;
+import com.jf.system.conf.IConstant;
 import com.jf.system.exception.NoLoginException;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
@@ -45,7 +45,7 @@ public class AspectLogin {
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = attributes.getRequest();
 
-        User user = (User) request.getSession().getAttribute(SysConfig.SESSION_USER);
+        User user = (User) request.getSession().getAttribute(IConstant.SESSION_USER);
         if (user == null) {
             throw new NoLoginException(ResCode.NO_LOGIN.msg());
         }

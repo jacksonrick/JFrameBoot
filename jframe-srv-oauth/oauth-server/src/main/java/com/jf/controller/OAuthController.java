@@ -1,6 +1,5 @@
 package com.jf.controller;
 
-import com.jf.model.ICONSTANT;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

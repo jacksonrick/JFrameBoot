@@ -22,25 +22,12 @@
             <version>1.0</version>
         </dependency>
 
-        <!-- 微信支付 -->
-        <dependency>
-            <groupId>com.github.wxpay</groupId>
-            <artifactId>wxpay-sdk</artifactId>
-            <version>0.0.3</version>
-        </dependency>
         <!-- 支付宝 -->
         <dependency>
-            <groupId>com.alipay.api</groupId>
-            <artifactId>k12-alipay-sdk</artifactId>
-            <version>0.0.1-beta</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>javax.servlet</groupId>
-                    <artifactId>servlet-api</artifactId>
-                </exclusion>
-            </exclusions>
+            <groupId>com.alipay.sdk</groupId>
+            <artifactId>alipay-sdk-java</artifactId>
+            <version>3.6.0.ALL</version>
         </dependency>
-
         <!-- swagger -->
         <dependency>
             <groupId>io.springfox</groupId>

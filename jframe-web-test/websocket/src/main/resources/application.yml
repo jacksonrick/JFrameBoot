@@ -1,0 +1,30 @@
+server:
+  port: 9100
+  servlet:
+    session:
+      cookie:
+        name: SEID
+spring:
+  profiles:
+    active: dev
+  application:
+    name: JFRAME-TEST-WS
+  session: # session存储类型 NONE | REDIS
+    store-type: REDIS
+    redis:
+      namespace: spr:ses # 命名空间
+  mvc:
+    static-path-pattern: /static/** # 静态地址映射
+  resources:
+    static-locations: classpath:/static
+  freemarker:
+    template-loader-path: classpath:/templates # 模板文件目录
+    cache: true # 缓存
+    charset: UTF-8
+    settings: # 数据格式设置
+      template_update_delay: 0
+      default_encoding: UTF-8
+  redis: # spring redis
+    host: dev
+    port: 6379
+    timeout: 5s

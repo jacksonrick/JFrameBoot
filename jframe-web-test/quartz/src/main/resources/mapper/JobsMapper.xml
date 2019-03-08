@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.jf.database.mapper.JobsMapper">
+
+    <select id="findJobAndTriggerDetails" resultType="jobs">
+        SELECT
+            qz_job_details.JOB_NAME,
+            qz_job_details.JOB_GROUP,
+            qz_job_details.JOB_CLASS_NAME,
+            qz_triggers.TRIGGER_NAME,
+            qz_triggers.TRIGGER_GROUP,
+            qz_triggers.TRIGGER_STATE,
+            qz_cron_triggers.CRON_EXPRESSION,
+            qz_cron_triggers.TIME_ZONE_ID
+        FROM
+            qz_job_details
+        JOIN qz_triggers
+        JOIN qz_cron_triggers
+        ON qz_job_details.JOB_NAME = qz_triggers.JOB_NAME
+        AND qz_triggers.TRIGGER_NAME = qz_cron_triggers.TRIGGER_NAME
+        AND qz_triggers.TRIGGER_GROUP = qz_cron_triggers.TRIGGER_GROUP
+    </select>
+
+    <select id="findCountByName" resultType="int" parameterType="string">
+        SELECT COUNT(0)
+        FROM qz_triggers
+        WHERE TRIGGER_NAME = #{name}
+    </select>
+
+</mapper>

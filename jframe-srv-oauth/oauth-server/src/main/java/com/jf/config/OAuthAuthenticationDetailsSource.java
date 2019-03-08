@@ -1,6 +1,6 @@
 package com.jf.config;
 
-import com.jf.model.OUserExtDetail;
+import com.jf.database.model.OUserExtDetail;
 import org.springframework.security.authentication.AuthenticationDetailsSource;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.stereotype.Component;

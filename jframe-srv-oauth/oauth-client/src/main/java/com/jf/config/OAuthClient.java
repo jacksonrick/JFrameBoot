@@ -1,6 +1,6 @@
 package com.jf.config;
 
-import com.jf.model.AccessToken;
+import com.jf.database.model.AccessToken;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

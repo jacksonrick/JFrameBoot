@@ -2,7 +2,7 @@ server:
   port: 8082
 spring:
   rabbitmq:
-    host: 192.168.24.200 # 服务器地址
+    host: dev # 服务器地址
     port: 5672
     username: rabbitmq
     password: 12345678

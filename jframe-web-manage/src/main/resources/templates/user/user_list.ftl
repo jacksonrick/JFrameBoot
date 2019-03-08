@@ -3,7 +3,13 @@
 <head>
     <meta charset="utf-8">
     <title></title>
-<#include "include.ftl"/>
+    <#include "include.ftl"/>
+    <style type="text/css">
+        .red {
+            background-color: red !important;
+            color: white !important;;
+        }
+    </style>
 </head>
 
 <body class="gray-bg">
@@ -137,6 +143,11 @@
             layerConfirm('确定要删除或启用该用户吗', "/admin/user/userEnable?userId=" + item.id, function () {
                 reload();
             });
+        });
+
+        // 行点击事件
+        $('#table tbody').on('click', 'tr',function() {
+            $(this).closest('tr').toggleClass("red");
         });
 
         datePicker('#startDate,#endDate', "yyyy-mm-dd");

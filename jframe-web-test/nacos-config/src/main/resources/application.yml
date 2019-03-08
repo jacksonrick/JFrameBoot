@@ -1,0 +1,8 @@
+server:
+  port: 8085
+spring:
+  application:
+    name: NACOS-CONFIG
+nacos:
+  config:
+    server-addr: dev:8848

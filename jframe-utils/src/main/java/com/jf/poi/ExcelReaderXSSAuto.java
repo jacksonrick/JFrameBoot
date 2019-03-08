@@ -2,6 +2,7 @@ package com.jf.poi;
 
 import com.jf.annotation.excel.Fields;
 import com.jf.date.DateUtil;
+import org.apache.poi.openxml4j.util.ZipSecureFile;
 import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
@@ -11,8 +12,6 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.beans.PropertyDescriptor;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -49,6 +48,8 @@ public class ExcelReaderXSSAuto {
      * @throws Exception
      */
     public <T> List<T> read(InputStream is, Class<T> clz) throws Exception {
+        // 延迟解析比率
+        ZipSecureFile.setMinInflateRatio(-1.0d);
         wb = new XSSFWorkbook(is);
         // 获取第一个sheet
         sheet = wb.getSheetAt(0);

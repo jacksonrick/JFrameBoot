@@ -6,7 +6,7 @@ spring:
   cloud:
     nacos:
       config:
-        server-addr: 192.168.24.200:8848
+        server-addr: dev:8848
 logging:
   path: /Users/xujunfei/Downloads/logs/nacos/
   file: nacos.log
