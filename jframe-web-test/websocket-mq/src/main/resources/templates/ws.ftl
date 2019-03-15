@@ -54,7 +54,7 @@
         stompClient = Stomp.client(socket);
         stompClient.connect({}, function (frame) {
             setConnected(true);
-            stompClient.subscribe('/user/topic/demo', function (ret) {
+            stompClient.subscribe('/user/topic/test', function (ret) {
                 console.log(ret);
                 var json = JSON.parse(ret.body);
                 $("#greetings").append("<tr>" +

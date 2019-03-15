@@ -1,4 +1,4 @@
-package com.jf.fdfs;
+package com.jf.file;
 
 import org.apache.commons.io.FileUtils;
 
@@ -8,22 +8,22 @@ import java.awt.image.BufferedImage;
 import java.io.*;
 
 /**
- * FDFS工具类【水印】
+ * 图片工具类
  * Created by xujunfei on 2017/6/7.
  */
-public class FDFSUtil {
+public class ImageUtil {
 
-    public static void main(String[] args) {
+    /*public static void main(String[] args) {
         File file = new File("/Users/xujunfei/Downloads/static/test/2.png");
         File out = new File("/Users/xujunfei/Downloads/static/test/2-1.png");
         InputStream is = null;
         try {
             is = new FileInputStream(file);
-            FileUtils.copyInputStreamToFile(new ByteArrayInputStream(FDFSUtil.waterMark(is, "JFrame", "png")), out);
+            FileUtils.copyInputStreamToFile(new ByteArrayInputStream(ImageUtil.waterMark(is, "JFrame", "png")), out);
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
+    }*/
 
     /**
      * 添加图片水印
@@ -44,7 +44,7 @@ public class FDFSUtil {
             Graphics2D g = bufImg.createGraphics();
             g.drawImage(srcImg, 0, 0, width, height, null);
             // Logo
-            Image imageLogo = ImageIO.read(FDFSUtil.class.getClassLoader().getResourceAsStream("logo.png"));
+            Image imageLogo = ImageIO.read(ImageUtil.class.getClassLoader().getResourceAsStream("logo.png"));
             int width1 = imageLogo.getWidth(null);
             int height1 = imageLogo.getHeight(null);
 

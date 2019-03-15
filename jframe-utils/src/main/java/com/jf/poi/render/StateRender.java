@@ -1,7 +1,5 @@
 package com.jf.poi.render;
 
-import com.jf.poi.AbstractCellRender;
-
 /**
  * Created with IntelliJ IDEA.
  * Description:

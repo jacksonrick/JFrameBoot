@@ -1,9 +1,9 @@
 package com.jf;
 
-import com.jf.json.JacksonUtil;
-import com.jf.obj.BeanUtil;
 import com.jf.database.model.TRole;
 import com.jf.database.model.TUser;
+import com.jf.json.JacksonUtil;
+import com.jf.obj.BeanUtil;
 import org.joda.time.Days;
 import org.joda.time.LocalDate;
 
@@ -17,7 +17,6 @@ import java.util.Map;
 public class MainTest {
 
     public static void main(String[] args) {
-
     }
 
     public static void testReflect() {

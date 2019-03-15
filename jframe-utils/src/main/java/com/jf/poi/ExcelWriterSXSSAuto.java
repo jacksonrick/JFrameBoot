@@ -1,68 +1,58 @@
-package com.jf.controller.view;
+package com.jf.poi;
 
 import com.fasterxml.jackson.databind.util.ClassUtil;
 import com.jf.annotation.excel.Excel;
 import com.jf.annotation.excel.Fields;
 import com.jf.annotation.excel.TypeValue;
-import com.jf.commons.LogManager;
 import com.jf.poi.render.AbstractCellRender;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.streaming.SXSSFSheet;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.joda.time.DateTime;
-import org.springframework.web.servlet.view.document.AbstractXlsView;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
- * 生成Excel视图
- * <p>1.map{name:表格名称,list:List类型}</p>
- * <p>2.SpringMvc用法:return new ModelAndView(new ViewExcel<UserModel>(), model);</p>
- *
- * @author rick
- * @version 2.0
+ * Created with IntelliJ IDEA.
+ * Description: Excel大量数据导出 注解式
+ * User: xujunfei
+ * Date: 2019-03-11
+ * Time: 10:21
  */
-public class ViewExcel<T> extends AbstractXlsView {
+public class ExcelWriterSXSSAuto<T> {
+
+    private List<T> datas = new ArrayList<>();
+    private String excelName;
+    private int rowIndex = 0; // 行索引
+    private int totalRow = 0; // 总列
+    private Class<T> clz;
+    private Field[] fs;
 
     private final String NULL_VALUE = "--";
 
-    @Override
-    protected Workbook createWorkbook(Map<String, Object> model, HttpServletRequest request) {
-        return new SXSSFWorkbook();
-    }
+    // 在内存中保持100行，超过100行将被刷新到磁盘
+    private SXSSFWorkbook workbook = new SXSSFWorkbook(1000);
+    private SXSSFSheet sheet = null;
 
-    @Override
-    protected void buildExcelDocument(Map<String, Object> map, Workbook workbook, HttpServletRequest request, HttpServletResponse response)
-            throws Exception {
-        // List<T>类型
-        List<T> list = (List<T>) map.get("list");
-        if (list.isEmpty()) {
-            return;
-        }
-
-        T t = list.get(0);
-        Excel excel = t.getClass().getAnnotation(Excel.class);
+    public ExcelWriterSXSSAuto(Class<T> clazz) {
+        this.clz = clazz;
+        Excel excel = clz.getAnnotation(Excel.class);
         if (excel == null || excel.name() == null) {
             throw new RuntimeException("请指定Excel表名");
         }
-
         // 表名
-        String excelName = new StringBuilder(excel.name())
+        excelName = new StringBuilder(excel.name())
                 .append(new DateTime(System.currentTimeMillis()).toString("yyyy-MM-dd-HH-mm-ss"))
-                .append(".xlsx").toString(); // 文件后缀为xlsx(excel 2010)
-        // 设置response方式,使执行此controller时候自动出现下载页面,而非直接使用excel打开
-        response.setContentType("APPLICATION/OCTET-STREAM");
-        response.setHeader("Content-Disposition", "attachment; filename=" + URLEncoder.encode(excelName, "UTF-8"));
-
+                .append(".xlsx").toString();
         // 创建sheet
-        SXSSFSheet sheet = (SXSSFSheet) workbook.createSheet("sheet1");
+        sheet = workbook.createSheet("sheet1");
         // 产生Excel表头
         Row header = sheet.createRow(0);
 
@@ -76,7 +66,7 @@ public class ViewExcel<T> extends AbstractXlsView {
         style.setBorderRight(BorderStyle.THIN);
         style.setFont(font);
 
-        Field[] fs = t.getClass().getDeclaredFields(); // 所有字段
+        fs = clz.getDeclaredFields(); // 所有字段
         int cell = 0; // 列序号，从0开始
         for (int i = 0; i < fs.length; i++) {
             Fields field = fs[i].getAnnotation(Fields.class); // 获取Fields注解信息
@@ -87,20 +77,25 @@ public class ViewExcel<T> extends AbstractXlsView {
                 cell++;
             }
         }
+        totalRow = cell;
+    }
 
-        // SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
-        int total = cell; // 总列
-        int line = 1; // 行序号，第二行开始
-        for (T model : list) {
+    /**
+     * 写入数据
+     *
+     * @param data
+     */
+    public void write(List<T> data) throws Exception {
+        int line = rowIndex + 1; // 行序号，第二行开始
+        for (T model : data) {
             Row row = sheet.createRow(line++); // 创建行
-            cell = 0; // 列序号
+            int cell = 0; // 列序号
             for (int i = 0; i < fs.length; i++) {
                 Fields field = fs[i].getAnnotation(Fields.class); // 获取Fields注解信息
                 if (field != null) {
                     String fieldName = fs[i].getName();
                     String getMethodName = "get" + fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1); // 属性的get方法，必须以get开头，is不支持
-                    Method getMethod = t.getClass().getMethod(getMethodName, new Class[]{});
+                    Method getMethod = clz.getMethod(getMethodName, new Class[]{});
                     Object obj = getMethod.invoke(model, new Object[]{}); // 执行get方法
                     String val = String.valueOf(obj);
                     if ("null".equals(val) || "".equals(val)) {
@@ -143,11 +138,33 @@ public class ViewExcel<T> extends AbstractXlsView {
             }
         }
 
-        LogManager.info(excelName + " 已导出，总计" + (line - 1) + "行，" + total + "列", ViewExcel.class);
+        rowIndex += data.size();
+        System.out.println("rowIndex: " + rowIndex);
+    }
+
+    /**
+     * 输出文件
+     *
+     * @param path 路径需要以 / 结尾
+     */
+    public void export(String path) {
         // 自动列宽
         sheet.trackAllColumnsForAutoSizing();
-        for (int i = 0; i < total; i++) {
-            sheet.autoSizeColumn(i);
+        // 输出到文件
+        File file = new File(path + excelName);
+        FileOutputStream out = null;
+        try {
+            out = new FileOutputStream(file);
+            workbook.write(out);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                out.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            workbook.dispose();
         }
     }
 

@@ -89,9 +89,10 @@ public class WebSocketController {
         message.setUsername(user.getNickname());
 
         // 生成路由键值，生成规则如下: websocket订阅的目的地 + "-user" + websocket的sessionId值
-        String routingKey = getTopicRoutingKey("demo", wsSessionId);
+        // 此处的actualDestination需要和stompClient.subscribe('/user/topic/test')的后缀相同
+        String routingKey = getTopicRoutingKey("test", wsSessionId);
         // 向amq.topic交换机发送消息，路由键为routingKey
-        log.info("向用户[{}]sessionId=[{}]，发送消息[{}]，路由键[{}]", name, wsSessionId, wsSessionId, routingKey);
+        log.info("向用户[{}]sessionId=[{}]，发送消息[{}]，路由键[{}]", name, wsSessionId, msg, routingKey);
         amqpTemplate.convertAndSend("amq.topic", routingKey, JSON.toJSONString(message));
         return "发送成功";
     }

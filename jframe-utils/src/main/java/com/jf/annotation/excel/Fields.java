@@ -1,6 +1,6 @@
 package com.jf.annotation.excel;
 
-import com.jf.poi.AbstractCellRender;
+import com.jf.poi.render.AbstractCellRender;
 
 import java.lang.annotation.*;
 

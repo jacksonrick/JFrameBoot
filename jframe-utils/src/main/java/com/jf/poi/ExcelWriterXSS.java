@@ -16,6 +16,7 @@ import java.util.List;
 /**
  * 写入Excel的工具类
  */
+@Deprecated
 public class ExcelWriterXSS {
 
     /**
