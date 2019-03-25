@@ -1,5 +1,5 @@
 # JFrame
-##### JFrame - SpringBoot & Cloud Project `v5.5`
+##### JFrame - SpringBoot & Cloud Project `v5.5.1`
 made by @jackson-rick   <br>
 本架构是对技术框架的整合及开发的规范，适合多端项目和微服务
 
@@ -11,26 +11,25 @@ made by @jackson-rick   <br>
 * jframe-web-app `App端`
 * jframe-web-front `PC端`
 * jframe-web-manage `后台管理端`
-* jframe-cloud `注册中心`
 * jframe-srvs `微服务模块`
 * jframe-srv-oauth `OAuth2.0模块`
 * jframe-srv-gateway `网关模块`
-* jframe-web-test `测试模块`
+* jframe-web-test `综合测试模块`
 
 ### 集成
 * Spring/SpringMVC/MyBatis/SpringBoot/SpringCloud
 * Spring Redis/Redis Session/Redisson/FastDFS
 * 拦截器/AppToken/自定义权限/SpringSecurity/SSO单点登录
 * 后台管理功能：权限管理、模块管理、地址、文件、工具、UI等
-* 线程池、日志服务、分布式日志Flume、异常管理、多数据源、分布式锁
+* 线程池、日志服务、分布式日志Flume&ELK、异常处理、多数据源、分布式锁
 * PageHelper分页、封装分页组件
 * Freemarker模板、封装函数和指令
 * Quartz(单点/集群)、图形化管理、异步任务
 * 第三方：微信SDK/支付宝SDK/推送/高德/阿里云/短信/邮件
 * 日志可视化管理、Actuator健康监控、数据源监控
-* Util包：字符、时间、数字转换/JSON/Http/PDF+Excel/分页/文件/对象/验证器...
-* JS插件：封装：Ajax/DataTables/CityPicker/Layer/DatePicker...
-* 服务：quartz、cache、rabbitmq、websocket、fdfs、eureka、oauth2、gateway、ssl、nacos...
+* Util包：字符、时间、数字转换/JSON/Http/POI/分页/文件/对象/验证器...
+* JS插件：Ajax/DataTables/CityPicker/Layer/DatePicker...
+* 子服务及微服务：quartz、cache、rabbitmq、websocket、fdfs、eureka、oauth2、gateway、ssl、nacos...
 * 测试模块：jframe-web-test
     * 消息队列RabbitMQ
     * Nacos分布式配置、服务发现
@@ -39,6 +38,11 @@ made by @jackson-rick   <br>
 * Jenkins&Docker自动化部署
 
 ### 更新日志：
+* v5.5.1 `20190321`
+    * 1.简化yml配置，合并成一个文件
+    * 2.新增dubbo实例
+    * 3.新增微信扫码登陆实例
+    * 4.更新docker和nginx配置
 * v5.5 `20190308`
     * 1.更新接口响应数据封装类ResMsg
     * 2.新增Nacos分布式配置服务
@@ -260,15 +264,12 @@ made by @jackson-rick   <br>
 * Maven 3.3.9
 * Redis 2.8.9
 * Linux CentOS 7
-* IDEA 2017+
+* IDEA 2018.1
 * Docker CE 18+
-* 其他：RabbitMQ、Jenkins
+* 其他：RabbitMQ3.6、Jenkins、Dubbo2.7.1
 ---
 
-* application-dev.yml 开发环境
-* application-pro.yml 生产环境
-* application-test.yml 测试环境[如果有]
-* application-cloud.yml SpringCloud支持
+现所有环境已集成到application.yml
 
 ### 运行
 #### 打包到服务器运行
@@ -278,9 +279,10 @@ made by @jackson-rick   <br>
 * 运行`jframe/build/run`命令或直接运行`java -jar`命令
 * 注意：运行脚本前，请先查看注释，需要按照指定的命名方式
 
-#### Docker
+#### Docker[推荐]
 * 直接运行打包命令，将上传到服务器目录，如:/home/jframe/front
 * 运行`docker-compose up -d` | `docker-compose restart web`
+* 配合Jenkins部署更佳
 
 ### 其他
 * 使用maven下载Jar包时，请先在Maven中添加阿里的镜像源

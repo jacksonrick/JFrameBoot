@@ -18,7 +18,7 @@ import java.util.List;
  * Time: 14:20
  */
 @Configuration
-@ConditionalOnProperty(name = "app.fdfs.enabled", havingValue = "true")
+@ConditionalOnProperty(name = "system.upload.fdfs", havingValue = "true")
 @ConfigurationProperties(prefix = "fdfs")
 public class FdfsConfig {
 

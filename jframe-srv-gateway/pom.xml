@@ -17,6 +17,7 @@
     <modules>
         <module>nacos-dynamic-gw</module>
         <module>zuul-gw</module>
+        <module>eureka-server</module>
     </modules>
 
 </project>

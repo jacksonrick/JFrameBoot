@@ -6,11 +6,11 @@ import com.jf.entity.enums.ResCode;
 import com.jf.obj.XmlUtil;
 import com.jf.string.StringUtil;
 import com.jf.system.conf.RestClient;
+import com.jf.system.utils.Constant;
 import com.jf.system.utils.CookieUtils;
 import org.apache.commons.io.IOUtils;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -25,16 +25,13 @@ import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
- * Description:
+ * Description: 微信公众号测试
  * User: xujunfei
  * Date: 2018-09-18
  * Time: 11:45
  */
 @Controller
 public class WController {
-
-    private final static String APPID = "wx8cdde2f894dc5d34";
-    private final static String SECRET = "1d3e36dff6251390a92bc66020787b85";
 
     @Resource
     private RestClient restClient;
@@ -43,16 +40,16 @@ public class WController {
     public String index(String a, HttpServletRequest request) {
         String openid = CookieUtils.getCookie(request, "openid");
         if (StringUtil.isBlank(openid) || StringUtil.isNotBlank(a)) {
-            return "redirect:https://open.weixin.qq.com/connect/oauth2/authorize?appid=" + APPID +
-                    "&redirect_uri=http%3a%2f%2fwx.809573150.cn%2foauth&response_type=code&scope=snsapi_userinfo&state=1#wechat_redirect";
+            return "redirect:https://open.weixin.qq.com/connect/oauth2/authorize?appid=" + Constant.APPID +
+                    "&redirect_uri=http%3a%2f%2fwx.809573150.cn%2foauth&response_type=value&scope=snsapi_userinfo&state=1#wechat_redirect";
         }
         return "wx/index";
     }
 
     @RequestMapping("/oauth")
     public String oauth(String code, String state, HttpServletResponse response) throws IOException {
-        String tokenUrl = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=" + APPID + "&SECRET=" + SECRET +
-                "&code=" + code + "&grant_type=authorization_code";
+        String tokenUrl = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=" + Constant.APPID + "&SECRET=" + Constant.SECRET +
+                "&value=" + code + "&grant_type=authorization_code";
 
         ResMsg res = restClient.request(tokenUrl, HttpMethod.GET);
         if (ResCode.HTTP_OK.code().equals(res.getCode())) {

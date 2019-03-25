@@ -36,14 +36,6 @@
             </includes>
             <outputDirectory/>
         </fileSet>
-        <!-- 包含docker -->
-        <fileSet>
-            <directory>../jframe/build/docker-${project.name}/</directory>
-            <includes>
-                <include>*.yml</include>
-            </includes>
-            <outputDirectory/>
-        </fileSet>
     </fileSets>
 
     <!-- 打包所有Maven依赖 -->

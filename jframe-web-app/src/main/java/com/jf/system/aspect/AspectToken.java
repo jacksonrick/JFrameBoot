@@ -120,7 +120,7 @@ public class AspectToken {
                     }
                 }
             } else {
-                throw new AppException("APP接口异常: Invalid token type.");
+                throw new AppException("APP接口异常: Invalid token value.");
             }
         } catch (Throwable throwable) {
             if (throwable instanceof AppTokenException) {

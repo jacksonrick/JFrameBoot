@@ -1,0 +1,39 @@
+version: "3"
+services:
+  redis:
+    image: hub.c.163.com/library/redis
+    container_name: redis
+    volumes:
+      - /home/data/redis:/data
+
+  mysql:
+    image: hub.c.163.com/library/mysql
+    container_name: mysql
+    volumes:
+      - /home/data/mysql:/var/lib/mysql
+      - /home/data/etc:/etc/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: 12345678
+      TZ: Asia/Shanghai
+    ports:
+      - "3306:3306"
+
+  app:
+    image: hub.c.163.com/library/java:8u111-jre
+    container_name: web_app
+    environment:
+      TZ: Asia/Shanghai
+    links:
+      - redis
+      - mysql
+    volumes:
+      - /home/docker/jframe/logs:/data/wwwlogs
+      - /home/docker/jframe/app:/data/wwwroot/app
+    ports:
+      - "8082:8082"
+    command: java -server -jar /data/wwwroot/app/jframe-web-app.jar --spring.profiles.active=app-pro
+
+networks:
+  default:
+    external:
+      name: docker-br0

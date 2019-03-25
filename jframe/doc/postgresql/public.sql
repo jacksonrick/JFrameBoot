@@ -1,3 +1,6 @@
+-- driver-class-name: org.postgresql.Driver
+-- url: jdbc:postgresql://ip:5432/jframe?currentSchema=
+
 -- ----------------------------
 -- Table structure for s_admin
 -- ----------------------------

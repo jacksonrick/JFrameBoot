@@ -1,4 +1,3 @@
-/** 更改此文档后，请重新运行mvn命令，以更新yml配置.*/
 {
   "properties": [
     {
@@ -30,6 +29,11 @@
       "name": "spring.task.awaitTerminationSeconds",
       "type": "java.lang.Integer",
       "description": "设置线程池中任务的等待时间，如果超过这个时候还没有销毁就强制销毁."
+    },
+    {
+      "name": "spring.application.simple",
+      "type": "java.lang.String",
+      "description": "应用名简称."
     },
     {
       "name": "fdfs.so-timeout",
@@ -229,16 +233,6 @@
       "sourceType": "com.jf.system.conf.SysConfig$Upload"
     },
     {
-      "name": "app.static_path",
-      "type": "java.lang.String",
-      "description": "[core][pro]静态文件目录."
-    },
-    {
-      "name": "app.static_host",
-      "type": "java.lang.String",
-      "description": "[core][pro]静态文件地址-用于文件上传返回绝对路径."
-    },
-    {
       "name": "app.eureka.enabled",
       "defaultValue": false,
       "type": "java.lang.Boolean",
@@ -251,22 +245,10 @@
       "description": "[core]监控."
     },
     {
-      "name": "app.druid.enabled",
-      "defaultValue": false,
-      "type": "java.lang.Boolean",
-      "description": "[core]druid数据源监控."
-    },
-    {
       "name": "app.cache.enabled",
       "defaultValue": false,
       "type": "java.lang.Boolean",
       "description": "[core]redis缓存支持."
-    },
-    {
-      "name": "app.fdfs.enabled",
-      "defaultValue": false,
-      "type": "java.lang.Boolean",
-      "description": "[core]FastDFS,false则使用本地上传."
     },
     {
       "name": "app.ssl.enabled",

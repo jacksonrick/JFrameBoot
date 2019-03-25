@@ -54,7 +54,7 @@ public class AppPayController extends BaseController {
     public void alipay_qrcode(HttpServletResponse response) throws Exception {
         String result = aliPayService.qrcode("商品", 0.01, StringUtil.getOrderCode());
         JSONObject object = JSON.parseObject(result).getJSONObject("alipay_trade_precreate_response");
-        if (object.get("code") != null) {
+        if (object.get("value") != null) {
             System.out.println(object.get("sub_msg"));
             return;
         }

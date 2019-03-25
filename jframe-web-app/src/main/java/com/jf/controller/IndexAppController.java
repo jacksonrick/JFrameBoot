@@ -25,17 +25,8 @@ public class IndexAppController extends BaseController {
     @Resource
     private UserService userService;
 
-    @RequestMapping("/findUser")
-    @ResponseBody
-    @Token
-    public ResMsg findUser(Integer id) {
-        System.out.println(id);
-        userService.findUserById(id);
-        return ResMsg.success();
-    }
-
-    @GetMapping("/home")
-    public ResMsg home() {
+    @GetMapping("/")
+    public ResMsg index() {
         return ResMsg.success();
     }
 
@@ -80,6 +71,15 @@ public class IndexAppController extends BaseController {
         System.out.println("/app/token param:" + param);
         System.out.println("/app/token userId:" + userId);
         return ResMsg.successdata(userId);
+    }
+
+    @RequestMapping("/findUser")
+    @ResponseBody
+    @Token
+    public ResMsg findUser(Integer id) {
+        System.out.println(id);
+        userService.findUserById(id);
+        return ResMsg.success();
     }
 
     @GetMapping("/swagger")

@@ -7,7 +7,8 @@
     <title>Title</title>
 </head>
 <body>
-微信公众号首页-必须登录才可以看到这个页面
-<a href="/user">个人中心</a>
+
+操作结果：${msg}
+
 </body>
 </html>

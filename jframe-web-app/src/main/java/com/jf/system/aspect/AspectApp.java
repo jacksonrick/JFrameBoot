@@ -1,6 +1,6 @@
 package com.jf.system.aspect;
 
-import com.jf.system.exception.AppException;
+import com.jf.system.exception.AppTokenException;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
@@ -43,7 +43,7 @@ public class AspectApp {
         // 验证header
         String appHeader = request.getHeader("Req-Type");
         if (!"APP".equals(appHeader)) {
-            throw new AppException("非法请求");
+            throw new AppTokenException("非法请求");
         }
         // 验证APPKEY
 

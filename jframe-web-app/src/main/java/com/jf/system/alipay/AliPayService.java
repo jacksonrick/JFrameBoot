@@ -172,7 +172,7 @@ public class AliPayService {
         model.setRefundReason(reason);
         request.setBizModel(model);
         AlipayTradeRefundResponse response = alipayClient.execute(request);
-        // code=10000 成功
+        // value=10000 成功
         return response.getBody();
     }
 

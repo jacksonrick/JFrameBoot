@@ -1,24 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
 
-    <!-- 测试环境日志目录 Mac|Linux -->
-    <property name="LOG_HOME" value="/Users/xujunfei/Downloads/logs"></property>
-    <!-- 测试环境日志目录 Windows -->
-    <property name="LOG_HOME_WIN" value="C:/logs"></property>
-    <!-- 生产环境日志目录 Linux -->
-    <property name="LOG_HOME_PRO" value="/data/wwwlogs"></property>
-
     <!-- 读取Spring配置 -->
-    <springProperty name="application" source="spring.application.name" defaultValue="JFRAME" />
+    <springProperty name="LOG_PATH" source="system.log_path" defaultValue="/data/wwwlogs/" />
+    <springProperty name="APPLICATION" source="spring.application.name" defaultValue="JFRAME" />
+    <springProperty name="APPLICATION_SIMPLE" source="spring.application.simple" defaultValue="app" />
     <!-- 日志显示格式 -->
     <property name="PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS} %highlight(%-5level) [%thread] [%X{server}][%X{rid}] %cyan(%logger{50}:%L) - %msg%n"></property>
     <!-- 日志文件名称 读取环境变量${app.name:-jframe} -->
-    <property name="FILE_NAME" value="${application}"></property>
-    <property name="ERROR_NAME" value="${application}.ERROR"></property>
+    <property name="FILE_NAME" value="${APPLICATION}"></property>
+    <property name="ERROR_NAME" value="${APPLICATION}.ERROR"></property>
 
     <!-- 开发环境 -->
     <!-- 控制台打印+写入日志文件 -->
-    <springProfile name="dev">
+    <springProfile name="${APPLICATION_SIMPLE}-dev">
         <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
             <encoder>
                 <pattern>${PATTERN}</pattern>
@@ -26,13 +21,13 @@
         </appender>
 
         <appender name="devlog" class="ch.qos.logback.core.rolling.RollingFileAppender">
-            <file>${LOG_HOME}/${FILE_NAME}.log</file>
-            <!-- 按大小滚动日志，最大5M，保留最近10个文件，总大小10GB -->
+            <file>${LOG_PATH}${FILE_NAME}.log</file>
+            <!-- 按大小滚动日志，最大1M，保留最近10个文件，总大小1GB -->
             <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-                <fileNamePattern>${LOG_HOME}/%d{yyyy-MM-dd}/${FILE_NAME}.%i.log</fileNamePattern>
+                <fileNamePattern>${LOG_PATH}%d{yyyy-MM-dd}/${FILE_NAME}.%i.log</fileNamePattern>
                 <maxFileSize>1MB</maxFileSize>
                 <maxHistory>10</maxHistory>
-                <totalSizeCap>10GB</totalSizeCap>
+                <totalSizeCap>1GB</totalSizeCap>
             </rollingPolicy>
             <encoder>
                 <pattern>${PATTERN}</pattern>
@@ -56,7 +51,7 @@
 
     <!-- 生产环境 -->
     <!-- INFO+ERROR -->
-    <springProfile name="pro">
+    <springProfile name="${APPLICATION_SIMPLE}-pro">
         <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
             <encoder>
                 <pattern>${PATTERN}</pattern>
@@ -65,16 +60,16 @@
 
         <!-- 记录INFO日志 -->
         <appender name="syslog" class="ch.qos.logback.core.rolling.RollingFileAppender">
-            <file>${LOG_HOME_PRO}/${FILE_NAME}.log</file>
+            <file>${LOG_PATH}${FILE_NAME}.log</file>
             <filter class="ch.qos.logback.classic.filter.LevelFilter">
                 <level>ERROR</level>
                 <onMatch>DENY</onMatch>
                 <onMismatch>ACCEPT</onMismatch>
             </filter>
             <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-                <fileNamePattern>${LOG_HOME_PRO}/%d{yyyy-MM-dd}/${FILE_NAME}.%i.log</fileNamePattern>
+                <fileNamePattern>${LOG_PATH}%d{yyyy-MM-dd}/${FILE_NAME}.%i.log</fileNamePattern>
                 <maxFileSize>5MB</maxFileSize>
-                <maxHistory>30</maxHistory>
+                <maxHistory>60</maxHistory>
                 <totalSizeCap>10GB</totalSizeCap>
             </rollingPolicy>
             <encoder>
@@ -84,16 +79,16 @@
 
         <!-- 记录Error日志 -->
         <appender name="errorlog" class="ch.qos.logback.core.rolling.RollingFileAppender">
-            <file>${LOG_HOME_PRO}/${FILE_NAME}.error.log</file>
+            <file>${LOG_PATH}${FILE_NAME}.error.log</file>
             <filter class="ch.qos.logback.classic.filter.LevelFilter">
                 <level>ERROR</level>
                 <onMatch>ACCEPT</onMatch>
                 <onMismatch>DENY</onMismatch>
             </filter>
             <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-                <fileNamePattern>${LOG_HOME_PRO}/%d{yyyy-MM-dd}/${FILE_NAME}.%i.ERROR.log</fileNamePattern>
+                <fileNamePattern>${LOG_PATH}%d{yyyy-MM-dd}/${FILE_NAME}.%i.ERROR.log</fileNamePattern>
                 <maxFileSize>2MB</maxFileSize>
-                <maxHistory>30</maxHistory>
+                <maxHistory>60</maxHistory>
                 <totalSizeCap>1GB</totalSizeCap>
             </rollingPolicy>
             <encoder>
