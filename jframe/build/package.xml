@@ -23,14 +23,21 @@
                 <include>*.jar</include>
             </includes>
         </fileSet>
-        <!-- 静态资源 -->
+        <!-- 分离静态资源 -->
         <fileSet>
             <directory>target/classes/static/</directory>
             <outputDirectory>static/</outputDirectory>
         </fileSet>
-        <!-- 分离配置文件 -->
+        <!-- 分离配置文件[配置两个的原因是，有的项目会包含二级模块] -->
         <fileSet>
-            <directory>src/main/resources/</directory>
+            <directory>../jframe-core/src/main/resources/</directory>
+            <includes>
+                <include>*.yml</include>
+            </includes>
+            <outputDirectory/>
+        </fileSet>
+        <fileSet>
+            <directory>../../jframe-core/src/main/resources/</directory>
             <includes>
                 <include>*.yml</include>
             </includes>

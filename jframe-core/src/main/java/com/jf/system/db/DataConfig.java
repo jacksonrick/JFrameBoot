@@ -31,13 +31,14 @@ import java.util.Properties;
  * @version 2.0
  */
 @Configuration
-@MapperScan(basePackages = DataConfig.mapperPackage, sqlSessionFactoryRef = "sqlSessionFactory")
+@MapperScan(basePackages = {DataConfig.mapperPackage, DataConfig.mapperOtherPackage}, sqlSessionFactoryRef = "sqlSessionFactory")
 @EnableTransactionManagement
 public class DataConfig {
 
     private Logger logger = LoggerFactory.getLogger(DataConfig.class);
 
     public final static String mapperPackage = "com.jf.database.mapper";
+    public final static String mapperOtherPackage = "com.jf.mapper";
     public final static String modelPackage = "com.jf.database.model";
     public final static String xmlMapperLocation = "classpath*:mapper/**/*.xml";
 

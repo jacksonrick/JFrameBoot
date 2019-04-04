@@ -2,7 +2,6 @@ package com.jf.controller;
 
 import com.jf.common.BaseController;
 import com.jf.commons.LogManager;
-import com.jf.database.mapper.ITestMapper;
 import com.jf.entity.ResMsg;
 import com.jf.entity.enums.ResCode;
 import com.jf.service.UserService;
@@ -33,15 +32,6 @@ public class TestController extends BaseController {
 
     @Resource
     private UserService userService;
-
-    @Resource
-    private ITestMapper iTestMapper;
-
-    @RequestMapping("/testMutilMapper")
-    @ResponseBody
-    public ResMsg testMutilMapper() {
-        return new ResMsg(ResCode.SUCCESS.code(), ResCode.SUCCESS.msg(), iTestMapper.find());
-    }
 
     @RequestMapping("/testError")
     @ResponseBody

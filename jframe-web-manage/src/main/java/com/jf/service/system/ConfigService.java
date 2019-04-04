@@ -1,7 +1,7 @@
 package com.jf.service.system;
 
 import com.jf.convert.Convert;
-import com.jf.database.mapper.manage.ConfigMapper;
+import com.jf.mapper.ConfigMapper;
 import com.jf.database.model.manage.Config;
 import org.springframework.stereotype.Service;
 

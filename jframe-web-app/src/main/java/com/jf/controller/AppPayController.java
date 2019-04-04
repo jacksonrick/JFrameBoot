@@ -115,6 +115,9 @@ public class AppPayController extends BaseController {
         Map<String, String[]> requestParams = request.getParameterMap();
         for (Iterator<String> iter = requestParams.keySet().iterator(); iter.hasNext(); ) {
             String name = (String) iter.next();
+            if ("biz".equals(name)) {
+                continue;
+            }
             String[] values = (String[]) requestParams.get(name);
             String valueStr = "";
             for (int i = 0; i < values.length; i++) {
@@ -132,8 +135,11 @@ public class AppPayController extends BaseController {
             String out_trade_no = request.getParameter("out_trade_no");
             String trade_status = request.getParameter("trade_status");
             String param = request.getParameter("passback_params");
-            String tamount = request.getParameter("total_amount");
+            if (StringUtil.isBlank(param)) {
+                param = request.getParameter("biz");
+            }
             int type = Convert.stringToInt(param, -1);
+            String tamount = request.getParameter("total_amount");
             double total_amount = Double.parseDouble(tamount);
             if (trade_status.equals("TRADE_SUCCESS")) {
                 System.out.println("支付成功");
@@ -209,7 +215,7 @@ public class AppPayController extends BaseController {
         WXPay wxpay = new WXPay(wxPayService);
         Map<String, String> notifyMap = WXPayUtil.xmlToMap(notifyData);  // 转换成map
         if (wxpay.isPayResultNotifySignatureValid(notifyMap)) {
-            System.out.println("签名正确");
+            System.out.println("签名正确，参数：" + notifyMap);
             // 签名正确
             // 进行处理
             // 注意特殊情况：订单已经退款，但收到了支付结果成功的通知，不应把商户侧订单状态从退款改成支付成功

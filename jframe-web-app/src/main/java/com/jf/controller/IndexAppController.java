@@ -42,10 +42,12 @@ public class IndexAppController extends BaseController {
         return ResMsg.success();
     }
 
-    @GetMapping("/get")
-    public ResMsg get() {
-        Integer userId = 10000;
-        String token = bindToken(userId);
+    @GetMapping("/login")
+    public ResMsg get(Integer userId) {
+        if (userId == null) {
+            return ResMsg.fail("Userid is null");
+        }
+        String token = bindTokenToDb(userId);
         return ResMsg.successdata(token);
     }
 

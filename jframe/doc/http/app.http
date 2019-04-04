@@ -18,6 +18,11 @@ Cache-Control: no-cache
 X-Requested-With: XMLHttpRequest
 
 ###
+GET {{host}}/app/findUser
+Req-Type: APP
+token: {{token}}
+
+###
 GET {{host}}/app/token?param=1234
 Accept: */*
 Cache-Control: no-cache
@@ -25,23 +30,10 @@ Req-Type: APP
 token: {{token}}
 
 ###
-GET {{host}}/app/get
+GET {{host}}/app/login?userId=10001
 Accept: */*
 Cache-Control: no-cache
 Req-Type: APP
 X-Requested-With: XMLHttpRequest
 
-
 ###
-GET {{host}}/app/findUser
-Req-Type: APP
-token: {{token}}
-
-###
-GET {{host}}/app/get
-Req-Type: APP
-
-###
-GET {{host}}/app/token
-Req-Type: APP
-token: {{token}}

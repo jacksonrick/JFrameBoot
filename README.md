@@ -38,6 +38,10 @@ made by @jackson-rick   <br>
 * Jenkins&Docker自动化部署
 
 ### 更新日志：
+* v5.5.2 `20190403`
+    * 1.更新Token前缀，新增数据库token支持
+    * 2.配置优化，配置分离[推荐使用插件打包]
+    * 3.工具类和WebSocket优化
 * v5.5.1 `20190321`
     * 1.简化yml配置，合并成一个文件
     * 2.新增dubbo实例

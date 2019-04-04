@@ -226,7 +226,7 @@ fdfs: # fastDFS配置
   so-timeout: 3000
   connect_timeout: 3000
   tracker-list: # 可设置多个
-    - 192.168.1.168:22122
+    - 192.168.31.205:22122
 system: # 系统自定义配置
   version: 'v5.2.3'
   dev: true # 是否开发环境
@@ -259,7 +259,7 @@ system: # 系统自定义配置
     secret: secret
     ios_product: false
   upload: # FastDFS
-    fdfs: false
+    fdfs: true
     img_size: 3
     img_type: jpg,jpeg,png
     file_size: 10

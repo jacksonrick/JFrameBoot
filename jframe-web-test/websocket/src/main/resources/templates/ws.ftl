@@ -53,8 +53,10 @@
     function connect() {
         //var socket = new SockJS('ws://127.0.0.1:8081/websocket'); // or WebSocket('/websocket')
         var socket = "ws://" + window.location.host + "/websocket";
-        stompClient = Stomp.client(socket);
         //stompClient = Stomp.over(socket);
+        stompClient = Stomp.client(socket);
+        //stompClient.debug = false;
+        //stompClient.heartbeat.outgoing = 20000;
         stompClient.connect({}, function (frame) {
             setConnected(true);
             //console.log('Connected: ' + frame);

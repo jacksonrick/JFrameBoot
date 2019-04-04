@@ -42,6 +42,7 @@ public class WebSocketConfig extends AbstractSessionWebSocketMessageBrokerConfig
         registry.setApplicationDestinationPrefixes("/ws") // 客户端发送地址的前缀，如ws/send
                 .setUserDestinationPrefix("/topic") // 客户端订阅地址的前缀 subscribe("/topic/chat")
                 .enableSimpleBroker("/chat") // 客户端订阅地址(后缀),可以设置多个 "/chat1,/chat2"
+                //.setHeartbeatValue(new long[]{60000, 60000}) // 心跳60s default10s[TaskScheduler]
         ;
     }
 

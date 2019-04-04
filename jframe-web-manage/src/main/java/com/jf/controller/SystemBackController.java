@@ -724,6 +724,7 @@ public class SystemBackController extends BaseController {
 
         LoggerContext loggerContext = (LoggerContext) LoggerFactory.getILoggerFactory();
         loggerContext.getLogger("com.jf.database.mapper").setLevel(Level.valueOf(level));
+        loggerContext.getLogger("com.jf.mapper").setLevel(Level.valueOf(level));
 
         return new ResMsg(ResCode.SUCCESS.code(), ResCode.SUCCESS.msg());
     }

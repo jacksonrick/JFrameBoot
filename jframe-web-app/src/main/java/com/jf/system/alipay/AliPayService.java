@@ -1,5 +1,7 @@
 package com.jf.system.alipay;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.alipay.api.AlipayClient;
 import com.alipay.api.AlipayResponse;
 import com.alipay.api.DefaultAlipayClient;
@@ -9,6 +11,7 @@ import com.alipay.api.response.AlipayFundTransOrderQueryResponse;
 import com.alipay.api.response.AlipayFundTransToaccountTransferResponse;
 import com.alipay.api.response.AlipayTradeAppPayResponse;
 import com.alipay.api.response.AlipayTradeRefundResponse;
+import com.jf.commons.LogManager;
 import com.jf.system.conf.SysConfig;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
@@ -23,13 +26,13 @@ import javax.annotation.Resource;
 public class AliPayService {
 
     @Resource
-    private SysConfig config;
+    private SysConfig sysConfig;
 
     @Bean
     public AlipayClient alipayClient() {
-        AlipayClient client = new DefaultAlipayClient(config.getAliyun().getGateway(), config.getAliyun().getAppId(),
-                config.getAliyun().getRsaPrivateKey(), config.getAliyun().getFormat(), config.getAliyun().getCharset(),
-                config.getAliyun().getPublicKey(), config.getAliyun().getSignType());
+        AlipayClient client = new DefaultAlipayClient(sysConfig.getAliyun().getGateway(), sysConfig.getAliyun().getAppId(),
+                sysConfig.getAliyun().getRsaPrivateKey(), sysConfig.getAliyun().getFormat(), sysConfig.getAliyun().getCharset(),
+                sysConfig.getAliyun().getPublicKey(), sysConfig.getAliyun().getSignType());
         return client;
     }
 
@@ -50,10 +53,17 @@ public class AliPayService {
         model.setSubject(subject);
         model.setOutTradeNo(orderNum);
         model.setTotalAmount(price + "");
+        model.setTimeoutExpress("30m");
         request.setBizModel(model);
-        request.setNotifyUrl(config.getAliyun().getNotifyUrl());
+        request.setNotifyUrl(sysConfig.getAliyun().getNotifyUrl()); // 额外参数，URL拼接参数，如biz=1
         AlipayResponse response = alipayClient.execute(request);
-        return response.getBody();
+        JSONObject object = JSON.parseObject(response.getBody()).getJSONObject("alipay_trade_precreate_response");
+        LogManager.info(object.toString(), AliPayService.class);
+        if (object.get("value") != null) {
+            return null;
+        }
+        String qr = object.getString("qr_code");
+        return qr;
     }
 
     /**
@@ -75,8 +85,8 @@ public class AliPayService {
         model.setTotalAmount(price + "");
         model.setProductCode("FAST_INSTANT_TRADE_PAY");
         request.setBizModel(model);
-        request.setNotifyUrl(config.getAliyun().getNotifyUrl());
-        request.setReturnUrl(config.getAliyun().getReturnUrl());
+        request.setNotifyUrl(sysConfig.getAliyun().getNotifyUrl());
+        request.setReturnUrl(sysConfig.getAliyun().getReturnUrl());
         AlipayResponse response = alipayClient.pageExecute(request);
         return response.getBody();
     }
@@ -100,7 +110,7 @@ public class AliPayService {
         model.setTotalAmount(price + "");
         model.setProductCode("QUICK_MSECURITY_PAY");
         request.setBizModel(model);
-        request.setNotifyUrl(config.getAliyun().getNotifyUrl());
+        request.setNotifyUrl(sysConfig.getAliyun().getNotifyUrl());
         AlipayTradeAppPayResponse response = alipayClient.sdkExecute(request);
         return response.getBody();
     }

@@ -47,6 +47,7 @@
 
         <logger name="freemarker.cache" level="OFF"></logger>
         <logger name="com.jf.database.mapper" level="DEBUG"></logger>
+        <logger name="com.jf.mapper" level="DEBUG"></logger>
     </springProfile>
 
     <!-- 生产环境 -->
@@ -129,6 +130,7 @@
         </root>
 
         <logger name="com.jf.database.mapper" level="OFF"></logger>
+        <logger name="com.jf.mapper" level="OFF"></logger>
     </springProfile>
 
 </configuration>

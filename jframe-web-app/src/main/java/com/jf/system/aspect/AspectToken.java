@@ -1,6 +1,7 @@
 package com.jf.system.aspect;
 
 import com.jf.annotation.Token;
+import com.jf.database.mapper.TokenMapper;
 import com.jf.entity.enums.ResCode;
 import com.jf.string.StringUtil;
 import com.jf.system.conf.IConstant;
@@ -39,6 +40,8 @@ public class AspectToken {
 
     @Autowired(required = false)
     private RedisTemplate redisTemplate;
+    @Autowired
+    private TokenMapper tokenMapper;
 
     @Pointcut("@annotation(com.jf.annotation.Token)")
     public void token() {
@@ -63,6 +66,7 @@ public class AspectToken {
         String name = tk.name(); // 键名
         String type = tk.type(); // 类型 1-header 2-cookie
         boolean need = tk.need(); // 是否必须 默认：true
+        boolean cache = tk.useCache(); // 是否使用缓存 默认：true
 
         try {
             if (IConstant.TOKEN_HEADER.equals(type)) {
@@ -73,7 +77,11 @@ public class AspectToken {
                     } else {
                         Integer uid = (Integer) redisTemplate.opsForValue().get(token);
                         if (uid != null) {
-                            args[0] = dealToken(token);
+                            if (cache) {
+                                args[0] = getIdByTokenFromRedis(token);
+                            } else {
+                                args[0] = getIdByTokenFromDb(token);
+                            }
                             return pjp.proceed(args);
                         } else {
                             return pjp.proceed();
@@ -84,7 +92,11 @@ public class AspectToken {
                         throw new AppTokenException(ResCode.TOKEN_EXP.msg());
                     } else {
                         log.info(IConstant.TOKEN_HEADER + " token:" + token);
-                        args[0] = dealToken(token);
+                        if (cache) {
+                            args[0] = getIdByTokenFromRedis(token);
+                        } else {
+                            args[0] = getIdByTokenFromDb(token);
+                        }
                         return pjp.proceed(args);
                     }
                 }
@@ -100,7 +112,11 @@ public class AspectToken {
                         }
                         Integer uid = (Integer) redisTemplate.opsForValue().get(token);
                         if (uid != null) {
-                            args[0] = dealToken(token);
+                            if (cache) {
+                                args[0] = getIdByTokenFromRedis(token);
+                            } else {
+                                args[0] = getIdByTokenFromDb(token);
+                            }
                             return pjp.proceed(args);
                         } else {
                             return pjp.proceed();
@@ -113,7 +129,11 @@ public class AspectToken {
                     String token = cookieValue.getValue();
                     if (StringUtil.isNotBlank(token)) {
                         log.info(IConstant.TOKEN_COOKIE + " token:" + token);
-                        args[0] = dealToken(token);
+                        if (cache) {
+                            args[0] = getIdByTokenFromRedis(token);
+                        } else {
+                            args[0] = getIdByTokenFromDb(token);
+                        }
                         return pjp.proceed(args);
                     } else {
                         throw new AppTokenException(ResCode.TOKEN_EXP.msg());
@@ -134,16 +154,42 @@ public class AspectToken {
         }
     }
 
-    private Integer dealToken(String token) {
+    /**
+     * From Redis
+     *
+     * @param token
+     * @return
+     */
+    private Integer getIdByTokenFromRedis(String token) {
         if (token == null || token.length() < 1) {
             throw new AppTokenException(ResCode.TOKEN_EXP.msg());
         }
-        Integer uid = (Integer) redisTemplate.opsForValue().get(token);
+        Integer uid = (Integer) redisTemplate.opsForValue().get(IConstant.TOKEN_PREFIX + token);
         if (uid != null) {
             return uid;
         } else {
             throw new AppTokenException(ResCode.TOKEN_EXP.msg());
         }
+    }
+
+    /**
+     * From DB
+     *
+     * @param token
+     * @return
+     */
+    private Integer getIdByTokenFromDb(String token) {
+        if (token == null || token.length() < 1) {
+            throw new AppTokenException(ResCode.TOKEN_EXP.msg());
+        }
+        com.jf.database.model.Token tk = tokenMapper.findByToken(token);
+        if (tk == null) {
+            throw new AppTokenException(ResCode.TOKEN_EXP.msg());
+        }
+        if (tk.getExpired().getTime() < System.currentTimeMillis()) {
+            throw new AppTokenException(ResCode.TOKEN_EXP.msg());
+        }
+        return Integer.valueOf(tk.getUid());
     }
 
 }

@@ -5,6 +5,8 @@
     - Quartz
  */
 
+CREATE DATABASE `jframe` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
 
@@ -21,7 +23,7 @@ CREATE TABLE `oauth_access_token` (
   `authentication` blob,
   `refresh_token` varchar(256) DEFAULT NULL,
   PRIMARY KEY (`authentication_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for oauth_client_details
@@ -40,7 +42,7 @@ CREATE TABLE `oauth_client_details` (
   `additional_information` varchar(4096) DEFAULT NULL,
   `autoapprove` varchar(256) DEFAULT NULL,
   PRIMARY KEY (`client_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Records of oauth_client_details
@@ -59,7 +61,7 @@ CREATE TABLE `oauth_refresh_token` (
   `token_id` varchar(256) DEFAULT NULL,
   `token` blob,
   `authentication` blob
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for oauth_user
@@ -71,7 +73,7 @@ CREATE TABLE `oauth_user` (
   `name` varchar(255) DEFAULT NULL,
   `pwd` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of oauth_user
@@ -98,7 +100,7 @@ CREATE TABLE `s_admin` (
   `deleted` bit(1) DEFAULT b'0' COMMENT '是否删除 1-是 0-否',
   PRIMARY KEY (`id`),
   UNIQUE KEY `t_admin_username` (`admin_name`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=10004 DEFAULT CHARSET=utf8 COMMENT='后台管理员';
+) ENGINE=InnoDB AUTO_INCREMENT=10004 DEFAULT CHARSET=utf8mb4 COMMENT='后台管理员';
 
 -- ----------------------------
 -- Records of s_admin
@@ -117,7 +119,7 @@ CREATE TABLE `s_config` (
   `val` varchar(255) DEFAULT NULL COMMENT '值',
   `descr` varchar(255) DEFAULT NULL COMMENT '描述',
   PRIMARY KEY (`key`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='配置表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='配置表';
 
 -- ----------------------------
 -- Table structure for s_log
@@ -131,7 +133,7 @@ CREATE TABLE `s_log` (
   `log_params` varchar(255) DEFAULT NULL COMMENT '参数',
   `log_create_time` datetime DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=62 DEFAULT CHARSET=utf8 COMMENT='日志表';
+) ENGINE=InnoDB AUTO_INCREMENT=62 DEFAULT CHARSET=utf8mb4 COMMENT='日志表';
 
 -- ----------------------------
 -- Table structure for s_module
@@ -149,7 +151,7 @@ CREATE TABLE `s_module` (
   `deleted` bit(1) DEFAULT b'0' COMMENT '是否删除',
   PRIMARY KEY (`id`),
   UNIQUE KEY `module_path` (`mod_path`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=127 DEFAULT CHARSET=utf8 COMMENT='后台模块';
+) ENGINE=InnoDB AUTO_INCREMENT=127 DEFAULT CHARSET=utf8mb4 COMMENT='后台模块';
 
 -- ----------------------------
 -- Records of s_module
@@ -196,7 +198,7 @@ CREATE TABLE `s_msg` (
   `content` text COMMENT '内容',
   `create_time` datetime DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='系统消息';
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COMMENT='系统消息';
 
 -- ----------------------------
 -- Table structure for s_role
@@ -211,7 +213,7 @@ CREATE TABLE `s_role` (
   `deleted` bit(1) DEFAULT b'0' COMMENT '是否删除 1-是 0-否',
   PRIMARY KEY (`id`),
   UNIQUE KEY `t_role_name` (`role_name`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=10003 DEFAULT CHARSET=utf8 COMMENT='后台用户组';
+) ENGINE=InnoDB AUTO_INCREMENT=10003 DEFAULT CHARSET=utf8mb4 COMMENT='后台用户组';
 
 -- ----------------------------
 -- Records of s_role
@@ -244,7 +246,7 @@ CREATE TABLE `t_user` (
   `extend` json DEFAULT NULL COMMENT '拓展字段',
   PRIMARY KEY (`id`),
   UNIQUE KEY `t_user_phone` (`phone`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=10043 DEFAULT CHARSET=utf8 COMMENT='用户';
+) ENGINE=InnoDB AUTO_INCREMENT=10043 DEFAULT CHARSET=utf8mb4 COMMENT='用户';
 
 -- ----------------------------
 -- Records of t_user

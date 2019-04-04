@@ -1,6 +1,6 @@
 package com.jf.service.system;
 
-import com.jf.database.mapper.manage.AddressMapper;
+import com.jf.mapper.AddressMapper;
 import com.jf.database.model.manage.Address;
 import org.springframework.stereotype.Service;
 

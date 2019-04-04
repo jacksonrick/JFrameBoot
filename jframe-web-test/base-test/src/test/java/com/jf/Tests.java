@@ -1,8 +1,5 @@
 package com.jf;
 
-import com.jf.database.mapper.ITestMapper;
-import com.jf.database.mapper.TestMapper;
-import com.jf.database.mapper.manage.AdminMapper;
 import com.jf.database.model.User;
 import com.jf.json.JacksonUtil;
 import com.jf.service.TxService;
@@ -51,20 +48,6 @@ public class Tests {
     public void test4() {
         User list = userService.testTypeHandlerForFind();
         System.out.println(JacksonUtil.objectToJson(list));
-    }
-
-
-    @Resource
-    private ITestMapper iTestMapper;
-    @Resource
-    private AdminMapper adminMapper;
-
-    @Test
-    public void test5() {
-        // 相同包名
-        // 接口类不能相同
-        System.out.println(iTestMapper.find());
-        System.out.println(adminMapper.findById(10000));
     }
 
 }

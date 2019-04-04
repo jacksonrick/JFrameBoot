@@ -1,5 +1,6 @@
 package com.jf.system.freemarker;
 
+import com.jf.string.JFunction;
 import freemarker.template.TemplateMethodModel;
 import freemarker.template.TemplateModelException;
 
@@ -23,18 +24,9 @@ public class TemplateMethod implements TemplateMethodModel {
         }
 
         if ("phone".equals(key)) { // 手机号格式化
-            if (value.length() == 11) {
-                return value.substring(0, 3) + "****" + value.substring(7, 11);
-            }
-            return value.substring(0, 3) + "********";
+            return JFunction.formatPhone(value);
         } else if ("idcard".equals(key)) { // 身份证号码
-            if (value.length() == 18) {
-                return value.substring(0, 6) + "********" + value.substring(14, 18);
-            }
-            if (value.length() == 15) {
-                return value.substring(0, 6) + "*****" + value.substring(11, 15);
-            }
-            return value.substring(0, 6) + "*********";
+            return JFunction.formatIdcard(value);
         } else {
             return "doesn't support this key.";
         }

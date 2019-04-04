@@ -53,6 +53,7 @@ public class ExcelWriterSXSSAuto<T> {
                 .append(".xlsx").toString();
         // 创建sheet
         sheet = workbook.createSheet("sheet1");
+        // sheet.setRandomAccessWindowSize(-1);
         // 产生Excel表头
         Row header = sheet.createRow(0);
 

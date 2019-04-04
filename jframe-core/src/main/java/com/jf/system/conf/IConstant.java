@@ -9,8 +9,9 @@ package com.jf.system.conf;
  */
 public class IConstant {
 
-    // redis uid prefix
-    public final static String PREFIX = "UID";
+    // redis token prefix
+    public final static String TOKEN_PREFIX = "token:";
+    public final static String TOKEN_UID_PREFIX = TOKEN_PREFIX + "uid:";
     // exclude path
     public final static String[] excludePathPatterns = {"/static/**", "/images/**", "/js/**", "/css/**", "/error/**"};
 

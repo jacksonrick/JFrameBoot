@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+	<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.jf.mapper.AddressMapper">
+
+	<sql id="addressCondition">
+		<where>
+			<if test="level != null">AND `level` = #{level}</if>
+			<if test="parent != null">AND parent = #{parent}</if>
+		</where>
+	</sql>
+
+	<sql id="baseColumn">
+		id,
+		parent,
+		`name`,
+		`level`
+	</sql>
+
+	<resultMap type="address" id="addressResultMap">
+		<id property="id" column="id" />
+		<result property="parent" column="parent" />
+		<result property="name" column="name" />
+		<result property="level" column="level" />
+	</resultMap>
+
+	<select id="findByCondition" resultMap="addressResultMap" parameterType="baseVo">
+		SELECT <include refid="baseColumn"></include> 
+		FROM s_address
+		<include refid="addressCondition"></include>
+	</select>
+
+	<insert id="insert" parameterType="address">
+		INSERT INTO s_address (
+			parent,
+			`name`,
+			`level`
+		)
+		VALUE (
+			#{parent},
+			#{name},
+			#{level}
+		)
+	</insert>
+
+	<update id="update" parameterType="address">
+		UPDATE s_address
+		<set>
+			<if test="name != null and name != ''">`name` = #{name},</if>
+			<if test="parent != null">parent = #{parent},</if>
+			<if test="level != null">`level` = #{level},</if>
+		</set>
+		WHERE id = #{id}
+	</update>
+
+	<delete id="delete" parameterType="int">
+		DELETE FROM s_address
+		WHERE id = #{id}
+	</delete>
+
+</mapper>

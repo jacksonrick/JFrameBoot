@@ -1,7 +1,7 @@
 package com.jf.service.system;
 
 import com.github.pagehelper.PageInfo;
-import com.jf.database.mapper.manage.LogMapper;
+import com.jf.mapper.LogMapper;
 import com.jf.database.model.manage.Admin;
 import com.jf.database.model.manage.Log;
 import com.jf.system.conf.IConstant;

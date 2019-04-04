@@ -12,6 +12,8 @@ public @interface Token {
 
     boolean need() default true;
 
+    boolean useCache() default true;
+
     String name() default "token";
 
     String type() default "header";

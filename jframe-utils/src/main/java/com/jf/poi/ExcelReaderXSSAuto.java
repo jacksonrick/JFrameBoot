@@ -3,7 +3,6 @@ package com.jf.poi;
 import com.jf.annotation.excel.Fields;
 import com.jf.date.DateUtil;
 import org.apache.poi.openxml4j.util.ZipSecureFile;
-import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.xssf.usermodel.XSSFCell;
@@ -33,7 +32,6 @@ public class ExcelReaderXSSAuto {
         List<Wage> list = xss.read(is, Wage.class);
     */
 
-    private POIFSFileSystem fs;
     private XSSFWorkbook wb;
     private XSSFSheet sheet;
     private XSSFRow row;
@@ -55,7 +53,7 @@ public class ExcelReaderXSSAuto {
         sheet = wb.getSheetAt(0);
         // 读取总行数
         int rowNum = sheet.getLastRowNum();
-        // 第一列-标题
+        // 第一行-标题
         XSSFRow row0 = sheet.getRow(0);
         // 读取总列数
         int colNum = row0.getPhysicalNumberOfCells();

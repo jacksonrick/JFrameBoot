@@ -2,8 +2,8 @@ package com.jf.service.system;
 
 import com.github.pagehelper.PageInfo;
 import com.jf.encrypt.PasswordUtil;
-import com.jf.database.mapper.manage.AdminMapper;
-import com.jf.database.mapper.manage.MsgMapper;
+import com.jf.mapper.AdminMapper;
+import com.jf.mapper.MsgMapper;
 import com.jf.database.model.manage.Admin;
 import com.jf.database.model.manage.Msg;
 import com.jf.string.StringUtil;
