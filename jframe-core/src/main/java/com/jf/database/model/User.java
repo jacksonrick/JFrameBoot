@@ -1,5 +1,6 @@
 package com.jf.database.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.jf.database.model.custom.BaseVo;
 import com.jf.database.model.custom.Extend;
@@ -9,6 +10,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.constraints.Pattern;
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.TreeMap;
 
@@ -23,7 +25,7 @@ public class User extends BaseVo implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /** id */
-    private Integer id;
+    private Long id;
 
     /** 昵称 */
     @NotEmpty(message = "昵称不能为空")
@@ -71,12 +73,22 @@ public class User extends BaseVo implements Serializable {
 
     /** 出生日期 */
     //@DateTimeFormat(pattern = "yyyy-MM-dd")
+    //@JsonFormat(pattern = "yyyy-MM-dd")
     private String birthday;
 
     /** 是否删除 1-是 0-否(默认) */
     private Boolean deleted;
 
-    // 拓展字段 JSON&stringarr
+    /** 是否锁定登陆 1-是 0-否(默认) */
+    private Boolean locked;
+
+    /** 密码错误次数 */
+    private Integer wrongPwd;
+
+    /** APP登陆token */
+    private String token;
+
+    // 拓展字段 Mybatis typeHandler属性
     private Extend extend;
     private TreeMap params;
     private String[] arr;
@@ -84,16 +96,16 @@ public class User extends BaseVo implements Serializable {
     public User() {
     }
 
-    public User(Integer id) {
+    public User(Long id) {
         super();
         this.id = id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return this.id;
     }
 
@@ -209,6 +221,30 @@ public class User extends BaseVo implements Serializable {
         return this.deleted;
     }
 
+    public Boolean getLocked() {
+        return locked;
+    }
+
+    public void setLocked(Boolean locked) {
+        this.locked = locked;
+    }
+
+    public Integer getWrongPwd() {
+        return wrongPwd;
+    }
+
+    public void setWrongPwd(Integer wrongPwd) {
+        this.wrongPwd = wrongPwd;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
     public Extend getExtend() {
         return extend;
     }
@@ -251,10 +287,115 @@ public class User extends BaseVo implements Serializable {
                 ", address='" + address + '\'' +
                 ", birthday='" + birthday + '\'' +
                 ", deleted=" + deleted +
+                ", locked=" + locked +
+                ", wrongPwd=" + wrongPwd +
+                ", token=" + token +
                 ", extend=" + extend +
                 ", params=" + params +
-                ", arr=" + arr +
+                ", arr=" + Arrays.toString(arr) +
                 '}';
+    }
+
+
+    public static final class Builder {
+        private User user;
+
+        private Builder() {
+            user = new User();
+        }
+
+        public static Builder anUser() {
+            return new Builder();
+        }
+
+        public Builder id(Long id) {
+            user.setId(id);
+            return this;
+        }
+
+        public Builder nickname(String nickname) {
+            user.setNickname(nickname);
+            return this;
+        }
+
+        public Builder phone(String phone) {
+            user.setPhone(phone);
+            return this;
+        }
+
+        public Builder email(String email) {
+            user.setEmail(email);
+            return this;
+        }
+
+        public Builder password(String password) {
+            user.setPassword(password);
+            return this;
+        }
+
+        public Builder avatar(String avatar) {
+            user.setAvatar(avatar);
+            return this;
+        }
+
+        public Builder money(Double money) {
+            user.setMoney(money);
+            return this;
+        }
+
+        public Builder createTime(Date createTime) {
+            user.setCreateTime(createTime);
+            return this;
+        }
+
+        public Builder lastLoginTime(Date lastLoginTime) {
+            user.setLastLoginTime(lastLoginTime);
+            return this;
+        }
+
+        public Builder realname(String realname) {
+            user.setRealname(realname);
+            return this;
+        }
+
+        public Builder idcard(String idcard) {
+            user.setIdcard(idcard);
+            return this;
+        }
+
+        public Builder gender(Boolean gender) {
+            user.setGender(gender);
+            return this;
+        }
+
+        public Builder address(String address) {
+            user.setAddress(address);
+            return this;
+        }
+
+        public Builder birthday(String birthday) {
+            user.setBirthday(birthday);
+            return this;
+        }
+
+        public Builder deleted(Boolean deleted) {
+            user.setDeleted(deleted);
+            return this;
+        }
+
+        public Builder locked(Boolean locked) {
+            user.setLocked(locked);
+            return this;
+        }
+
+        public Builder wrongPwd(Integer wrongPwd) {
+            user.setWrongPwd(wrongPwd);
+            return this;
+        }
+
+        public User build() {
+            return user;
+        }
     }
 }
 

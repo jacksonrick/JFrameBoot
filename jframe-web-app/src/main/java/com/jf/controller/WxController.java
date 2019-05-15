@@ -31,7 +31,7 @@ import java.util.Map;
  * Time: 11:45
  */
 @Controller
-public class WController {
+public class WxController {
 
     @Resource
     private RestClient restClient;

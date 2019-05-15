@@ -1,7 +1,7 @@
 package com.jf.system.conf;
 
-import com.luhuiguo.fastdfs.conn.*;
-import com.luhuiguo.fastdfs.service.*;
+import com.jf.sdk.fdfs.conn.*;
+import com.jf.sdk.fdfs.service.*;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;

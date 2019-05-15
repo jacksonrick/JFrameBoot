@@ -6,6 +6,7 @@ import com.jf.database.model.User;
 import com.jf.database.model.custom.IdText;
 import com.jf.database.model.excel.UserModel;
 import com.jf.encrypt.PasswordUtil;
+import com.jf.string.IdGen;
 import com.jf.string.StringUtil;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -33,7 +34,7 @@ public class UserService {
      * @return
      */
     @Cacheable(value = "user", key = "'findUserById'+#id")
-    public User findUserById(Integer id) {
+    public User findUserById(Long id) {
         return userMapper.findById(id);
     }
 
@@ -46,9 +47,6 @@ public class UserService {
      */
     @CacheEvict(value = "user", key = "'findUserById'+#user.id")
     public int updateUser(User user) {
-        if (StringUtil.isNotBlank(user.getPassword())) {
-            user.setPassword(PasswordUtil.MD5Encode(user.getPassword()));
-        }
         return userMapper.update(user);
     }
 
@@ -84,7 +82,7 @@ public class UserService {
      * @param field
      * @return
      */
-    public Object findFieleByUserId(Integer userId, String field) {
+    public Object findFieleByUserId(Long userId, String field) {
         return userMapper.findFieleByUserId(userId, field);
     }
 
@@ -142,7 +140,7 @@ public class UserService {
      * @return
      */
     public User findUserByNameAndPwd(String account, String password) {
-        return userMapper.findByNameAndPwd(account, PasswordUtil.MD5Encode(password));
+        return userMapper.findByNameAndPwd(account, password);
     }
 
     /**
@@ -166,9 +164,9 @@ public class UserService {
      * @return
      */
     public int insertUser(String nickname, String email, String password, String phone) {
-        User user = new User();
+        User user = new User(IdGen.get().nextId());
         user.setEmail(email);
-        user.setPassword(PasswordUtil.MD5Encode(password));
+        user.setPassword(password);
         user.setPhone(phone);
         user.setNickname(nickname);
         // 新增用户
@@ -181,7 +179,7 @@ public class UserService {
      * @param userId
      * @return
      */
-    public int deleteUser(Integer userId) {
+    public int deleteUser(Long userId) {
         return userMapper.delete(userId);
     }
 
@@ -191,7 +189,7 @@ public class UserService {
      * @param ids
      * @return
      */
-    public int deleteBatch(Integer[] ids) {
+    public int deleteBatch(Long[] ids) {
         return userMapper.deleteBatch(ids);
     }
 

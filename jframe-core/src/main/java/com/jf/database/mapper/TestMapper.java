@@ -20,24 +20,12 @@ public interface TestMapper {
 
 	User findSimpleById(Integer id);
 
-	int findCountByKey(@Param("key") String key, @Param("val") String val);
-
-	User findByNameAndPwd(@Param("account") String account, @Param("password") String password);
-
-	Object findFieleByUserId(@Param("userId") Integer userId, @Param("field") String field);
-
-	List<IdText> findUserLikePhone(String phone);
-
 	int insert(User bean);
 
 	int update(User bean);
 
-	int delete(Integer id);
 
-	int deleteBatch(@Param("ids") Integer[] ids);
-
-
-
+	// 测试Mybatis typeHandler
 	User findUserById(Integer id);
 
 	User findUserById2(Integer id);

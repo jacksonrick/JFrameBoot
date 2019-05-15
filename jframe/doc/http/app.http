@@ -6,31 +6,28 @@
 # * 'mptr' and 'fptr' create a POST request to submit a form with a text or file field (multipart/form-data);
 
 ######## For APP ########
-
-POST {{host}}/test?name=fei&type=123
+POST {{host}}/app/register?phone=17755451875&password=5d24bbbe2fe58aba66827aa870004c79&sms=377204
 Accept: */*
 Cache-Control: no-cache
-
-###
-POST {{host}}/testError2
-Accept: */*
-Cache-Control: no-cache
+Req-Type: APP
 X-Requested-With: XMLHttpRequest
 
 ###
-GET {{host}}/app/findUser
-Req-Type: APP
-token: {{token}}
-
-###
-GET {{host}}/app/token?param=1234
+POST {{host}}/app/login?phone=17755451874&password=5d24bbbe2fe58aba66827aa870004c791
 Accept: */*
 Cache-Control: no-cache
 Req-Type: APP
-token: {{token}}
+X-Requested-With: XMLHttpRequest
 
 ###
-GET {{host}}/app/login?userId=10001
+POST {{host}}/app/sms?phone=17755451875&codeType=reg
+Accept: */*
+Cache-Control: no-cache
+Req-Type: APP
+X-Requested-With: XMLHttpRequest
+
+###
+POST {{host}}/app/pwd/forget?phone=17755451873&password=5d24bbbe2fe58aba66827aa870004c79&sms=749950
 Accept: */*
 Cache-Control: no-cache
 Req-Type: APP

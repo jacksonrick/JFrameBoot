@@ -28,54 +28,79 @@
         </plugins>
     </build>
 
-    <!-- 如果以下包没有在实际生产中用到，可以将scope设置为provided或test -->
+    <properties>
+        <spring.core.version>5.1.2.RELEASE</spring.core.version>
+        <mysql.version>5.1.45</mysql.version>
+        <postgresql.version>42.2.2</postgresql.version>
+        <servlet.version>3.1.0</servlet.version>
+        <slf4j.version>1.7.25</slf4j.version>
+        <log4j.version>1.2.17</log4j.version>
+        <jackson.version>2.9.5</jackson.version>
+        <freemarker.version>2.3.28</freemarker.version>
+        <poi.version>3.17</poi.version>
+        <itextpdf.version>5.5.9</itextpdf.version>
+        <itextasian.version>5.2.0</itextasian.version>
+        <jdom.version>1.1</jdom.version>
+        <dom4j.version>1.6.1</dom4j.version>
+        <xstream.version>1.4.8</xstream.version>
+        <mail.version>1.4.7</mail.version>
+        <qrcode.version>3.3.1</qrcode.version>
+        <aliyunecs.version>4.0.2</aliyunecs.version>
+    </properties>
+
     <!-- provided | test | compile -->
+    <!-- 以下为外部提供 -->
     <dependencies>
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-            <version>5.1.45</version>
+            <version>${mysql.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
-            <version>42.2.2</version>
+            <version>${postgresql.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
-            <version>3.1.0</version>
+            <version>${servlet.version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-log4j12</artifactId>
-            <version>1.7.25</version>
+            <version>${slf4j.version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>log4j</groupId>
             <artifactId>log4j</artifactId>
-            <version>1.2.17</version>
+            <version>${log4j.version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
-            <version>2.9.5</version>
+            <version>${jackson.version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.freemarker</groupId>
             <artifactId>freemarker</artifactId>
-            <version>2.3.28</version>
+            <version>${freemarker.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-core</artifactId>
+            <version>${spring.core.version}</version>
             <scope>provided</scope>
         </dependency>
 
-        <!-- provided end -->
-
+        <!-- 以下Jar包必要 -->
         <dependency>
             <groupId>axis</groupId>
             <artifactId>axis</artifactId>
@@ -91,7 +116,6 @@
             <artifactId>ant</artifactId>
             <version>1.7.0</version>
         </dependency>
-
         <!-- commons -->
         <dependency>
             <groupId>commons-io</groupId>
@@ -113,7 +137,16 @@
             <artifactId>commons-beanutils</artifactId>
             <version>1.8.0</version>
         </dependency>
-
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-pool2</artifactId>
+            <version>2.4.2</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-collections</groupId>
+            <artifactId>commons-collections</artifactId>
+            <version>3.2.2</version>
+        </dependency>
         <!-- httpclient -->
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
@@ -125,21 +158,18 @@
             <artifactId>commons-httpclient</artifactId>
             <version>3.1</version>
         </dependency>
-
         <!-- joda time -->
         <dependency>
             <groupId>joda-time</groupId>
             <artifactId>joda-time</artifactId>
             <version>2.10.1</version>
         </dependency>
-
         <!-- pagehelper -->
         <dependency>
             <groupId>com.github.pagehelper</groupId>
             <artifactId>pagehelper</artifactId>
             <version>5.1.2</version>
         </dependency>
-
         <!-- fastjson -->
         <dependency>
             <groupId>com.alibaba</groupId>
@@ -153,34 +183,40 @@
         <dependency>
             <groupId>org.apache.poi</groupId>
             <artifactId>poi</artifactId>
-            <version>3.17</version>
+            <version>${poi.version}</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.apache.poi</groupId>
             <artifactId>poi-ooxml</artifactId>
-            <version>3.17</version>
+            <version>${poi.version}</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.apache.poi</groupId>
             <artifactId>poi-ooxml-schemas</artifactId>
-            <version>3.17</version>
+            <version>${poi.version}</version>
+            <scope>provided</scope>
         </dependency>
 
         <!-- pdf -->
         <dependency>
             <groupId>com.itextpdf</groupId>
             <artifactId>itextpdf</artifactId>
-            <version>5.5.9</version>
+            <version>${itextpdf.version}</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.itextpdf</groupId>
             <artifactId>itext-asian</artifactId>
-            <version>5.2.0</version>
+            <version>${itextasian.version}</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.itextpdf.tool</groupId>
             <artifactId>xmlworker</artifactId>
-            <version>5.5.9</version>
+            <version>${itextpdf.version}</version>
+            <scope>provided</scope>
         </dependency>
 
         <!-- xml -->
@@ -188,46 +224,53 @@
             <groupId>org.jdom</groupId>
             <artifactId>jdom</artifactId>
             <version>1.1</version>
+            <scope>${jdom.version}</scope>
         </dependency>
         <dependency>
             <groupId>dom4j</groupId>
             <artifactId>dom4j</artifactId>
-            <version>1.6.1</version>
+            <version>${dom4j.version}</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.thoughtworks.xstream</groupId>
             <artifactId>xstream</artifactId>
-            <version>1.4.8</version>
+            <version>${xstream.version}</version>
+            <scope>provided</scope>
         </dependency>
 
         <!-- java mail -->
         <dependency>
             <groupId>javax.mail</groupId>
             <artifactId>mail</artifactId>
-            <version>1.4.7</version>
+            <version>${mail.version}</version>
+            <scope>provided</scope>
         </dependency>
 
         <!-- qrcode -->
         <dependency>
             <groupId>com.google.zxing</groupId>
             <artifactId>core</artifactId>
-            <version>3.3.1</version>
+            <version>${qrcode.version}</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.google.zxing</groupId>
             <artifactId>javase</artifactId>
-            <version>3.3.1</version>
+            <version>${qrcode.version}</version>
+            <scope>provided</scope>
         </dependency>
 
         <!-- aliyun esc -->
         <dependency>
             <groupId>com.aliyun</groupId>
             <artifactId>aliyun-java-sdk-core</artifactId>
-            <version>4.0.2</version>
+            <version>${aliyunecs.version}</version>
+            <scope>provided</scope>
         </dependency>
 
         <!-- 第三方Jar包 -->
-        <!-- 注意：外部导入的Jar无法打包，必须将jar包复制到maven本地仓库中 -->
+        <!-- 注意：外部导入的Jar无法打包，必须将jar包复制到maven本地仓库中，或建立maven私服 -->
 
     </dependencies>
 

@@ -17,4 +17,6 @@ public interface TokenMapper {
 
     int update(Token token);
 
+    int delete(String uid);
+
 }

@@ -63,47 +63,6 @@ public class PageDemoController extends BaseController {
         return "demo/" + path;
     }
 
-    @RequestMapping("/login")
-    @ResponseBody
-    public ResMsg login(String account) {
-        return new ResMsg(ResCode.SUCCESS.code(), ResCode.SUCCESS.msg(), account);
-    }
-
-    @RequestMapping("/users")
-    @ResponseBody
-    public PageInfo users(Integer pageNo, String pageSort, String keywords) {
-        User condition = new User();
-        condition.setKeywords(keywords);
-        condition.setPageNo(pageNo);
-        if (StringUtil.isBlank(pageSort)) {
-            condition.setPageSort("id DESC");
-        } else {
-            condition.setPageSort(pageSort);
-        }
-        return userService.findUserByPage(condition);
-    }
-
-    @RequestMapping("/users2")
-    @ResponseBody
-    public ResMsg users2() {
-        User condition = new User();
-        List<User> list = userService.findByCondition(condition);
-        return new ResMsg(ResCode.SUCCESS.code(), ResCode.SUCCESS.msg(), list);
-    }
-
-    @RequestMapping("/findUsers")
-    @ResponseBody
-    public List<IdText> findUsers(String phone) {
-        return userService.findUserLikePhone(phone);
-    }
-
-    @RequestMapping("/user")
-    @ResponseBody
-    public ResMsg user() {
-
-        return new ResMsg(ResCode.SUCCESS.code(), ResCode.SUCCESS.msg());
-    }
-
     @RequestMapping("/chartData")
     @ResponseBody
     public List<String[]> chartData() {

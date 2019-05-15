@@ -28,6 +28,7 @@ spring:
     active: app-dev # 指定应用和环境 {0}-{1}  0：表示应用，1：表示环境(固定：dev、test、pro)
   application:
     name: JFRAME-APP
+    simple: app
   jmx:
     enabled: true
   cache: # 缓存设置
@@ -268,7 +269,7 @@ system: # 系统自定义配置
 # 环境配置说明：
 # 1、spring.profiles.active必须严格按照注释命名
 # 2、spring.application.simple为应用简称，必须指定，否则日志不生效
-# 3、生产环境务必配置好静态文件路径和URL前缀、日志路径、数据库等，开发环境可以使用默认不配置
+# 3、生产环境务必配置好静态文件路径和URL前缀、日志路径、数据库等，开发环境可以使用`默认`不配置
 # 4、可复写以上公共配置
 # 5、环境指定：spring.profiles.active=app-dev
 

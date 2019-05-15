@@ -44,7 +44,7 @@ public class RedisController extends BaseController {
     @RequestMapping("/testCache2")
     @ResponseBody
     public ResMsg testCache2() {
-        User user = new User(10000);
+        User user = new User(10000l);
         user.setMoney(1000d);
         userService.updateUser(user);
         return new ResMsg(ResCode.SUCCESS.code(), ResCode.SUCCESS.msg());

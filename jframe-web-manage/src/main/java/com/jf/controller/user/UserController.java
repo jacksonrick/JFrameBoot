@@ -80,7 +80,7 @@ public class UserController extends BaseController {
     @RequestMapping("/userEnable")
     @AuthPassport
     @ResponseBody
-    public ResMsg userEnable(Integer userId, HttpServletRequest request) {
+    public ResMsg userEnable(Long userId, HttpServletRequest request) {
         if (userId == null) {
             return new ResMsg(ResCode.CODE_22.code(), ResCode.CODE_22.msg());
         }
@@ -107,7 +107,7 @@ public class UserController extends BaseController {
         String nickname = user.getNickname();
         String phone = user.getPhone();
         String email = user.getEmail();
-        Integer userId = user.getId();
+        Long userId = user.getId();
         if (userId != null) {
             User t = userService.findUserById(userId);
             if (!phone.equals(t.getPhone())) {
@@ -139,7 +139,7 @@ public class UserController extends BaseController {
      */
     @RequestMapping("/userDetail")
     @AuthPassport
-    public String userDetail(Integer userId, ModelMap map) {
+    public String userDetail(Long userId, ModelMap map) {
         if (userId != null) {
             User user = userService.findUserById(userId);
             map.addAttribute("user", user);

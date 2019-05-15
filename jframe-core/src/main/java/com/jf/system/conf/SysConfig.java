@@ -379,9 +379,18 @@ public class SysConfig {
     }
 
     public static class Jpush {
+        private String name;
         private String appkey;
         private String secret;
         private Boolean iosProduct; // IOS开发环境-false，生产环境-true
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
 
         public String getAppkey() {
             return appkey;
@@ -410,7 +419,8 @@ public class SysConfig {
         @Override
         public String toString() {
             return "Jpush{" +
-                    "appkey='" + appkey + '\'' +
+                    "name='" + name + '\'' +
+                    ", appkey='" + appkey + '\'' +
                     ", secret='" + secret + '\'' +
                     ", iosProduct='" + iosProduct + '\'' +
                     '}';

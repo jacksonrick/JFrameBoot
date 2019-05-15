@@ -21,42 +21,8 @@ public class IndexController {
 
     @RequestMapping("/test")
     @ResponseBody
-    public ResMsg test(String name, String type) {
-        return new ResMsg(ResCode.SUCCESS.code(), ResCode.SUCCESS.msg(), name);
+    public ResMsg test() {
+        return ResMsg.success();
     }
 
-    @RequestMapping("/testError")
-    @ResponseBody
-    public ResMsg testError() {
-        System.out.println(1 / 0);
-        return new ResMsg(ResCode.SUCCESS.code(), ResCode.SUCCESS.msg());
-    }
-
-    @RequestMapping("/user")
-    @ResponseBody
-    @Login
-    public ResMsg user() {
-        return new ResMsg(0, "user");
-    }
-
-    @RequestMapping("/loginPage")
-    public String loginPage() {
-        return "login";
-    }
-
-    @RequestMapping("/login")
-    @ResponseBody
-    public ResMsg login(HttpSession session) {
-        User user = new User(10000);
-        user.setNickname("feifei");
-        session.setAttribute(IConstant.SESSION_USER, user);
-        return new ResMsg(0, "SUCCESS", user);
-    }
-
-    @RequestMapping("/logout")
-    @ResponseBody
-    public ResMsg logout(HttpSession session) {
-        session.removeAttribute(IConstant.SESSION_USER);
-        return new ResMsg(0, "SUCCESS", "logout");
-    }
 }

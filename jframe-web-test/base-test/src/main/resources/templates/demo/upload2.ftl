@@ -17,20 +17,61 @@
         <form class="dropzone dz-clickable" id="uploads" method="post" enctype="multipart/form-data">
             <div class="dz-message">
                 拖拽文件到此可以上传或者直接点击蓝色虚线框处<br>
-                <span class="note">最多<span class="span-color" id="limit"> 3 </span> 个文件，每个文件最多<span class="span-color"> 3 </span>MB</span>
             </div>
         </form>
     </div>
 </div>
-
-<form class="dropzone" id="uploads" method="post" enctype="multipart/form-data"></form>
-
 <button class="btn btn-info" id="btnUp">上传</button>
-<button class="btn btn-info" id="btnGet">获取</button>
+
+<div class="drop-main">
+    <div id="dropzone">
+        <form class="dropzone dz-clickable" id="uploads2" method="post" enctype="multipart/form-data">
+            <div class="dz-message">
+                拖拽文件到此可以上传或者直接点击蓝色虚线框处<br>
+            </div>
+        </form>
+    </div>
+</div>
+<button class="btn btn-info" id="btnUp2">续传</button>
 
 <script type="text/javascript" src="/static/library/jquery/jquery-1.11.2.min.js"></script>
 <script type="text/javascript" src="/static/library/plugins/dropzone/dropzone.js"></script>
-<script type="text/javascript" src="/static/library/plugins/layer/layer.js"></script>
-<script type="text/javascript" src="/static/common/js/upload.js"></script>
+<script>
+    $(function () {
+        Dropzone.autoDiscover = false;
+        var myDropzone = new Dropzone("#uploads", {
+            url: "/uploadAppend?append=0",
+            autoProcessQueue: false,
+            paramName: "file",
+            maxFiles: 5,
+            maxFilesize: 1024,
+            addRemoveLinks: true
+        });
+
+        var myDropzone2;
+        myDropzone.on("success", function (data) {
+            var ret = data.xhr.responseText;
+            console.log(ret)
+            var path = $.parseJSON(ret).url;
+
+            myDropzone2 = new Dropzone("#uploads2", {
+                url: "/uploadAppend?append=1&path=" + path,
+                autoProcessQueue: false,
+                paramName: "file",
+                maxFiles: 5,
+                maxFilesize: 1024,
+                addRemoveLinks: true
+            });
+        });
+
+        $("#btnUp").click(function () {
+            myDropzone.processQueue();
+        });
+
+        $("#btnUp2").click(function () {
+            myDropzone2.processQueue();
+        });
+    });
+</script>
 </body>
 </html>

@@ -224,6 +224,18 @@ INSERT INTO `s_role` VALUES (10001, '运维组', '2,124,125', 1, '2018-07-17 17:
 COMMIT;
 
 -- ----------------------------
+-- Table structure for s_token
+-- ----------------------------
+DROP TABLE IF EXISTS `s_token`;
+CREATE TABLE `s_token`  (
+  `uid` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `token` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `created` datetime(0) NULL DEFAULT CURRENT_TIMESTAMP(0),
+  `expired` datetime(0) NOT NULL,
+  PRIMARY KEY (`uid`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Token';
+
+-- ----------------------------
 -- Table structure for t_user
 -- ----------------------------
 DROP TABLE IF EXISTS `t_user`;

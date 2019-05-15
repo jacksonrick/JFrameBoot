@@ -2,6 +2,7 @@ package com.jf.service;
 
 import com.jf.database.mapper.TestMapper;
 import com.jf.database.model.User;
+import com.jf.string.IdGen;
 import org.springframework.aop.framework.AopContext;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -24,7 +25,7 @@ public class TxService {
 
     @Transactional
     public void tx1() {
-        User user1 = new User();
+        User user1 = new User(IdGen.get().nextId());
         user1.setNickname("tx1");
         user1.setPassword("1111");
         testMapper.insert(user1);
@@ -37,7 +38,7 @@ public class TxService {
 
     @Transactional
     public void tx2() {
-        User user2 = new User();
+        User user2 = new User(IdGen.get().nextId());
         user2.setNickname("tx2");
         user2.setPassword("1111");
         testMapper.insert(user2);
@@ -47,7 +48,7 @@ public class TxService {
 
     @Async
     public void asy() {
-        User user3 = new User();
+        User user3 = new User(IdGen.get().nextId());
         user3.setNickname("tx3");
         user3.setPassword("1111");
         testMapper.insert(user3);

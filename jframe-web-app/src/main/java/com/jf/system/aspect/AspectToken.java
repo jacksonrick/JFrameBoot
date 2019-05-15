@@ -1,7 +1,7 @@
 package com.jf.system.aspect;
 
 import com.jf.annotation.Token;
-import com.jf.database.mapper.TokenMapper;
+import com.jf.common.TokenHandler;
 import com.jf.entity.enums.ResCode;
 import com.jf.string.StringUtil;
 import com.jf.system.conf.IConstant;
@@ -41,7 +41,7 @@ public class AspectToken {
     @Autowired(required = false)
     private RedisTemplate redisTemplate;
     @Autowired
-    private TokenMapper tokenMapper;
+    private TokenHandler tokenHandler;
 
     @Pointcut("@annotation(com.jf.annotation.Token)")
     public void token() {
@@ -75,16 +75,17 @@ public class AspectToken {
                     if (StringUtil.isBlank(token)) {
                         return pjp.proceed();
                     } else {
-                        Integer uid = (Integer) redisTemplate.opsForValue().get(token);
-                        if (uid != null) {
-                            if (cache) {
-                                args[0] = getIdByTokenFromRedis(token);
+                        if (cache) {
+                            Long uid = (Long) redisTemplate.opsForValue().get(token);
+                            if (uid != null) {
+                                args[0] = tokenHandler.getIdByTokenFromRedis(token);
+                                return pjp.proceed(args);
                             } else {
-                                args[0] = getIdByTokenFromDb(token);
+                                return pjp.proceed();
                             }
-                            return pjp.proceed(args);
                         } else {
-                            return pjp.proceed();
+                            args[0] = tokenHandler.getIdByTokenFromDb(token);
+                            return pjp.proceed(args);
                         }
                     }
                 } else {
@@ -93,9 +94,9 @@ public class AspectToken {
                     } else {
                         log.info(IConstant.TOKEN_HEADER + " token:" + token);
                         if (cache) {
-                            args[0] = getIdByTokenFromRedis(token);
+                            args[0] = tokenHandler.getIdByTokenFromRedis(token);
                         } else {
-                            args[0] = getIdByTokenFromDb(token);
+                            args[0] = tokenHandler.getIdByTokenFromDb(token);
                         }
                         return pjp.proceed(args);
                     }
@@ -110,16 +111,17 @@ public class AspectToken {
                         if (StringUtil.isBlank(token)) {
                             return pjp.proceed();
                         }
-                        Integer uid = (Integer) redisTemplate.opsForValue().get(token);
-                        if (uid != null) {
-                            if (cache) {
-                                args[0] = getIdByTokenFromRedis(token);
+                        if (cache) {
+                            Long uid = (Long) redisTemplate.opsForValue().get(token);
+                            if (uid != null) {
+                                args[0] = tokenHandler.getIdByTokenFromRedis(token);
+                                return pjp.proceed(args);
                             } else {
-                                args[0] = getIdByTokenFromDb(token);
+                                return pjp.proceed();
                             }
-                            return pjp.proceed(args);
                         } else {
-                            return pjp.proceed();
+                            args[0] = tokenHandler.getIdByTokenFromDb(token);
+                            return pjp.proceed(args);
                         }
                     }
                 } else {
@@ -130,9 +132,9 @@ public class AspectToken {
                     if (StringUtil.isNotBlank(token)) {
                         log.info(IConstant.TOKEN_COOKIE + " token:" + token);
                         if (cache) {
-                            args[0] = getIdByTokenFromRedis(token);
+                            args[0] = tokenHandler.getIdByTokenFromRedis(token);
                         } else {
-                            args[0] = getIdByTokenFromDb(token);
+                            args[0] = tokenHandler.getIdByTokenFromDb(token);
                         }
                         return pjp.proceed(args);
                     } else {
@@ -152,44 +154,6 @@ public class AspectToken {
                 throw new AppException(StringUtil.isBlank(throwable.getMessage()) ? "Null" : throwable.getMessage());
             }
         }
-    }
-
-    /**
-     * From Redis
-     *
-     * @param token
-     * @return
-     */
-    private Integer getIdByTokenFromRedis(String token) {
-        if (token == null || token.length() < 1) {
-            throw new AppTokenException(ResCode.TOKEN_EXP.msg());
-        }
-        Integer uid = (Integer) redisTemplate.opsForValue().get(IConstant.TOKEN_PREFIX + token);
-        if (uid != null) {
-            return uid;
-        } else {
-            throw new AppTokenException(ResCode.TOKEN_EXP.msg());
-        }
-    }
-
-    /**
-     * From DB
-     *
-     * @param token
-     * @return
-     */
-    private Integer getIdByTokenFromDb(String token) {
-        if (token == null || token.length() < 1) {
-            throw new AppTokenException(ResCode.TOKEN_EXP.msg());
-        }
-        com.jf.database.model.Token tk = tokenMapper.findByToken(token);
-        if (tk == null) {
-            throw new AppTokenException(ResCode.TOKEN_EXP.msg());
-        }
-        if (tk.getExpired().getTime() < System.currentTimeMillis()) {
-            throw new AppTokenException(ResCode.TOKEN_EXP.msg());
-        }
-        return Integer.valueOf(tk.getUid());
     }
 
 }

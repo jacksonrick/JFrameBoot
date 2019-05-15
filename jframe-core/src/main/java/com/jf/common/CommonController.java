@@ -2,11 +2,12 @@ package com.jf.common;
 
 import com.jf.date.DateUtil;
 import com.jf.entity.UploadRet;
+import com.jf.sdk.fdfs.domain.StorePath;
+import com.jf.sdk.fdfs.service.AppendFileStorageClient;
+import com.jf.sdk.fdfs.service.FastFileStorageClient;
 import com.jf.string.StringUtil;
 import com.jf.system.conf.IConstant;
 import com.jf.system.conf.SysConfig;
-import com.luhuiguo.fastdfs.domain.StorePath;
-import com.luhuiguo.fastdfs.service.FastFileStorageClient;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -40,6 +41,8 @@ public class CommonController {
 
     @Autowired(required = false)
     private FastFileStorageClient storageClient;
+    @Autowired
+    private AppendFileStorageClient appendFileStorageClient;
 
     /**
      * 错误页面
@@ -247,6 +250,32 @@ public class CommonController {
             StorePath storePath = storageClient.uploadFile(file.getBytes(), suffix);
             String filePath = sysConfig.getFdfsNginx() + storePath.getFullPath();
             return new UploadRet(0, filePath, "SUCCESS");
+        }
+    }
+
+    /**
+     * 断点续传【测试】
+     * <pre>文件上传前需要进行分片</pre>
+     *
+     * @param file    文件域
+     * @param append  是否追加
+     * @param path    返回路径，用于追加文件
+     * @param request
+     * @return
+     * @throws IOException
+     */
+    @RequestMapping(value = "/uploadAppend", method = RequestMethod.POST)
+    @ResponseBody
+    public UploadRet uploadAppend(@RequestParam("file") MultipartFile file, Boolean append,
+                                  String path, HttpServletRequest request) throws IOException {
+        String suffix = StringUtil.getFileType(file.getOriginalFilename());
+        if (append) {
+            appendFileStorageClient.appendFile("group1", path, file.getInputStream(), file.getSize());
+            return new UploadRet(0, path, "APPEND");
+        } else {
+            StorePath store = appendFileStorageClient.uploadAppenderFile("group1", file.getInputStream(),
+                    file.getSize(), suffix);
+            return new UploadRet(0, store.getPath(), "SUCCESS");
         }
     }
 

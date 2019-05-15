@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.jf.database.mapper.SmsMapper">
+
+	<sql id="smsCondition">
+		<where>
+			<if test="phone != null and phone != ''">AND phone = #{phone}</if>
+		</where>
+	</sql>
+
+	<sql id="baseColumn">
+		id,
+		phone,
+		code,
+		create_time
+	</sql>
+
+	<resultMap type="com.jf.database.model.Sms" id="smsResultMap">
+		<id property="id" column="id" />
+		<result property="phone" column="phone" />
+		<result property="code" column="code" />
+		<result property="source" column="source" />
+		<result property="createTime" column="create_time" />
+		<result property="updateTime" column="update_time" />
+		<result property="valided" column="valided" />
+	</resultMap>
+
+	<select id="findByCondition" resultMap="smsResultMap" parameterType="baseVo">
+		SELECT <include refid="baseColumn"></include> 
+		FROM t_sms
+		<include refid="smsCondition"></include>
+	</select>
+
+	<select id="check" resultType="sms" parameterType="string">
+		SELECT id, code, valided
+		FROM t_sms
+		WHERE phone = #{phone} AND create_time &gt;= now() - INTERVAL 5 MINUTE
+		ORDER BY id DESC LIMIT 1
+	</select>
+
+	<select id="findCountByPhone" resultType="int" parameterType="string">
+		SELECT COUNT(1)
+		FROM t_sms
+		WHERE phone = #{phone} AND TIMESTAMPDIFF(SECOND, create_time, CURRENT_TIMESTAMP()) &lt;= 60
+	</select>
+
+	<insert id="insert" parameterType="sms">
+		INSERT INTO t_sms (
+			id,
+			phone,
+			code,
+			source
+		)
+		VALUES (
+			#{id},
+			#{phone},
+			#{code},
+			#{source}
+		)
+	</insert>
+
+	<update id="update" parameterType="long">
+		UPDATE t_sms SET valided = true, update_time = NOW()
+		WHERE id = #{id}
+	</update>
+
+</mapper>

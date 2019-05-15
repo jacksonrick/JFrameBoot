@@ -35,10 +35,12 @@
 		u.gender,
 		u.address,
 		u.birthday,
-		u.deleted
+		u.deleted,
+		u.locked,
+		u.wrong_pwd
     </sql>
 
-    <resultMap type="user" id="userResultMapper">
+    <resultMap type="com.jf.database.model.User" id="userResultMapper">
         <id property="id" column="id" />
         <result property="nickname" column="nickname" />
         <result property="phone" column="phone" />
@@ -54,6 +56,8 @@
         <result property="address" column="address" />
         <result property="birthday" column="birthday" />
         <result property="deleted" column="deleted" />
+        <result property="locked" column="locked" />
+        <result property="wrongPwd" column="wrong_pwd" />
     </resultMap>
 
     <select id="findByCondition" resultMap="userResultMapper" parameterType="baseVo">
@@ -63,31 +67,43 @@
         <include refid="COMMON.ORDER"></include>
     </select>
 
-    <select id="findById" resultMap="userResultMapper" parameterType="int">
+    <select id="findById" resultMap="userResultMapper" parameterType="long">
         SELECT <include refid="baseColumn"></include>
         FROM t_user u
         WHERE u.id = #{id}
     </select>
 
-    <select id="findSimpleById" resultMap="userResultMapper" parameterType="int">
+    <select id="findSimpleById" resultMap="userResultMapper" parameterType="long">
         SELECT <include refid="simpleColumn"></include>
         FROM t_user u
         WHERE u.id = #{id}
     </select>
 
+    <select id="findByPhone" resultMap="userResultMapper" parameterType="string">
+        SELECT <include refid="baseColumn"></include>
+        FROM t_user u
+        WHERE u.phone = #{phone}
+    </select>
+
+    <select id="findIdByPhone" resultType="long" parameterType="string">
+        SELECT id FROM t_user
+        WHERE phone = #{phone}
+    </select>
+
+    <select id="findCountByIdAndPwd" resultType="int">
+        SELECT COUNT(1) FROM t_user u
+        WHERE u.id = #{userId} AND u.password = #{password}
+    </select>
+
     <select id="findCountByKey" resultType="int">
-        SELECT COUNT(1)
-        FROM t_user
+        SELECT COUNT(1) FROM t_user
         WHERE ${key} = #{val}
     </select>
 
-    <select id="findByNameAndPwd" resultMap="userResultMapper" parameterType="string">
+    <select id="findByNameAndPwd" resultMap="userResultMapper">
         SELECT <include refid="baseColumn"></include>
         FROM t_user u
-        WHERE u.id = (
-            SELECT id FROM t_user WHERE phone = #{account} AND password = #{password} UNION
-            SELECT id FROM t_user WHERE nickname = #{account} AND password = #{password}
-        )
+        WHERE u.phone = #{account} AND u.password = #{password}
     </select>
 
     <select id="findFieleByUserId" resultType="object">
@@ -97,9 +113,9 @@
     </select>
 
     <select id="findUserLikePhone" resultType="idText" parameterType="string">
-        SELECT id,nickname AS `text`
+        SELECT id, nickname AS `text`
         FROM t_user
-        WHERE phone LIKE CONCAT('%', #{phone}, '%')
+        WHERE phone LIKE CONCAT(#{phone}, '%')
     </select>
 
     <select id="findForExcel" resultType="userModel" parameterType="baseVo">
@@ -109,20 +125,22 @@
         <include refid="COMMON.ORDER"/>
     </select>
 
-    <insert id="insert" parameterType="user" keyProperty="id" useGeneratedKeys="true">
+    <insert id="insert" parameterType="user">
         INSERT INTO t_user (
-          nickname,
-          phone,
-          email,
-          password,
-          avatar
+            id,
+            nickname,
+            phone,
+            email,
+            password,
+            avatar
         )
 		VALUE (
-		  #{nickname},
-		  #{phone},
-		  #{email},
-		  #{password},
-		  #{avatar}
+            #{id},
+            #{nickname},
+            #{phone},
+            #{email},
+            #{password},
+            #{avatar}
 		)
     </insert>
 
@@ -141,11 +159,13 @@
             <if test="gender != null">gender = #{gender},</if>
             <if test="address != null and address != ''">address = #{address},</if>
             <if test="birthday != null and birthday != ''">birthday = #{birthday},</if>
+            <if test="locked != null">locked = #{locked},</if>
+            <if test="wrongPwd != null">wrong_pwd = #{wrongPwd},</if>
         </set>
         WHERE id = #{id}
     </update>
 
-    <update id="delete" parameterType="int">
+    <update id="delete" parameterType="long">
         UPDATE t_user SET deleted = !deleted
         WHERE id = #{id}
     </update>

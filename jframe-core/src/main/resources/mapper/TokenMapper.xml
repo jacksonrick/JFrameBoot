@@ -35,5 +35,10 @@
         </set>
         WHERE uid = #{uid}
     </update>
+
+    <delete id="delete" parameterType="string">
+        DELETE FROM s_token
+        WHERE uid = #{uid}
+    </delete>
 	
 </mapper>

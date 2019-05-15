@@ -75,35 +75,9 @@
 		WHERE u.id = #{id}
 	</select>
 
-	<select id="findCountByKey" resultType="int">
-        SELECT COUNT(1)
-        FROM t_user
-        WHERE ${key} = #{val}
-    </select>
-
-	<select id="findByNameAndPwd" resultMap="userResultMapper" parameterType="string">
-		SELECT <include refid="baseColumn"></include>
-		FROM t_user u
-		WHERE u.id = (
-		SELECT id FROM t_user WHERE phone = #{account} AND password = #{password} UNION
-		SELECT id FROM t_user WHERE nickname = #{account} AND password = #{password}
-		)
-	</select>
-
-	<select id="findFieleByUserId" resultType="object">
-        SELECT ${field}
-        FROM t_user
-        WHERE id = #{userId}
-    </select>
-
-	<select id="findUserLikePhone" resultType="idText" parameterType="string">
-        SELECT id,nickname AS `text`
-        FROM t_user
-        WHERE phone LIKE CONCAT('%', #{phone}, '%')
-    </select>
-
-	<insert id="insert" parameterType="user" keyProperty="id" useGeneratedKeys="true">
+	<insert id="insert" parameterType="user">
         INSERT INTO t_user (
+          id,
           nick,
           phone,
           email,
@@ -111,6 +85,7 @@
           avatar
         )
 		VALUE (
+		  #{id},
 		  #{nickname},
 		  #{phone},
 		  #{email},
@@ -138,15 +113,6 @@
 		WHERE id = #{id}
 	</update>
 
-	<update id="delete" parameterType="int">
-        UPDATE t_user SET deleted = !deleted
-        WHERE id = #{id}
-    </update>
-
-	<delete id="deleteBatch">
-		DELETE FROM t_user
-		WHERE id IN <foreach item="id" collection="ids" open="(" separator="," close=")"> #{id} </foreach>
-	</delete>
 
 	<resultMap type="user" id="userResultMapper1">
 		<id property="id" column="id" />
