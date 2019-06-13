@@ -17,8 +17,8 @@ import java.io.IOException;
 public class Generate {
 
     public static void main(String[] args) throws IOException {
-//        generateMybatis();
-        generateDict();
+        generateMybatis();
+//        generateDict();
     }
 
     /**

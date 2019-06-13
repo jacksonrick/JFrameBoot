@@ -19,7 +19,7 @@ public class Config implements Serializable {
     /** 值 */
     private String val;
 
-    /** 键 */
+    /** 键说明 */
     private String descr;
 
     public String getKey() {

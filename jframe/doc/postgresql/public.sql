@@ -1,5 +1,5 @@
 -- driver-class-name: org.postgresql.Driver
--- url: jdbc:postgresql://ip:5432/jframe?currentSchema=
+-- url: jdbc:postgresql://ip:5432/jframe?currentSchema=public
 
 -- ----------------------------
 -- Table structure for s_admin
@@ -17,8 +17,7 @@ CREATE TABLE "public"."s_admin" (
   "admin_login_time" timestamp(6),
   "admin_login_ip" varchar(64) COLLATE "pg_catalog"."default",
   "deleted" bool DEFAULT false
-)
-;
+);
 ALTER TABLE "public"."s_admin" OWNER TO "postgres";
 COMMENT ON COLUMN "public"."s_admin"."id" IS 'id';
 COMMENT ON COLUMN "public"."s_admin"."role_id" IS '用户组id';
@@ -49,8 +48,7 @@ CREATE TABLE "public"."s_config" (
   "val" varchar(255) COLLATE "pg_catalog"."default",
   "descr" varchar(255) COLLATE "pg_catalog"."default",
   CONSTRAINT "s_config_pkey" PRIMARY KEY ("key")
-)
-;
+);
 
 ALTER TABLE "public"."s_config" OWNER TO "postgres";
 COMMENT ON COLUMN "public"."s_config"."key" IS '键';
@@ -69,8 +67,7 @@ CREATE TABLE "public"."s_log" (
   "log_ip" varchar(32) COLLATE "pg_catalog"."default",
   "log_params" varchar(255) COLLATE "pg_catalog"."default",
   "log_create_time" timestamp(6) DEFAULT now()
-)
-;
+);
 ALTER TABLE "public"."s_log" OWNER TO "postgres";
 COMMENT ON COLUMN "public"."s_log"."log_user" IS '操作人';
 COMMENT ON COLUMN "public"."s_log"."log_remark" IS '备注';
@@ -78,15 +75,6 @@ COMMENT ON COLUMN "public"."s_log"."log_ip" IS 'ip';
 COMMENT ON COLUMN "public"."s_log"."log_params" IS '参数';
 COMMENT ON COLUMN "public"."s_log"."log_create_time" IS '创建时间';
 COMMENT ON TABLE "public"."s_log" IS '日志表';
-
--- ----------------------------
--- Records of s_log
--- ----------------------------
-BEGIN;
-INSERT INTO "public"."s_log" VALUES (1, 'admin', '管理员登录', '127.0.0.1', 'username=admin', '2018-07-17 17:24:12.323');
-INSERT INTO "public"."s_log" VALUES (2, 'admin', '管理员登录', '127.0.0.1', 'username=admin', '2018-07-17 17:35:12.515');
-INSERT INTO "public"."s_log" VALUES (3, 'admin', '授权组', '127.0.0.1', 'roleId=10001', '2018-07-17 17:36:30.016');
-COMMIT;
 
 -- ----------------------------
 -- Table structure for s_module
@@ -102,8 +90,7 @@ CREATE TABLE "public"."s_module" (
   "mod_sort" int2,
   "mod_create_time" timestamp(6) DEFAULT now(),
   "deleted" bool DEFAULT false
-)
-;
+);
 ALTER TABLE "public"."s_module" OWNER TO "postgres";
 COMMENT ON COLUMN "public"."s_module"."id" IS 'id';
 COMMENT ON COLUMN "public"."s_module"."parent_id" IS '父模块id 0表示一级分类';
@@ -136,6 +123,7 @@ INSERT INTO "public"."s_module" VALUES (126, 124, '模块删除', '/admin/system
 INSERT INTO "public"."s_module" VALUES (106, 1, '管理员列表', '/admin/system/adminList', 'fa fa-user', 2, 1, '2018-07-17 16:18:37.606119', 'f');
 INSERT INTO "public"."s_module" VALUES (109, 1, '权限管理', '/admin/system/rights', 'fa fa-delicious', 2, 2, '2018-07-17 16:18:37.611426', 'f');
 INSERT INTO "public"."s_module" VALUES (114, 1, '日志管理', '/admin/system/logList', 'fa fa-laptop', 2, 3, '2018-07-17 16:18:37.619586', 'f');
+INSERT INTO "public"."s_module" VALUES (124, 1, '系统日志', '/admin/system/syslogList', 'fa fa-laptop', 2, 4, '2018-07-17 16:18:37.619586', 'f');
 INSERT INTO "public"."s_module" VALUES (118, 1, '系统工具', '/admin/system/tools', 'fa fa-crop', 2, 5, '2018-07-17 16:18:37.627168', 'f');
 INSERT INTO "public"."s_module" VALUES (116, 1, '文件管理', '/admin/system/file', 'fa fa-archive', 2, 4, '2018-07-17 16:18:37.623485', 'f');
 INSERT INTO "public"."s_module" VALUES (124, 1, '模块管理', '/admin/system/module', 'fa fa-desktop', 2, 6, '2018-07-17 16:18:37.637545', 'f');
@@ -153,19 +141,11 @@ CREATE TABLE "public"."s_msg" (
   "admin_id" int4 NOT NULL,
   "content" text COLLATE "pg_catalog"."default",
   "create_time" timestamp(6) DEFAULT now()
-)
-;
+);
 ALTER TABLE "public"."s_msg" OWNER TO "postgres";
 COMMENT ON COLUMN "public"."s_msg"."admin_id" IS '管理ID';
 COMMENT ON COLUMN "public"."s_msg"."content" IS '内容';
 COMMENT ON TABLE "public"."s_msg" IS '系统消息';
-
--- ----------------------------
--- Records of s_msg
--- ----------------------------
-BEGIN;
-INSERT INTO "public"."s_msg" VALUES (1, 10000, '1111', '2018-07-17 17:30:32.362607');
-COMMIT;
 
 -- ----------------------------
 -- Table structure for s_role
@@ -178,8 +158,7 @@ CREATE TABLE "public"."s_role" (
   "role_rights" varchar(1000) COLLATE "pg_catalog"."default",
   "role_create_time" timestamp(6) DEFAULT now(),
   "deleted" bool DEFAULT false
-)
-;
+);
 ALTER TABLE "public"."s_role" OWNER TO "postgres";
 COMMENT ON COLUMN "public"."s_role"."id" IS 'id';
 COMMENT ON COLUMN "public"."s_role"."role_name" IS '用户组名称';

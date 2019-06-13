@@ -38,6 +38,7 @@ public class ViewPDF extends AbstractItextView {
         Template tpl = freeMarkerConfigurer.getConfiguration().getTemplate(ftl);
         // 生成HTML
         String html = FreeMarkerTemplateUtils.processTemplateIntoString(tpl, map);
+        // parseXHtml默认使用default.css，如需更改样式，请指定inCssFile(InputStream)
         XMLWorkerHelper.getInstance().parseXHtml(pdfWriter, document, new ByteArrayInputStream(html.getBytes()), Charset.forName("UTF-8"), STFontProviderEnum.INSTANCE.get());
     }
 

@@ -47,6 +47,17 @@ public class DateUtil {
     }
 
     /**
+     * 获取当前时间
+     *
+     * @param format 自定义格式
+     * @return
+     */
+    public static String getCurrentTime(String format) {
+        DateTime dt = new DateTime(System.currentTimeMillis());
+        return dt.toString(format);
+    }
+
+    /**
      * 获取当前小时
      *
      * @return
@@ -89,6 +100,18 @@ public class DateUtil {
     }
 
     /**
+     * date转string
+     *
+     * @param date
+     * @param format 自定义格式
+     * @return
+     */
+    public static String dateToStr(Date date, String format) {
+        DateTime dt = new DateTime(date);
+        return dt.toString(format);
+    }
+
+    /**
      * string转date
      * YYYY_MM_DD_HH_MM_SS
      *
@@ -106,8 +129,20 @@ public class DateUtil {
      * @param dateString
      * @return
      */
-    public static Date strToDate2(String dateString) {
+    public static Date strToDateDay(String dateString) {
         return FMT_YYYY_MM_DD.parseDateTime(dateString).toDate();
+    }
+
+    /**
+     * string转date
+     *
+     * @param dateString
+     * @param format     自定义格式
+     * @return
+     */
+    public static Date strToDate(String dateString, String format) {
+        DateTimeFormatter FMT = DateTimeFormat.forPattern(format);
+        return FMT.parseDateTime(dateString).toDate();
     }
 
     /**

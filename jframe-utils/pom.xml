@@ -35,7 +35,7 @@
         <servlet.version>3.1.0</servlet.version>
         <slf4j.version>1.7.25</slf4j.version>
         <log4j.version>1.2.17</log4j.version>
-        <jackson.version>2.9.5</jackson.version>
+        <jackson.version>2.9.8</jackson.version>
         <freemarker.version>2.3.28</freemarker.version>
         <poi.version>3.17</poi.version>
         <itextpdf.version>5.5.9</itextpdf.version>
@@ -125,7 +125,7 @@
         <dependency>
             <groupId>commons-fileupload</groupId>
             <artifactId>commons-fileupload</artifactId>
-            <version>1.2.2</version>
+            <version>1.3.3</version>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>

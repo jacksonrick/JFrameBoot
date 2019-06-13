@@ -18,7 +18,7 @@ public class CountLine {
 
 	public static void main(String[] args) {
 		// 需要统计的文件夹，不要输入文件
-		src = new File("/Users/xujunfei/Desktop/Project/Idea/Mall/src/main/webapp/static/theme");
+		src = new File("/Users/xujunfei/Desktop/Project");
 		try {
 			System.out.println("开始搜索......");
 			printAllFiles(src);

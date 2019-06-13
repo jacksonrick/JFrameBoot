@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.jf.database.mapper.manage.AdminMapper">
+<mapper namespace="com.jf.mapper.AdminMapper">
 
 	<sql id="adminCondition">
 		<where>
@@ -29,7 +29,7 @@
 		a.admin_login_time,
 		a.admin_login_ip,
 		a.deleted,
-        <include refid="com.jf.database.mapper.manage.RoleMapper.simpleColumn"/>
+        <include refid="com.jf.mapper.RoleMapper.simpleColumn"/>
 	</sql>
 
 	<resultMap type="admin" id="adminResultMap">

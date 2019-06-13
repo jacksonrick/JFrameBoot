@@ -233,8 +233,8 @@ system: # 系统自定义配置
   dev: true # 是否开发环境
   appkey: 00056cb1d74435076a4c15a490798df4 # APP访问校验码
   static_host: http://127.0.0.1:${server.port}/ # 静态服务器地址，如果配置了FASTDFS，此项可以不用配置
-  static_path: /Users/xujunfei/Downloads/static/ # 静态文件目录
-  log_path: /Users/xujunfei/Downloads/logs/ # 日志存放目录
+  static_path: /Users/xujunfei/Downloads/tmp/static/ # 静态文件目录
+  log_path: /Users/xujunfei/Downloads/tmp/logs/ # 日志存放目录
   server_id: ${spring.application.name} # 服务ID，用于日志标记
   fdfs_nginx: http://192.168.1.168/ # DFS Nginx代理服务器地址
   aliyun: # 支付宝

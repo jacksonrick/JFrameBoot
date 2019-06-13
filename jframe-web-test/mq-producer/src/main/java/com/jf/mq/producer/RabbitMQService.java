@@ -7,6 +7,7 @@ import org.springframework.amqp.rabbit.connection.CorrelationData;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
@@ -44,7 +45,7 @@ public class RabbitMQService implements InitializingBean {
      *
      * @return
      */
-    @Bean
+    @Bean(name = "queueMsgA")
     public Queue queueMsgA() {
         // 持久化队列
         return new Queue(QUEUE_MSGA, true);
@@ -55,7 +56,7 @@ public class RabbitMQService implements InitializingBean {
      *
      * @return
      */
-    @Bean
+    @Bean(name = "queueMsgB")
     public Queue queueMsgB() {
         return new Queue(QUEUE_MSGB);
     }
@@ -68,13 +69,16 @@ public class RabbitMQService implements InitializingBean {
      *
      * @return
      */
-    @Bean
+    @Bean(name = "delayQueue")
     public Queue delayQueue() {
         Map<String, Object> params = new HashMap<>();
         // 声明队列里的死信转发到的DLX名称
         params.put("x-dead-letter-exchange", MY_EXCHANGE);
         // 声明这些死信在转发时携带的routing-key名称
         params.put("x-dead-letter-routing-key", QUEUE_MSGB);
+
+        // 延迟时间
+        //params.put("x-message-ttl", 30 * 1000);
 
         return new Queue(QUEUE_DELAY, true, false, false, params);
     }
@@ -84,8 +88,8 @@ public class RabbitMQService implements InitializingBean {
      *
      * @return
      */
-    @Bean
-    TopicExchange exchange() {
+    @Bean(name = "myExchange")
+    TopicExchange myExchange() {
         // 持久化
         return new TopicExchange(MY_EXCHANGE, true, true);
     }
@@ -95,7 +99,7 @@ public class RabbitMQService implements InitializingBean {
      *
      * @return
      */
-    @Bean
+    @Bean(name = "delayExchange")
     DirectExchange delayExchange() {
         return new DirectExchange(DELAY_EXCHANGE);
     }
@@ -108,8 +112,8 @@ public class RabbitMQService implements InitializingBean {
      * @return
      */
     @Bean
-    Binding bindMsgA(Queue queueMsgA, TopicExchange exchange) {
-        return BindingBuilder.bind(queueMsgA).to(exchange).with(QUEUE_MSGA);
+    Binding bindMsgA(@Qualifier("queueMsgA") Queue queue, @Qualifier("myExchange") TopicExchange exchange) {
+        return BindingBuilder.bind(queue).to(exchange).with(QUEUE_MSGA);
     }
 
     /**
@@ -120,8 +124,8 @@ public class RabbitMQService implements InitializingBean {
      * @return
      */
     @Bean
-    Binding bindMsgB(Queue queueMsgB, TopicExchange exchange) {
-        return BindingBuilder.bind(queueMsgB).to(exchange).with(QUEUE_MSGB);
+    Binding bindMsgB(@Qualifier("queueMsgB") Queue queue, @Qualifier("myExchange") TopicExchange exchange) {
+        return BindingBuilder.bind(queue).to(exchange).with(QUEUE_MSGB);
     }
 
     /**
@@ -132,14 +136,14 @@ public class RabbitMQService implements InitializingBean {
      * @return
      */
     @Bean
-    Binding delayBind(Queue delayQueue, DirectExchange delayExchange) {
-        return BindingBuilder.bind(delayQueue).to(delayExchange).with(DELAY_ROUTING_KEY);
+    Binding delayBind(@Qualifier("delayQueue") Queue queue, @Qualifier("delayExchange") DirectExchange exchange) {
+        return BindingBuilder.bind(queue).to(exchange).with(DELAY_ROUTING_KEY);
     }
 
     // 通配符，接收来自队列TOPIC.MSG.*的所有消息
     /* @Bean
-    Binding bindMsgs(Queue queueMsgs, TopicExchange exchange) {
-        return BindingBuilder.bind(queueMsgs).to(exchange).with("TOPIC.MSG.#");
+    Binding bindMsgs(Queue queue, TopicExchange exchange) {
+        return BindingBuilder.bind(queue).to(exchange).with("TOPIC.MSG.#");
     }*/
 
 
@@ -167,7 +171,7 @@ public class RabbitMQService implements InitializingBean {
      */
     public void senDealy(String route, Object object, Integer timeout) {
         rabbitTemplate.convertAndSend(DELAY_EXCHANGE, route, object, message -> {
-            // 延迟 5 秒
+            // 延迟 5 秒 也可以定义在delayQueue中
             message.getMessageProperties().setExpiration(timeout * 1000 + "");
             return message;
         });

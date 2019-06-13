@@ -206,10 +206,14 @@ public class GenerateBeansAndMybatisUtil {
         StringBuffer sb = new StringBuffer(table.length());
         String tableNew = table.toLowerCase();
         String[] tables = tableNew.split("_"); // 去除下划线之前的内容
-        String temp = null;
-        for (int i = 1; i < tables.length; i++) {
-            temp = tables[i].trim();
-            sb.append(temp.substring(0, 1).toUpperCase()).append(temp.substring(1));
+        if (tables.length > 1) {
+            String temp = null;
+            for (int i = 1; i < tables.length; i++) {
+                temp = tables[i].trim();
+                sb.append(temp.substring(0, 1).toUpperCase()).append(temp.substring(1));
+            }
+        } else {
+            sb.append(tables[0].substring(0, 1).toUpperCase()).append(tables[0].substring(1));
         }
         beanName = sb.toString();
         mapperName = beanName + "Mapper";
@@ -715,7 +719,7 @@ public class GenerateBeansAndMybatisUtil {
         bw.newLine();
         bw.write("\t</sql>\n\n");
 
-        bw.write("\t<resultMap type=\"" + processResultMapId(beanName) + "\" id=\"baseResultMap\">\n");
+        bw.write("\t<resultMap type=\"" + bean_package + "." + beanName + "\" id=\"baseResultMap\">\n");
         bw.write("\t\t<id property=\"id\" column=\"id\" />\n");
         for (int i = 0; i < size; i++) {
             if (!"id".equals(columns.get(i))) {
@@ -757,7 +761,7 @@ public class GenerateBeansAndMybatisUtil {
         bw.write("\t</select>\n\n");
 
         // 添加insert方法-insertBean
-        bw.write("\t<insert id=\"insert\" parameterType=\"" + processResultMapId(beanName) + "\">\n");
+        bw.write("\t<insert id=\"insert\" parameterType=\"" + bean_package + "." + beanName + "\">\n");
         bw.write("\t\tINSERT INTO " + tableName + " (\n");
         for (int i = 0; i < size; i++) {
             if (i < size - 1) {
@@ -804,7 +808,7 @@ public class GenerateBeansAndMybatisUtil {
         bw.write("\t</insert>\n\n");
 
         // 修改update方法-updateBean
-        bw.write("\t<update id=\"update\" parameterType=\"" + processResultMapId(beanName) + "\">\n");
+        bw.write("\t<update id=\"update\" parameterType=\"" + bean_package + "." + beanName + "\">\n");
         bw.write("\t\tUPDATE " + tableName + "\n");
         bw.write("\t\t<set>\n");
 

@@ -89,7 +89,7 @@ public class ExcelReaderXSSAuto {
                                 }
                             } else if ("Date".equals(fieldType)) {
                                 if (val instanceof String) {
-                                    setEntityValue(fieldName, DateUtil.strToDate2(String.valueOf(val).replaceAll("[年月]", "-").replace("日", "").replace("/", "-").trim()), entity);
+                                    setEntityValue(fieldName, DateUtil.strToDateDay(String.valueOf(val).replaceAll("[年月]", "-").replace("日", "").replace("/", "-").trim()), entity);
                                 } else {
                                     setEntityValue(fieldName, val, entity);
                                 }
