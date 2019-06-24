@@ -34,6 +34,7 @@ public class RabbitMQService implements InitializingBean {
     public final static String MY_EXCHANGE = "MY_EXCHANGE";
     public final static String DELAY_EXCHANGE = "DELAY_EXCHANGE";
     public final static String DELAY_ROUTING_KEY = "DELAY_ROUTING_KEY";
+    // ROUTING_KEY可以和QUEUE_NAME相同
 
     /********************************
      * 队列须先创建（生产者触发或手动）
@@ -107,7 +108,7 @@ public class RabbitMQService implements InitializingBean {
     /**
      * Binding 消息绑定A
      *
-     * @param queueMsgA
+     * @param queue
      * @param exchange
      * @return
      */
@@ -119,7 +120,7 @@ public class RabbitMQService implements InitializingBean {
     /**
      * Binding 消息绑定B
      *
-     * @param queueMsgB
+     * @param queue
      * @param exchange
      * @return
      */
@@ -131,8 +132,8 @@ public class RabbitMQService implements InitializingBean {
     /**
      * 延迟队列消息绑定
      *
-     * @param delayQueue
-     * @param delayExchange
+     * @param queue
+     * @param exchange
      * @return
      */
     @Bean

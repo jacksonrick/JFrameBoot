@@ -202,6 +202,7 @@ public class UserController extends BaseController {
         ExcelReaderXSS read = new ExcelReaderXSS();
         Map<Integer, List> maps = read.readExcelContent(file.getInputStream());
         // return userService.generate(maps);
+        // 也可以使用ExcelWriterSXSSAuto注解式导入
         return new ResMsg(ResCode.SUCCESS.code(), ResCode.SUCCESS.msg());
     }
 

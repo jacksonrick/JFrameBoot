@@ -5,7 +5,7 @@
     <groupId>com.jf</groupId>
     <artifactId>jframe-utils</artifactId>
     <name>jframe-utils</name>
-    <version>2.0</version>
+    <version>3.0</version>
     <packaging>jar</packaging>
 
     <build>
@@ -25,6 +25,20 @@
                     <target>1.8</target>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>2.1.2</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 
@@ -35,7 +49,7 @@
         <servlet.version>3.1.0</servlet.version>
         <slf4j.version>1.7.25</slf4j.version>
         <log4j.version>1.2.17</log4j.version>
-        <jackson.version>2.9.8</jackson.version>
+        <jackson.version>2.9.9</jackson.version>
         <freemarker.version>2.3.28</freemarker.version>
         <poi.version>3.17</poi.version>
         <itextpdf.version>5.5.9</itextpdf.version>
@@ -147,16 +161,11 @@
             <artifactId>commons-collections</artifactId>
             <version>3.2.2</version>
         </dependency>
-        <!-- httpclient -->
+        <!-- httpcomponents -->
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>
             <version>4.5.2</version>
-        </dependency>
-        <dependency>
-            <groupId>commons-httpclient</groupId>
-            <artifactId>commons-httpclient</artifactId>
-            <version>3.1</version>
         </dependency>
         <!-- joda time -->
         <dependency>

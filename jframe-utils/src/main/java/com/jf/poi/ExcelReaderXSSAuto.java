@@ -10,9 +10,11 @@ import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import java.beans.IntrospectionException;
 import java.beans.PropertyDescriptor;
 import java.io.InputStream;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Date;
@@ -120,10 +122,14 @@ public class ExcelReaderXSSAuto {
      * @param <T>
      * @throws Exception
      */
-    private <T> void setEntityValue(String field, Object value, T entity) throws Exception {
-        PropertyDescriptor pd = new PropertyDescriptor(field, entity.getClass());
-        Method method = pd.getWriteMethod();
-        method.invoke(entity, value);
+    private <T> void setEntityValue(String field, Object value, T entity) {
+        try {
+            PropertyDescriptor pd = new PropertyDescriptor(field, entity.getClass());
+            Method method = pd.getWriteMethod();
+            method.invoke(entity, value);
+        } catch (Exception e) {
+            throw new RuntimeException("导入出错，字段：" + field + "，值：" + value, e);
+        }
     }
 
     /**

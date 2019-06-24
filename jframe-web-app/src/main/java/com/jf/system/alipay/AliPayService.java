@@ -92,6 +92,31 @@ public class AliPayService {
     }
 
     /**
+     * Wap下单
+     *
+     * @param body
+     * @param subject
+     * @param price
+     * @param orderNum
+     * @return
+     */
+    public String alipayWap(String body, String subject, Double price, String orderNum) throws Exception {
+        AlipayTradeWapPayRequest request = new AlipayTradeWapPayRequest();
+        AlipayTradePagePayModel model = new AlipayTradePagePayModel();
+        model.setBody(body);
+        model.setSubject(subject);
+        model.setOutTradeNo(orderNum);
+        model.setTimeoutExpress("10m");
+        model.setTotalAmount(price + "");
+        model.setProductCode("QUICK_WAP_WAY");
+        request.setBizModel(model);
+        request.setNotifyUrl(sysConfig.getAliyun().getNotifyUrl());
+        request.setReturnUrl(sysConfig.getAliyun().getReturnUrl());
+        AlipayResponse response = alipayClient.pageExecute(request);
+        return response.getBody();
+    }
+
+    /**
      * APP下单
      *
      * @param body

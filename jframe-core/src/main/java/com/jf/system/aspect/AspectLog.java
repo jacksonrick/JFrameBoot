@@ -42,6 +42,8 @@ public class AspectLog {
     public void ctl() {
     }
 
+    // @Pointcut("execution(public * com.jf..*.*(..))&&@within(org.springframework.stereotype.Controller)")
+
     /**
      * 记录请求参数，客户端IP等
      *

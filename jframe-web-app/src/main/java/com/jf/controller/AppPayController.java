@@ -145,7 +145,7 @@ public class AppPayController extends BaseController {
                 System.out.println("支付成功");
                 output(response, "success");
                 /*if (chargeService.callback(out_trade_no) == 0) {
-                    log.info("###################wxpay_callback_shop charge_service callback success.");
+                    log.info("###################charge_service callback success.");
                     output(response, "success");
                 }*/
             } else {

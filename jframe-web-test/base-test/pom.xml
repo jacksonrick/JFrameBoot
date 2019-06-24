@@ -85,35 +85,11 @@
             <artifactId>spring-cloud-starter-config</artifactId>
         </dependency>
 
-        <!-- fastdfs -->
-        <dependency>
-            <groupId>com.luhuiguo</groupId>
-            <artifactId>fastdfs-client</artifactId>
-            <version>0.4.0</version>
-        </dependency>
         <!-- 极光推送 -->
         <dependency>
             <groupId>cn.jpush.api</groupId>
             <artifactId>jpush-client</artifactId>
             <version>3.2.17</version>
-        </dependency>
-        <!-- 微信支付 -->
-        <dependency>
-            <groupId>com.github.wxpay</groupId>
-            <artifactId>wxpay-sdk</artifactId>
-            <version>0.0.3</version>
-        </dependency>
-        <!-- 支付宝 -->
-        <dependency>
-            <groupId>com.alipay.api</groupId>
-            <artifactId>k12-alipay-sdk</artifactId>
-            <version>0.0.1-beta</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>javax.servlet</groupId>
-                    <artifactId>servlet-api</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <!-- 微信公众号 -->
         <dependency>

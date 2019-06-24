@@ -140,7 +140,6 @@ public class ExcelWriterSXSSAuto<T> {
         }
 
         rowIndex += data.size();
-        System.out.println("rowIndex: " + rowIndex);
     }
 
     /**
