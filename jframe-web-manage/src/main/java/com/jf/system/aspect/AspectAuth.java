@@ -1,8 +1,8 @@
 package com.jf.system.aspect;
 
 import com.jf.annotation.AuthPassport;
+import com.jf.database.enums.ResCode;
 import com.jf.database.model.manage.Admin;
-import com.jf.entity.enums.ResCode;
 import com.jf.service.system.ModuleService;
 import com.jf.system.conf.IConstant;
 import com.jf.system.exception.AdminNoLoginException;

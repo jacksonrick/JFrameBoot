@@ -140,4 +140,22 @@ public class UserModel {
     public void setDeleted(String deleted) {
         this.deleted = deleted;
     }
+
+    @Override
+    public String toString() {
+        return "UserModel{" +
+                "nickname='" + nickname + '\'' +
+                ", phone='" + phone + '\'' +
+                ", email='" + email + '\'' +
+                ", money='" + money + '\'' +
+                ", create_time='" + create_time + '\'' +
+                ", last_login_time='" + last_login_time + '\'' +
+                ", realname='" + realname + '\'' +
+                ", idcard='" + idcard + '\'' +
+                ", gender='" + gender + '\'' +
+                ", address='" + address + '\'' +
+                ", birthday='" + birthday + '\'' +
+                ", deleted='" + deleted + '\'' +
+                '}';
+    }
 }

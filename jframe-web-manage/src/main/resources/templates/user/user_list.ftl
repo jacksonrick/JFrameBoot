@@ -10,6 +10,7 @@
             color: white !important;;
         }
     </style>
+    <link href="/static/library/plugins/dropzone/dropzone.css" rel="stylesheet" type="text/css">
 </head>
 
 <body class="gray-bg">
@@ -27,6 +28,7 @@
                     <button type="button" id="search" class="btn btn-sm btn-info"><i class="fa fa-search"></i></button>
                     <button type="button" id="export" class="btn btn-sm btn-info"><i class="fa fa-share"></i>导出到Excel</button>
                     <button type="button" id="export2" class="btn btn-sm btn-info"><i class="fa fa-share"></i>导出到Pdf</button>
+                    <button type="button" id="import" class="btn btn-sm btn-info"><i class="fa fa-arrow-down"></i>导入Excel</button>
                 </form>
             </div>
             <div class="col-md-4 text-right">
@@ -44,6 +46,7 @@
     </div>
 </div>
 
+<script src="/static/library/plugins/dropzone/dropzone.js" type="text/javascript"></script>
 <script type="text/javascript">
     $.getScript("/static/common/js/enums.js");
     var tables;
@@ -116,6 +119,21 @@
             var formData = $("#queryForm").serialize();
             location.href = '/admin/user/exportUserPdf?' + formData;
         });
+
+        $("#import").click(function () {// 导入Excel
+            $.UploaderExcel({
+                action: '/admin/user/userImport?param=user',
+                callback: function (data, idx) {
+                    if (data.code == 0) {
+                        showMsg(data.msg, 1, function () {
+                            layer.close(idx);
+                            //reload();
+                        });
+                    }
+                }
+            });
+        });
+
 
         $("#btn-del").click(function () {// 批量删除
             var arrItemId = [];

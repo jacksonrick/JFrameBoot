@@ -2,7 +2,7 @@ package com.jf.system.aspect;
 
 import com.jf.annotation.Token;
 import com.jf.common.TokenHandler;
-import com.jf.entity.enums.ResCode;
+import com.jf.database.enums.ResCode;
 import com.jf.string.StringUtil;
 import com.jf.system.conf.IConstant;
 import com.jf.system.exception.AppException;

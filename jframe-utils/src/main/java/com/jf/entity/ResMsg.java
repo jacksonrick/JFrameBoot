@@ -1,7 +1,5 @@
 package com.jf.entity;
 
-import com.jf.entity.enums.ResCode;
-
 /**
  * 接口返回结果封装类
  *
@@ -31,7 +29,7 @@ public class ResMsg {
      * @return
      */
     public static ResMsg success() {
-        return new ResMsg(ResCode.SUCCESS.code(), ResCode.SUCCESS.msg());
+        return new ResMsg(DefaultResCode.SUCCESS.code(), DefaultResCode.SUCCESS.msg());
     }
 
     /**
@@ -42,7 +40,7 @@ public class ResMsg {
      * @return
      */
     public static ResMsg success(String msg) {
-        return new ResMsg(ResCode.SUCCESS.code(), msg);
+        return new ResMsg(DefaultResCode.SUCCESS.code(), msg);
     }
 
     /**
@@ -53,7 +51,7 @@ public class ResMsg {
      * @return
      */
     public static ResMsg successdata(Object data) {
-        return new ResMsg(ResCode.SUCCESS.code(), ResCode.SUCCESS.msg(), data);
+        return new ResMsg(DefaultResCode.SUCCESS.code(), DefaultResCode.SUCCESS.msg(), data);
     }
 
     /**
@@ -65,7 +63,7 @@ public class ResMsg {
      * @return
      */
     public static ResMsg success(String msg, Object data) {
-        return new ResMsg(ResCode.SUCCESS.code(), msg, data);
+        return new ResMsg(DefaultResCode.SUCCESS.code(), msg, data);
     }
 
     /**
@@ -75,7 +73,7 @@ public class ResMsg {
      * @return
      */
     public static ResMsg fail() {
-        return new ResMsg(ResCode.FAIL.code(), ResCode.FAIL.msg());
+        return new ResMsg(DefaultResCode.FAIL.code(), DefaultResCode.FAIL.msg());
     }
 
     /**
@@ -86,7 +84,7 @@ public class ResMsg {
      * @return
      */
     public static ResMsg fail(String msg) {
-        return new ResMsg(ResCode.FAIL.code(), msg);
+        return new ResMsg(DefaultResCode.FAIL.code(), msg);
     }
 
     /**

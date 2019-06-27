@@ -2,7 +2,7 @@ package com.jf.controller;
 
 import com.jf.common.BaseController;
 import com.jf.entity.ResMsg;
-import com.jf.entity.enums.ResCode;
+import com.jf.database.enums.ResCode;
 import com.jf.restapi.OrderRestService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;

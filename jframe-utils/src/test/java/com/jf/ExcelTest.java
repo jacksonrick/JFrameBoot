@@ -1,28 +1,66 @@
 package com.jf;
 
 import com.jf.excel.BankList;
+import com.jf.excel.PersonModel;
 import com.jf.excel.UserTest;
-import com.jf.poi.ExcelReaderConfig;
-import com.jf.poi.ExcelWriterSXSS;
-import com.jf.poi.ExcelWriterSXSSAuto;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.xssf.streaming.SXSSFWorkbook;
+import com.jf.poi.*;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
- * Description:
+ * Description: Excel 测试类
  * User: xujunfei
  * Date: 2019-03-12
  * Time: 16:36
  */
 public class ExcelTest {
+
+    public static void main(String[] args) throws Exception {
+        testOPC();
+    }
+
+    public static void testOPC() throws Exception {
+        long start = System.currentTimeMillis();
+
+        File file = new File("/Users/xujunfei/Downloads/源数据模板/人员组织结构.xlsx");
+        InputStream is = new FileInputStream(file);
+        ExcelReaderOPC xlsx2csv = new ExcelReaderOPC();
+        List<String[]> datas = xlsx2csv.process(is);
+
+        long end = System.currentTimeMillis();
+        System.out.println("读取时间: " + (end - start) / 1000 + "s");
+        System.out.println("总条数：" + datas.size());
+
+        // 模拟插入数据库
+        int batch = 50; // 一次插入数量
+        int total = datas.size();
+        int times = total % batch > 0 ? total / batch + 1 : total / batch; // 次数
+        for (int i = 0; i < times; i++) {
+            List<String[]> batchs = datas.subList(0, datas.size() > batch ? batch : datas.size());
+            // 数据处理...
+            // xxxService.insertBatch(batchs);
+            for (int j = 0; j < batchs.size(); j++) {
+                System.out.println(Arrays.toString(batchs.get(j)));
+            }
+            batchs.clear();
+        }
+    }
+
+    public static void testReaderAuto() throws Exception {
+        File file = new File("/Users/xujunfei/Downloads/人员明细最终版6.25.xlsx");
+        InputStream is = new FileInputStream(file);
+        ExcelReaderXSSAuto read = new ExcelReaderXSSAuto();
+        List<PersonModel> list = read.read(is, PersonModel.class);
+        for (PersonModel model : list) {
+            System.out.println(model);
+        }
+    }
 
     /**
      * SXSS写入

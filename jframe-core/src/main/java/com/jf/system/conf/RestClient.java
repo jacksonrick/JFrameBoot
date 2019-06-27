@@ -1,7 +1,7 @@
 package com.jf.system.conf;
 
 import com.jf.entity.ResMsg;
-import com.jf.entity.enums.ResCode;
+import com.jf.database.enums.ResCode;
 import com.jf.system.exception.RestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;

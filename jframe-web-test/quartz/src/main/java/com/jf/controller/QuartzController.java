@@ -2,7 +2,7 @@ package com.jf.controller;
 
 import com.github.pagehelper.PageInfo;
 import com.jf.entity.ResMsg;
-import com.jf.entity.enums.ResCode;
+import com.jf.database.enums.ResCode;
 import com.jf.database.model.Jobs;
 import com.jf.service.JobService;
 import org.quartz.*;

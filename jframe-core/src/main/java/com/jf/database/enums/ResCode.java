@@ -1,4 +1,4 @@
-package com.jf.entity.enums;
+package com.jf.database.enums;
 
 /**
  * Created with IntelliJ IDEA.

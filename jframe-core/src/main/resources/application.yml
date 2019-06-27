@@ -229,7 +229,7 @@ fdfs: # fastDFS配置
   tracker-list: # 可设置多个
     - 192.168.31.205:22122
 system: # 系统自定义配置
-  version: 'v5.2.3'
+  version: 'v5'
   dev: true # 是否开发环境
   appkey: 00056cb1d74435076a4c15a490798df4 # APP访问校验码
   static_host: http://127.0.0.1:${server.port}/ # 静态服务器地址，如果配置了FASTDFS，此项可以不用配置

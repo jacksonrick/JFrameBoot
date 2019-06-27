@@ -59,7 +59,7 @@ public class DataConfig {
             // 添加分页插件
             PageInterceptor pageHelper = new PageInterceptor();
             Properties p = new Properties();
-            p.setProperty("helperDialect", "mysql");
+            p.setProperty("helperDialect", "mysql"); // 数据库方言，注意如果是pg数据库，请替换为postgresql
             p.setProperty("supportMethodsArguments", "true");
             p.setProperty("params", "pageNum=pageNo;pageSize=pageSize;");
             pageHelper.setProperties(p);

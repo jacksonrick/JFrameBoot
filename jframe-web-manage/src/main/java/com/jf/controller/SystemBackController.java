@@ -11,7 +11,7 @@ import com.jf.database.model.manage.*;
 import com.jf.date.DateUtil;
 import com.jf.entity.ResMsg;
 import com.jf.entity.Tree;
-import com.jf.entity.enums.ResCode;
+import com.jf.database.enums.ResCode;
 import com.jf.file.Directory;
 import com.jf.file.FileUtil;
 import com.jf.http.HttpUtil;

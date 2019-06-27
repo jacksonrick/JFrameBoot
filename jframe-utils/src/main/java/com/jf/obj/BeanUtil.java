@@ -21,7 +21,7 @@ public class BeanUtil {
      * @return
      */
     public static Map<String, Object> beanToMap(Object obj) {
-        String exStr = "com.jf.entity.BaseVo";
+        String exStr = "com.jf.database.model.custom.BaseVo";
         Map<String, Object> params = new HashMap<String, Object>(0);
         try {
             PropertyUtilsBean propertyUtilsBean = new PropertyUtilsBean();

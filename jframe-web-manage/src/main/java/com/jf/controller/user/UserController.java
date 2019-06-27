@@ -7,12 +7,12 @@ import com.jf.controller.view.ViewExcel;
 import com.jf.database.model.User;
 import com.jf.database.model.excel.UserModel;
 import com.jf.entity.ResMsg;
-import com.jf.entity.enums.ResCode;
+import com.jf.database.enums.ResCode;
+import com.jf.poi.ExcelReaderXSSAuto;
 import com.jf.service.system.SystemService;
 import com.jf.service.user.UserService;
 import com.jf.string.StringUtil;
 import com.jf.annotation.AuthPassport;
-import com.jf.poi.ExcelReaderXSS;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -189,7 +189,7 @@ public class UserController extends BaseController {
     @RequestMapping("/userImport")
     @ResponseBody
     @AuthPassport
-    public ResMsg userImport(@RequestParam("file") MultipartFile file) throws Exception {
+    public ResMsg userImport(@RequestParam("file") MultipartFile file, String param) throws Exception {
         // 判断类型和大小
         String suffix = StringUtil.getFileType(file.getOriginalFilename());
         if (!"xlsx".equals(suffix)) {
@@ -199,10 +199,17 @@ public class UserController extends BaseController {
             return new ResMsg(ResCode.FAIL.code(), "文件最大10M");
         }
 
-        ExcelReaderXSS read = new ExcelReaderXSS();
-        Map<Integer, List> maps = read.readExcelContent(file.getInputStream());
+        System.out.println("param: " + param);
+        // ExcelReaderXSS read = new ExcelReaderXSS();
+        // Map<Integer, List> maps = read.readExcelContent(file.getInputStream());
         // return userService.generate(maps);
-        // 也可以使用ExcelWriterSXSSAuto注解式导入
+
+        // 也可以使用ExcelReaderXSSAuto注解式导入
+        ExcelReaderXSSAuto read = new ExcelReaderXSSAuto();
+        List<UserModel> list = read.read(file.getInputStream(), UserModel.class);
+        for (UserModel user : list) {
+            System.out.println(user);
+        }
         return new ResMsg(ResCode.SUCCESS.code(), ResCode.SUCCESS.msg());
     }
 

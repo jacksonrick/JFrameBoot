@@ -1,7 +1,7 @@
 package com.jf.system.aspect;
 
 import com.jf.database.model.User;
-import com.jf.entity.enums.ResCode;
+import com.jf.database.enums.ResCode;
 import com.jf.system.conf.IConstant;
 import com.jf.system.exception.NoLoginException;
 import org.aspectj.lang.JoinPoint;

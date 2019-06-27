@@ -10,11 +10,9 @@ import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-import java.beans.IntrospectionException;
 import java.beans.PropertyDescriptor;
 import java.io.InputStream;
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Date;
@@ -22,7 +20,7 @@ import java.util.List;
 
 /**
  * 注解式导入Excel
- * <p>支持excel2007以上版本</p>
+ * <p>支持excel2007以上版本，适合万级以下的数据</p>
  *
  * @author rick
  * @version 1.2
@@ -75,34 +73,44 @@ public class ExcelReaderXSSAuto {
                 for (int i = 0; i < fs.length; i++) {
                     Fields field = fs[i].getAnnotation(Fields.class); // 获取Fields注解信息
                     if (field != null) {
-                        String fieldName = fs[i].getName(); // 字段名
-                        String fieldType = fs[i].getType().getSimpleName(); // 字段类型
                         String colName = field.value(); // 指定对应列名
                         if (colName.equals(name)) {
+                            String fieldName = fs[i].getName(); // 字段名
+                            String fieldType = fs[i].getType().getSimpleName(); // 实体类字段类型
                             Object val = getCellFormatValue(row.getCell(k));
+                            if (val == null) {
+                                setEntityValue(fieldName, null, entity);
+                                continue;
+                            }
                             // 枚举可能出现的情况
-                            if ("Integer".equals(fieldType)) {
-                                if (val instanceof Double) {
-                                    setEntityValue(fieldName, new Double(String.valueOf(val)).intValue(), entity);
-                                } else if (val instanceof String) {
-                                    setEntityValue(fieldName, Integer.valueOf(String.valueOf(val)), entity);
-                                } else {
+                            switch (fieldType) { // 判断实体类字段类型，再根据其转换
+                                case "Integer":
+                                    if (val instanceof Double) {
+                                        setEntityValue(fieldName, new Double(String.valueOf(val)).intValue(), entity);
+                                    } else if (val instanceof String) {
+                                        setEntityValue(fieldName, Integer.valueOf(String.valueOf(val)), entity);
+                                    } else {
+                                        setEntityValue(fieldName, val, entity);
+                                    }
+                                    break;
+                                case "Date":
+                                    if (val instanceof String) {
+                                        setEntityValue(fieldName, DateUtil.strToDateDay(String.valueOf(val).replaceAll("[年月]", "-").replace("日", "").replace("/", "-").trim()), entity);
+                                    } else {
+                                        setEntityValue(fieldName, val, entity);
+                                    }
+                                    break;
+                                case "String":
+                                    if (val instanceof Double || val instanceof Integer) {
+                                        setEntityValue(fieldName, String.valueOf(val), entity);
+                                    } else if (val instanceof Date) {
+                                        setEntityValue(fieldName, DateUtil.dateToStr((Date) val), entity);
+                                    } else {
+                                        setEntityValue(fieldName, val, entity);
+                                    }
+                                    break;
+                                default:
                                     setEntityValue(fieldName, val, entity);
-                                }
-                            } else if ("Date".equals(fieldType)) {
-                                if (val instanceof String) {
-                                    setEntityValue(fieldName, DateUtil.strToDateDay(String.valueOf(val).replaceAll("[年月]", "-").replace("日", "").replace("/", "-").trim()), entity);
-                                } else {
-                                    setEntityValue(fieldName, val, entity);
-                                }
-                            } else if ("String".equals(fieldType)) {
-                                if (val instanceof Double || val instanceof Integer) {
-                                    setEntityValue(fieldName, String.valueOf(val), entity);
-                                } else {
-                                    setEntityValue(fieldName, val, entity);
-                                }
-                            } else {
-                                setEntityValue(fieldName, val, entity);
                             }
                         }
                     }
@@ -166,33 +174,25 @@ public class ExcelReaderXSSAuto {
         try {
             // 判断当前Cell的Type
             switch (cell.getCellTypeEnum()) {
-                case FORMULA: {
-                    // 判断当前的cell是否为Date
-                    if (org.apache.poi.ss.usermodel.DateUtil.isCellDateFormatted(cell)) {
-                        // 如果是Date类型则，转化为Data格式
-                        Date date = cell.getDateCellValue();
-                        return date;
-                    } else { // 如果是纯数字
-                        // 取得当前Cell的数值
-                        return cell.getNumericCellValue();
-                    }
-                    // *NUMERIC也会有类似处理
-                }
+                case FORMULA:
                 case NUMERIC:
-                    if (org.apache.poi.ss.usermodel.DateUtil.isCellDateFormatted(cell)) {
-                        Date date = cell.getDateCellValue();
-                        return date;
-                    } else {
-                        return cell.getNumericCellValue();
+                    try {
+                        if (org.apache.poi.ss.usermodel.DateUtil.isCellDateFormatted(cell)) {
+                            Date date = cell.getDateCellValue();
+                            return date;
+                        } else {
+                            return cell.getNumericCellValue();
+                        }
+                    } catch (Exception e) {
+                        return String.valueOf(cell.getRichStringCellValue());
                     }
-                case STRING:
-                    return cell.getRichStringCellValue().getString();
                 case BOOLEAN:
                     return cell.getBooleanCellValue();
                 case BLANK:
                     return null;
+                case STRING:
                 default:
-                    return cell.getRichStringCellValue().getString();
+                    return String.valueOf(cell.getRichStringCellValue());
             }
         } catch (Exception e) {
             e.printStackTrace();

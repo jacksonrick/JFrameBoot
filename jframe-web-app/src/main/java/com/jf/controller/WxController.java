@@ -2,7 +2,7 @@ package com.jf.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jf.entity.ResMsg;
-import com.jf.entity.enums.ResCode;
+import com.jf.database.enums.ResCode;
 import com.jf.obj.XmlUtil;
 import com.jf.string.StringUtil;
 import com.jf.system.conf.RestClient;

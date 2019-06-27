@@ -7,7 +7,7 @@ import com.jf.database.model.manage.Admin;
 import com.jf.database.model.manage.Module;
 import com.jf.database.model.manage.Msg;
 import com.jf.entity.ResMsg;
-import com.jf.entity.enums.ResCode;
+import com.jf.database.enums.ResCode;
 import com.jf.service.system.AdminService;
 import com.jf.service.system.ModuleService;
 import com.jf.service.system.SystemService;

@@ -3,7 +3,7 @@ package com.jf.controller;
 import com.jf.common.BaseController;
 import com.jf.commons.LogManager;
 import com.jf.entity.ResMsg;
-import com.jf.entity.enums.ResCode;
+import com.jf.database.enums.ResCode;
 import com.jf.service.UserService;
 import com.jf.system.async.service.EmailService;
 import com.jf.system.async.service.SMService;

@@ -3,7 +3,7 @@ package com.jf.common;
 import com.jf.database.mapper.TokenMapper;
 import com.jf.database.model.Token;
 import com.jf.date.DateUtil;
-import com.jf.entity.enums.ResCode;
+import com.jf.database.enums.ResCode;
 import com.jf.string.StringUtil;
 import com.jf.system.conf.IConstant;
 import com.jf.system.exception.AppTokenException;

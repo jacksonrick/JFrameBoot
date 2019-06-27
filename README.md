@@ -1,5 +1,5 @@
 # JFrame
-##### JFrame - SpringBoot & Cloud Project `v5.5.5`
+##### JFrame - SpringBoot & Cloud Project `v5.5.6`
 made by @jackson-rick   <br>
 本架构是对技术框架的整合及开发的规范，适合多端项目和微服务
 
@@ -38,6 +38,9 @@ made by @jackson-rick   <br>
 * Jenkins&Docker自动化部署
 
 ### 更新日志：
+* v5.5.6 `20190627`
+    * 1.修复POI导入BUG，支持大批量导入
+    * 2.移除core模块entity包
 * v5.5.5 `20190624`
     * 1.常规更新
     * 2.utils模块版本号升级为3.0

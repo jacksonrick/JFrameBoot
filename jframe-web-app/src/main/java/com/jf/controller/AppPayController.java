@@ -6,7 +6,7 @@ import com.alipay.api.internal.util.AlipaySignature;
 import com.jf.common.BaseController;
 import com.jf.convert.Convert;
 import com.jf.entity.ResMsg;
-import com.jf.entity.enums.ResCode;
+import com.jf.database.enums.ResCode;
 import com.jf.file.Qrcode;
 import com.jf.sdk.wxpay.WXPay;
 import com.jf.sdk.wxpay.WXPayUtil;

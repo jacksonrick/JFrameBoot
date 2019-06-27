@@ -2,7 +2,7 @@ package com.jf.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jf.entity.ResMsg;
-import com.jf.entity.enums.ResCode;
+import com.jf.database.enums.ResCode;
 import com.jf.file.Qrcode;
 import com.jf.string.StringUtil;
 import com.jf.system.conf.RestClient;
@@ -20,7 +20,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.Duration;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

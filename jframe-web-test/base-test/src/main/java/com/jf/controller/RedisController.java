@@ -3,7 +3,7 @@ package com.jf.controller;
 import com.jf.common.BaseController;
 import com.jf.database.model.User;
 import com.jf.entity.ResMsg;
-import com.jf.entity.enums.ResCode;
+import com.jf.database.enums.ResCode;
 import com.jf.service.UserService;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;

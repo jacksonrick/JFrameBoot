@@ -1,13 +1,7 @@
 package com.jf.controller;
 
-import com.github.pagehelper.PageInfo;
 import com.jf.common.BaseController;
-import com.jf.database.model.User;
-import com.jf.database.model.custom.IdText;
-import com.jf.entity.ResMsg;
-import com.jf.entity.enums.ResCode;
 import com.jf.service.UserService;
-import com.jf.string.StringUtil;
 import com.jf.system.conf.SysConfig;
 import com.jf.system.third.geet.GeetestLib;
 import org.springframework.stereotype.Controller;
