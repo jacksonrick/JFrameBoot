@@ -80,10 +80,10 @@
             <artifactId>spring-cloud-starter-netflix-hystrix</artifactId>
         </dependency>
         <!-- spring cloud config -->
-        <dependency>
+        <!--<dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-config</artifactId>
-        </dependency>
+        </dependency>-->
 
         <!-- 极光推送 -->
         <dependency>

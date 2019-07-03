@@ -50,4 +50,9 @@ public class Tests {
         System.out.println(JacksonUtil.objectToJson(list));
     }
 
+    @Test
+    public void test5() {
+        txService.insertTest();
+    }
+
 }

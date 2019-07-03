@@ -6,13 +6,17 @@ import com.jf.string.IdGen;
 import org.springframework.aop.framework.AopContext;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionDefinition;
+import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import javax.annotation.Resource;
 
 /**
  * Created with IntelliJ IDEA.
- * Description:
+ * Description: 事务测试
  * User: xujunfei
  * Date: 2018-06-26
  * Time: 14:30
@@ -53,4 +57,40 @@ public class TxService {
         user3.setPassword("1111");
         testMapper.insert(user3);
     }
+
+
+    /**
+     * 声明式
+     * insert*
+     */
+    public void insertTest() {
+        testMapper.insert1("xu", 10);
+
+        testMapper.insert2("fei", 20);
+
+        System.out.println(1 / 0);
+    }
+
+    @Resource
+    private PlatformTransactionManager platformTransactionManager;
+
+    /**
+     * 手动
+     */
+    public void transaction2() {
+        DefaultTransactionDefinition definition = new DefaultTransactionDefinition();
+        definition.setName("transaction2");
+        definition.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
+        TransactionStatus status = platformTransactionManager.getTransaction(definition);
+
+        try {
+            testMapper.insert1("jun", 20);
+            System.out.println(1 / 0);
+            platformTransactionManager.commit(status);
+        } catch (Exception e) {
+            e.printStackTrace();
+            platformTransactionManager.rollback(status);
+        }
+    }
+
 }

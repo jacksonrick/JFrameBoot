@@ -9,8 +9,9 @@ import java.util.List;
 
 /**
  * Test Interface
- * @date 2017年05月09日 上午 11:06:55
+ *
  * @author jfxu
+ * @date 2017年05月09日 上午 11:06:55
  */
 public interface TestMapper {
 
@@ -37,5 +38,9 @@ public interface TestMapper {
 	int insertUser2(User user);
 
 	int insertUser3(User user);
+
+	int insert1(@Param("name") String name, @Param("age") Integer age);
+
+	int insert2(@Param("name") String name, @Param("age") Integer age);
 
 }

@@ -1,4 +1,4 @@
-package com.jf.system.conf;
+package com.jf.system.helper;
 
 import com.jf.commons.LogManager;
 import org.springframework.boot.ApplicationArguments;

@@ -1,4 +1,4 @@
-package com.jf.system.async.service;
+package com.jf.system.async;
 
 import freemarker.template.Template;
 import org.springframework.beans.factory.annotation.Autowired;

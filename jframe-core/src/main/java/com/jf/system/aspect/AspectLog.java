@@ -41,7 +41,10 @@ public class AspectLog {
     @Pointcut("execution(public * com.jf.controller..*.*(..))")
     public void ctl() {
     }
+    // 固定包
+    // @Pointcut("execution(public * com.jf.controller..*.*(..))")
 
+    // 所有controller
     // @Pointcut("execution(public * com.jf..*.*(..))&&@within(org.springframework.stereotype.Controller)")
 
     /**

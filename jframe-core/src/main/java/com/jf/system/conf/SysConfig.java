@@ -34,7 +34,7 @@ public class SysConfig {
     private String fdfsNginx;
 
     // 支付宝
-    private SysConfig.Aliyun aliyun;
+    private SysConfig.Alipay alipay;
     // 微信
     private SysConfig.Wechat wechat;
     // 极验验证
@@ -119,7 +119,7 @@ public class SysConfig {
                 ", logPath='" + logPath + '\'' +
                 ", serverId='" + serverId + '\'' +
                 ", fdfsNginx='" + fdfsNginx + '\'' +
-                ", aliyun=" + aliyun +
+                ", alipay=" + alipay +
                 ", wechat=" + wechat +
                 ", geetest=" + geetest +
                 ", jpush=" + jpush +
@@ -129,12 +129,12 @@ public class SysConfig {
 
     // internal java config
 
-    public SysConfig.Aliyun getAliyun() {
-        return aliyun;
+    public SysConfig.Alipay getAlipay() {
+        return alipay;
     }
 
-    public void setAliyun(SysConfig.Aliyun aliyun) {
-        this.aliyun = aliyun;
+    public void setAlipay(SysConfig.Alipay alipay) {
+        this.alipay = alipay;
     }
 
     public SysConfig.Wechat getWechat() {
@@ -169,7 +169,7 @@ public class SysConfig {
         this.upload = upload;
     }
 
-    public static class Aliyun {
+    public static class Alipay {
         // 支付宝-合作身份者ID，以2088开头由16位纯数字组成的字符串
         private String partner;
         // 支付宝-APPID
@@ -281,7 +281,7 @@ public class SysConfig {
 
         @Override
         public String toString() {
-            return "Aliyun{" +
+            return "Alipay{" +
                     "partner='" + partner + '\'' +
                     ", appId='" + appId + '\'' +
                     ", seller='" + seller + '\'' +

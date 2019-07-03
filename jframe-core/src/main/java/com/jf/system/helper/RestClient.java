@@ -1,4 +1,4 @@
-package com.jf.system.conf;
+package com.jf.system.helper;
 
 import com.jf.entity.ResMsg;
 import com.jf.database.enums.ResCode;
@@ -12,7 +12,7 @@ import java.net.SocketTimeoutException;
 
 /**
  * Created with IntelliJ IDEA.
- * Description:
+ * Description: restTemplate方法【仅供参考】
  * User: xujunfei
  * Date: 2018-07-05
  * Time: 16:31

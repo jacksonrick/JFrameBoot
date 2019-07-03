@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <title></title>
     <link href="/static/library/plugins/zTree/metroStyle/metroStyle.css" rel="stylesheet">
-<#include "include.ftl"/>
+    <#include "include.ftl"/>
 </head>
 
 <body class="gray-bg">

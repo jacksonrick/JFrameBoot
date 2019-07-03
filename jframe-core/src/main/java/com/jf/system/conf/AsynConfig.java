@@ -1,7 +1,8 @@
-package com.jf.system.async;
+package com.jf.system.conf;
 
 import com.jf.commons.LogManager;
 import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.AsyncConfigurer;
@@ -20,11 +21,12 @@ import java.util.concurrent.ThreadPoolExecutor;
  * Time: 11:03
  */
 @Configuration
+@ConditionalOnProperty(name = "app.async.enabled", havingValue = "true")
 @ConfigurationProperties(prefix = "spring.task")
 @EnableAsync
 //@EnableAspectJAutoProxy(exposeProxy = true) // 解决异步方法同步调用的问题
 // XXService service = (XXService) AopContext.currentProxy(); service.async();
-public class TaskExecutePool implements AsyncConfigurer {
+public class AsynConfig implements AsyncConfigurer {
 
     private int corePoolSize;
     private int maxPoolSize;

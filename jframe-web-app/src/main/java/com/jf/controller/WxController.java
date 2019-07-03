@@ -5,7 +5,7 @@ import com.jf.entity.ResMsg;
 import com.jf.database.enums.ResCode;
 import com.jf.obj.XmlUtil;
 import com.jf.string.StringUtil;
-import com.jf.system.conf.RestClient;
+import com.jf.system.helper.RestClient;
 import com.jf.system.utils.Constant;
 import com.jf.system.utils.CookieUtils;
 import org.apache.commons.io.IOUtils;

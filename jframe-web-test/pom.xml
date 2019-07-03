@@ -15,5 +15,7 @@
         <module>mq-producer</module>
         <module>quartz</module>
         <module>websocket</module>
+        <module>zookeeper</module>
     </modules>
+
 </project>

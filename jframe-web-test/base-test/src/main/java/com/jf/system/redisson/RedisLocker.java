@@ -20,7 +20,7 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * Created with IntelliJ IDEA.
- * Description: 分布式事务-redisson
+ * Description: 分布式锁-redisson
  * User: xujunfei
  * Date: 2018-01-03
  * Time: 09:55

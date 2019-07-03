@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <title></title>
     <link href="/static/library/plugins/zTree/metroStyle/metroStyle.css" rel="stylesheet">
-<#include "include.ftl"/>
+    <#include "include.ftl"/>
 </head>
 
 <body class="gray-bg">
@@ -103,6 +103,7 @@
     <ul id="tree" class="ztree"></ul>
     <input type="hidden" id="aid" value="">
     <a class="btn btn-sm btn-success btn-block btn-rounded" id="btn-permit">对该管理员授权</a>
+    <a class="btn-link" onclick="selectAllNodes()" style="position: absolute; top: 10px; right: 10px;">全选/全不选</a>
 </div>
 
 <script type="text/javascript" src="/static/library/plugins/zTree/jquery.ztree.all.min.js"></script>
@@ -142,10 +143,10 @@
     });
 
     var zindex;
-    var tree = "";
+    var zTree = "";
     var setting = {
         check: {
-            chkboxType: {"Y": "p", "N": "ps"},// 勾选checkbox对于父子节点的关联关系
+            chkboxType: {"Y": "ps", "N": "ps"},// 勾选checkbox对于父子节点的关联关系
             chkStyle: "checkbox",
             enable: true // 是否复选框
         },
@@ -162,11 +163,17 @@
             url: '/admin/system/permits',
             params: {"adminId": adminId},
             success: function (data) {
-                tree = $.fn.zTree.init($("#tree"), setting, data);
-                tree.expandAll(true);
+                zTree = $.fn.zTree.init($("#tree"), setting, data);
+                zTree.expandAll(true);
                 zindex = openLayerContent('编辑权限【' + adminName + '】', "450px", "500px", $(".layer-tree"));
             }
         });
+    }
+
+    var checked = true;
+    function selectAllNodes() {
+        zTree.checkAllNodes(checked);
+        checked = !checked;
     }
 </script>
 </body>

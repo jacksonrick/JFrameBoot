@@ -1,5 +1,5 @@
 # JFrame
-##### JFrame - SpringBoot & Cloud Project `v5.5.6`
+##### JFrame - SpringBoot & Cloud Project `v5.6`
 made by @jackson-rick   <br>
 本架构是对技术框架的整合及开发的规范，适合多端项目和微服务
 
@@ -38,6 +38,12 @@ made by @jackson-rick   <br>
 * Jenkins&Docker自动化部署
 
 ### 更新日志：
+* v5.6 `20190703`
+    * 1.新增zookeeper注册和配置中心DEMO
+    * 2.新增多个辅助类
+    * 3.新增声明式事务
+    * 4.优化后台页面
+    * 5.其他优化
 * v5.5.6 `20190627`
     * 1.修复POI导入BUG，支持大批量导入
     * 2.移除core模块entity包

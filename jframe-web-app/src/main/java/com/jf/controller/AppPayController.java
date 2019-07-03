@@ -5,8 +5,8 @@ import com.alibaba.fastjson.JSONObject;
 import com.alipay.api.internal.util.AlipaySignature;
 import com.jf.common.BaseController;
 import com.jf.convert.Convert;
-import com.jf.entity.ResMsg;
 import com.jf.database.enums.ResCode;
+import com.jf.entity.ResMsg;
 import com.jf.file.Qrcode;
 import com.jf.sdk.wxpay.WXPay;
 import com.jf.sdk.wxpay.WXPayUtil;
@@ -14,6 +14,8 @@ import com.jf.string.StringUtil;
 import com.jf.system.alipay.AliPayService;
 import com.jf.system.conf.SysConfig;
 import com.jf.system.wechat.WxPayService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -36,6 +38,8 @@ import java.util.Map;
 @Controller
 public class AppPayController extends BaseController {
 
+    private static Logger log = LoggerFactory.getLogger(AppPayController.class);
+
     @Resource
     private SysConfig config;
     @Resource
@@ -50,6 +54,12 @@ public class AppPayController extends BaseController {
         return "pay/alipay_qr";
     }
 
+    /**
+     * 支付宝二维码支付
+     *
+     * @param response
+     * @throws Exception
+     */
     @RequestMapping("/alipay_qrcode")
     public void alipay_qrcode(HttpServletResponse response) throws Exception {
         String result = aliPayService.qrcode("商品", 0.01, StringUtil.getOrderCode());
@@ -101,7 +111,7 @@ public class AppPayController extends BaseController {
 
 
     /**
-     * Alipay Callback
+     * 支付宝 Callback
      *
      * @param request
      * @param response
@@ -109,7 +119,7 @@ public class AppPayController extends BaseController {
      */
     @RequestMapping("/alipay_callback")
     public void alipay_callback(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        System.out.println("支付回调");
+        log.info("接收到支付宝回调");
         // 获取支付宝POST过来反馈信息
         Map<String, String> params = new HashMap<String, String>();
         Map<String, String[]> requestParams = request.getParameterMap();
@@ -127,30 +137,23 @@ public class AppPayController extends BaseController {
             valueStr = new String(valueStr.getBytes(), "utf-8");
             params.put(name, valueStr);
         }
-        boolean flag = AlipaySignature.rsaCheckV1(params, config.getAliyun().getPublicKey(),
-                config.getAliyun().getCharset(), config.getAliyun().getSignType());
-        System.out.println("param:" + params);
-        System.out.println("flag:" + flag);
+        boolean flag = AlipaySignature.rsaCheckV1(params, config.getAlipay().getPublicKey(),
+                config.getAlipay().getCharset(), config.getAlipay().getSignType());
+        log.info("flag:" + flag + ", param:" + params);
         if (flag) {
-            String out_trade_no = request.getParameter("out_trade_no");
-            String trade_status = request.getParameter("trade_status");
-            String param = request.getParameter("passback_params");
-            if (StringUtil.isBlank(param)) {
-                param = request.getParameter("biz");
+            String biz = request.getParameter("passback_params"); // 自定义业务码
+            if (StringUtil.isBlank(biz)) {
+                biz = request.getParameter("biz");
             }
-            int type = Convert.stringToInt(param, -1);
-            String tamount = request.getParameter("total_amount");
-            double total_amount = Double.parseDouble(tamount);
-            if (trade_status.equals("TRADE_SUCCESS")) {
-                System.out.println("支付成功");
-                output(response, "success");
-                /*if (chargeService.callback(out_trade_no) == 0) {
-                    log.info("###################charge_service callback success.");
-                    output(response, "success");
-                }*/
-            } else {
-                output(response, "failure");
-            }
+
+            // passback_params | biz
+            // trade_no
+            // out_trade_no
+            // trade_status     TRADE_SUCCESS
+            // total_amount
+
+            // aliPayService.callback(params);  // 处理业务
+            output(response, "success");
         } else {
             output(response, "failure");
         }
@@ -194,7 +197,7 @@ public class AppPayController extends BaseController {
     }
 
     /**
-     * Wexin Callback
+     * 微信支付 Callback
      *
      * @param request
      * @param response
@@ -202,26 +205,31 @@ public class AppPayController extends BaseController {
      */
     @RequestMapping("/wxpay_callback")
     public void wxpay_callback(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        System.out.println("接收到微信支付回调");
+        log.info("接收到微信支付回调");
         // 读取微信回调数据
         DataInputStream in = new DataInputStream(request.getInputStream());
         byte[] dataOrigin = new byte[request.getContentLength()];
         in.readFully(dataOrigin);
         if (null != in) in.close();
-
         String notifyData = new String(dataOrigin); // 支付结果通知的xml格式数据
-        System.out.println("notifyData:" + notifyData);
+        log.info("notifyData:" + notifyData);
 
         WXPay wxpay = new WXPay(wxPayService);
-        Map<String, String> notifyMap = WXPayUtil.xmlToMap(notifyData);  // 转换成map
-        if (wxpay.isPayResultNotifySignatureValid(notifyMap)) {
-            System.out.println("签名正确，参数：" + notifyMap);
-            // 签名正确
-            // 进行处理
+        Map<String, String> params = WXPayUtil.xmlToMap(notifyData);  // 转换成map
+        if (wxpay.isPayResultNotifySignatureValid(params)) {
+            System.out.println("签名正确，参数：" + params);
             // 注意特殊情况：订单已经退款，但收到了支付结果成功的通知，不应把商户侧订单状态从退款改成支付成功
+
+            // result_code      SUCCESS
+            // out_trade_no
+            // transaction_id
+            // total_fee
+            // attach           自定义业务码
+
+            // wechatPayService.callback(params);  // 处理业务
             output(response, output("SUCCESS", "OK"));
         } else {
-            System.out.println("签名错误");
+            log.info("签名错误");
             output(response, output("FAIL", "FAIL"));
         }
     }

@@ -185,4 +185,14 @@
 		)
 	</insert>
 
+	<insert id="insert1">
+		INSERT INTO t_test (name, age)
+		VALUES (#{name}, #{age})
+	</insert>
+
+	<insert id="insert2">
+		INSERT INTO t_test (name, age)
+		VALUES (#{name}, #{age})
+	</insert>
+
 </mapper>

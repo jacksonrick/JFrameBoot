@@ -101,52 +101,52 @@
       "sourceType": "com.jf.system.conf.SysConfig"
     },
     {
-      "name": "system.aliyun.partner",
+      "name": "system.alipay.partner",
       "type": "java.lang.String",
       "description": "支付宝-合作身份者ID，以2088开头由16位纯数字组成的字符串.",
-      "sourceType": "com.jf.system.conf.SysConfig$Aliyun"
+      "sourceType": "com.jf.system.conf.SysConfig$Alipay"
     },
     {
-      "name": "system.aliyun.seller",
+      "name": "system.alipay.seller",
       "type": "java.lang.String",
       "description": "支付宝-账号.",
-      "sourceType": "com.jf.system.conf.SysConfig$Aliyun"
+      "sourceType": "com.jf.system.conf.SysConfig$Alipay"
     },
     {
-      "name": "system.aliyun.app_id",
+      "name": "system.alipay.app_id",
       "type": "java.lang.String",
       "description": "支付宝-APPID.",
-      "sourceType": "com.jf.system.conf.SysConfig$Aliyun"
+      "sourceType": "com.jf.system.conf.SysConfig$Alipay"
     },
     {
-      "name": "system.aliyun.rsa_private_key",
+      "name": "system.alipay.rsa_private_key",
       "type": "java.lang.String",
       "description": "支付宝-商户私钥,需要PKCS8格式,使用支付宝提供工具生成.",
-      "sourceType": "com.jf.system.conf.SysConfig$Aliyun"
+      "sourceType": "com.jf.system.conf.SysConfig$Alipay"
     },
     {
-      "name": "system.aliyun.public_key",
+      "name": "system.alipay.public_key",
       "type": "java.lang.String",
       "description": "支付宝-公钥，使用支付宝提供工具生成后上传至开发者平台=>点击查看支付宝公钥=>复制.",
-      "sourceType": "com.jf.system.conf.SysConfig$Aliyun"
+      "sourceType": "com.jf.system.conf.SysConfig$Alipay"
     },
     {
-      "name": "system.aliyun.notify_url",
+      "name": "system.alipay.notify_url",
       "type": "java.lang.String",
       "description": "支付宝-接收通知的接口.",
-      "sourceType": "com.jf.system.conf.SysConfig$Aliyun"
+      "sourceType": "com.jf.system.conf.SysConfig$Alipay"
     },
     {
-      "name": "system.aliyun.return_url",
+      "name": "system.alipay.return_url",
       "type": "java.lang.String",
       "description": "支付宝-通知页面跳转.",
-      "sourceType": "com.jf.system.conf.SysConfig$Aliyun"
+      "sourceType": "com.jf.system.conf.SysConfig$Alipay"
     },
     {
-      "name": "system.aliyun.gateway",
+      "name": "system.alipay.gateway",
       "type": "java.lang.String",
       "description": "支付宝网关-生产环境 | 沙箱环境.",
-      "sourceType": "com.jf.system.conf.SysConfig$Aliyun"
+      "sourceType": "com.jf.system.conf.SysConfig$Alipay"
     },
     {
       "name": "system.wechat.appid",
@@ -249,6 +249,12 @@
       "defaultValue": false,
       "type": "java.lang.Boolean",
       "description": "[core]redis缓存支持."
+    },
+    {
+      "name": "app.async.enabled",
+      "defaultValue": false,
+      "type": "java.lang.Boolean",
+      "description": "[core]异步任务."
     },
     {
       "name": "app.ssl.enabled",

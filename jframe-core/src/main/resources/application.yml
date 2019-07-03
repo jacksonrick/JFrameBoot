@@ -237,7 +237,7 @@ system: # 系统自定义配置
   log_path: /Users/xujunfei/Downloads/tmp/logs/ # 日志存放目录
   server_id: ${spring.application.name} # 服务ID，用于日志标记
   fdfs_nginx: http://192.168.1.168/ # DFS Nginx代理服务器地址
-  aliyun: # 支付宝
+  alipay: # 支付宝
     partner: 2088
     seller: nf@sandbox.com
     app_id: 2016
@@ -283,6 +283,9 @@ spring:
     simple: manage
 server:
   port: 8080
+app:
+  async:
+    enabled: true
 
 ##################### 后台管理端 生产 #####################
 ---
