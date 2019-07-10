@@ -1,5 +1,5 @@
 # JFrame
-##### JFrame - SpringBoot & Cloud Project `v5.6`
+##### JFrame - SpringBoot & Cloud Project `v5.6.1`
 made by @jackson-rick   <br>
 本架构是对技术框架的整合及开发的规范，适合多端项目和微服务
 
@@ -38,6 +38,11 @@ made by @jackson-rick   <br>
 * Jenkins&Docker自动化部署
 
 ### 更新日志：
+* v5.6.1`20190710`
+    * 1.升级springcloud版本[2.1.2.RELEASE]
+    * 2.maven依赖优化
+    * 3.新增zookeeper注册和配置中心[推荐]
+    * 4.新增多个utils
 * v5.6 `20190703`
     * 1.新增zookeeper注册和配置中心DEMO
     * 2.新增多个辅助类
@@ -296,13 +301,14 @@ made by @jackson-rick   <br>
 ### 运行
 #### 打包到服务器运行
 * 修改生产环境配置
-* 在各个端下运行 `clean package -DskipTests`进行打包[必须先install父pom]
+* 在各个端下运行 `clean package -DskipTests`进行打包[必须先安装jframe和jframe-utils]
 * 将target目录下的打包文件上传到服务器目录
 * 运行`jframe/build/run`命令或直接运行`java -jar`命令
 * 注意：运行脚本前，请先查看注释，需要按照指定的命名方式
 
 #### Docker[推荐]
-* 直接运行打包命令，将上传到服务器目录，如:/home/jframe/front
+* 直接运行打包命令，将上传到服务器目录，如:/home/docker/web
+* 将项目jframe/build/docker/docker-compose.yml文件拷贝到项目根目录
 * 运行`docker-compose up -d` | `docker-compose restart web`
 * 配合Jenkins部署更佳
 
@@ -310,6 +316,5 @@ made by @jackson-rick   <br>
 * 使用maven下载Jar包时，请先在Maven中添加阿里的镜像源
 * 数据库脚本：`jframe/doc/jframe.sql`
 * 操作手册说明：`jframe/doc/框架使用手册.docx`
-* 默认为MySQL数据库，如使用Postgres，将相关代码替换为`jframe/doc/postdb`
-
-*如有任何问题或者疑问，请留言。
+* 默认为MySQL数据库，如使用Postgresql，将数据库脚本替换为`jframe/doc/postgresql`
+* jframe-web-test模块代码仅供参考

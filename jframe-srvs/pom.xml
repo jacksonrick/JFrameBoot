@@ -7,7 +7,6 @@
         <groupId>com.jf</groupId>
         <artifactId>jframe</artifactId>
         <version>5.0</version>
-        <relativePath>../jframe/pom.xml</relativePath>
     </parent>
 
     <artifactId>jframe-srvs</artifactId>
@@ -16,6 +15,7 @@
 
     <modules>
         <module>jframe-srv-order</module>
+        <module>jframe-srv-demo-zk</module>
     </modules>
 
 </project>

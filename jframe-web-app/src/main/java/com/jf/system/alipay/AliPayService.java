@@ -45,7 +45,7 @@ public class AliPayService {
      * @param subject
      * @param price
      * @param orderNum
-     * @return
+     * @return URL
      */
     public String qrcode(String subject, Double price, String orderNum) throws Exception {
         AlipayTradePrecreateRequest request = new AlipayTradePrecreateRequest();
@@ -73,7 +73,7 @@ public class AliPayService {
      * @param subject
      * @param price
      * @param orderNum
-     * @return
+     * @return Form
      */
     public String alipayWeb(String body, String subject, Double price, String orderNum) throws Exception {
         AlipayTradePagePayRequest request = new AlipayTradePagePayRequest();
@@ -98,7 +98,7 @@ public class AliPayService {
      * @param subject
      * @param price
      * @param orderNum
-     * @return
+     * @return Form
      */
     public String alipayWap(String body, String subject, Double price, String orderNum) throws Exception {
         AlipayTradeWapPayRequest request = new AlipayTradeWapPayRequest();
@@ -123,7 +123,7 @@ public class AliPayService {
      * @param subject
      * @param price
      * @param orderNum
-     * @return
+     * @return URL参数对
      */
     public String alipayApp(String body, String subject, Double price, String orderNum) throws Exception {
         AlipayTradeAppPayRequest request = new AlipayTradeAppPayRequest();

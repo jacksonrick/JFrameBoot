@@ -35,7 +35,7 @@
         </appender>
 
         <!--<appender name="elk" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
-            <destination>192.168.24.200:9250</destination>
+            <destination>dev:9250</destination>
             <encoder charset="UTF-8" class="net.logstash.logback.encoder.LogstashEncoder" />
         </appender>-->
 

@@ -146,6 +146,23 @@ public class DateUtil {
     }
 
     /**
+     * long转date
+     *
+     * @param time
+     * @return
+     */
+    public static Date longToDate(Long time) {
+        try {
+            DateTime dt = new DateTime(new Date(time));
+            String date = dt.toString(YYYY_MM_DD_HH_MM_SS);
+            return strToDate(date);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
      * 获取年月
      *
      * @param flag 如果为true则有分隔符 -

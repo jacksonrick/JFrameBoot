@@ -7,13 +7,19 @@
         <groupId>com.jf</groupId>
         <artifactId>jframe</artifactId>
         <version>5.0</version>
-        <relativePath>../jframe/pom.xml</relativePath>
     </parent>
 
     <artifactId>jframe-web-manage</artifactId>
     <version>1.0</version>
     <packaging>jar</packaging>
     <name>jframe-web-manage</name>
+
+    <properties>
+        <project.name>manage</project.name>
+        <poi.version>3.17</poi.version>
+        <itextpdf.version>5.5.9</itextpdf.version>
+        <itextasian.version>5.2.0</itextasian.version>
+    </properties>
 
     <dependencies>
         <dependency>
@@ -61,10 +67,6 @@
             <version>${poi.version}</version>
         </dependency>
     </dependencies>
-
-    <properties>
-        <project.name>manage</project.name>
-    </properties>
 
     <build>
         <finalName>jframe-web-manage</finalName>

@@ -7,6 +7,7 @@ import com.jf.obj.BeanUtil;
 import org.joda.time.Days;
 import org.joda.time.LocalDate;
 
+import java.util.Base64;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -17,6 +18,8 @@ import java.util.Map;
 public class MainTest {
 
     public static void main(String[] args) {
+        Base64.Encoder encoder = Base64.getEncoder();
+        System.out.println(encoder.encodeToString("hello".getBytes()));
     }
 
     public static void testReflect() {

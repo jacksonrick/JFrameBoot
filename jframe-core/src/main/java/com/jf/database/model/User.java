@@ -15,7 +15,7 @@ import java.util.Date;
 import java.util.TreeMap;
 
 /**
- * 用户
+ * 用户【仅用于测试】
  *
  * @date 2016年12月21日 上午 11:20:07
  * @author jfxu
@@ -72,8 +72,9 @@ public class User extends BaseVo implements Serializable {
     private String address;
 
     /** 出生日期 */
-    //@DateTimeFormat(pattern = "yyyy-MM-dd")
-    //@JsonFormat(pattern = "yyyy-MM-dd")
+    // @DateTimeFormat(pattern = "yyyy-MM-dd")
+    // @JsonFormat(pattern = "yyyy-MM-dd")
+    // @JsonFormat(shape = JsonFormat.Shape.STRING)
     private String birthday;
 
     /** 是否删除 1-是 0-否(默认) */

@@ -229,7 +229,7 @@ fdfs: # fastDFS配置
   tracker-list: # 可设置多个
     - 192.168.31.205:22122
 system: # 系统自定义配置
-  version: 'v5'
+  version: 'v5.6'
   dev: true # 是否开发环境
   appkey: 00056cb1d74435076a4c15a490798df4 # APP访问校验码
   static_host: http://127.0.0.1:${server.port}/ # 静态服务器地址，如果配置了FASTDFS，此项可以不用配置
@@ -246,11 +246,16 @@ system: # 系统自定义配置
     notify_url: http://xxx/alipay_callback
     return_url: http://xxx/alipay_return
     gateway: https://openapi.alipaydev.com/gateway.do
-  wechat: # 微信
+  aliyun: # 阿里云
+    access_id: xxx
+    access_secret: xxx
+  wechat: # 微信支付
     appid: wx47
     partner: 1482
     partner_key: xxx
     notify_url: http://xxx/wxpay_callback
+    mp_id: xxx  # 微信公众号
+    mp_key: xxx
   geetest: # 极验验证
     id: a53178
     key: 51dbc8

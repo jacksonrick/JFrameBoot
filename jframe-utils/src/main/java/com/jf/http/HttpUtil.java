@@ -14,7 +14,6 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
-import sun.misc.BASE64Encoder;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -23,10 +22,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.SocketTimeoutException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * HttpUtil
@@ -138,7 +134,8 @@ public class HttpUtil {
             HttpGet get = new HttpGet(url);
             RequestConfig requestConfig = RequestConfig.custom().setConnectTimeout(connectTimeout).setSocketTimeout(socketTimeout).build();
             get.setConfig(requestConfig);
-            get.setHeader("Authorization", "Basic " + new BASE64Encoder().encode(namepwd.getBytes()));
+            Base64.Encoder encoder = Base64.getEncoder();
+            get.setHeader("Authorization", "Basic " + encoder.encodeToString(namepwd.getBytes()));
             HttpResponse response = client.execute(get);
             HttpEntity entity = response.getEntity();
             if (entity != null) {
@@ -220,7 +217,8 @@ public class HttpUtil {
             HttpPost post = new HttpPost(url);
             RequestConfig requestConfig = RequestConfig.custom().setConnectTimeout(connectTimeout).setSocketTimeout(socketTimeout).build();
             post.setConfig(requestConfig);
-            post.setHeader("Authorization", "Basic " + new BASE64Encoder().encode(namepwd.getBytes()));
+            Base64.Encoder encoder = Base64.getEncoder();
+            post.setHeader("Authorization", "Basic " + encoder.encodeToString(namepwd.getBytes()));
             // 创建参数队列
             List<NameValuePair> formparams = getParamsList(paramsMap);
             if (formparams != null) {

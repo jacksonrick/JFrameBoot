@@ -7,7 +7,6 @@
         <groupId>com.jf</groupId>
         <artifactId>jframe</artifactId>
         <version>5.0</version>
-        <relativePath>../jframe/pom.xml</relativePath>
     </parent>
 
     <artifactId>jframe-core</artifactId>
@@ -83,7 +82,7 @@
         <!--<dependency>
             <groupId>net.logstash.logback</groupId>
             <artifactId>logstash-logback-encoder</artifactId>
-            <version>5.1</version>
+            <version>6.1</version>
         </dependency>-->
 
         <!-- utils -->

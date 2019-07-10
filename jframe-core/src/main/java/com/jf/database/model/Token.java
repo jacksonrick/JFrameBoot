@@ -4,7 +4,7 @@ import java.util.Date;
 
 /**
  * Created with IntelliJ IDEA.
- * Description:
+ * Description: App Token
  * User: xujunfei
  * Date: 2019-04-03
  * Time: 15:13

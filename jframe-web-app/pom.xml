@@ -7,7 +7,6 @@
         <groupId>com.jf</groupId>
         <artifactId>jframe</artifactId>
         <version>5.0</version>
-        <relativePath>../jframe/pom.xml</relativePath>
     </parent>
 
     <artifactId>jframe-web-app</artifactId>

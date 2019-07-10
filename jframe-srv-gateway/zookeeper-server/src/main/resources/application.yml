@@ -1,0 +1,17 @@
+server:
+  port: 8071
+management:
+  security:
+    enabled: false
+spring:
+  profiles:
+    active: dev
+  cloud:
+    zookeeper:
+      discovery: # 服务注册中心配置
+        enabled: true
+        register: true # 启用注册
+        root: /discovery # 注册根目录，自动创建
+logging:
+  level:
+    root: info

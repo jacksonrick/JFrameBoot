@@ -7,7 +7,6 @@
         <groupId>com.jf</groupId>
         <artifactId>jframe</artifactId>
         <version>5.0</version>
-        <relativePath>../jframe/pom.xml</relativePath>
     </parent>
 
     <artifactId>jframe-srv-gateway</artifactId>
@@ -18,6 +17,7 @@
         <module>nacos-dynamic-gw</module>
         <module>zuul-gw</module>
         <module>eureka-server</module>
+        <module>zookeeper-server</module>
     </modules>
 
 </project>

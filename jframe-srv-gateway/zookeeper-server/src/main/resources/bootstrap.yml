@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: ZK-SERVER
+  cloud:
+    zookeeper:
+      enabled: true
+      connect-string: dev:2181 # zk服务器
+      config: # 配置中心
+        enabled: true
+        root: /config # 根目录，需要创建
+        default-context: zk # 上下文
+        profile-separator: ',' # profile分隔符 /config/zk,dev/name
+        watcher:
+          enabled: true # 自定刷新，需要添加注解@RefreshScope

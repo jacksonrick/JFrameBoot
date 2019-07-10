@@ -8,12 +8,13 @@ import java.util.List;
  * @author rick
  * @version 1.1
  */
-public class Pagination {
+public class Pagination<T> {
 
-	private List list; // 分页数据
+	private List<T> list; // 分页数据
 	private int totalRecord; // 总记录数
 	private int pageNo; // 当前页码,第几页
 	private int pageSize; // 每页显示的记录数,每页显示多少条数据
+	private String pageSort; // 排序
 
 	private int totalPage; // 总页数
 
@@ -22,7 +23,7 @@ public class Pagination {
 
 	private int indexCount = 5; // 显示的索引数目,如10的话， 则显示1-10， 2-11
 
-	public Pagination(List list, int total, int pageNo, int pageSize) {
+	public Pagination(List<T> list, int total, int pageNo, int pageSize) {
 		this.list = list;
 		this.totalRecord = total;
 		this.pageNo = pageNo;
@@ -62,7 +63,7 @@ public class Pagination {
 	/**
 	 * 获取分页数据
 	 */
-	public List getList() {
+	public List<T> getList() {
 		return list;
 	}
 
@@ -117,5 +118,13 @@ public class Pagination {
 
 	public void setIndexCount(int indexCount) {
 		this.indexCount = indexCount;
+	}
+
+	public String getPageSort() {
+		return pageSort;
+	}
+
+	public void setPageSort(String pageSort) {
+		this.pageSort = pageSort;
 	}
 }

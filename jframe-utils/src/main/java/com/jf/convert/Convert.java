@@ -3,6 +3,7 @@ package com.jf.convert;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
+import java.util.List;
 
 /**
  * 转换工具类
@@ -194,6 +195,36 @@ public class Convert {
             return val;
         }
         return defaultValue;
+    }
+
+    /**
+     * 最大值
+     *
+     * @param doubles
+     * @return
+     */
+    public static Double getMax(List<Double> doubles) {
+        Double max = doubles.get(0);
+        for (int i = 0; i < doubles.size(); i++) {
+            if (doubles.get(i) > max)   // 判断最大值
+                max = doubles.get(i);
+        }
+        return max;
+    }
+
+    /**
+     * 最小值
+     *
+     * @param doubles
+     * @return
+     */
+    public static Double getMin(List<Double> doubles) {
+        Double min = doubles.get(0);
+        for (int i = 0; i < doubles.size(); i++) {
+            if (doubles.get(i) < min)   // 判断最小值
+                min = doubles.get(i);
+        }
+        return min;
     }
 
 }

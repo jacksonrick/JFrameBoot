@@ -7,7 +7,6 @@
         <groupId>com.jf</groupId>
         <artifactId>jframe</artifactId>
         <version>5.0</version>
-        <relativePath>../jframe/pom.xml</relativePath>
     </parent>
 
     <artifactId>jframe-web-front</artifactId>
@@ -35,14 +34,14 @@
                 <directory>src/main/resources</directory>
             </resource>
             <!-- include jframe public resources -->
-            <resource>
+            <!--<resource>
                 <directory>../jframe/public/static</directory>
                 <targetPath>static</targetPath>
             </resource>
             <resource>
                 <directory>../jframe/public/templates</directory>
                 <targetPath>templates</targetPath>
-            </resource>
+            </resource>-->
         </resources>
         <plugins>
             <plugin>
