@@ -40,7 +40,8 @@ public class Generate {
                 .username("root")
                 .password("12345678")
                 .path(target)
-                .author("jfxu");
+                .author("jfxu")
+                .removePrefix(true);
 
         System.out.println("开始执行......");
         long start = System.currentTimeMillis();

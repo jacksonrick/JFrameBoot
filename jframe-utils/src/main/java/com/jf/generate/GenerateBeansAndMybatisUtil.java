@@ -7,8 +7,8 @@ import java.io.*;
 import java.sql.*;
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
-import java.util.*;
 import java.util.Date;
+import java.util.*;
 
 /**
  * 自动生成MyBatis的实体类、实体映射XML接口、Mapper SQL、Service、Controller、HTML<br>
@@ -61,6 +61,7 @@ public class GenerateBeansAndMybatisUtil {
     private final static String base_vo = "com.jf.database.model.custom.BaseVo;";
 
     private Integer dbType = 1; // 1-mysql 2-postgres
+    private Boolean removePrefix;
     private String schema = null;
     private String tableName = null;
     private String beanName = null;
@@ -88,6 +89,7 @@ public class GenerateBeansAndMybatisUtil {
         controller_path = info.getGlobalPath() + "/controller";
 
         author = info.getAuthor();
+        removePrefix = info.getRemovePrefix();
 
         if (info.getDriver().contains("mysql")) {
             System.out.println("数据库类型：mysql");
@@ -208,7 +210,11 @@ public class GenerateBeansAndMybatisUtil {
         String[] tables = tableNew.split("_"); // 去除下划线之前的内容
         if (tables.length > 1) {
             String temp = null;
-            for (int i = 1; i < tables.length; i++) {
+            int start = 0;
+            if (removePrefix) {
+                start = 1;
+            }
+            for (int i = start; i < tables.length; i++) {
                 temp = tables[i].trim();
                 sb.append(temp.substring(0, 1).toUpperCase()).append(temp.substring(1));
             }
@@ -251,7 +257,10 @@ public class GenerateBeansAndMybatisUtil {
      * @date 2016年8月10日 上午8:55:21
      */
     private String processFile(String table) {
-        return table.substring(table.indexOf("_") + 1, table.length());
+        if (removePrefix) {
+            return table.substring(table.indexOf("_") + 1, table.length());
+        }
+        return table;
     }
 
     /**

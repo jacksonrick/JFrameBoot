@@ -16,6 +16,7 @@ public class GenInfo {
     private String password;
     private String globalPath;
     private String author;
+    private Boolean removePrefix;
 
     public GenInfo url(String dbUrl) {
         this.dbUrl = dbUrl;
@@ -49,6 +50,11 @@ public class GenInfo {
 
     public GenInfo author(String author) {
         this.author = author;
+        return this;
+    }
+
+    public GenInfo removePrefix(Boolean removePrefix) {
+        this.removePrefix = removePrefix;
         return this;
     }
 
@@ -106,5 +112,16 @@ public class GenInfo {
 
     public void setAuthor(String author) {
         this.author = author;
+    }
+
+    public Boolean getRemovePrefix() {
+        if (removePrefix == null) {
+            removePrefix = true;
+        }
+        return removePrefix;
+    }
+
+    public void setRemovePrefix(Boolean removePrefix) {
+        this.removePrefix = removePrefix;
     }
 }

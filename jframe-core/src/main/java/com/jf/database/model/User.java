@@ -1,7 +1,8 @@
 package com.jf.database.model;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.jf.database.model.custom.BaseVo;
 import com.jf.database.model.custom.Extend;
 import com.jf.system.handler.valid.EmptyPattern;
@@ -16,6 +17,8 @@ import java.util.TreeMap;
 
 /**
  * 用户【仅用于测试】
+ * <p>新增多个注解</p>
+ * <p>推荐使用ID生成器</p>
  *
  * @date 2016年12月21日 上午 11:20:07
  * @author jfxu
@@ -25,6 +28,8 @@ public class User extends BaseVo implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /** id */
+    // @JsonFormat(shape = JsonFormat.Shape.STRING)
+    // @JsonSerialize(using = ToStringSerializer.class)
     private Long id;
 
     /** 昵称 */
@@ -74,7 +79,6 @@ public class User extends BaseVo implements Serializable {
     /** 出生日期 */
     // @DateTimeFormat(pattern = "yyyy-MM-dd")
     // @JsonFormat(pattern = "yyyy-MM-dd")
-    // @JsonFormat(shape = JsonFormat.Shape.STRING)
     private String birthday;
 
     /** 是否删除 1-是 0-否(默认) */

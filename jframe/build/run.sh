@@ -55,6 +55,7 @@ else
     echo -e "$APP_NAME start failed."
 fi
 
+# jps -l | grep jframe-web-manage.jar | tr -s " " | cut -d" " -f1
 # nohup java -server -jar -Dapp.name=jframe-web-manage jframe-web-manage.jar --spring.profiles.active=pro >run.log &
 
 # -server                   use server [C2] mode.

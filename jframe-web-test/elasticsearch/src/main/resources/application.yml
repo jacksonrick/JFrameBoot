@@ -1,0 +1,16 @@
+server:
+  port: 9201
+spring:
+  resources:
+    static-locations: classpath:/static/
+  mvc:
+    static-path-pattern: /static/**
+  data: # es配置
+    elasticsearch:
+      cluster-name: docker-cluster
+      cluster-nodes: 192.168.40.200:9300
+      repositories:
+        enabled: true
+logging:
+  level:
+    root: info

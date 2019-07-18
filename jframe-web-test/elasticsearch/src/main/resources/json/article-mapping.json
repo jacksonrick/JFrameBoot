@@ -1,0 +1,26 @@
+{
+  "article": {
+    "properties": {
+      "id": {
+        "type": "long"
+      },
+      "title": {
+        "type": "keyword",
+        "fields": {
+          "pinyin": {
+            "type": "text",
+            "store": false,
+            "term_vector": "with_offsets",
+            "analyzer": "pinyin_analyzer",
+            "boost": 10
+          }
+        }
+      },
+      "content": {
+        "type": "text",
+        "analyzer": "ik_max_word",
+        "search_analyzer": "ik_smart"
+      }
+    }
+  }
+}
