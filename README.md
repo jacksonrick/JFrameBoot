@@ -1,5 +1,5 @@
 # JFrame
-##### JFrame - SpringBoot & Cloud Project `v5.6.3`
+##### JFrame - SpringBoot & Cloud Project `v5.6.4`
 made by @jackson-rick   <br>
 本架构是对技术框架的整合及开发的规范，适合多端项目和微服务
 
@@ -38,10 +38,14 @@ made by @jackson-rick   <br>
 * Jenkins&Docker自动化部署
 
 ### 更新日志：
-* v5.6.3`20190718`
+* v5.6.4 `20190726`
+    * 1.优化SSO单点登陆
+    * 2.优化POI配置式导入
+    * 3.新增阿里云OSS工具类
+* v5.6.3 `20190718`
     * 1.优化数据库逆向工程工具
     * 2.新增ElasticSearch模块，支持分词、拼音、高亮查询
-* v5.6.1`20190710`
+* v5.6.1 `20190710`
     * 1.升级springcloud版本[2.1.2.RELEASE]
     * 2.maven依赖优化
     * 3.新增zookeeper注册和配置中心[推荐]
@@ -317,7 +321,7 @@ made by @jackson-rick   <br>
 
 ### 其他
 * 使用maven下载Jar包时，请先在Maven中添加阿里的镜像源
-* 数据库脚本：`jframe/doc/jframe.sql`
+* 数据库脚本：`jframe/doc/database.sql`
 * 操作手册说明：`jframe/doc/框架使用手册.docx`
 * 默认为MySQL数据库，如使用Postgresql，将数据库脚本替换为`jframe/doc/postgresql`
 * jframe-web-test模块代码仅供参考

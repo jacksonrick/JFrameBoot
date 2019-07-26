@@ -163,7 +163,7 @@ public class ExcelReaderXSSAuto {
     }
 
     /**
-     * 根据XSSFCell类型设置数据
+     * 根据Cell类型返回数据
      *
      * @param cell
      * @return obj

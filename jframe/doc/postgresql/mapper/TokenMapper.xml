@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.jf.database.mapper.TokenMapper">
+
+    <select id="findByUid" resultType="token" parameterType="string">
+        SELECT uid, token, expired FROM s_token
+        WHERE uid = #{uid}
+    </select>
+
+    <select id="findByToken" resultType="token" parameterType="string">
+        SELECT uid, token, expired FROM s_token
+        WHERE token = #{token}
+    </select>
+
+    <insert id="insert" parameterType="token">
+        INSERT INTO s_token (
+			uid,
+			token,
+			expired
+		)
+		VALUE (
+			#{uid},
+			#{token},
+			#{expired}
+		)
+    </insert>
+
+    <update id="update" parameterType="token">
+        UPDATE s_token
+        <set>
+            <if test="token != null and token != ''">token = #{token},</if>
+            <if test="expired != null">expired = #{expired},</if>
+        </set>
+        WHERE uid = #{uid}
+    </update>
+
+    <delete id="delete" parameterType="string">
+        DELETE FROM s_token
+        WHERE uid = #{uid}
+    </delete>
+	
+</mapper>

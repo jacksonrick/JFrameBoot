@@ -59,7 +59,7 @@ public class ViewExcel<T> extends AbstractXlsView {
                 .append(".xlsx").toString(); // 文件后缀为xlsx(excel 2010)
         // 设置response方式,使执行此controller时候自动出现下载页面,而非直接使用excel打开
         response.setContentType("APPLICATION/OCTET-STREAM");
-        response.setHeader("Content-Disposition", "attachment; filename=" + URLEncoder.encode(excelName, "UTF-8"));
+        response.setHeader("Content-Disposition", "attachment; filename=" + encodeFileName(excelName, request));
 
         // 创建sheet
         SXSSFSheet sheet = (SXSSFSheet) workbook.createSheet("sheet1");
@@ -149,6 +149,28 @@ public class ViewExcel<T> extends AbstractXlsView {
         for (int i = 0; i < total; i++) {
             sheet.autoSizeColumn(i);
         }
+    }
+
+    /**
+     * @param fileNames
+     * @param request
+     * @return
+     */
+    public static String encodeFileName(String fileNames, HttpServletRequest request) {
+        String codedFilename = null;
+        try {
+            String agent = request.getHeader("USER-AGENT");
+            if (null != agent && -1 != agent.indexOf("MSIE") || null != agent
+                    && -1 != agent.indexOf("Trident") || null != agent && -1 != agent.indexOf("Edge")) {// ie浏览器及Edge浏览器
+                String name = java.net.URLEncoder.encode(fileNames, "UTF-8");
+                codedFilename = name;
+            } else if (null != agent && -1 != agent.indexOf("Mozilla")) {// 火狐,Chrome等浏览器
+                codedFilename = new String(fileNames.getBytes("UTF-8"), "iso-8859-1");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return codedFilename;
     }
 
 }

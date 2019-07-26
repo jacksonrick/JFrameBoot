@@ -15,7 +15,7 @@ security:
     sso:
       login-path: /sso/login
     client:
-      client-id: sso
+      client-id: sso02
       client-secret: 123456
       user-authorization-uri: ${auth-server}/oauth/authorize
       access-token-uri: ${auth-server}/oauth/token

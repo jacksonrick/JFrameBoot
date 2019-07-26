@@ -7,13 +7,12 @@ package com.jf.excel;
  * Date: 2018-08-30
  * Time: 11:25
  */
-public class BankList {
+public class CustList {
 
     private String custname;
-    private String bank;
     private String phone;
-    private String step;
-    private String jsons;
+    private String email;
+    private Integer age;
 
     public String getCustname() {
         return custname;
@@ -21,14 +20,6 @@ public class BankList {
 
     public void setCustname(String custname) {
         this.custname = custname;
-    }
-
-    public String getBank() {
-        return bank;
-    }
-
-    public void setBank(String bank) {
-        this.bank = bank;
     }
 
     public String getPhone() {
@@ -39,30 +30,29 @@ public class BankList {
         this.phone = phone;
     }
 
-    public String getStep() {
-        return step;
+    public String getEmail() {
+        return email;
     }
 
-    public void setStep(String step) {
-        this.step = step;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-    public String getJsons() {
-        return jsons;
+    public Integer getAge() {
+        return age;
     }
 
-    public void setJsons(String jsons) {
-        this.jsons = jsons;
+    public void setAge(Integer age) {
+        this.age = age;
     }
 
     @Override
     public String toString() {
-        return "BankList{" +
+        return "CustList{" +
                 "custname='" + custname + '\'' +
-                ", bank='" + bank + '\'' +
                 ", phone='" + phone + '\'' +
-                ", step='" + step + '\'' +
-                ", jsons='" + jsons + '\'' +
+                ", email='" + email + '\'' +
+                ", age=" + age +
                 '}';
     }
 }

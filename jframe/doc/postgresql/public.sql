@@ -118,12 +118,12 @@ INSERT INTO "public"."s_module" VALUES (115, 114, '日志备份', '/admin/system
 INSERT INTO "public"."s_module" VALUES (117, 116, '获取目录', '/admin/system/getDirectory', NULL, 3, NULL, '2018-07-17 16:18:37.625449', 'f');
 INSERT INTO "public"."s_module" VALUES (119, 118, 'SQL编辑', '/admin/system/executeUpdate', NULL, 3, NULL, '2018-07-17 16:18:37.628952', 'f');
 INSERT INTO "public"."s_module" VALUES (120, 118, 'SQL查询', '/admin/system/executeQuery', NULL, 3, NULL, '2018-07-17 16:18:37.630593', 'f');
-INSERT INTO "public"."s_module" VALUES (125, 124, '模块编辑', '/admin/system/moduleEdit', '', 3, NULL, '2018-07-17 16:18:37.639243', 'f');
-INSERT INTO "public"."s_module" VALUES (126, 124, '模块删除', '/admin/system/moduleDel', '', 3, NULL, '2018-07-17 16:18:37.640978', 'f');
+INSERT INTO "public"."s_module" VALUES (126, 124, '模块编辑', '/admin/system/moduleEdit', '', 3, NULL, '2018-07-17 16:18:37.639243', 'f');
+INSERT INTO "public"."s_module" VALUES (127, 124, '模块删除', '/admin/system/moduleDel', '', 3, NULL, '2018-07-17 16:18:37.640978', 'f');
 INSERT INTO "public"."s_module" VALUES (106, 1, '管理员列表', '/admin/system/adminList', 'fa fa-user', 2, 1, '2018-07-17 16:18:37.606119', 'f');
 INSERT INTO "public"."s_module" VALUES (109, 1, '权限管理', '/admin/system/rights', 'fa fa-delicious', 2, 2, '2018-07-17 16:18:37.611426', 'f');
 INSERT INTO "public"."s_module" VALUES (114, 1, '日志管理', '/admin/system/logList', 'fa fa-laptop', 2, 3, '2018-07-17 16:18:37.619586', 'f');
-INSERT INTO "public"."s_module" VALUES (124, 1, '系统日志', '/admin/system/syslogList', 'fa fa-laptop', 2, 4, '2018-07-17 16:18:37.619586', 'f');
+INSERT INTO "public"."s_module" VALUES (125, 1, '系统日志', '/admin/system/syslogList', 'fa fa-laptop', 2, 4, '2018-07-17 16:18:37.619586', 'f');
 INSERT INTO "public"."s_module" VALUES (118, 1, '系统工具', '/admin/system/tools', 'fa fa-crop', 2, 5, '2018-07-17 16:18:37.627168', 'f');
 INSERT INTO "public"."s_module" VALUES (116, 1, '文件管理', '/admin/system/file', 'fa fa-archive', 2, 4, '2018-07-17 16:18:37.623485', 'f');
 INSERT INTO "public"."s_module" VALUES (124, 1, '模块管理', '/admin/system/module', 'fa fa-desktop', 2, 6, '2018-07-17 16:18:37.637545', 'f');

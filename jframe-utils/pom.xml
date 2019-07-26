@@ -5,7 +5,7 @@
     <groupId>com.jf</groupId>
     <artifactId>jframe-utils</artifactId>
     <name>jframe-utils</name>
-    <version>3.0</version>
+    <version>3.1</version>
     <packaging>jar</packaging>
 
     <build>
@@ -59,7 +59,8 @@
         <xstream.version>1.4.8</xstream.version>
         <mail.version>1.4.7</mail.version>
         <qrcode.version>3.3.1</qrcode.version>
-        <aliyunecs.version>4.0.2</aliyunecs.version>
+        <aliyunecs.version>4.4.2</aliyunecs.version>
+        <aliyunecs.oss>3.4.2</aliyunecs.oss>
     </properties>
 
     <!-- provided | test | compile -->
@@ -275,6 +276,12 @@
             <groupId>com.aliyun</groupId>
             <artifactId>aliyun-java-sdk-core</artifactId>
             <version>${aliyunecs.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.aliyun.oss</groupId>
+            <artifactId>aliyun-sdk-oss</artifactId>
+            <version>${aliyunecs.oss}</version>
             <scope>provided</scope>
         </dependency>
 

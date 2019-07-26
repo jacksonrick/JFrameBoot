@@ -1,9 +1,9 @@
 package com.jf.poi;
 
+import com.jf.date.DateUtil;
 import com.jf.json.JacksonUtil;
-import com.jf.poi.model.EConfig;
+import com.jf.poi.model.ExcelJsonConfig;
 import org.apache.poi.poifs.filesystem.POIFSFileSystem;
-import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -11,9 +11,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.beans.PropertyDescriptor;
 import java.io.InputStream;
-import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -30,6 +28,8 @@ public class ExcelReaderConfig {
     private XSSFSheet sheet;
 
     /**
+     * 读取json配置
+     *
      * @param is
      * @param jsonConfig
      * @param clz
@@ -40,73 +40,41 @@ public class ExcelReaderConfig {
         // 创建工作簿
         wb = new XSSFWorkbook(is);
 
-        List<EConfig> configs = JacksonUtil.jsonToList(jsonConfig, EConfig.class);
-        System.out.println("配置: " + configs);
-
-        Field[] ff = clz.getDeclaredFields();
-        for (Field f : ff) {
-            System.out.print(f.getName() + "\t");
-        }
-
-        System.out.println("共有Sheet：" + wb.getNumberOfSheets());
+        List<ExcelJsonConfig> config = JacksonUtil.jsonToList(jsonConfig, ExcelJsonConfig.class);
+        System.out.println("JSON配置: " + config);
         // 存储读取的记录
         List<T> list = new ArrayList<>();
-        System.out.println("\n-----------------------------");
 
-        for (int i = 0; i < wb.getNumberOfSheets(); i++) {
-            sheet = wb.getSheetAt(i);
-            System.out.println("第" + (i + 1) + "个Sheet名称：" + sheet.getSheetName());
-
-            // 遍历Sheet
-            for (EConfig sht : configs) {
-                if (!sht.getName().equals(sheet.getSheetName())) {
-                    continue;
-                }
-
-                // 获取列配置
-                List<EConfig.Fields> fields = sht.getContent().getFields();
-                String[] jsons = sht.getContent().getJsons();
-                // 读取总行数
-                int rowNum = sheet.getLastRowNum();
-                // 第一列-标题
-                XSSFRow row0 = sheet.getRow(0);
-                XSSFRow row = null;
-                // 读取总列数-第一行
-                int colNum = row0.getPhysicalNumberOfCells();
-                for (int j = 1; j <= rowNum; j++) { // 读行-数据从第二行起
-                    T entity = clz.newInstance(); // 实例化实体
-                    row = sheet.getRow(j); // 获取行记录
-                    int k = 0;
-                    Map<String, String> jsonMap = new HashMap<>();
-                    while (k < colNum) { // 读列
-                        String cell0 = getStringValue(row0.getCell(k));
-                        // 比对字段
-                        for (EConfig.Fields f1 : fields) {
-                            String value = getCellFormatValue(row.getCell(k));
-                            if (f1.getName().equals(cell0)) {
-                                setEntityValue(f1.getField(), value, entity);
-                            }
-                        }
-                        // 比对JSON
-                        for (String arr : jsons) {
-                            if (arr.equals(cell0)) {
-                                String value = getCellFormatValue(row.getCell(k));
-                                jsonMap.put(arr, value);
-                                break;
-                            }
-                        }
-                        k++;
+        // 默认读取第一个Sheet
+        sheet = wb.getSheetAt(0);
+        // 读取总行数
+        int rowNum = sheet.getLastRowNum();
+        // 第一列-标题
+        XSSFRow row0 = sheet.getRow(0);
+        XSSFRow row = null;
+        // 读取总列数-第一行
+        int colNum = row0.getPhysicalNumberOfCells();
+        for (int j = 1; j <= rowNum; j++) { // 读行-数据从第二行起
+            T entity = clz.newInstance(); // 实例化实体
+            row = sheet.getRow(j); // 获取行记录
+            int k = 0;
+            Map<String, String> jsonMap = new HashMap<>();
+            while (k < colNum) { // 读列
+                String cell0 = getStringValue(row0.getCell(k));
+                // 比对字段
+                for (ExcelJsonConfig field : config) {
+                    if (field.getName().equals(cell0)) {
+                        Object value = getCellFormatValue(row.getCell(k));
+                        setEntityValue(field.getField(), value, entity);
                     }
-                    setEntityValue("step", sht.getType(), entity);
-                    setEntityValue("jsons", JacksonUtil.objectToJson(jsonMap), entity);
-                    list.add(entity);
                 }
+                k++;
             }
+            list.add(entity);
         }
 
-        System.out.println("---------------------");
         for (T t : list) {
-            System.out.println(t);
+            System.out.println(t.toString());
         }
     }
 
@@ -117,18 +85,39 @@ public class ExcelReaderConfig {
      * @param <T>
      * @throws Exception
      */
-    private <T> void setEntityValue(String field, String value, T entity) throws Exception {
-        // 方法1
-        /*// 属性的set方法，必须以set开头，is不支持
-        String setMethodName = "set" + field.substring(0, 1).toUpperCase() + field.substring(1);
-        Method setMethod = entity.getClass().getMethod(setMethodName, new Class[]{});
-        // 执行set方法
-        setMethod.invoke(entity, new Object[]{});*/
+    private <T> void setEntityValue(String field, Object value, T entity) throws Exception {
+        try {
+            PropertyDescriptor pd = new PropertyDescriptor(field, entity.getClass());
+            String fieldType = pd.getPropertyType().getSimpleName();
+            Object finalVal = value;
+            // 枚举可能出现的情况
+            switch (fieldType) { // 判断实体类字段类型，再根据其转换
+                case "Integer":
+                    if (value instanceof Double) {
+                        finalVal = new Double(String.valueOf(value)).intValue();
+                    } else if (value instanceof String) {
+                        finalVal = Integer.valueOf(String.valueOf(value));
+                    }
+                    break;
+                case "Date":
+                    if (value instanceof String) {
+                        finalVal = DateUtil.strToDateDay(String.valueOf(value).replaceAll("[年月]", "-").replace("日", "").replace("/", "-").trim());
+                    }
+                    break;
+                case "String":
+                    if (value instanceof Double || value instanceof Integer) {
+                        finalVal = String.valueOf(value);
+                    } else if (value instanceof Date) {
+                        finalVal = DateUtil.dateToStr((Date) value);
+                    }
+                    break;
+            }
 
-        // 方法2
-        PropertyDescriptor pd = new PropertyDescriptor(field, entity.getClass());
-        Method method = pd.getWriteMethod();
-        method.invoke(entity, value);
+            Method method = pd.getWriteMethod();
+            method.invoke(entity, finalVal);
+        } catch (Exception e) {
+            throw new RuntimeException("导入出错，字段：" + field + "，值：" + value, e);
+        }
     }
 
     private <T> T getObject(Class<T> c) throws InstantiationException, IllegalAccessException {
@@ -137,6 +126,10 @@ public class ExcelReaderConfig {
         return t;
     }
 
+    /**
+     * @param cell
+     * @return
+     */
     private String getStringValue(XSSFCell cell) {
         String cellvalue = "";
         if (cell == null) {
@@ -149,38 +142,41 @@ public class ExcelReaderConfig {
         return cellvalue;
     }
 
-    private String getCellFormatValue(XSSFCell cell) {
-        String cellvalue = "";
-        if (cell == null) {
-            return cellvalue;
-        }
+    /**
+     * 根据Cell类型返回数据
+     *
+     * @param cell
+     * @return obj
+     */
+    private Object getCellFormatValue(XSSFCell cell) {
+        if (cell == null)
+            return null;
         try {
             // 判断当前Cell的Type
-            switch (cell.getCellType()) {
-                case XSSFCell.CELL_TYPE_FORMULA: {
-                    // 判断当前的cell是否为Date
-                    if (org.apache.poi.ss.usermodel.DateUtil.isCellDateFormatted(cell)) {
-                        // 如果是Date类型则，转化为Data格式
-                        Date date = cell.getDateCellValue();
-                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-                        cellvalue = sdf.format(date);
-
-                    } else { // 如果是纯数字
-                        // 取得当前Cell的数值
-                        cellvalue = String.valueOf(cell.getNumericCellValue());
+            switch (cell.getCellTypeEnum()) {
+                case FORMULA:
+                case NUMERIC:
+                    try {
+                        if (org.apache.poi.ss.usermodel.DateUtil.isCellDateFormatted(cell)) {
+                            Date date = cell.getDateCellValue();
+                            return date;
+                        } else {
+                            return cell.getNumericCellValue();
+                        }
+                    } catch (Exception e) {
+                        return String.valueOf(cell.getRichStringCellValue());
                     }
-                    break;
-                }
-                case XSSFCell.CELL_TYPE_STRING:
-                    cellvalue = cell.getRichStringCellValue().getString();
-                    break;
+                case BOOLEAN:
+                    return cell.getBooleanCellValue();
+                case BLANK:
+                    return null;
+                case STRING:
                 default:
-                    cell.setCellType(CellType.STRING);
-                    cellvalue = cell.getRichStringCellValue().getString();
+                    return String.valueOf(cell.getRichStringCellValue());
             }
         } catch (Exception e) {
-            cellvalue = cell.getRichStringCellValue().getString();
+            e.printStackTrace();
+            return null;
         }
-        return cellvalue;
     }
 }
