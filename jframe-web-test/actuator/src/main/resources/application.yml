@@ -1,0 +1,28 @@
+server:
+  port: 8070
+spring:
+  application:
+    name: API服务-01
+  boot:
+    admin:
+      client:
+        url: "http://127.0.0.1:8070"
+        instance:
+          name: ${spring.application.name}
+          management-base-url: http://127.0.0.1:${server.port}
+          service-base-url: http://127.0.0.1:${server.port}
+info:
+  app:
+    name: ${spring.application.name}
+    version: 1.1.1
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+    jmx:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always

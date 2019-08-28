@@ -3,6 +3,8 @@ package com.jf.system.socket;
 import com.jf.model.SocketPrincipal;
 import com.jf.model.User;
 import com.jf.system.IConstant;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.messaging.Message;
@@ -34,6 +36,8 @@ import java.util.Map;
 public class WebSocketConfig extends AbstractSessionWebSocketMessageBrokerConfigurer {
     // 亦可以使用WebSocketMessageBrokerConfigurer
 
+    private static Logger log = LoggerFactory.getLogger(WebSocketConfig.class);
+
     /**
      * @param registry
      */
@@ -42,7 +46,7 @@ public class WebSocketConfig extends AbstractSessionWebSocketMessageBrokerConfig
         registry.setApplicationDestinationPrefixes("/ws") // 客户端发送地址的前缀，如ws/send
                 .setUserDestinationPrefix("/topic") // 客户端订阅地址的前缀 subscribe("/topic/chat")
                 .enableSimpleBroker("/chat") // 客户端订阅地址(后缀),可以设置多个 "/chat1,/chat2"
-                //.setHeartbeatValue(new long[]{60000, 60000}) // 心跳60s default10s[TaskScheduler]
+        //.setHeartbeatValue(new long[]{60000, 60000}) // 心跳60s default10s[TaskScheduler]
         ;
     }
 
@@ -87,11 +91,10 @@ public class WebSocketConfig extends AbstractSessionWebSocketMessageBrokerConfig
              */
             @Override
             public Message<?> preSend(Message<?> message, MessageChannel channel) {
-                System.out.println("recived : " + message.getHeaders().get("simpSessionAttributes"));
-                StompHeaderAccessor accessor = StompHeaderAccessor.wrap(message);
+                log.info("recived : " + message.getHeaders().get("simpSessionAttributes"));
+                //StompHeaderAccessor accessor = StompHeaderAccessor.wrap(message);
                 // 可以从SESSION获取到用户信息
-                User user = (User) accessor.getSessionAttributes().get(IConstant.SESSION_USER);
-                System.out.println("recived-user:" + user.getNickname());
+                //User user = (User) accessor.getSessionAttributes().get(IConstant.SESSION_USER);
                 return super.preSend(message, channel);
             }
 
@@ -119,9 +122,8 @@ public class WebSocketConfig extends AbstractSessionWebSocketMessageBrokerConfig
         registration.setInterceptors(new ChannelInterceptorAdapter() {
             @Override
             public Message<?> preSend(Message<?> message, MessageChannel channel) {
-                System.out.println("sended: " + message);
                 // CONNECT_ACK表示连接，DISCONNECT_ACK连接断开
-                System.out.println("simpMessageType: " + message.getHeaders().get("simpMessageType"));
+                log.info("MessageType:" + message.getHeaders().get("simpMessageType") + ", message: " + message);
                 return super.preSend(message, channel);
             }
         });

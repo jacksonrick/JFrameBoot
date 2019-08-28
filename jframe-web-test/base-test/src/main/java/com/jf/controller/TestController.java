@@ -1,9 +1,8 @@
 package com.jf.controller;
 
 import com.jf.common.BaseController;
-import com.jf.commons.LogManager;
-import com.jf.entity.ResMsg;
 import com.jf.database.enums.ResCode;
+import com.jf.entity.ResMsg;
 import com.jf.service.UserService;
 import com.jf.system.async.EmailService;
 import com.jf.system.async.SMService;
@@ -19,6 +18,8 @@ import javax.servlet.AsyncEvent;
 import javax.servlet.AsyncListener;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
@@ -37,19 +38,6 @@ public class TestController extends BaseController {
     @ResponseBody
     public ResMsg testError() {
         userService.testRollback();
-        return new ResMsg(ResCode.SUCCESS.code(), ResCode.SUCCESS.msg());
-    }
-
-    @RequestMapping("/testLog")
-    @ResponseBody
-    public ResMsg testLog() {
-        LogManager.info("1");
-        LogManager.info("2");
-        LogManager.info("3");
-        LogManager.info("4");
-        LogManager.error("11");
-        LogManager.error("22");
-        LogManager.error("33");
         return new ResMsg(ResCode.SUCCESS.code(), ResCode.SUCCESS.msg());
     }
 
@@ -96,27 +84,11 @@ public class TestController extends BaseController {
     @RequestMapping("/testEmail")
     @ResponseBody
     public ResMsg testEmail() {
-        emailService.sendTemplateMail(null, "80222@qq.com", "123", "email_register");
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("username", "XXX");
+        emailService.sendTemplateMail(map, "xxx@163.com", "测试", "email_register");
         return new ResMsg(ResCode.SUCCESS.code(), ResCode.SUCCESS.msg());
     }
-
-   /* @RequestMapping("/htmltopdf")
-    @ResponseBody
-    public ResMsg htmltopdf() {
-        try {
-            // 导入数据
-            Map<String, Object> map = new HashMap<String, Object>();
-            map.put("name", "xujunfei");
-            String str = pdfService.pdfCreate("pdf_user", map, sysConfig.getStaticPath());
-            if ("error".equals(str)) {
-                return new ResMsg(ResCode.FAIL.code(), ResCode.FAIL.msg());
-            }
-            return new ResMsg(1, str);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new ResMsg(ResCode.ERROR.code(), ResCode.ERROR.msg());
-        }
-    }*/
 
     @RequestMapping("/jpush")
     @ResponseBody

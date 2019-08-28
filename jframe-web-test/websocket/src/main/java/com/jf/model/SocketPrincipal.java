@@ -30,7 +30,7 @@ public class SocketPrincipal implements Principal {
      */
     @Override
     public String getName() {
-        return String.valueOf(user.getId());
+        return user.getId();
     }
 
 }

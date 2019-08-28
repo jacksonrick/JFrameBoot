@@ -76,14 +76,14 @@
                 <directory>src/main/resources</directory>
             </resource>
             <!-- include jframe public resources -->
-            <resource>
+            <!--<resource>
                 <directory>../jframe/public/static</directory>
                 <targetPath>static</targetPath>
             </resource>
             <resource>
                 <directory>../jframe/public/templates</directory>
                 <targetPath>templates</targetPath>
-            </resource>
+            </resource>-->
         </resources>
         <plugins>
             <plugin>
@@ -103,6 +103,7 @@
                     </archive>
                     <excludes> <!-- 排除 -->
                         <exclude>static/**</exclude>
+                        <exclude>templates/**</exclude>
                         <exclude>*.yml</exclude>
                     </excludes>
                 </configuration>
@@ -114,7 +115,7 @@
                 <configuration>
                     <appendAssemblyId>false</appendAssemblyId>
                     <descriptors>
-                        <descriptor>../jframe/build/package.xml</descriptor>
+                        <descriptor>../jframe/build/package3.xml</descriptor>
                     </descriptors>
                 </configuration>
                 <executions>

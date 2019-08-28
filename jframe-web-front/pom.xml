@@ -33,15 +33,6 @@
             <resource>
                 <directory>src/main/resources</directory>
             </resource>
-            <!-- include jframe public resources -->
-            <!--<resource>
-                <directory>../jframe/public/static</directory>
-                <targetPath>static</targetPath>
-            </resource>
-            <resource>
-                <directory>../jframe/public/templates</directory>
-                <targetPath>templates</targetPath>
-            </resource>-->
         </resources>
         <plugins>
             <plugin>

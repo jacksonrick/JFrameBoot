@@ -12,6 +12,3 @@ Cache-Control: no-cache
 GET {{host}}/mq_send
 
 ###
-GET {{host}}/testAsyncRequest
-
-###

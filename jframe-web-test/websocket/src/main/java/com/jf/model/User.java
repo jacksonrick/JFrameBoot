@@ -14,100 +14,45 @@ public class User implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /** id */
-    private Integer id;
+    private String id;
 
-    /** 昵称 */
-    private String nickname;
-
-    /** 手机号 */
-    private String phone;
-
-    /** 头像 */
-    private String avatar;
-
-    /** 账户余额 */
-    private Double money;
-
-    /** 注册时间 */
-    private Date createTime;
-
-    /** 是否删除 1-是 0-否(默认) */
-    private Boolean deleted;
+    /** 名称 */
+    private String username;
 
     public User() {
     }
 
-    public User(Integer id) {
+    public User(String id, String username) {
+        this.id = id;
+        this.username = username;
+    }
+
+    public User(String id) {
         super();
         this.id = id;
     }
 
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
     }
 
-    public String getNickname() {
-        return nickname;
+    public String getUsername() {
+        return username;
     }
 
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public String getAvatar() {
-        return avatar;
-    }
-
-    public void setAvatar(String avatar) {
-        this.avatar = avatar;
-    }
-
-    public Double getMoney() {
-        return money;
-    }
-
-    public void setMoney(Double money) {
-        this.money = money;
-    }
-
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    public Boolean getDeleted() {
-        return deleted;
-    }
-
-    public void setDeleted(Boolean deleted) {
-        this.deleted = deleted;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     @Override
     public String toString() {
         return "User{" +
-                "id=" + id +
-                ", nickname='" + nickname + '\'' +
-                ", phone='" + phone + '\'' +
-                ", avatar='" + avatar + '\'' +
-                ", money=" + money +
-                ", createTime=" + createTime +
-                ", deleted=" + deleted +
+                "id='" + id + '\'' +
+                ", username='" + username + '\'' +
                 '}';
     }
 }

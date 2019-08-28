@@ -58,6 +58,7 @@
                     </archive>
                     <excludes>
                         <exclude>static/**</exclude>
+                        <exclude>*.yml</exclude>
                     </excludes>
                 </configuration>
             </plugin>

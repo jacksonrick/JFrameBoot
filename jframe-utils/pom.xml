@@ -5,7 +5,7 @@
     <groupId>com.jf</groupId>
     <artifactId>jframe-utils</artifactId>
     <name>jframe-utils</name>
-    <version>3.1</version>
+    <version>3.1.1</version>
     <packaging>jar</packaging>
 
     <build>

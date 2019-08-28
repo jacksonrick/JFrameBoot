@@ -100,15 +100,6 @@
             <resource>
                 <directory>src/main/resources</directory>
             </resource>
-            <!-- include jframe public resources -->
-            <resource>
-                <directory>../../jframe/public/static</directory>
-                <targetPath>static</targetPath>
-            </resource>
-            <resource>
-                <directory>../../jframe/public/templates</directory>
-                <targetPath>templates</targetPath>
-            </resource>
         </resources>
         <plugins>
             <!-- package plugin -->
@@ -139,7 +130,7 @@
                     <appendAssemblyId>false</appendAssemblyId>
                     <descriptors>
                         <!-- 描述文件 -->
-                        <descriptor>../../jframe/build/package.xml</descriptor>
+                        <descriptor>../../jframe/build/package2.xml</descriptor>
                     </descriptors>
                 </configuration>
                 <executions>

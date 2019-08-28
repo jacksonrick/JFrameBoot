@@ -1,18 +1,18 @@
 package com.jf.controller.user;
 
 import com.github.pagehelper.PageInfo;
+import com.jf.annotation.AuthPassport;
 import com.jf.common.BaseController;
-import com.jf.controller.view.ViewPDF;
 import com.jf.controller.view.ViewExcel;
+import com.jf.controller.view.ViewPDF;
+import com.jf.database.enums.ResCode;
 import com.jf.database.model.User;
 import com.jf.database.model.excel.UserModel;
 import com.jf.entity.ResMsg;
-import com.jf.database.enums.ResCode;
 import com.jf.poi.ExcelReaderXSSAuto;
 import com.jf.service.system.SystemService;
 import com.jf.service.user.UserService;
 import com.jf.string.StringUtil;
-import com.jf.annotation.AuthPassport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;

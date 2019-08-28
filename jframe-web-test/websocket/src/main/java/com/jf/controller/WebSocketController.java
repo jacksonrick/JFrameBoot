@@ -51,13 +51,13 @@ public class WebSocketController {
      * @return
      */
     @RequestMapping("/ws")
-    public String ws(Integer id, HttpSession session) {
-        if (id == null) {
+    public String ws(String uid, HttpSession session) {
+        if (uid == null) {
             System.out.println("id is empty!");
             return "error/400";
         }
-        User user = new User(id);
-        user.setNickname("USER" + id);
+        User user = new User(uid);
+        user.setUsername("USER" + uid);
         session.setAttribute(IConstant.SESSION_USER, user);
         return "ws";
     }
@@ -74,7 +74,7 @@ public class WebSocketController {
     public void send(SocketMessage message, Principal principal) {
         User user = ((SocketPrincipal) principal).getUser();
         message.setId(user.getId());
-        message.setUsername(user.getNickname());
+        message.setUsername(user.getUsername());
         message.setDate(new Date());
         System.out.println(message.toString());
 

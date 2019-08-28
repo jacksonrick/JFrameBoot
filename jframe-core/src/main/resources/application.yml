@@ -2,6 +2,7 @@ logging:
   config: classpath:logback-boot.xml # 日志配置文件
 server:
   port: 8080 # 默认端口号
+  connection-timeout: 5000
   tomcat: # tomcat容器
     uri-encoding: UTF-8
     max-threads: 800
@@ -18,7 +19,7 @@ server:
 #      cookie:
 #        name: SESSIONID
 #    context-path:
-#  ssl:
+#  ssl: # 不推荐使用，Nginx替代
 #    enabled: false
 #    key-store: classpath:test.jks
 #    key-store-type: JKS
@@ -114,9 +115,10 @@ spring:
     waitOnShutdown: true # 设置线程池关闭的时候等待所有任务都完成再继续销毁其他的Bean
     awaitTerminationSeconds: 60 # 设置线程池中任务的等待时间，如果超过这个时候还没有销毁就强制销毁
   mail: # 邮件服务器设置
-    host: smtp.qq.com
-    username: 1@qq.com
-    password: 1
+    host: smtp.163.com
+    username: xxx@163.com
+    password: xxx
+    port: 994
     properties:
       mail:
         smtp:
@@ -229,7 +231,7 @@ fdfs: # fastDFS配置
   tracker-list: # 可设置多个
     - 192.168.31.205:22122
 system: # 系统自定义配置
-  version: 'v5.6'
+  version: 'v5.7'
   dev: true # 是否开发环境
   appkey: 00056cb1d74435076a4c15a490798df4 # APP访问校验码
   static_host: http://127.0.0.1:${server.port}/ # 静态服务器地址，如果配置了FASTDFS，此项可以不用配置

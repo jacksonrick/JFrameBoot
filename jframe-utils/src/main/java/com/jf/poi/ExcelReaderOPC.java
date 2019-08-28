@@ -1,5 +1,7 @@
 package com.jf.poi;
 
+import com.jf.string.StringUtil;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.ss.util.CellReference;
@@ -28,10 +30,18 @@ import java.util.List;
 public class ExcelReaderOPC {
 
     private List<String[]> datas;
-    private Integer cols;
+    public Integer cols;
+    public Boolean includeHeader;
+    public Boolean hasDateType;
+    public List<String> headers;
 
-    public ExcelReaderOPC() {
+    public ExcelReaderOPC(Boolean includeHeader, Boolean hasDateType) {
         this.datas = new ArrayList<>();
+        this.includeHeader = includeHeader;
+        this.hasDateType = hasDateType;
+        if (includeHeader) {
+            headers = new ArrayList<>();
+        }
     }
 
     /**
@@ -92,9 +102,6 @@ public class ExcelReaderOPC {
         public void startRow(int rowNum) {
             currentRow = rowNum;
             currentCol = 0;
-            if (!firstCellOfRow) {
-                data = new String[cols];
-            }
         }
 
         // 行结束
@@ -102,8 +109,6 @@ public class ExcelReaderOPC {
         public void endRow(int rowNum) {
             if (firstCellOfRow) {
                 cols = currentCol + 1; // 初始化列数
-            } else {
-                datas.add(data);
             }
             firstCellOfRow = false;
         }
@@ -111,11 +116,25 @@ public class ExcelReaderOPC {
         // 行 - 字段处理
         @Override
         public void cell(String cellReference, String formattedValue, XSSFComment comment) {
-            int thisCol = (new CellReference(cellReference)).getCol(); // 防止空值
+            int thisCol = (new CellReference(cellReference)).getCol(); // 防止空值（可去除空行）
             currentCol = thisCol;
-            if (!firstCellOfRow && currentCol < cols) {
-                // replace 时间格式问题，可能会替换非日期字段
-                data[currentCol] = formattedValue.replaceAll("\"", "").replaceAll("年", "-").replaceAll("月", "-").replaceAll("日", "").replaceAll("/", "-");
+            if (!firstCellOfRow) { // 非首行
+                if (currentCol == 0) { // 初始化数组
+                    data = new String[cols];
+                }
+                if (currentCol < cols) { // 遍历列
+                    if (hasDateType) {
+                        // replace 时间格式问题，可能会替换非日期字段
+                        data[currentCol] = formattedValue.replaceAll("\"", "").replaceAll("年", "-").replaceAll("月", "-").replaceAll("日", "").replaceAll("/", "-");
+                    } else {
+                        data[currentCol] = formattedValue;
+                    }
+                }
+                if (currentCol == cols - 1) { // 追加数据
+                    datas.add(data);
+                }
+            } else {
+                headers.add(formattedValue);
             }
         }
 

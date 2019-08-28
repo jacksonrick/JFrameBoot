@@ -78,40 +78,7 @@ public class ExcelReaderXSSAuto {
                             String fieldName = fs[i].getName(); // 字段名
                             String fieldType = fs[i].getType().getSimpleName(); // 实体类字段类型
                             Object val = getCellFormatValue(row.getCell(k));
-                            if (val == null) {
-                                setEntityValue(fieldName, null, entity);
-                                continue;
-                            }
-                            // 枚举可能出现的情况
-                            switch (fieldType) { // 判断实体类字段类型，再根据其转换
-                                case "Integer":
-                                    if (val instanceof Double) {
-                                        setEntityValue(fieldName, new Double(String.valueOf(val)).intValue(), entity);
-                                    } else if (val instanceof String) {
-                                        setEntityValue(fieldName, Integer.valueOf(String.valueOf(val)), entity);
-                                    } else {
-                                        setEntityValue(fieldName, val, entity);
-                                    }
-                                    break;
-                                case "Date":
-                                    if (val instanceof String) {
-                                        setEntityValue(fieldName, DateUtil.strToDateDay(String.valueOf(val).replaceAll("[年月]", "-").replace("日", "").replace("/", "-").trim()), entity);
-                                    } else {
-                                        setEntityValue(fieldName, val, entity);
-                                    }
-                                    break;
-                                case "String":
-                                    if (val instanceof Double || val instanceof Integer) {
-                                        setEntityValue(fieldName, String.valueOf(val), entity);
-                                    } else if (val instanceof Date) {
-                                        setEntityValue(fieldName, DateUtil.dateToStr((Date) val), entity);
-                                    } else {
-                                        setEntityValue(fieldName, val, entity);
-                                    }
-                                    break;
-                                default:
-                                    setEntityValue(fieldName, val, entity);
-                            }
+                            setEntityValue(fieldName, val, entity, j, k);
                         }
                     }
                 }
@@ -130,13 +97,38 @@ public class ExcelReaderXSSAuto {
      * @param <T>
      * @throws Exception
      */
-    private <T> void setEntityValue(String field, Object value, T entity) {
+    private <T> void setEntityValue(String field, Object value, T entity, int j, int k) {
         try {
             PropertyDescriptor pd = new PropertyDescriptor(field, entity.getClass());
+            String fieldType = pd.getPropertyType().getSimpleName();
+            Object finalVal = value;
+            // 枚举可能出现的情况
+            switch (fieldType) { // 判断实体类字段类型，再根据其转换
+                case "Integer":
+                    if (value instanceof Double) {
+                        finalVal = new Double(String.valueOf(value)).intValue();
+                    } else if (value instanceof String) {
+                        finalVal = Integer.valueOf(String.valueOf(value));
+                    }
+                    break;
+                case "Date":
+                    if (value instanceof String) {
+                        finalVal = DateUtil.strToDateDay(String.valueOf(value).replaceAll("[年月]", "-").replace("日", "").replace("/", "-").trim());
+                    }
+                    break;
+                case "String":
+                    if (value instanceof Double || value instanceof Integer) {
+                        finalVal = String.valueOf(value);
+                    } else if (value instanceof Date) {
+                        finalVal = DateUtil.dateToStr((Date) value);
+                    }
+                    break;
+            }
+
             Method method = pd.getWriteMethod();
-            method.invoke(entity, value);
+            method.invoke(entity, finalVal);
         } catch (Exception e) {
-            throw new RuntimeException("导入出错，字段：" + field + "，值：" + value, e);
+            throw new RuntimeException(String.format("导入出错，字段：%s，值：%s，位置：第%d行第%d列", field, value, j + 1, k + 1), e);
         }
     }
 

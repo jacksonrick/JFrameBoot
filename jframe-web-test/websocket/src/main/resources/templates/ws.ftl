@@ -45,8 +45,8 @@
     </div>
 </div>
 
-<script src="/static/js/jquery-2.1.1.min.js"></script>
-<script src="/static/js/stomp-2.3.3.min.js"></script>
+<script src="static/js/jquery-2.1.1.min.js"></script>
+<script src="static/js/stomp-2.3.3.min.js"></script>
 <script>
     var stompClient = null;
 
@@ -57,9 +57,14 @@
         stompClient = Stomp.client(socket);
         //stompClient.debug = false;
         //stompClient.heartbeat.outgoing = 20000;
-        stompClient.connect({}, function (frame) {
-            setConnected(true);
+        var headers = {
+            UID: getQueryString("uid"),
+            NAME: getQueryString("name"),
+            PWD: ''
+        }
+        stompClient.connect(headers, function (frame) {
             //console.log('Connected: ' + frame);
+            setConnected(true);
             stompClient.subscribe('/topic/chat', function (ret) {
                 console.log(ret);
                 var json = JSON.parse(ret.body);
@@ -69,6 +74,8 @@
                     "<td>" + json.date + "</td>" +
                     "</tr>");
             });
+        }, function (error) {
+            console.log(error);
         });
     }
 
@@ -108,6 +115,14 @@
             stompClient.send("/ws/sendall", {}, null);
         });
     });
+
+    function getQueryString(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+        var r = window.location.search.substr(1).match(reg);
+        if (r != null)
+            return unescape(r[2]);
+        return null;
+    }
 </script>
 </body>
 </html>

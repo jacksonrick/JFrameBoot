@@ -58,7 +58,7 @@ public class ViewExcel<T> extends AbstractXlsView {
                 .append(new DateTime(System.currentTimeMillis()).toString("yyyy-MM-dd-HH-mm-ss"))
                 .append(".xlsx").toString(); // 文件后缀为xlsx(excel 2010)
         // 设置response方式,使执行此controller时候自动出现下载页面,而非直接使用excel打开
-        response.setContentType("APPLICATION/OCTET-STREAM");
+        response.setContentType("APPLICATION/OCTET-STREAM"); // application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
         response.setHeader("Content-Disposition", "attachment; filename=" + encodeFileName(excelName, request));
 
         // 创建sheet

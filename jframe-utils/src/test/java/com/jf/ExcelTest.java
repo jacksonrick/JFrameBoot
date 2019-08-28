@@ -22,20 +22,26 @@ import java.util.List;
 public class ExcelTest {
 
     public static void main(String[] args) throws Exception {
-        testReaderConfig();
+        testOPC();
     }
 
+    /**
+     * 转换为CSV格式读取
+     *
+     * @throws Exception
+     */
     public static void testOPC() throws Exception {
         long start = System.currentTimeMillis();
 
-        File file = new File("/Users/xujunfei/Downloads/源数据模板/人员组织结构.xlsx");
+        File file = new File("/Users/xujunfei/Downloads/test.xlsx");
         InputStream is = new FileInputStream(file);
-        ExcelReaderOPC xlsx2csv = new ExcelReaderOPC();
+        ExcelReaderOPC xlsx2csv = new ExcelReaderOPC(true, true);
         List<String[]> datas = xlsx2csv.process(is);
 
         long end = System.currentTimeMillis();
         System.out.println("读取时间: " + (end - start) / 1000 + "s");
         System.out.println("总条数：" + datas.size());
+        System.out.println("header: " + xlsx2csv.headers);
 
         // 模拟插入数据库
         int batch = 50; // 一次插入数量
@@ -52,8 +58,13 @@ public class ExcelTest {
         }
     }
 
+    /**
+     * 注解导入
+     *
+     * @throws Exception
+     */
     public static void testReaderAuto() throws Exception {
-        File file = new File("/Users/xujunfei/Downloads/人员明细最终版6.25.xlsx");
+        File file = new File("/Users/xujunfei/Downloads/test.xlsx");
         InputStream is = new FileInputStream(file);
         ExcelReaderXSSAuto read = new ExcelReaderXSSAuto();
         List<PersonModel> list = read.read(is, PersonModel.class);
@@ -123,7 +134,7 @@ public class ExcelTest {
      * JSON配置字段 写入
      */
     public static void testReaderConfig() {
-        File file = new File("/Users/xujunfei/Downloads/excel_test.xlsx");
+        File file = new File("/Users/xujunfei/Downloads/test.xlsx");
         ExcelReaderConfig read = new ExcelReaderConfig();
         try {
             String jsonConfig = getConfig();

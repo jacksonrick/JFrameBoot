@@ -65,7 +65,7 @@ public class ExcelReaderConfig {
                 for (ExcelJsonConfig field : config) {
                     if (field.getName().equals(cell0)) {
                         Object value = getCellFormatValue(row.getCell(k));
-                        setEntityValue(field.getField(), value, entity);
+                        setEntityValue(field.getField(), value, entity, j, k);
                     }
                 }
                 k++;
@@ -85,7 +85,7 @@ public class ExcelReaderConfig {
      * @param <T>
      * @throws Exception
      */
-    private <T> void setEntityValue(String field, Object value, T entity) throws Exception {
+    private <T> void setEntityValue(String field, Object value, T entity, int j, int k) throws Exception {
         try {
             PropertyDescriptor pd = new PropertyDescriptor(field, entity.getClass());
             String fieldType = pd.getPropertyType().getSimpleName();
@@ -116,7 +116,7 @@ public class ExcelReaderConfig {
             Method method = pd.getWriteMethod();
             method.invoke(entity, finalVal);
         } catch (Exception e) {
-            throw new RuntimeException("导入出错，字段：" + field + "，值：" + value, e);
+            throw new RuntimeException(String.format("导入出错，字段：%s，值：%s，位置：第%d行第%d列", field, value, j + 1, k + 1), e);
         }
     }
 
