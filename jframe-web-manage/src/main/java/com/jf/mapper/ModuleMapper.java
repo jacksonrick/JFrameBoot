@@ -14,7 +14,7 @@ public interface ModuleMapper {
 
 	List<Module> findByCondition(BaseVo baseVo);
 
-	Integer findIdByPath(String path);
+	Integer findIdByAction(String action);
 
 	int update(Module bean);
 

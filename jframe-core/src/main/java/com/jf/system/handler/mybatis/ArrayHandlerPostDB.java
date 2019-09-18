@@ -1,5 +1,6 @@
 package com.jf.system.handler.mybatis;
 
+import com.jf.exception.SysException;
 import org.apache.ibatis.type.BaseTypeHandler;
 import org.apache.ibatis.type.JdbcType;
 import org.apache.ibatis.type.TypeException;
@@ -64,8 +65,7 @@ public class ArrayHandlerPostDB extends BaseTypeHandler<Object[]> {
         try {
             return (Object[]) array.getArray();
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new SysException(e.getMessage(), e);
         }
-        return null;
     }
 }

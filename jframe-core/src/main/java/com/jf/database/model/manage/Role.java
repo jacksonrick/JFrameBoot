@@ -21,13 +21,13 @@ public class Role extends BaseVo implements Serializable {
 	/** 用户组名称 */
     @NotEmpty(message = "用户组名称不能为空")
     @Length(min = 2, max = 6, message = "用户组名称长度在2-6个字符之间")
-	private String roleName;
+	private String name;
 
 	/** 权限 */
-	private String roleRights;
+	private String rights;
 
 	/** 是否可编辑 1-可编辑 0-不可编辑 */
-	private Integer roleFlag;
+	private Integer flag;
 
     /** 是否删除 1-是 0-否 */
     private Boolean deleted;
@@ -48,31 +48,31 @@ public class Role extends BaseVo implements Serializable {
 		return this.id;
 	}
 
-	public void setRoleName(String roleName) {
-		this.roleName = roleName;
+	public String getName() {
+		return name;
 	}
 
-	public String getRoleName() {
-		return this.roleName;
+	public void setName(String name) {
+		this.name = name;
 	}
 
-	public void setRoleRights(String roleRights) {
-		this.roleRights = roleRights;
+	public String getRights() {
+		return rights;
 	}
 
-	public String getRoleRights() {
-		return this.roleRights;
+	public void setRights(String rights) {
+		this.rights = rights;
 	}
 
-	public void setRoleFlag(Integer roleFlag) {
-		this.roleFlag = roleFlag;
+	public Integer getFlag() {
+		return flag;
 	}
 
-	public Integer getRoleFlag() {
-		return this.roleFlag;
+	public void setFlag(Integer flag) {
+		this.flag = flag;
 	}
 
-    public void setDeleted(Boolean deleted) {
+	public void setDeleted(Boolean deleted) {
         this.deleted = deleted;
     }
 
@@ -84,9 +84,9 @@ public class Role extends BaseVo implements Serializable {
 	public String toString() {
 		return "Role{" +
 				"id=" + id +
-				", roleName='" + roleName + '\'' +
-				", roleRights='" + roleRights + '\'' +
-				", roleFlag=" + roleFlag +
+				", name='" + name + '\'' +
+				", rights='" + rights + '\'' +
+				", flag=" + flag +
 				", deleted=" + deleted +
 				'}';
 	}

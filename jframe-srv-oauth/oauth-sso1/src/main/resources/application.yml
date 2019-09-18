@@ -20,8 +20,7 @@ security:
       user-authorization-uri: ${auth-server}/oauth/authorize
       access-token-uri: ${auth-server}/oauth/token
     resource:
-      jwt:
-        key-uri: ${auth-server}/oauth/token_key
+      user-info-uri: ${auth-server}/authentication/user
 logging:
   level:
     org.springframework: info

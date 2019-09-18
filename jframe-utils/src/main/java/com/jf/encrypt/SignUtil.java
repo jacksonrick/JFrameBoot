@@ -1,10 +1,10 @@
 package com.jf.encrypt;
 
+import com.jf.exception.SysException;
 import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.Iterator;
 import java.util.TreeMap;
 
@@ -67,12 +67,9 @@ public class SignUtil {
             MessageDigest md = MessageDigest.getInstance("MD5");
             md.update(data.getBytes("UTF-8"));
             return bytes2Hex(md.digest());
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new SysException(e.getMessage(), e);
         }
-        return null;
     }
 
 

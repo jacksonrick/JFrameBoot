@@ -1,5 +1,7 @@
 package com.jf.system.wechat;
 
+import com.jf.exception.SysException;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -34,7 +36,7 @@ public class SignUtil {
             //将字节数组转成字符串
             tmpStr = byteToStr(digest);
         } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
+            throw new SysException(e.getMessage(), e);
         }
 
         content = null;

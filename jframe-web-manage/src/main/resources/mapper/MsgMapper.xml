@@ -36,13 +36,14 @@
 		FROM s_msg
 		WHERE admin_id = #{adminId} AND DATEDIFF(now(),create_time) &lt;= 1
 	</select>
+	<!-- For PG: WHERE admin_id = #{adminId} AND DATE(now()) - DATE(create_time) &lt;= 1-->
 
 	<insert id="insert" parameterType="msg">
 		INSERT INTO s_msg (
 			admin_id,
 			content
 		)
-		VALUE (
+		VALUES (
 			#{adminId},
 			#{content}
 		)

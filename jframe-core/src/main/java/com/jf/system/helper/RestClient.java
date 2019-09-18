@@ -1,8 +1,8 @@
 package com.jf.system.helper;
 
-import com.jf.entity.ResMsg;
 import com.jf.database.enums.ResCode;
-import com.jf.system.exception.RestException;
+import com.jf.entity.ResMsg;
+import com.jf.exception.RestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.stereotype.Component;
@@ -41,7 +41,7 @@ public class RestClient {
             if (e instanceof RestException) {
                 return new ResMsg(ResCode.HTTP_ERROR.code(), ResCode.HTTP_ERROR.msg() + ":" + ((RestException) e).getCode());
             }
-            return new ResMsg(ResCode.HTTP_ERROR.code(), ResCode.HTTP_ERROR.msg());
+            return new ResMsg(ResCode.HTTP_ERROR.code(), e.getMessage());
         }
     }
 
@@ -59,14 +59,13 @@ public class RestClient {
             ResponseEntity<T> response = restTemplate.exchange(url, method, null, clz);
             return new ResMsg(ResCode.HTTP_OK.code(), ResCode.HTTP_OK.msg(), response.getBody());
         } catch (Exception e) {
-            e.printStackTrace();
             if (e.getCause() instanceof SocketTimeoutException) {
                 return new ResMsg(ResCode.HTTP_TIMEOUT.code(), ResCode.HTTP_TIMEOUT.msg());
             }
             if (e instanceof RestException) {
                 return new ResMsg(ResCode.HTTP_ERROR.code(), ResCode.HTTP_ERROR.msg() + ":" + ((RestException) e).getCode());
             }
-            return new ResMsg(ResCode.HTTP_ERROR.code(), ResCode.HTTP_ERROR.msg());
+            return new ResMsg(ResCode.HTTP_ERROR.code(), e.getMessage());
         }
     }
 
@@ -92,7 +91,7 @@ public class RestClient {
             if (e instanceof RestException) {
                 return new ResMsg(ResCode.HTTP_ERROR.code(), ResCode.HTTP_ERROR.msg() + ":" + ((RestException) e).getCode());
             }
-            return new ResMsg(ResCode.HTTP_ERROR.code(), ResCode.HTTP_ERROR.msg());
+            return new ResMsg(ResCode.HTTP_ERROR.code(), e.getMessage());
         }
     }
 
@@ -120,7 +119,7 @@ public class RestClient {
             if (e instanceof RestException) {
                 return new ResMsg(ResCode.HTTP_ERROR.code(), ResCode.HTTP_ERROR.msg() + ":" + ((RestException) e).getCode());
             }
-            return new ResMsg(ResCode.HTTP_ERROR.code(), ResCode.HTTP_ERROR.msg());
+            return new ResMsg(ResCode.HTTP_ERROR.code(), e.getMessage());
         }
     }
 

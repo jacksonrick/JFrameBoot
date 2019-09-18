@@ -17,9 +17,9 @@
 	</sql>
 	
 	<!--
-		<if test="stsArr != null">
-			AND w.state IN <foreach item="idx" collection="stsArr" open="(" separator="," close=")"> #{idx} </foreach>
-		</if> 
+	<if test="stsArr != null">
+		AND w.state IN <foreach item="idx" collection="stsArr" open="(" separator="," close=")"> #{idx} </foreach>
+	</if>
 	-->
 
 	<sql id="USER">
@@ -36,5 +36,14 @@
 			AND DATE_FORMAT(${column},"%Y-%m-%d") &lt;= ADDDATE(DATE_FORMAT(#{endDate},"%Y-%m-%d"),1)
 		</if>
 	</sql>
+	<!-- For PG:
+	<sql id="DATE">
+		<if test="startDate != null and startDate != ''">
+			AND TO_CHAR(${column}, 'YYYY-MM-DD') &gt;= #{startDate}
+		</if>
+		<if test="endDate != null and endDate != ''">
+			AND TO_CHAR(${column}, 'YYYY-MM-DD') &lt;= #{endDate}
+		</if>
+	</sql> -->
 
 </mapper>

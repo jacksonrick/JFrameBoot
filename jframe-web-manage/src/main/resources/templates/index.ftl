@@ -32,14 +32,14 @@
                 </li>
 
                 <#list modules as module>
-                    <#if module.modFlag == 1>
+                    <#if module.flag == 1>
                         <li>
-                            <a> <i class="${module.modIcon } f14"></i> <span class="nav-label">${module.modName }</span></a>
+                            <a> <i class="${module.iconName } f14"></i> <span class="nav-label">${module.name }</span></a>
                             <ul class="nav nav-second-level">
                                 <#assign parent = module.id />
                                 <#list modules as module2>
-                                    <#if module2.modFlag ==2 && module2.parentId == parent>
-                                        <li><a class="J_menuItem" href="${module2.modPath}"><i class="${module2.modIcon }"></i>${module2.modName }</a></li>
+                                    <#if module2.flag ==2 && module2.parentId == parent>
+                                        <li><a class="J_menuItem" href="${module2.action}"><i class="${module2.iconName }"></i>${module2.name }</a></li>
                                     </#if>
                                 </#list>
                             </ul>

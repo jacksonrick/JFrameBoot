@@ -26,7 +26,7 @@
             <div class="form-group">
                 <div class="input-group">
                     <span class="input-group-addon"><i class="fa fa-key"></i></span>
-                    <input type="password" class="form-control" placeholder="密码" name="password" value="123456">
+                    <input type="password" class="form-control" placeholder="密码" name="password" value="">
                 </div>
             </div>
             <div class="form-group">

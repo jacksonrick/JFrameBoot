@@ -7,21 +7,21 @@
 	<sql id="baseColumn">
 		id,
 		parent_id,
-		mod_name,
-		mod_path,
-		mod_icon,
-		mod_flag,
-		mod_sort
+		name,
+		action,
+		icon_name,
+		flag,
+		sort
 	</sql>
 
-	<resultMap type="module" id="moduleResultMap">
+	<resultMap type="com.jf.database.model.manage.Module" id="moduleResultMap">
 		<id property="id" column="id" />
 		<result property="parentId" column="parent_id" />
-		<result property="modName" column="mod_name" />
-		<result property="modPath" column="mod_path" />
-		<result property="modIcon" column="mod_icon" />
-		<result property="modFlag" column="mod_flag" />
-		<result property="modSort" column="mod_sort" />
+		<result property="name" column="name" />
+		<result property="action" column="action" />
+		<result property="iconName" column="icon_name" />
+		<result property="flag" column="flag" />
+		<result property="sort" column="sort" />
 	</resultMap>
 
 	<select id="findByCondition" resultMap="moduleResultMap" parameterType="baseVo">
@@ -29,55 +29,61 @@
 		FROM s_module
 		<where>
             <if test="flags != null">
-                AND mod_flag IN <foreach item="idx" collection="flags" open="(" separator="," close=")"> #{idx} </foreach>
+                AND flag IN <foreach item="idx" collection="flags" open="(" separator="," close=")"> #{idx} </foreach>
             </if>
             <if test="roleId != null">
-                AND FIND_IN_SET(id, (SELECT role_rights FROM s_role WHERE id = #{roleId}))
+                AND FIND_IN_SET(id, (SELECT rights FROM s_role WHERE id = #{roleId}))
             </if>
 			<if test="adminId != null">
-				AND FIND_IN_SET(id, (SELECT admin_rights FROM s_admin WHERE id = #{adminId}))
+				AND FIND_IN_SET(id, (SELECT rights FROM s_admin WHERE id = #{adminId}))
 			</if>
 			<if test="ids != null and ids != ''">
 				AND FIND_IN_SET(id, #{ids})
 			</if>
 			AND !deleted
 		</where>
-		ORDER BY mod_sort ASC
+		ORDER BY sort ASC
 	</select>
+	<!-- For PG:
+	AND ARRAYCONTAINED(ARRAY[CAST(id AS TEXT)], (SELECT STRING_TO_ARRAY(rights, ',') FROM s_role WHERE id = #{roleId}))
+	AND ARRAYCONTAINED(ARRAY[CAST(id AS TEXT)], (SELECT STRING_TO_ARRAY(rights, ',') FROM s_role WHERE id = #{adminId}))
+	AND ARRAYCONTAINED(ARRAY[CAST(id AS TEXT)], STRING_TO_ARRAY(#{ids}, ','))
+	AND NOT deleted
+	-->
 
-	<select id="findIdByPath" resultType="int" parameterType="string">
+	<select id="findIdByAction" resultType="int" parameterType="string">
 		SELECT id
 		FROM s_module
-		WHERE mod_path = #{path}
+		WHERE action = #{action}
 	</select>
 
-	<update id="update" parameterType="module">
+	<update id="update" parameterType="com.jf.database.model.manage.Module">
 		UPDATE s_module
 		<set>
-			<if test="modName != null and modName != ''">mod_name = #{modName},</if>
-			<if test="modPath != null and modPath != ''">mod_path = #{modPath},</if>
-			<if test="modIcon != null">mod_icon = #{modIcon},</if>
-			<if test="modSort != null">mod_sort = #{modSort},</if>
+			<if test="name != null and name != ''">name = #{name},</if>
+			<if test="action != null and action != ''">action = #{action},</if>
+			<if test="iconName != null and iconName != ''">icon_name = #{iconName},</if>
+			<if test="sort != null">sort = #{sort},</if>
 		</set>
 		WHERE id = #{id}
 	</update>
 
-	<insert id="insert" parameterType="module">
+	<insert id="insert" parameterType="com.jf.database.model.manage.Module">
 		INSERT INTO s_module(
 			parent_id,
-			mod_name,
-			mod_path,
-			mod_icon,
-			mod_flag,
-			mod_sort
+			name,
+			action,
+			icon_name,
+			flag,
+			sort
 		)
-		VALUE (
+		VALUES (
 			#{parentId},
-			#{modName},
-			#{modPath},
-			#{modIcon},
-			#{modFlag},
-			#{modSort}
+			#{name},
+			#{action},
+			#{iconName},
+			#{flag},
+			#{sort}
 		)
 	</insert>
 
@@ -85,5 +91,11 @@
 		DELETE FROM s_module
 		WHERE id = #{id}
     </delete>
+
+	<delete id="delete2" parameterType="int">
+		UPDATE s_module SET deleted = !deleted
+		WHERE id = #{id}
+    </delete>
+	<!-- For PG: UPDATE s_module SET deleted = not deleted -->
 
 </mapper>

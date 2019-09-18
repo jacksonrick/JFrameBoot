@@ -2,12 +2,13 @@ package com.jf.sdk.alisms;
 
 import com.aliyuncs.DefaultAcsClient;
 import com.aliyuncs.IAcsClient;
-import com.jf.sdk.alisms.dysmsapi.model.v20170525.SendSmsRequest;
-import com.jf.sdk.alisms.dysmsapi.model.v20170525.SendSmsResponse;
 import com.aliyuncs.exceptions.ClientException;
 import com.aliyuncs.exceptions.ServerException;
 import com.aliyuncs.profile.DefaultProfile;
 import com.aliyuncs.profile.IClientProfile;
+import com.jf.exception.SysException;
+import com.jf.sdk.alisms.dysmsapi.model.v20170525.SendSmsRequest;
+import com.jf.sdk.alisms.dysmsapi.model.v20170525.SendSmsResponse;
 
 public class SmsApi {
 
@@ -53,10 +54,9 @@ public class SmsApi {
             SendSmsResponse sendSmsResponse = acsClient.getAcsResponse(request);
             return sendSmsResponse;
         } catch (ServerException e) {
-            e.printStackTrace();
+            throw new SysException("服务器异常", e);
         } catch (ClientException e) {
-            e.printStackTrace();
+            throw new SysException("客户端异常", e);
         }
-        return null;
     }
 }

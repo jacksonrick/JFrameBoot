@@ -1,5 +1,7 @@
 package com.jf.string;
 
+import com.jf.exception.SysException;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -87,7 +89,7 @@ public class JFunction {
 			}
 			remain = daysBetween(date, endDate);
 		} catch (ParseException e) {
-			e.printStackTrace();
+			throw new SysException(e.getMessage(), e);
 		}
 		return remain;
 	}

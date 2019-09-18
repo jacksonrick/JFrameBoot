@@ -19,7 +19,7 @@ public interface AdminMapper {
 
 	int findCountByKey(BaseVo baseVo);
 
-	Admin findByNameAndPwd(@Param("adminName") String adminName, @Param("adminPassword") String adminPassword);
+	Admin findByNameAndPwd(@Param("loginName") String loginName, @Param("password") String password);
 
 	Admin findRightsById(Integer id);
 

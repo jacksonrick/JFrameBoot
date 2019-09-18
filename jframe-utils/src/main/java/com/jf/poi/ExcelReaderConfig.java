@@ -1,6 +1,7 @@
 package com.jf.poi;
 
 import com.jf.date.DateUtil;
+import com.jf.exception.SysException;
 import com.jf.json.JacksonUtil;
 import com.jf.poi.model.ExcelJsonConfig;
 import org.apache.poi.poifs.filesystem.POIFSFileSystem;
@@ -175,8 +176,7 @@ public class ExcelReaderConfig {
                     return String.valueOf(cell.getRichStringCellValue());
             }
         } catch (Exception e) {
-            e.printStackTrace();
-            return null;
+            throw new SysException(e.getMessage(), e);
         }
     }
 }

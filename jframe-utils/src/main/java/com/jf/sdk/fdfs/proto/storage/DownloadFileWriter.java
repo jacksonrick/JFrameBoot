@@ -1,11 +1,12 @@
 package com.jf.sdk.fdfs.proto.storage;
 
+import com.jf.exception.SysException;
+import org.apache.commons.io.IOUtils;
+
 import java.io.BufferedInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-
-import org.apache.commons.io.IOUtils;
 
 /**
  * 文件下载回调方法
@@ -38,7 +39,7 @@ public class DownloadFileWriter implements DownloadCallback<String> {
             IOUtils.copy(in, out);
             out.flush();
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new SysException(e.getMessage(), e);
         } finally {
             // 关闭流
             IOUtils.closeQuietly(in);

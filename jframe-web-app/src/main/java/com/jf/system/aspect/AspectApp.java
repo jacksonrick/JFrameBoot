@@ -1,6 +1,6 @@
 package com.jf.system.aspect;
 
-import com.jf.system.exception.AppTokenException;
+import com.jf.exception.AppTokenException;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;

@@ -58,12 +58,6 @@
     <!-- 生产环境 -->
     <!-- INFO+ERROR -->
     <springProfile name="${APPLICATION_SIMPLE}-pro">
-        <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
-            <encoder>
-                <pattern>${PATTERN}</pattern>
-            </encoder>
-        </appender>
-
         <!-- 记录INFO日志 -->
         <appender name="syslog" class="ch.qos.logback.core.rolling.RollingFileAppender">
             <file>${LOG_PATH}${FILE_NAME}.log</file>

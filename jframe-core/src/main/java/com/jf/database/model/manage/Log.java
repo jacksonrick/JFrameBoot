@@ -19,19 +19,19 @@ public class Log extends BaseVo implements Serializable {
 	private Integer id;
 
 	/** 操作人 */
-	private String logUser;
+	private String operator;
 
 	/** 备注 */
-	private String logRemark;
+	private String remark;
 
 	/** ip */
-	private String logIp;
+	private String ip;
 
 	/** 参数 */
-	private String logParams;
+	private String params;
 
 	/** 创建时间 */
-	private Date logCreateTime;
+	private Date createTime;
 
 	public Log() {
 	}
@@ -49,55 +49,55 @@ public class Log extends BaseVo implements Serializable {
 		return this.id;
 	}
 
-	public void setLogUser(String logUser) {
-		this.logUser = logUser;
+	public String getOperator() {
+		return operator;
 	}
 
-	public String getLogUser() {
-		return this.logUser;
+	public void setOperator(String operator) {
+		this.operator = operator;
 	}
 
-	public void setLogRemark(String logRemark) {
-		this.logRemark = logRemark;
+	public String getRemark() {
+		return remark;
 	}
 
-	public String getLogRemark() {
-		return this.logRemark;
+	public void setRemark(String remark) {
+		this.remark = remark;
 	}
 
-	public void setLogIp(String logIp) {
-		this.logIp = logIp;
+	public String getIp() {
+		return ip;
 	}
 
-	public String getLogIp() {
-		return this.logIp;
+	public void setIp(String ip) {
+		this.ip = ip;
 	}
 
-	public void setLogParams(String logParams) {
-		this.logParams = logParams;
+	public String getParams() {
+		return params;
 	}
 
-	public String getLogParams() {
-		return this.logParams;
+	public void setParams(String params) {
+		this.params = params;
 	}
 
-	public void setLogCreateTime(Date logCreateTime) {
-		this.logCreateTime = logCreateTime;
+	public Date getCreateTime() {
+		return createTime;
 	}
 
-	public Date getLogCreateTime() {
-		return this.logCreateTime;
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
 	}
 
 	@Override
 	public String toString() {
 		return "Log{" +
 				"id=" + id +
-				", logUser='" + logUser + '\'' +
-				", logRemark='" + logRemark + '\'' +
-				", logIp='" + logIp + '\'' +
-				", logParams='" + logParams + '\'' +
-				", logCreateTime=" + logCreateTime +
+				", operator='" + operator + '\'' +
+				", remark='" + remark + '\'' +
+				", ip='" + ip + '\'' +
+				", params='" + params + '\'' +
+				", createTime=" + createTime +
 				'}';
 	}
 }

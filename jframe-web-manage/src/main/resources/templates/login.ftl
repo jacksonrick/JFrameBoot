@@ -26,7 +26,7 @@
             <div class="form-group">
                 <div class="input-group">
                     <span class="input-group-addon"><i class="fa fa-key"></i></span>
-                    <input type="password" class="form-control" placeholder="密码" name="password" value="123456">
+                    <input type="password" class="form-control" placeholder="密码" name="password" value="">
                 </div>
             </div>
             <div class="form-group">
@@ -34,7 +34,7 @@
                     <div class="col-md-7 col-sm-7 col-xs-7">
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-bars"></i></span>
-                            <input type="text" class="form-control" id="validNum" name="validNum" placeholder="验证码" value="1111">
+                            <input type="text" class="form-control" id="validNum" name="validNum" placeholder="验证码" value="">
                         </div>
                     </div>
                     <div class="col-md-5 col-sm-5 col-xs-5">

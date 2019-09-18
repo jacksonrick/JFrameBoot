@@ -31,11 +31,11 @@
                     <#list roles as v>
                     <tr>
                         <td>${v_index }</td>
-                        <td>${v.roleName }</td>
+                        <td>${v.name }</td>
                         <td><i class="fa ${v.deleted?string('fa-times','fa-check')}"></i></td>
                         <td>
-                            <#if v.roleFlag == 1>
-                                <a class="btn btn-sm btn-circle btn-warning" title="编辑" onclick="edit(${v.id},'${v.roleName }')"
+                            <#if v.flag == 1>
+                                <a class="btn btn-sm btn-circle btn-warning" title="编辑" onclick="edit(${v.id},'${v.name }')"
                                    data-toggle="tooltip" data-placement="top"><i class="fa fa-pencil-square"></i></a>
                                 <#if v.deleted>
                                     <a class="btn btn-sm btn-circle btn-warning btn-enable" title="启用" data-id="${v.id }"
@@ -50,11 +50,11 @@
                             </#if>
                         </td>
                         <td>
-                            <#if v.roleFlag == 0>
+                            <#if v.flag == 0>
                                 --
                             <#else>
                                 <a class="btn btn-sm btn-circle btn-success" title="编辑组权限" data-toggle="tooltip" data-placement="top"
-                                   onclick="getModules(${v.id },'${v.roleName }')"><i class="fa fa-legal"></i></a>
+                                   onclick="getModules(${v.id },'${v.name }')"><i class="fa fa-legal"></i></a>
                             </#if>
                         </td>
                     </tr>

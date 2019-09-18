@@ -1,5 +1,6 @@
 package com.jf.string;
 
+import com.jf.exception.SysException;
 import org.apache.commons.lang3.StringUtils;
 
 import java.security.MessageDigest;
@@ -185,7 +186,7 @@ public class StringUtil {
             MessageDigest md = MessageDigest.getInstance("MD5");
             bytes = md.digest(bytes);
         } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
+            throw new SysException(e.getMessage(), e);
         }
 
         StringBuffer result = new StringBuffer();

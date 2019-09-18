@@ -1,12 +1,12 @@
 package com.jf.common;
 
+import com.jf.database.enums.ResCode;
 import com.jf.database.mapper.TokenMapper;
 import com.jf.database.model.Token;
 import com.jf.date.DateUtil;
-import com.jf.database.enums.ResCode;
+import com.jf.exception.AppTokenException;
 import com.jf.string.StringUtil;
 import com.jf.system.conf.IConstant;
-import com.jf.system.exception.AppTokenException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;

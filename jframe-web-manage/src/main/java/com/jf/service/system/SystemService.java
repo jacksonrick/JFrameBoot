@@ -49,26 +49,25 @@ public class SystemService {
         } else {
             return;
         }
-        this.addLog(admin.getAdminName(), remark, request.getRemoteAddr(), params);
+        this.addLog(admin.getLoginName(), remark, request.getRemoteAddr(), params);
     }
 
 
     /**
      * 新增日志
      *
-     * @param username
+     * @param operator
      * @param remark
      * @param ip
      * @param params
      * @return
      */
-    private int addLog(String username, String remark, String ip, String params) {
+    private int addLog(String operator, String remark, String ip, String params) {
         Log log = new Log();
-        log.setLogCreateTime(new Date());
-        log.setLogUser(username);
-        log.setLogRemark(remark);
-        log.setLogIp(ip);
-        log.setLogParams(params);
+        log.setOperator(operator);
+        log.setRemark(remark);
+        log.setIp(ip);
+        log.setParams(params);
         return logMapper.insert(log);
     }
 

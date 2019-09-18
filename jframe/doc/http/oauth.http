@@ -18,18 +18,18 @@ Accept: */*
 Cache-Control: no-cache
 
 ###授权码模式 - 浏览器访问
-POST {{host}}/oauth/authorize?client_id=sso&client_secret=123456&response_type=code&state=states&redirect_uri=http://www.baidu.com
+POST {{host}}/oauth/authorize?client_id=sso01&client_secret=123456&response_type=code&state=states&redirect_uri=http://www.baidu.com
 Accept: */*
 Cache-Control: no-cache
 
 
 ###check_token
-POST {{host}}/oauth/check_token?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzY29wZSI6WyJhbGwiXSwiZXhwIjoxNTQwOTcwMTU0LCJhdXRob3JpdGllcyI6WyJST0xFX1VTRVIiXSwianRpIjoiNDhhOWFlNjAtMzJjNi00NTRkLWIzNzEtZjFhMDFhNGI3NGIxIiwiY2xpZW50X2lkIjoiY2xpZW50In0.SUm-53zHvH6OmoNKMt6lGoCIdmxyrvhnmzGAvcxK7NE
+POST {{host}}/oauth/check_token?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1NjcwODgwODQsInVzZXJfbmFtZSI6InRlc3QiLCJhdXRob3JpdGllcyI6WyJVU0VSIl0sImp0aSI6ImM1YWViZTFlLTAyNTMtNGJkNy1iNjQyLWM2NzhkZTg0YzI4MiIsImNsaWVudF9pZCI6InNzbzAxIiwic2NvcGUiOlsiYWxsIl19.YvPYtSYfM5MRATyWNFouQAauKXnMlYjTA1Wipqyk4_8
 Accept: */*
 Cache-Control: no-cache
 
 ###auth server
-POST {{host}}/authentication/user?access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzY29wZSI6WyJhbGwiXSwiZXhwIjoxNTQwOTcwMTU0LCJhdXRob3JpdGllcyI6WyJST0xFX1VTRVIiXSwianRpIjoiNDhhOWFlNjAtMzJjNi00NTRkLWIzNzEtZjFhMDFhNGI3NGIxIiwiY2xpZW50X2lkIjoiY2xpZW50In0.SUm-53zHvH6OmoNKMt6lGoCIdmxyrvhnmzGAvcxK7NE
+POST {{host}}/authentication/user?access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1NjcwODgwODQsInVzZXJfbmFtZSI6InRlc3QiLCJhdXRob3JpdGllcyI6WyJVU0VSIl0sImp0aSI6ImM1YWViZTFlLTAyNTMtNGJkNy1iNjQyLWM2NzhkZTg0YzI4MiIsImNsaWVudF9pZCI6InNzbzAxIiwic2NvcGUiOlsiYWxsIl19.YvPYtSYfM5MRATyWNFouQAauKXnMlYjTA1Wipqyk4_8
 Accept: */*
 Cache-Control: no-cache
 

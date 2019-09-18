@@ -1,5 +1,6 @@
 package com.jf.pdf;
 
+import com.jf.exception.SysException;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateExceptionHandler;
@@ -43,8 +44,7 @@ public class PdfUtil {
 
             return stringWriter.toString();
         } catch (Exception e) {
-            e.printStackTrace();
-            throw new RuntimeException("加载文档异常");
+            throw new SysException("文档加载异常", e);
         }
     }
 

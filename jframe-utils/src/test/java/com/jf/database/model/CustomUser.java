@@ -1,13 +1,22 @@
 package com.jf.database.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+import com.jf.json.StringArraySerialize;
 
 import java.util.Date;
 
 /**
  * Created by xujunfei on 2017/1/4.
  */
-public class TUser {
+public class CustomUser {
+
+    @JsonSerialize(using = ToStringSerializer.class)
+    private Integer id;
+
+    @JsonSerialize(using = StringArraySerialize.class)
+    private Integer[] ids;
 
     private String name;
 
@@ -23,7 +32,23 @@ public class TUser {
 
     private Date dates;
 
-    private TRole role;
+    private CustomRole role;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Integer[] getIds() {
+        return ids;
+    }
+
+    public void setIds(Integer[] ids) {
+        this.ids = ids;
+    }
 
     public String getName() {
         return name;
@@ -61,7 +86,7 @@ public class TUser {
         return time;
     }
 
-    public void setTimes(Date time) {
+    public void setTime(Date time) {
         this.time = time;
     }
 
@@ -73,11 +98,11 @@ public class TUser {
         this.dates = dates;
     }
 
-    public TRole getRole() {
+    public CustomRole getRole() {
         return role;
     }
 
-    public void setRole(TRole role) {
+    public void setRole(CustomRole role) {
         this.role = role;
     }
 

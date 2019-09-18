@@ -1,7 +1,7 @@
 package com.jf.system.redisson;
 
 import com.jf.string.StringUtil;
-import com.jf.system.exception.SysException;
+import com.jf.exception.SysException;
 import com.jf.system.redisson.lock.AquiredLockWorker;
 import com.jf.system.redisson.lock.DistributedLocker;
 import org.redisson.Redisson;

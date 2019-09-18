@@ -15,7 +15,7 @@
                 <select class="form-control" name="roleId">
                     <option value="">--请选择--</option>
                     <#list roles as role>
-                        <option value="${role.id }" ${(adm.role.id == role.id)?string('selected','')}>${role.roleName }</option>
+                        <option value="${role.id }" ${(adm.role.id == role.id)?string('selected','')}>${role.name }</option>
                     </#list>
                 </select>
                 <span class="help-block">*组可以不选择，若选择组，则会继承组权限</span>
@@ -24,25 +24,25 @@
         <div class="form-group">
             <label class="col-sm-2 control-label">用户名：</label>
             <div class="col-sm-9">
-                <input type="text" name="adminName" value="${adm.adminName }" class="form-control" placeholder="用户名">
+                <input type="text" name="loginName" value="${adm.loginName }" class="form-control" placeholder="用户名">
             </div>
         </div>
         <div class="form-group">
             <label class="col-sm-2 control-label">真实姓名：</label>
             <div class="col-sm-9">
-                <input type="text" name="adminRealname" value="${adm.adminRealname }" class="form-control" placeholder="真实姓名">
+                <input type="text" name="realname" value="${adm.realname }" class="form-control" placeholder="真实姓名">
             </div>
         </div>
         <div class="form-group">
             <label class="col-sm-2 control-label">手机号：</label>
             <div class="col-sm-9">
-                <input type="text" name="adminPhone" value="${adm.adminPhone }" class="form-control" placeholder="手机号">
+                <input type="text" name="phone" value="${adm.phone }" class="form-control" placeholder="手机号">
             </div>
         </div>
         <div class="form-group">
             <label class="col-sm-2 control-label">登录密码：</label>
             <div class="col-sm-9">
-                <input type="text" name="adminPassword" class="form-control" placeholder="登录密码">
+                <input type="text" name="password" class="form-control" placeholder="登录密码">
                 <#if !add><span class="help-block">留空表示不修改密码</span></#if>
             </div>
         </div>
@@ -59,7 +59,7 @@
     $(function () {
         $("#adminEditForm").bootstrapValidator({
             fields: {
-                adminName: {
+                loginName: {
                     validators: {
                         notEmpty: {
                             message: '用户名不能为空'
@@ -71,7 +71,7 @@
                         }
                     }
                 },
-                adminRealname: {
+                realname: {
                     validators: {
                         notEmpty: {
                             message: '真实姓名不能为空'
@@ -83,7 +83,7 @@
                         }
                     }
                 },
-                adminPhone: {
+                phone: {
                     validators: {
                         notEmpty: {
                             message: '手机号不能为空'
@@ -94,17 +94,17 @@
                         }
                     }
                 },
-                adminPassword: {
+                password: {
                     validators: {
                         callback: {
                             message: '请输入密码',
                             callback: function (value, validator) {
                                 var adminId = validator.getFieldElements('id').val();
                                 if (adminId == "" && value == "") {
-                                    validator.updateStatus('adminPassword', 'INVALID');
+                                    validator.updateStatus('password', 'INVALID');
                                     return false;
                                 }
-                                validator.updateStatus('adminPassword', 'VALID');
+                                validator.updateStatus('password', 'VALID');
                                 return true;
                             }
                         }

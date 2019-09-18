@@ -11,7 +11,7 @@ import java.util.Date;
  * Date: 2018-06-29
  * Time: 11:59
  */
-public class TRole {
+public class CustomRole {
 
     private String name;
 

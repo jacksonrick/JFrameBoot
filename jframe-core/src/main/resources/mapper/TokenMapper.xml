@@ -20,7 +20,7 @@
 			token,
 			expired
 		)
-		VALUE (
+		VALUES (
 			#{uid},
 			#{token},
 			#{expired}

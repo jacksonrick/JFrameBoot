@@ -2,6 +2,7 @@ package com.jf.common;
 
 import com.jf.date.DateUtil;
 import com.jf.entity.UploadRet;
+import com.jf.exception.SysException;
 import com.jf.sdk.fdfs.domain.StorePath;
 import com.jf.sdk.fdfs.service.AppendFileStorageClient;
 import com.jf.sdk.fdfs.service.FastFileStorageClient;
@@ -105,7 +106,7 @@ public class CommonController {
             ImageIO.write(bi, "JPG", response.getOutputStream());
             g.dispose();
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new SysException(e.getMessage(), e);
         }
     }
 

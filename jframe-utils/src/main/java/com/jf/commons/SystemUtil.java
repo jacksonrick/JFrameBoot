@@ -1,8 +1,9 @@
 package com.jf.commons;
 
-import com.sun.management.OperatingSystemMXBean;
 import com.jf.convert.Convert;
+import com.jf.exception.SysException;
 import com.jf.file.FileUtil;
+import com.sun.management.OperatingSystemMXBean;
 
 import java.io.*;
 import java.lang.management.ManagementFactory;
@@ -41,7 +42,6 @@ public class SystemUtil {
             double[] arr = {Convert.doubleFormat(freeSpace), usedSpace, Convert.doubleFormat(totalSpace), availMemory, usedMemory, allMemory};
             return arr;
         } catch (Exception e) {
-            e.printStackTrace();
             return new double[]{0, 0, 0, 0, 0, 0};
         }
     }
@@ -188,7 +188,7 @@ public class SystemUtil {
             try {
                 proc.getInputStream().close();
             } catch (Exception e) {
-                e.printStackTrace();
+                throw new SysException(e.getMessage(), e);
             }
         }
         return null;

@@ -3,11 +3,11 @@ package com.jf.controller;
 import com.jf.annotation.AuthPassport;
 import com.jf.common.BaseController;
 import com.jf.commons.SystemUtil;
+import com.jf.database.enums.ResCode;
 import com.jf.database.model.manage.Admin;
 import com.jf.database.model.manage.Module;
 import com.jf.database.model.manage.Msg;
 import com.jf.entity.ResMsg;
-import com.jf.database.enums.ResCode;
 import com.jf.service.system.AdminService;
 import com.jf.service.system.ModuleService;
 import com.jf.service.system.SystemService;
@@ -222,7 +222,7 @@ public class HomeBackController extends BaseController {
         if (!newPass.equals(newPass2)) {
             return new ResMsg(4, "两次输入的密码不一样");
         }
-        Admin adm = adminService.findAdminByNameAndPwd(admin.getAdminName(), oldPwd);
+        Admin adm = adminService.findAdminByNameAndPwd(admin.getLoginName(), oldPwd);
         if (adm == null) {
             return new ResMsg(5, "旧密码错误");
         }

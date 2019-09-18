@@ -3,7 +3,7 @@ package com.jf.system.aspect;
 import com.jf.database.model.User;
 import com.jf.database.enums.ResCode;
 import com.jf.system.conf.IConstant;
-import com.jf.system.exception.NoLoginException;
+import com.jf.exception.NoLoginException;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;

@@ -1,7 +1,7 @@
 package com.jf;
 
-import com.jf.database.model.TRole;
-import com.jf.database.model.TUser;
+import com.jf.database.model.CustomRole;
+import com.jf.database.model.CustomUser;
 import com.jf.json.JacksonUtil;
 import com.jf.obj.BeanUtil;
 import org.joda.time.Days;
@@ -17,14 +17,28 @@ import java.util.Map;
  */
 public class MainTest {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
+
+    }
+
+    public static void jsonSerialize() {
+        CustomUser user = new CustomUser();
+        user.setId(1023193728);
+        user.setAge(20);
+        user.setName("xxx");
+        user.setIds(new Integer[]{100, 102, 103, 104});
+        String json = JacksonUtil.objectToJson(user);
+        System.out.println(json);
+    }
+
+    public static void base64() {
         Base64.Encoder encoder = Base64.getEncoder();
         System.out.println(encoder.encodeToString("hello".getBytes()));
     }
 
     public static void testReflect() {
         try {
-            TUser user = new TUser();
+            CustomUser user = new CustomUser();
             user.setAge(10);
             System.out.println(BeanUtil.getEntityValue("age", user));
             BeanUtil.setEntityValue("name", "xujunfei", user);
@@ -39,15 +53,15 @@ public class MainTest {
     }
 
     public static void testBeanToJson() {
-        TUser user = new TUser();
+        CustomUser user = new CustomUser();
         user.setName("xujunfei");
         user.setAge(10);
         user.setFlag(true);
         user.setBirth(new Date());
         user.setDates(new Date());
-        user.setTimes(new Date());
+        user.setTime(new Date());
 
-        TRole role = new TRole();
+        CustomRole role = new CustomRole();
         role.setName("super");
         role.setTime(new Date());
         user.setRole(role);
@@ -58,7 +72,7 @@ public class MainTest {
 
     public static void testJsonToBean() {
         String json = "{\"name\":\"xujunfei\",\"age\":10,\"flag\":true,\"birth\":\"2018-06-29\",\"time\":\"2018-06-29 05:02:27\",\"dates\":\"2018-06-29 13:02:27\",\"role\":{\"name\":\"super\",\"time\":\"2018-06-29 13:02:27\"}}";
-        TUser user = JacksonUtil.jsonToBean(json, TUser.class);
+        CustomUser user = JacksonUtil.jsonToBean(json, CustomUser.class);
         System.out.println(user);
     }
 
@@ -70,12 +84,12 @@ public class MainTest {
 
     public static void testJsonToList() {
         String json = "[{\"name\":\"xujunfei\",\"age\":10,\"flag\":true,\"birth\":\"2018-06-29\",\"time\":\"2018-06-29 05:02:27\",\"dates\":\"2018-06-29 13:02:27\"},{\"name\":\"feifei\",\"age\":10,\"flag\":true,\"birth\":\"2018-06-29\",\"time\":\"2018-06-29 05:02:27\",\"dates\":\"2018-06-29 13:02:27\"}]";
-        List<TUser> list = JacksonUtil.jsonToList(json, TUser.class);
+        List<CustomUser> list = JacksonUtil.jsonToList(json, CustomUser.class);
         System.out.println(list);
     }
 
     public static void test01() {
-        TUser user = new TUser();
+        CustomUser user = new CustomUser();
         user.setAge(1);
         user.setFlag(true);
         Map<String, Object> map = BeanUtil.beanToMap(user);

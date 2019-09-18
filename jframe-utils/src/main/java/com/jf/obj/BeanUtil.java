@@ -1,5 +1,6 @@
 package com.jf.obj;
 
+import com.jf.exception.SysException;
 import org.apache.commons.beanutils.PropertyUtilsBean;
 
 import java.beans.PropertyDescriptor;
@@ -40,7 +41,7 @@ public class BeanUtil {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new SysException(e.getMessage(), e);
         }
         return params;
     }

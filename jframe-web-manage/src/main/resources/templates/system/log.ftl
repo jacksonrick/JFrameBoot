@@ -15,7 +15,7 @@
                 <div class="row">
                     <div class="col-sm-12">
                         <form action="/admin/system/logList" class="form-inline" method="post" id="queryForm">
-                            <label>操作人：<input class="form-control input-sm" name="logUser" value="${logUser }"></label>
+                            <label>操作人：<input class="form-control input-sm" name="operator" value="${operator }"></label>
                             <label>操作日期：
                                 <input type="text" class="form-control input-sm" id="startDate" name="startDate" placeholder="操作日期" value="${startDate }">
                             </label>
@@ -45,11 +45,11 @@
                     <#list pageInfo.list as v>
                     <tr>
                         <td>${v_index }</td>
-                        <td>${v.logUser }</td>
-                        <td>${v.logRemark }</td>
-                        <td>${v.logParams }</td>
-                        <td>${v.logCreateTime?string('yyyy-MM-dd HH:mm:ss') }</td>
-                        <td>${v.logIp }</td>
+                        <td>${v.operator }</td>
+                        <td>${v.remark }</td>
+                        <td>${v.params }</td>
+                        <td>${v.createTime?string('yyyy-MM-dd HH:mm:ss') }</td>
+                        <td>${v.ip }</td>
                     </tr>
                     </#list>
                     </tbody>

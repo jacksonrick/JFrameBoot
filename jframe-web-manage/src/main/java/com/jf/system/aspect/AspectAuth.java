@@ -5,8 +5,8 @@ import com.jf.database.enums.ResCode;
 import com.jf.database.model.manage.Admin;
 import com.jf.service.system.ModuleService;
 import com.jf.system.conf.IConstant;
-import com.jf.system.exception.AdminNoLoginException;
-import com.jf.system.exception.NotAllowException;
+import com.jf.exception.AdminNoLoginException;
+import com.jf.exception.NotAllowException;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
@@ -67,7 +67,7 @@ public class AspectAuth {
             return;
         }
         // 内置管理组开放全部权限
-        if (admin.getRole() != null && admin.getRole().getRoleFlag() == 0) {
+        if (admin.getRole() != null && admin.getRole().getFlag() == 0) {
             return;
         }
         // 请求的URI

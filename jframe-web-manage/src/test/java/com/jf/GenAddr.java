@@ -1,6 +1,7 @@
 package com.jf;
 
 import com.jf.database.model.manage.Address;
+import com.jf.exception.SysException;
 import com.jf.service.system.AddrService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -92,7 +93,7 @@ public class GenAddr {
             wr.write(end);
             wr.flush();
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new SysException(e.getMessage(), e);
         }
     }
 }

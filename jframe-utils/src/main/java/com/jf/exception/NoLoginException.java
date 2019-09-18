@@ -1,4 +1,4 @@
-package com.jf.system.exception;
+package com.jf.exception;
 
 import com.jf.annotation.Except;
 

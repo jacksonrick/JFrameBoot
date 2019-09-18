@@ -14,6 +14,8 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -26,20 +28,15 @@ import java.util.*;
 
 /**
  * HttpUtil
- * <p>Get/Post/Post Json</p>
+ * <p>请使用 com.jf.http.HttpUtils</p>
  *
  * @author rick
  * @version 2.0
  */
+@Deprecated
 public class HttpUtil {
 
-    /*public static void main(String[] args) throws Exception {
-        Map<String, String> paramsMap = new HashMap<String, String>();
-        paramsMap.put("", "");
-        paramsMap.put("", "");
-        System.out.println(HttpUtil.post("http://localhost:8080/get", paramsMap));
-        // System.out.println(HttpUtil.getMethod("http://localhost:8080/post?code=17730215423&uname=feifei"));
-    }*/
+    private static Logger log = LoggerFactory.getLogger(HttpUtil.class);
 
     // 请求和传输超时时间
     private final static int connectTimeout = 20000;
@@ -79,7 +76,7 @@ public class HttpUtil {
             reader.close();
             result = sbf.toString();
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error(e.getMessage(), e);
         }
         return result;
     }
@@ -103,7 +100,7 @@ public class HttpUtil {
                 result = EntityUtils.toString(entity, "UTF-8");
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error(e.getMessage(), e);
             if (e instanceof SocketTimeoutException) {
                 result = STR_TIMEOUT;
             } else {
@@ -113,7 +110,7 @@ public class HttpUtil {
             try {
                 ((CloseableHttpClient) client).close();
             } catch (IOException e) {
-                e.printStackTrace();
+                log.error(e.getMessage(), e);
             }
         }
         LogManager.info(new StringBuilder().append("HttpClient: method 【GET】,url【").append(url).append("】").toString());
@@ -142,7 +139,7 @@ public class HttpUtil {
                 result = EntityUtils.toString(entity, "UTF-8");
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error(e.getMessage(), e);
             if (e instanceof SocketTimeoutException) {
                 result = STR_TIMEOUT;
             } else {
@@ -152,7 +149,7 @@ public class HttpUtil {
             try {
                 ((CloseableHttpClient) client).close();
             } catch (IOException e) {
-                e.printStackTrace();
+                log.error(e.getMessage(), e);
             }
         }
         LogManager.info(new StringBuilder().append("HttpClient: method 【GET】,url【").append(url).append("】").append(",auth【true】").toString());
@@ -185,7 +182,7 @@ public class HttpUtil {
                 result = EntityUtils.toString(entity, "GB2312");
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error(e.getMessage(), e);
             if (e instanceof SocketTimeoutException) {
                 result = STR_TIMEOUT;
             } else {
@@ -195,7 +192,7 @@ public class HttpUtil {
             try {
                 ((CloseableHttpClient) client).close();
             } catch (IOException e) {
-                e.printStackTrace();
+                log.error(e.getMessage(), e);
             }
         }
         LogManager.info(new StringBuilder().append("HttpClient: method 【POST】,url【").append(url).append("】").toString());
@@ -231,7 +228,7 @@ public class HttpUtil {
                 result = EntityUtils.toString(entity, "GB2312");
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error(e.getMessage(), e);
             if (e instanceof SocketTimeoutException) {
                 result = STR_TIMEOUT;
             } else {
@@ -241,7 +238,7 @@ public class HttpUtil {
             try {
                 ((CloseableHttpClient) client).close();
             } catch (IOException e) {
-                e.printStackTrace();
+                log.error(e.getMessage(), e);
             }
         }
         LogManager.info(new StringBuilder().append("HttpClient: method 【POST】,url【").append(url).append("】").append(",auth【true】").toString());
@@ -274,7 +271,7 @@ public class HttpUtil {
                 result = EntityUtils.toString(entity, "GB2312");
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error(e.getMessage(), e);
             if (e instanceof SocketTimeoutException) {
                 result = STR_TIMEOUT;
             } else {
@@ -284,7 +281,7 @@ public class HttpUtil {
             try {
                 ((CloseableHttpClient) client).close();
             } catch (IOException e) {
-                e.printStackTrace();
+                log.error(e.getMessage(), e);
             }
         }
         LogManager.info(new StringBuilder().append("HttpClient: method 【POST】,url【").append(url).append("】").append(" ,json【").append(param).append("】").toString());

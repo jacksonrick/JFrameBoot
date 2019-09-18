@@ -2,6 +2,7 @@ package com.jf.system.geetest;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.jf.exception.SysException;
 import org.apache.commons.collections.map.HashedMap;
 
 import java.io.IOException;
@@ -304,7 +305,7 @@ public class GeetestLib {
             gtlog("response: " + response);
 
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new SysException(e.getMessage(), e);
         }
 
         String return_seccode = "";
@@ -492,7 +493,7 @@ public class GeetestLib {
             re_md5 = buf.toString();
 
         } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
+            throw new SysException(e.getMessage(), e);
         }
         return re_md5;
     }

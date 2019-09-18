@@ -5,23 +5,23 @@
 <mapper namespace="com.jf.mapper.ConfigMapper">
 
 	<select id="findAll" resultType="config">
-        SELECT `key`, val, descr FROM s_config
-        ORDER BY `key` ASC
+        SELECT "key", val, descr FROM s_config
+        ORDER BY "key" ASC
     </select>
 
 	<select id="findByKey" resultType="string" parameterType="string">
 		SELECT val FROM s_config
-		WHERE `key` = #{key}
+		WHERE "key" = #{key}
 	</select>
 
 	<select id="findByKeys" resultType="config">
-		SELECT `key`, val, descr FROM s_config
-		WHERE `key` IN
+		SELECT "key", val, descr FROM s_config
+		WHERE "key" IN
 		<foreach item="idx" collection="keys" open="(" separator="," close=")"> #{idx} </foreach>
 	</select>
 
 	<insert id="insertBatch" parameterType="hashmap">
-		INSERT INTO s_config(`key`, val) VALUES
+		INSERT INTO s_config("key", val) VALUES
 		<foreach collection="map" index="key" item="val" separator=",">
 			(#{key}, #{val})
 		</foreach>
@@ -29,18 +29,18 @@
 
 	<update id="updateBatch" parameterType="hashmap">
 		UPDATE s_config
-		SET val = CASE `key`
+		SET val = CASE "key"
 		<foreach collection="map" index="key" item="val" separator="">
 			WHEN '${key}' THEN '${val}'
 		</foreach>
 		END
-		WHERE `key` IN
+		WHERE "key" IN
 		<foreach collection="map" index="key" open="(" separator="," close=")"> #{key} </foreach>
 	</update>
 
 	<update id="update" parameterType="config">
 		UPDATE s_config SET val = #{val}
-	    WHERE `key` = #{key}
+	    WHERE "key" = #{key}
 	</update>
 
 	<delete id="delete">

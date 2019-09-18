@@ -7,11 +7,12 @@ import com.jf.annotation.AuthPassport;
 import com.jf.common.BaseController;
 import com.jf.controller.view.ViewExcel;
 import com.jf.convert.Convert;
+import com.jf.database.enums.ResCode;
 import com.jf.database.model.manage.*;
 import com.jf.date.DateUtil;
 import com.jf.entity.ResMsg;
 import com.jf.entity.Tree;
-import com.jf.database.enums.ResCode;
+import com.jf.exception.SysException;
 import com.jf.file.Directory;
 import com.jf.file.FileUtil;
 import com.jf.http.HttpUtil;
@@ -87,7 +88,7 @@ public class SystemBackController extends BaseController {
     @AuthPassport(right = false)
     public String jenkins(HttpServletRequest request) {
         Admin admin = getSession(request, IConstant.SESSION_ADMIN);
-        if (admin == null || admin.getRole().getRoleFlag() != 0) {
+        if (admin == null || admin.getRole().getFlag() != 0) {
             return "error/refuse";
         }
         return "system/jenkins";
@@ -111,8 +112,8 @@ public class SystemBackController extends BaseController {
             return new ResMsg(1, "invalid param");
         }
         Admin admin = getSession(request, IConstant.SESSION_ADMIN);
-        if (admin == null || admin.getRole().getRoleFlag() != 0) {
-            return new ResMsg(1, "refuse if superadmin");
+        if (admin == null || admin.getRole().getFlag() != 0) {
+            return new ResMsg(1, "refuse if not superadmin");
         }
 
         String json = "";
@@ -208,18 +209,18 @@ public class SystemBackController extends BaseController {
             return new ResMsg(1, br.getFieldError().getDefaultMessage());
         }
         if (admin.getId() == null) {
-            if (StringUtil.isBlank(admin.getAdminPassword())) {
+            if (StringUtil.isBlank(admin.getPassword())) {
                 return new ResMsg(5, "新增用户密码不能为空");
             }
-            if (adminService.findAdminCountByName(admin.getAdminName()) > 0) {
+            if (adminService.findAdminCountByName(admin.getLoginName()) > 0) {
                 return new ResMsg(6, "用户名已存在");
             }
             adminService.insertAdmin(admin);
-            systemService.addAdminLog(request, "新增管理员", "username=" + admin.getAdminName());
+            systemService.addAdminLog(request, "新增管理员", "username=" + admin.getLoginName());
             return new ResMsg(ResCode.INSERT_SUCCESS.code(), ResCode.INSERT_SUCCESS.msg());
         } else {
             adminService.updateAdmin(admin);
-            systemService.addAdminLog(request, "更新管理员", "username=" + admin.getAdminName());
+            systemService.addAdminLog(request, "更新管理员", "username=" + admin.getLoginName());
             return new ResMsg(ResCode.UPDATE_SUCCESS.code(), ResCode.UPDATE_SUCCESS.msg());
         }
     }
@@ -247,11 +248,11 @@ public class SystemBackController extends BaseController {
             Map<String, Object> map = new HashMap<String, Object>();
             map.put("id", m.getId());
             map.put("pId", m.getParentId());
-            map.put("name", m.getModName());
-            map.put("flag", m.getModFlag());
-            map.put("path", m.getModPath());
-            map.put("icon", m.getModIcon());
-            map.put("sort", m.getModSort());
+            map.put("name", m.getName());
+            map.put("flag", m.getFlag());
+            map.put("action", m.getAction());
+            map.put("icon", m.getIconName());
+            map.put("sort", m.getSort());
             mapList.add(map);
         }
         return mapList;
@@ -265,25 +266,25 @@ public class SystemBackController extends BaseController {
     @RequestMapping("/moduleEdit")
     @ResponseBody
     @AuthPassport
-    public ResMsg moduleEdit(Integer moduleId, Integer parentId, Integer flag, String name, String path, String icon, Integer sort,
+    public ResMsg moduleEdit(Integer moduleId, Integer parentId, Integer flag, String name, String action, String icon, Integer sort,
                              HttpServletRequest request) {
         if (StringUtil.isBlank(name)) {
             return new ResMsg(1, "模块名不能为空");
         }
-        if (StringUtil.isBlank(path)) {
+        if (StringUtil.isBlank(action)) {
             return new ResMsg(2, "Action不能为空");
         }
         if (moduleId == null) {
             if (parentId == null) {
                 return new ResMsg(3, "请选择父模块");
             }
-            if (moduleService.insertModule(flag, name, parentId, path, icon, sort) > 0) {
+            if (moduleService.insertModule(flag, name, parentId, action, icon, sort) > 0) {
                 systemService.addAdminLog(request, "新增模块", "name=" + name);
                 return new ResMsg(ResCode.INSERT_SUCCESS.code(), ResCode.INSERT_SUCCESS.msg());
             }
             return new ResMsg(ResCode.INSERT_FAIL.code(), ResCode.INSERT_FAIL.msg());
         } else {
-            if (moduleService.updateModule(moduleId, name, path, icon, sort) > 0) {
+            if (moduleService.updateModule(moduleId, name, action, icon, sort) > 0) {
                 systemService.addAdminLog(request, "编辑模块", "name=" + name);
                 return new ResMsg(ResCode.UPDATE_SUCCESS.code(), ResCode.UPDATE_SUCCESS.msg());
             }
@@ -391,7 +392,7 @@ public class SystemBackController extends BaseController {
             Tree tree = new Tree();
             tree.setId(m.getId());
             tree.setpId(m.getParentId());
-            tree.setName(m.getModName());
+            tree.setName(m.getName());
             if (mods == null || mods.isEmpty()) {
                 treeList.add(tree);
                 continue;
@@ -558,7 +559,7 @@ public class SystemBackController extends BaseController {
             os.write(addr.getBytes(Charset.forName("UTF-8")));
             os.close();
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new SysException(e.getMessage(), e);
         }
     }
 
@@ -718,7 +719,7 @@ public class SystemBackController extends BaseController {
             return new ResMsg(1, "level must be INFO or DEBUG");
         }
         Admin admin = getSession(request, IConstant.SESSION_ADMIN);
-        if (admin == null || admin.getRole().getRoleFlag() != 0) {
+        if (admin == null || admin.getRole().getFlag() != 0) {
             return new ResMsg(1, "refuse if superadmin");
         }
 
@@ -760,7 +761,7 @@ public class SystemBackController extends BaseController {
             inputStream.close();
             bufferedReader.close();
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new SysException(e.getMessage(), e);
         }
         return;
     }
@@ -843,8 +844,7 @@ public class SystemBackController extends BaseController {
             reader.close();
             return new ResMsg(0, output);
         } catch (Exception e) {
-            e.printStackTrace();
-            return new ResMsg(3, "未找到模板");
+            return new ResMsg(3, "未找到模板: " + e.getMessage());
         }
     }
 
@@ -891,8 +891,7 @@ public class SystemBackController extends BaseController {
             os.flush();
             return new ResMsg(0, "保存成功");
         } catch (Exception e) {
-            e.printStackTrace();
-            return new ResMsg(4, "未找到模板");
+            return new ResMsg(4, "未找到模板: " + e.getMessage());
         }
     }
 

@@ -25,6 +25,6 @@ public interface RoleMapper {
 	 * @return 1 | 0
 	 */
 	@Deprecated
-	int checkRights(@Param("roleId") Integer roleId, @Param("modPath") String modPath);
+	int checkRights(@Param("roleId") Integer roleId, @Param("action") String action);
 
 }

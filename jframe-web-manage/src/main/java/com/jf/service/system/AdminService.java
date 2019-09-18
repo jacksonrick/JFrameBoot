@@ -97,11 +97,11 @@ public class AdminService {
      * @return
      */
     public int insertAdmin(Admin admin) {
-        if (StringUtil.isNotBlank(admin.getAdminPassword())) {
-            admin.setAdminPassword(PasswordUtil.MD5Encode(admin.getAdminPassword()));
+        if (StringUtil.isNotBlank(admin.getPassword())) {
+            admin.setPassword(PasswordUtil.MD5Encode(admin.getPassword()));
         } else {
             // 默认密码
-            admin.setAdminPassword(PasswordUtil.MD5Encode("123456"));
+            admin.setPassword(PasswordUtil.MD5Encode("123456"));
         }
         return adminMapper.insert(admin);
     }
@@ -113,8 +113,8 @@ public class AdminService {
      * @return
      */
     public int updateAdmin(Admin admin) {
-        if (StringUtil.isNotBlank(admin.getAdminPassword())) {
-            admin.setAdminPassword(PasswordUtil.MD5Encode(admin.getAdminPassword()));
+        if (StringUtil.isNotBlank(admin.getPassword())) {
+            admin.setPassword(PasswordUtil.MD5Encode(admin.getPassword()));
         }
         return adminMapper.update(admin);
     }
@@ -128,8 +128,8 @@ public class AdminService {
      */
     private int updateLogin(Integer adminId, String ip) {
         Admin admin = new Admin(adminId);
-        admin.setAdminLoginTime(new Date());
-        admin.setAdminLoginIp(ip);
+        admin.setLastLoginTime(new Date());
+        admin.setLastLoginIp(ip);
         return adminMapper.update(admin);
     }
 
@@ -142,7 +142,7 @@ public class AdminService {
      */
     public int updatePassword(Integer adminId, String password) {
         Admin admin = new Admin(adminId);
-        admin.setAdminPassword(PasswordUtil.MD5Encode(password));
+        admin.setPassword(PasswordUtil.MD5Encode(password));
         return adminMapper.update(admin);
     }
 
@@ -164,7 +164,7 @@ public class AdminService {
      */
     public int deleteRights(Integer adminId) {
         Admin admin = new Admin(adminId);
-        admin.setAdminRights("");
+        admin.setRights("");
         return adminMapper.update(admin);
     }
 

@@ -1,5 +1,7 @@
 package com.jf.encrypt;
 
+import com.jf.exception.SysException;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -25,7 +27,6 @@ public class PasswordUtil {
             MessageDigest md = MessageDigest.getInstance("MD5");
             resultString = byteArrayToHexString(md.digest(resultString.getBytes()));
         } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
             resultString = origin;
         }
         return resultString;

@@ -5,6 +5,7 @@ import com.jf.annotation.excel.Excel;
 import com.jf.annotation.excel.Fields;
 import com.jf.annotation.excel.TypeValue;
 import com.jf.commons.LogManager;
+import com.jf.exception.SysException;
 import com.jf.poi.render.AbstractCellRender;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.*;
@@ -17,7 +18,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.net.URLEncoder;
 import java.util.List;
 import java.util.Map;
 
@@ -168,7 +168,7 @@ public class ViewExcel<T> extends AbstractXlsView {
                 codedFilename = new String(fileNames.getBytes("UTF-8"), "iso-8859-1");
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new SysException(e.getMessage(), e);
         }
         return codedFilename;
     }

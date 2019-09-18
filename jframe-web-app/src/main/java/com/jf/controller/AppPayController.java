@@ -247,7 +247,7 @@ public class AppPayController extends BaseController {
         try {
             out = response.getWriter();
         } catch (IOException e) {
-            e.printStackTrace();
+
         }
         out.println(ret);
         out.flush();

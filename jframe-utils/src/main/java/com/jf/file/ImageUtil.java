@@ -1,11 +1,12 @@
 package com.jf.file;
 
-import org.apache.commons.io.FileUtils;
+import com.jf.exception.SysException;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.*;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 
 /**
  * 图片工具类
@@ -21,7 +22,7 @@ public class ImageUtil {
             is = new FileInputStream(file);
             FileUtils.copyInputStreamToFile(new ByteArrayInputStream(ImageUtil.waterMark(is, "JFrame", "png")), out);
         } catch (Exception e) {
-            e.printStackTrace();
+
         }
     }*/
 
@@ -66,9 +67,8 @@ public class ImageUtil {
             out.close();
             return b;
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new SysException(e.getMessage(), e);
         }
-        return b;
     }
 
     /**
@@ -106,9 +106,8 @@ public class ImageUtil {
             out.close();
             return b;
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new SysException(e.getMessage(), e);
         }
-        return b;
     }
 
     private static int getWatermarkLength(String waterMarkContent, Graphics2D g) {

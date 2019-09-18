@@ -46,36 +46,36 @@ public class ModuleService {
      * @param flag
      * @param name
      * @param parentId
-     * @param path
+     * @param action
      * @param icon
      * @param sort
      * @return
      */
-    public int insertModule(Integer flag, String name, Integer parentId, String path, String icon, Integer sort) {
+    public int insertModule(Integer flag, String name, Integer parentId, String action, String icon, Integer sort) {
         Module module = new Module();
         module.setParentId(parentId);
-        module.setModName(name);
-        module.setModFlag(flag);
-        module.setModPath(path);
-        module.setModIcon(icon);
-        module.setModSort(sort);
+        module.setName(name);
+        module.setFlag(flag);
+        module.setAction(action);
+        module.setIconName(icon);
+        module.setSort(sort);
         return moduleMapper.insert(module);
     }
 
     /**
      * @param id
      * @param name
-     * @param path
+     * @param action
      * @param icon
      * @param sort
      * @return
      */
-    public int updateModule(Integer id, String name, String path, String icon, Integer sort) {
+    public int updateModule(Integer id, String name, String action, String icon, Integer sort) {
         Module module = new Module(id);
-        module.setModName(name);
-        module.setModPath(path);
-        module.setModIcon(icon);
-        module.setModSort(sort);
+        module.setName(name);
+        module.setAction(action);
+        module.setIconName(icon);
+        module.setSort(sort);
         return moduleMapper.update(module);
     }
 
@@ -106,7 +106,7 @@ public class ModuleService {
      */
     public int insertRole(String roleName) {
         Role role = new Role();
-        role.setRoleName(roleName);
+        role.setName(roleName);
         return roleMapper.insert(role);
     }
 
@@ -119,7 +119,7 @@ public class ModuleService {
      */
     public int updateRole(Integer roleId, String roleName) {
         Role role = new Role(roleId);
-        role.setRoleName(roleName);
+        role.setName(roleName);
         return roleMapper.update(role);
     }
 
@@ -142,7 +142,7 @@ public class ModuleService {
     public int deleteRights(Integer roleId) {
         Role role = new Role(roleId);
         // 权限置空
-        role.setRoleRights("");
+        role.setRights("");
         return roleMapper.update(role);
     }
 
@@ -155,7 +155,7 @@ public class ModuleService {
      */
     public int permitRole(Integer roleId, String[] rights) {
         Role role = new Role(roleId);
-        role.setRoleRights(StringUtils.join(rights, ","));
+        role.setRights(StringUtils.join(rights, ","));
         return roleMapper.update(role);
     }
 
@@ -168,7 +168,7 @@ public class ModuleService {
      */
     public int permitAdmin(Integer adminId, String[] rights) {
         Admin admin = new Admin(adminId);
-        admin.setAdminRights(StringUtils.join(rights, ","));
+        admin.setRights(StringUtils.join(rights, ","));
         return adminMapper.update(admin);
     }
 
@@ -208,12 +208,12 @@ public class ModuleService {
         Admin admin = adminMapper.findRightsById(adminId);
         // 管理员权限和组权限合并（去重）
         Set<String> set = new TreeSet<String>();
-        if (StringUtil.isNotBlank(admin.getAdminRights())) {
-            String[] arr = admin.getAdminRights().split(",");
+        if (StringUtil.isNotBlank(admin.getRights())) {
+            String[] arr = admin.getRights().split(",");
             set.addAll(Arrays.asList(arr));
         }
-        if (admin.getRole() != null && StringUtil.isNotBlank(admin.getRole().getRoleRights())) {
-            String[] arr = admin.getRole().getRoleRights().split(",");
+        if (admin.getRole() != null && StringUtil.isNotBlank(admin.getRole().getRights())) {
+            String[] arr = admin.getRole().getRights().split(",");
             set.addAll(Arrays.asList(arr));
         }
 
@@ -231,13 +231,13 @@ public class ModuleService {
      * 检查是否有权限
      *
      * @param adminId
-     * @param uri
+     * @param action
      * @return
      * @author rick
      * @date 2016年7月22日 下午1:49:51
      */
-    public boolean checkHavingRight(Integer adminId, String uri) {
-        if (StringUtil.isBlank(uri)) {
+    public boolean checkHavingRight(Integer adminId, String action) {
+        if (StringUtil.isBlank(action)) {
             return false;
         }
 
@@ -248,19 +248,19 @@ public class ModuleService {
         }
 
         // URI对应的模块id
-        Integer moduleId = moduleMapper.findIdByPath(uri);
+        Integer moduleId = moduleMapper.findIdByAction(action);
         if (moduleId == null) {
             return false;
         }
 
         // 管理员权限和组权限合并（去重）
         Set<String> set = new TreeSet<String>();
-        if (StringUtil.isNotBlank(admin.getAdminRights())) {
-            String[] arr = admin.getAdminRights().split(",");
+        if (StringUtil.isNotBlank(admin.getRights())) {
+            String[] arr = admin.getRights().split(",");
             set.addAll(Arrays.asList(arr));
         }
-        if (admin.getRole() != null && StringUtil.isNotBlank(admin.getRole().getRoleRights())) {
-            String[] arr = admin.getRole().getRoleRights().split(",");
+        if (admin.getRole() != null && StringUtil.isNotBlank(admin.getRole().getRights())) {
+            String[] arr = admin.getRole().getRights().split(",");
             set.addAll(Arrays.asList(arr));
         }
         // 如果模块id存在权限集合中(set)

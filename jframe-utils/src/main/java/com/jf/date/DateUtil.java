@@ -27,6 +27,15 @@ public class DateUtil {
     /**
      * 获取当前时间
      *
+     * @return
+     */
+    public static String getCurrentTime() {
+        return getCurrentTime(1);
+    }
+
+    /**
+     * 获取当前时间
+     *
      * @param type 1-YYYY_MM_DD_HH_MM_SS
      *             2-YYYY_MM_DD [Default]
      *             3-YYYY_MM
@@ -152,14 +161,9 @@ public class DateUtil {
      * @return
      */
     public static Date longToDate(Long time) {
-        try {
-            DateTime dt = new DateTime(new Date(time));
-            String date = dt.toString(YYYY_MM_DD_HH_MM_SS);
-            return strToDate(date);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
+        DateTime dt = new DateTime(new Date(time));
+        String date = dt.toString(YYYY_MM_DD_HH_MM_SS);
+        return strToDate(date);
     }
 
     /**

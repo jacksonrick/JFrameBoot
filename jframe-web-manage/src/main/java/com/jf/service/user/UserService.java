@@ -5,7 +5,6 @@ import com.jf.database.mapper.UserMapper;
 import com.jf.database.model.User;
 import com.jf.database.model.custom.IdText;
 import com.jf.database.model.excel.UserModel;
-import com.jf.encrypt.PasswordUtil;
 import com.jf.string.IdGen;
 import com.jf.string.StringUtil;
 import org.springframework.cache.annotation.CacheEvict;

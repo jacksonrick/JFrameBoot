@@ -6,7 +6,7 @@
 
 	<sql id="addressCondition">
 		<where>
-			<if test="level != null">AND `level` = #{level}</if>
+			<if test="level != null">AND level = #{level}</if>
 			<if test="parent != null">AND parent = #{parent}</if>
 		</where>
 	</sql>
@@ -14,8 +14,8 @@
 	<sql id="baseColumn">
 		id,
 		parent,
-		`name`,
-		`level`
+		name,
+		level
 	</sql>
 
 	<resultMap type="address" id="addressResultMap">
@@ -34,10 +34,10 @@
 	<insert id="insert" parameterType="address">
 		INSERT INTO s_address (
 			parent,
-			`name`,
-			`level`
+			name,
+			level
 		)
-		VALUE (
+		VALUES (
 			#{parent},
 			#{name},
 			#{level}
@@ -47,9 +47,9 @@
 	<update id="update" parameterType="address">
 		UPDATE s_address
 		<set>
-			<if test="name != null and name != ''">`name` = #{name},</if>
+			<if test="name != null and name != ''">name = #{name},</if>
 			<if test="parent != null">parent = #{parent},</if>
-			<if test="level != null">`level` = #{level},</if>
+			<if test="level != null">level = #{level},</if>
 		</set>
 		WHERE id = #{id}
 	</update>

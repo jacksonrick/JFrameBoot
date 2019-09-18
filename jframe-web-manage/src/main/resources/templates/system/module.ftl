@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <base href="<%=basePath%>">
     <meta charset="utf-8">
     <title></title>
     <link href="/static/library/plugins/zTree/metroStyle/metroStyle.css" rel="stylesheet">
@@ -44,7 +43,7 @@
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label">Action：</label>
                                     <div class="col-sm-9">
-                                        <input type="text" id="action" name="path" class="form-control" placeholder="Action">
+                                        <input type="text" id="action" name="action" class="form-control" placeholder="Action">
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -95,7 +94,7 @@
                 pIdKey: "pId",
                 rootPId: 0,
                 flag: "flag", // 新增属性
-                path: "path",
+                action: "action",
                 icon: "icon",
                 sort: "sort"
             }
@@ -166,7 +165,7 @@
             $("#moduleId").val(zTree.getSelectedNodes()[0].id);
             $("#parentId").val('');
             $("#modName").val(zTree.getSelectedNodes()[0].name);
-            $("#action").val(zTree.getSelectedNodes()[0].path);
+            $("#action").val(zTree.getSelectedNodes()[0].action);
             $("#icon").val(zTree.getSelectedNodes()[0].icon);
             $("#sort").val(zTree.getSelectedNodes()[0].sort);
             $("#flag").val('');

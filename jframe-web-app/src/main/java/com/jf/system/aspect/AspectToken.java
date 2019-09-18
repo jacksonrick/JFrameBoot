@@ -5,8 +5,8 @@ import com.jf.common.TokenHandler;
 import com.jf.database.enums.ResCode;
 import com.jf.string.StringUtil;
 import com.jf.system.conf.IConstant;
-import com.jf.system.exception.AppException;
-import com.jf.system.exception.AppTokenException;
+import com.jf.exception.AppException;
+import com.jf.exception.AppTokenException;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -146,12 +146,11 @@ public class AspectToken {
             }
         } catch (Throwable throwable) {
             if (throwable instanceof AppTokenException) {
-                throw new AppTokenException(throwable.getMessage());
+                throw new AppTokenException(throwable.getMessage(), throwable);
             } else if (throwable instanceof NullPointerException) {
-                throwable.printStackTrace();
-                throw new AppException("NullPointerException");
+                throw new AppException("NullPointerException", throwable);
             } else {
-                throw new AppException(StringUtil.isBlank(throwable.getMessage()) ? "Null" : throwable.getMessage());
+                throw new AppException(StringUtil.isBlank(throwable.getMessage()) ? "Null" : throwable.getMessage(), throwable);
             }
         }
     }

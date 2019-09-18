@@ -1,6 +1,6 @@
 package com.jf.system.handler.rest;
 
-import com.jf.system.exception.RestException;
+import com.jf.exception.RestException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.web.client.DefaultResponseErrorHandler;

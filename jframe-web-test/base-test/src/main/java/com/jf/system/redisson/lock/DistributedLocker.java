@@ -1,6 +1,6 @@
 package com.jf.system.redisson.lock;
 
-import com.jf.system.exception.SysException;
+import com.jf.exception.SysException;
 
 /**
  * Created with IntelliJ IDEA.

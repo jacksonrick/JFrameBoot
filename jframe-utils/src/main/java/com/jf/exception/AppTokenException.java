@@ -1,4 +1,4 @@
-package com.jf.system.exception;
+package com.jf.exception;
 
 import com.jf.annotation.Except;
 
@@ -11,6 +11,10 @@ public class AppTokenException extends RuntimeException {
 
     public AppTokenException(String message) {
         super(message);
+    }
+
+    public AppTokenException(String message, Throwable cause) {
+        super(message, cause);
     }
 
 }

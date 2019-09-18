@@ -72,7 +72,7 @@ spring:
   datasource:
     druid: # Druid数据源配置
       driver-class-name: com.mysql.jdbc.Driver
-      url: jdbc:mysql://dev:3306/jframe?useUnicode=true&zeroDateTimeBehavior=convertToNull&useSSL=false
+      url: jdbc:mysql://127.0.0.1:3306/jframe?useUnicode=true&zeroDateTimeBehavior=convertToNull&useSSL=false
       username: root
       password: 12345678
       initial-size: 5 # 初始化时建立物理连接的个数。初始化发生在显示调用init方法，或者第一次getConnection时

@@ -39,12 +39,14 @@
 		WHERE phone = #{phone} AND create_time &gt;= now() - INTERVAL 5 MINUTE
 		ORDER BY id DESC LIMIT 1
 	</select>
+	<!-- For PG: WHERE phone = #{phone} AND create_time &gt;= current_timestamp + '-5 min' -->
 
 	<select id="findCountByPhone" resultType="int" parameterType="string">
 		SELECT COUNT(1)
 		FROM t_sms
 		WHERE phone = #{phone} AND TIMESTAMPDIFF(SECOND, create_time, CURRENT_TIMESTAMP()) &lt;= 60
 	</select>
+	<!-- For PG: WHERE phone = #{phone} AND current_timestamp &lt;= create_time + '1 min' -->
 
 	<insert id="insert" parameterType="sms">
 		INSERT INTO t_sms (

@@ -2,6 +2,7 @@ package com.jf.poi;
 
 import com.jf.annotation.excel.Fields;
 import com.jf.date.DateUtil;
+import com.jf.exception.SysException;
 import org.apache.poi.openxml4j.util.ZipSecureFile;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
@@ -187,8 +188,7 @@ public class ExcelReaderXSSAuto {
                     return String.valueOf(cell.getRichStringCellValue());
             }
         } catch (Exception e) {
-            e.printStackTrace();
-            return null;
+            throw new SysException(e.getMessage(), e);
         }
     }
 

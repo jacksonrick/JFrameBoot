@@ -1,13 +1,17 @@
 package com.jf.mq.consumer1;
 
+import com.rabbitmq.client.AMQP;
 import com.rabbitmq.client.Channel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.Message;
+import org.springframework.amqp.core.MessageProperties;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
@@ -72,5 +76,80 @@ public class MQReceiver {
             }
         }
 
+    }
+
+    /* // 测试重试次数
+    @RabbitListener(queues = QUEUE_MSGA, containerFactory = "rabbitListenerContainerFactory")
+    public void process(Message message, Channel channel) throws IOException {
+        String msg = new String(message.getBody());
+        log.info("msg：" + msg + " ,channelno: " + channel.getChannelNumber() + " ,prop: " + message.getMessageProperties().toString());
+        try {
+            // do something
+            // 通知 MQ 消息已被成功消费
+            channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
+        } catch (Exception e) {
+            long retryCount = getRetryCount(message.getMessageProperties());
+            log.info("msg：" + msg + "，消费错误：" + e.getMessage() + "，retryCount:" + retryCount);
+            if (retryCount > 3) {
+                // 重试次数大于3次，则自动加入到失败队列
+                channel.basicPublish(IConstant.EXCHANGE_FAIL, IConstant.QUEUE_FAIL, overrideProperties(message.getMessageProperties()), message.getBody());
+            } else {
+                // 重试次数小于3，则加入到重试队列，n秒后重试
+                channel.basicPublish(IConstant.EXCHANGE_RETRY, IConstant.QUEUE_RETRY, overrideProperties(message.getMessageProperties()), message.getBody());
+            }
+
+            // 由于开启了手动确认模式，所以这里还需要通知MQ消息已被消费，否则队列任务会递增
+            channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
+        }
+    }*/
+
+    /**
+     * MessageProperties转换为AMQP.BasicProperties
+     *
+     * @param properties
+     * @return
+     */
+    protected AMQP.BasicProperties overrideProperties(MessageProperties properties) {
+        return new AMQP.BasicProperties(
+                properties.getContentType(),
+                properties.getContentEncoding(),
+                properties.getHeaders(),
+                2,
+                properties.getPriority(),
+                properties.getCorrelationId(),
+                properties.getReplyTo(),
+                properties.getExpiration(),
+                properties.getMessageId(),
+                properties.getTimestamp(),
+                properties.getType(),
+                properties.getUserId(),
+                properties.getAppId(),
+                properties.getClusterId()
+        );
+    }
+
+    /**
+     * 获取重试次数
+     *
+     * @param properties
+     * @return
+     */
+    protected Long getRetryCount(MessageProperties properties) {
+        Long retryCount = 0L;
+        try {
+            Map<String, Object> headers = properties.getHeaders();
+            if (headers != null) {
+                if (headers.containsKey("x-death")) {
+                    List<Map<String, Object>> deaths = (List<Map<String, Object>>) headers.get("x-death");
+                    if (deaths.size() > 0) {
+                        Map<String, Object> death = deaths.get(0);
+                        retryCount = (Long) death.get("count");
+                    }
+                }
+            }
+        } catch (Exception e) {
+        }
+
+        return retryCount;
     }
 }

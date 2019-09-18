@@ -1,5 +1,6 @@
 package com.jf.poi;
 
+import com.jf.exception.SysException;
 import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.xssf.usermodel.XSSFCell;
@@ -36,7 +37,7 @@ public class ExcelReaderXSS {
         try {
             wb = new XSSFWorkbook(is);
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new SysException(e.getMessage(), e);
         }
         sheet = wb.getSheetAt(0);
         row = sheet.getRow(0);
@@ -62,7 +63,7 @@ public class ExcelReaderXSS {
         try {
             wb = new XSSFWorkbook(is);
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new SysException(e.getMessage(), e);
         }
         sheet = wb.getSheetAt(0);
         // 得到总行数
@@ -95,7 +96,7 @@ public class ExcelReaderXSS {
         try {
             wb = new XSSFWorkbook(is);
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new SysException(e.getMessage(), e);
         }
         sheet = wb.getSheetAt(0);
         // 得到总行数

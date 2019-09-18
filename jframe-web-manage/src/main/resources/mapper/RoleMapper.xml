@@ -5,25 +5,25 @@
 <mapper namespace="com.jf.mapper.RoleMapper">
 
 	<sql id="simpleColumn">
-		r.role_name,
-		r.role_flag,
-		r.deleted AS `role_delete`
+		r.name,
+		r.flag,
+		r.deleted AS role_delete
 	</sql>
 
 	<sql id="baseColumn">
 		r.id,
-		r.role_name,
-		r.role_rights,
-		r.role_flag,
+		r.name,
+		r.rights,
+		r.flag,
 		r.deleted
 	</sql>
 
-	<resultMap type="role" id="roleResultMap">
+	<resultMap type="com.jf.database.model.manage.Role" id="roleResultMap">
 		<id property="id" column="id" />
-		<result property="roleName" column="role_name" />
-		<result property="roleRights" column="role_rights" />
+		<result property="name" column="name" />
+		<result property="rights" column="rights" />
 		<result property="deleted" column="deleted" />
-		<result property="roleFlag" column="role_flag" />
+		<result property="flag" column="flag" />
 	</resultMap>
 
 	<select id="findAll" resultMap="roleResultMap">
@@ -34,20 +34,20 @@
 	<select id="checkRights" resultType="int">
 		SELECT COUNT(1)
 		FROM s_module
-		WHERE FIND_IN_SET(id, (SELECT role_rights FROM s_role WHERE id = #{roleId}))
-		AND mod_path = #{modPath}
+		WHERE FIND_IN_SET(id, (SELECT rights FROM s_role WHERE id = #{roleId}))
+		AND action = #{action}
 	</select>
+	<!-- For PG: WHERE ARRAYCONTAINED(ARRAY[CAST(id AS TEXT)], (SELECT STRING_TO_ARRAY(rights, ',') FROM s_role WHERE id = #{roleId})) -->
 
-	<insert id="insert" parameterType="role">
-		INSERT INTO s_role (role_name)
-		VALUE (#{roleName})
+	<insert id="insert" parameterType="com.jf.database.model.manage.Role">
+		INSERT INTO s_role (name) VALUES (#{name})
 	</insert>
 
-	<update id="update" parameterType="role">
+	<update id="update" parameterType="com.jf.database.model.manage.Role">
 		UPDATE s_role
 		<set>
-			<if test="roleName != null and roleName != ''">role_name = #{roleName},</if>
-			<if test="roleRights != null">role_rights = #{roleRights},</if>
+			<if test="name != null and name != ''">name = #{name},</if>
+			<if test="rights != null">rights = #{rights},</if>
 		</set>
 		WHERE id = #{id}
 	</update>
@@ -56,5 +56,6 @@
         UPDATE s_role SET deleted = !deleted
         WHERE id = #{id}
     </update>
+	<!-- For PG: UPDATE s_role SET deleted = NOT deleted -->
 
 </mapper>

@@ -21,22 +21,22 @@ public class Module extends BaseVo implements Serializable {
 	private Integer parentId;
 
 	/** 模块名 */
-	private String modName;
+	private String name;
 
 	/** 访问action */
-	private String modPath;
+	private String action;
 
     /** 访问参数 */
-    //private String modParam;
+    //private String param;
 
 	/** 模块图标 */
-	private String modIcon;
+	private String iconName;
 
 	/** 1,2表示层级 | 3表示功能 */
-	private Integer modFlag;
+	private Integer flag;
 
 	/** 排序 */
-	private Integer modSort;
+	private Integer sort;
 
 	private String ids;
 	private Integer[] flags;
@@ -67,44 +67,44 @@ public class Module extends BaseVo implements Serializable {
 		return this.parentId;
 	}
 
-	public void setModName(String modName) {
-		this.modName = modName;
+	public String getName() {
+		return name;
 	}
 
-	public String getModName() {
-		return this.modName;
+	public void setName(String name) {
+		this.name = name;
 	}
 
-	public void setModPath(String modPath) {
-		this.modPath = modPath;
+	public String getAction() {
+		return action;
 	}
 
-	public String getModPath() {
-		return this.modPath;
+	public void setAction(String action) {
+		this.action = action;
 	}
 
-	public void setModIcon(String modIcon) {
-		this.modIcon = modIcon;
+	public String getIconName() {
+		return iconName;
 	}
 
-	public String getModIcon() {
-		return this.modIcon;
+	public void setIconName(String iconName) {
+		this.iconName = iconName;
 	}
 
-	public void setModFlag(Integer modFlag) {
-		this.modFlag = modFlag;
+	public Integer getFlag() {
+		return flag;
 	}
 
-	public Integer getModFlag() {
-		return this.modFlag;
+	public void setFlag(Integer flag) {
+		this.flag = flag;
 	}
 
-	public Integer getModSort() {
-		return modSort;
+	public Integer getSort() {
+		return sort;
 	}
 
-	public void setModSort(Integer modSort) {
-		this.modSort = modSort;
+	public void setSort(Integer sort) {
+		this.sort = sort;
 	}
 
 	public String getIds() {
@@ -144,11 +144,11 @@ public class Module extends BaseVo implements Serializable {
 		return "Module{" +
 				"id=" + id +
 				", parentId=" + parentId +
-				", modName='" + modName + '\'' +
-				", modPath='" + modPath + '\'' +
-				", modIcon='" + modIcon + '\'' +
-				", modFlag=" + modFlag +
-				", modSort=" + modSort +
+				", name='" + name + '\'' +
+				", action='" + action + '\'' +
+				", iconName='" + iconName + '\'' +
+				", flag=" + flag +
+				", sort=" + sort +
 				", ids='" + ids + '\'' +
 				", flags=" + Arrays.toString(flags) +
 				", roleId=" + roleId +

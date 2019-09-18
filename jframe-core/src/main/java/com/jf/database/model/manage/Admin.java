@@ -27,31 +27,34 @@ public class Admin extends BaseVo implements Serializable {
     @NotEmpty(message = "不能为空")
     @EmptyPattern(regexp = "^[A-Za-z0-9]+$", message = "用户名格式错误，只能是英文和数字")
     @Length(min = 2, max = 16, message = "用户名在2-16个字符")
-	private String adminName;
+	private String loginName;
+
+    /** 登录密码 */
+	@EmptyPattern(regexp = "^[A-Za-z0-9]+$", message = "密码格式错误，只能是英文和数字")
+	private String password;
 
 	/** 真实姓名 */
     @Length(max = 10, message = "姓名最多10个字符")
-	private String adminRealname;
-
-	/** 登录密码 */
-    @EmptyPattern(regexp = "^[A-Za-z0-9]+$", message = "密码格式错误，只能是英文和数字")
-	private String adminPassword;
+	private String realname;
 
 	/** 手机号 */
     @EmptyPattern(regexp = "^1[3|4|5|7|8][0-9]\\d{8}$", message = "手机号格式错误")
-	private String adminPhone;
+	private String phone;
 
 	/** 权限 */
-    private String adminRights;
+    private String rights;
 
 	/** 账号创建日期 */
-	private Date adminCreateTime;
+	private Date createTime;
+
+	/** 更新时间 */
+	private Date updateTime;
 
 	/** 上次登录时间 */
-	private Date adminLoginTime;
+	private Date lastLoginTime;
 
 	/** 上次登录ip */
-	private String adminLoginIp;
+	private String lastLoginIp;
 
     /** 是否删除 1-是 0-否 */
     private Boolean deleted;
@@ -68,10 +71,10 @@ public class Admin extends BaseVo implements Serializable {
 	}
 
 	/**
-	 * @param adminName
+	 * @param loginName
 	 */
-	public Admin(String adminName) {
-		this.setAdminName(adminName);
+	public Admin(String loginName) {
+		this.setLoginName(loginName);
 	}
 
 	public void setId(Integer id) {
@@ -90,71 +93,79 @@ public class Admin extends BaseVo implements Serializable {
 		this.role = role;
 	}
 
-	public void setAdminName(String adminName) {
-		this.adminName = adminName;
+	public String getLoginName() {
+		return loginName;
 	}
 
-	public String getAdminName() {
-		return this.adminName;
+	public void setLoginName(String loginName) {
+		this.loginName = loginName;
 	}
 
-	public void setAdminRealname(String adminRealname) {
-		this.adminRealname = adminRealname;
+	public String getPassword() {
+		return password;
 	}
 
-	public String getAdminRealname() {
-		return this.adminRealname;
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
-	public void setAdminPassword(String adminPassword) {
-		this.adminPassword = adminPassword;
+	public String getRealname() {
+		return realname;
 	}
 
-	public String getAdminPassword() {
-		return this.adminPassword;
+	public void setRealname(String realname) {
+		this.realname = realname;
 	}
 
-	public void setAdminPhone(String adminPhone) {
-		this.adminPhone = adminPhone;
+	public String getPhone() {
+		return phone;
 	}
 
-	public String getAdminPhone() {
-		return this.adminPhone;
+	public void setPhone(String phone) {
+		this.phone = phone;
 	}
 
-	public void setAdminRights(String adminRights) {
-		this.adminRights = adminRights;
+	public String getRights() {
+		return rights;
 	}
 
-	public String getAdminRights() {
-		return adminRights;
+	public void setRights(String rights) {
+		this.rights = rights;
 	}
 
-	public Date getAdminCreateTime() {
-        return adminCreateTime;
-    }
-
-    public void setAdminCreateTime(Date adminCreateTime) {
-        this.adminCreateTime = adminCreateTime;
-    }
-
-    public void setAdminLoginTime(Date adminLoginTime) {
-		this.adminLoginTime = adminLoginTime;
+	public Date getCreateTime() {
+		return createTime;
 	}
 
-	public Date getAdminLoginTime() {
-		return this.adminLoginTime;
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
 	}
 
-	public void setAdminLoginIp(String adminLoginIp) {
-		this.adminLoginIp = adminLoginIp;
+	public Date getUpdateTime() {
+		return updateTime;
 	}
 
-	public String getAdminLoginIp() {
-		return this.adminLoginIp;
+	public void setUpdateTime(Date updateTime) {
+		this.updateTime = updateTime;
 	}
 
-    public void setDeleted(Boolean deleted) {
+	public Date getLastLoginTime() {
+		return lastLoginTime;
+	}
+
+	public void setLastLoginTime(Date lastLoginTime) {
+		this.lastLoginTime = lastLoginTime;
+	}
+
+	public String getLastLoginIp() {
+		return lastLoginIp;
+	}
+
+	public void setLastLoginIp(String lastLoginIp) {
+		this.lastLoginIp = lastLoginIp;
+	}
+
+	public void setDeleted(Boolean deleted) {
         this.deleted = deleted;
     }
 
@@ -175,14 +186,15 @@ public class Admin extends BaseVo implements Serializable {
 		return "Admin{" +
 				"id=" + id +
 				", roleId=" + roleId +
-				", adminName='" + adminName + '\'' +
-				", adminRealname='" + adminRealname + '\'' +
-				", adminPassword='" + adminPassword + '\'' +
-				", adminPhone='" + adminPhone + '\'' +
-				", adminRights='" + adminRights + '\'' +
-				", adminCreateTime=" + adminCreateTime +
-				", adminLoginTime=" + adminLoginTime +
-				", adminLoginIp='" + adminLoginIp + '\'' +
+				", loginName='" + loginName + '\'' +
+				", password='" + password + '\'' +
+				", realname='" + realname + '\'' +
+				", phone='" + phone + '\'' +
+				", rights='" + rights + '\'' +
+				", createTime=" + createTime +
+				", updateTime=" + updateTime +
+				", lastLoginTime=" + lastLoginTime +
+				", lastLoginIp='" + lastLoginIp + '\'' +
 				", deleted=" + deleted +
 				", role=" + role +
 				'}';

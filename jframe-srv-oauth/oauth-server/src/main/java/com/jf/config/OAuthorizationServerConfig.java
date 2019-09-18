@@ -1,10 +1,10 @@
 package com.jf.config;
 
+import com.jf.service.OUserDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.oauth2.common.DefaultOAuth2AccessToken;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
@@ -15,8 +15,6 @@ import org.springframework.security.oauth2.provider.token.TokenEnhancer;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JdbcTokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
-import org.springframework.security.web.authentication.RememberMeServices;
-import org.springframework.security.web.authentication.rememberme.TokenBasedRememberMeServices;
 
 import javax.sql.DataSource;
 import java.util.HashMap;
@@ -33,6 +31,8 @@ public class OAuthorizationServerConfig extends AuthorizationServerConfigurerAda
     private DataSource dataSource;
     @Autowired
     private AuthenticationManager authenticationManager;
+    @Autowired
+    private OUserDetailService oUserDetailService;
 
 
     /*
@@ -62,8 +62,10 @@ public class OAuthorizationServerConfig extends AuthorizationServerConfigurerAda
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
         endpoints
                 .tokenStore(tokenStore()) // tokenStore
-                .accessTokenConverter(jwtAccessTokenConverter())
+                .userDetailsService(oUserDetailService)
                 .authenticationManager(authenticationManager)
+                .tokenEnhancer(tokenEnhancer()) // tokenEnhancer
+                .accessTokenConverter(jwtAccessTokenConverter())
         ;
     }
 

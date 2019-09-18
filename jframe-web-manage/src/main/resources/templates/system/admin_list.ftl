@@ -20,7 +20,7 @@
                                 <select class="form-control input-sm" name="roleId">
                                     <option value="" ${(roleId == null)?string('selected','')}>全部</option>
                                 <#list roles as role>
-                                    <option value="${role.id }" ${(role.id == roleId)?string('selected','')}>${role.roleName }</option>
+                                    <option value="${role.id }" ${(role.id == roleId)?string('selected','')}>${role.name }</option>
                                 </#list>
                                 </select>
                             </label>
@@ -47,22 +47,22 @@
                     <#list pageInfo.list as v>
                     <tr>
                         <td>${v_index }</td>
-                        <td>${v.adminName }</td>
+                        <td>${v.loginName }</td>
                         <td>
                             <#if v.role != null>
-                                ${v.role.deleted?string('<s>','')} ${v.role.roleName } ${v.role.deleted?string('<s>','')}
+                                ${v.role.deleted?string('<s>','')} ${v.role.name } ${v.role.deleted?string('<s>','')}
                             <#else>
                                 --
                             </#if>
                         </td>
-                        <td>${v.adminRealname }</td>
-                        <td>${v.adminPhone }</td>
-                        <td>${v.adminCreateTime?string('yyyy-MM-dd HH:mm:ss')}</td>
-                        <td>${(v.adminLoginTime?string('yyyy-MM-dd HH:mm:ss'))!'--'}</td>
-                        <td>${v.adminLoginIp }</td>
+                        <td>${v.realname }</td>
+                        <td>${v.phone }</td>
+                        <td>${v.createTime?string('yyyy-MM-dd HH:mm:ss')}</td>
+                        <td>${(v.lastLoginTime?string('yyyy-MM-dd HH:mm:ss'))!'--'}</td>
+                        <td>${v.lastLoginIp }</td>
                         <td><i class="fa ${v.deleted?string('fa-times','fa-check')}"></i></td>
                         <td>
-                            <#if v.role.roleFlag == 0>
+                            <#if v.role.flag == 0>
                                 <a class="btn btn-sm btn-circle btn-warning" disabled="disabled" title="不可编辑"
                                    data-toggle="tooltip" data-placement="top"><i class="fa fa-pencil-square"></i></a>
                             <#else>
@@ -76,7 +76,7 @@
                                        data-toggle="tooltip" data-placement="top"><i class="fa fa-times"></i></a>
                                 </#if>
                                 <a class="btn btn-sm btn-circle btn-success" title="编辑管理员权限" data-toggle="tooltip" data-placement="top"
-                                   onclick="getModules(${v.id },'${v.adminName }')"><i class="fa fa-legal"></i></a>
+                                   onclick="getModules(${v.id },'${v.loginName }')"><i class="fa fa-legal"></i></a>
                             </#if>
                         </td>
                     </tr>

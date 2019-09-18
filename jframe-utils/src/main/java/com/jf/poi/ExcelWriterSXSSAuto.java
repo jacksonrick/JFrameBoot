@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.util.ClassUtil;
 import com.jf.annotation.excel.Excel;
 import com.jf.annotation.excel.Fields;
 import com.jf.annotation.excel.TypeValue;
+import com.jf.exception.SysException;
 import com.jf.poi.render.AbstractCellRender;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.*;
@@ -157,12 +158,12 @@ public class ExcelWriterSXSSAuto<T> {
             out = new FileOutputStream(file);
             workbook.write(out);
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new SysException(e.getMessage(), e);
         } finally {
             try {
                 out.close();
             } catch (IOException e) {
-                e.printStackTrace();
+                throw new SysException(e.getMessage(), e);
             }
             workbook.dispose();
         }

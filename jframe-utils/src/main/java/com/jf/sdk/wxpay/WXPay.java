@@ -1,5 +1,6 @@
 package com.jf.sdk.wxpay;
 
+import com.jf.exception.SysException;
 import com.jf.sdk.wxpay.WXPayConstants.SignType;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -136,21 +137,21 @@ public class WXPay {
             try {
                 bufferedReader.close();
             } catch (IOException e) {
-                e.printStackTrace();
+                throw new SysException(e.getMessage(), e);
             }
         }
         if (inputStream != null) {
             try {
                 inputStream.close();
             } catch (IOException e) {
-                e.printStackTrace();
+                throw new SysException(e.getMessage(), e);
             }
         }
         if (outputStream != null) {
             try {
                 outputStream.close();
             } catch (IOException e) {
-                e.printStackTrace();
+                throw new SysException(e.getMessage(), e);
             }
         }
         // if (httpURLConnection!=null) {

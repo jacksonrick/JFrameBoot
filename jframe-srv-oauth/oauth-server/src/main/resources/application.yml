@@ -1,5 +1,9 @@
 server:
   port: 8090
+  servlet:
+    session:
+      cookie:
+        name: OAUTHID
 spring:
   mvc:
     static-path-pattern: /static/**

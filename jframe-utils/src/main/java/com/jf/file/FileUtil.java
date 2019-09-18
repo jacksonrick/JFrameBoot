@@ -2,12 +2,12 @@ package com.jf.file;
 
 import com.jf.convert.Convert;
 import com.jf.date.DateUtil;
+import com.jf.exception.SysException;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.tools.zip.ZipEntry;
 import org.apache.tools.zip.ZipFile;
 
 import java.io.*;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.*;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
@@ -211,10 +211,10 @@ public class FileUtil {
                 os.close();
                 is.close();
             } catch (IOException e) {
-                e.printStackTrace();
+                throw new SysException(e.getMessage(), e);
             }
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            throw new SysException(e.getMessage(), e);
         }
     }
 
@@ -243,7 +243,7 @@ public class FileUtil {
             fos.close();
             fis.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new SysException(e.getMessage(), e);
         }
     }
 
@@ -289,6 +289,29 @@ public class FileUtil {
     }
 
     /**
+     * 获取文件MD5
+     *
+     * @param filepath
+     * @return
+     */
+    public static String getFileMD5(String filepath) {
+        return getFileMD5(new File(filepath));
+    }
+
+    /**
+     * @param file
+     * @return
+     */
+    public static String getFileMD5(File file) {
+        try {
+            InputStream is = new FileInputStream(file);
+            return DigestUtils.md5Hex(is);
+        } catch (IOException e) {
+            throw new SysException(e.getMessage(), e);
+        }
+    }
+
+    /**
      * 工具类关闭流 可变参数：... 只能形参最后一个位置,处理方式与数组一致
      *
      * @param io
@@ -300,7 +323,7 @@ public class FileUtil {
                 try {
                     temp.close();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    throw new SysException(e.getMessage(), e);
                 }
             }
         }
@@ -317,49 +340,9 @@ public class FileUtil {
                 try {
                     temp.close();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    throw new SysException(e.getMessage(), e);
                 }
             }
-        }
-    }
-
-    /**
-     * 下载文件
-     *
-     * @param urlStr   远程地址
-     * @param fileName 另存为文件名
-     * @param savePath 保存路径
-     */
-    public static void downLoadFromUrl(String urlStr, String fileName, String savePath) {
-        try {
-            URL url = new URL(urlStr);
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            //设置超时间为3秒
-            conn.setConnectTimeout(5 * 1000);
-            //防止屏蔽程序抓取而返回403错误
-            conn.setRequestProperty("User-Agent", "Mozilla/5.0 (compatible; MSIE 5.0; Windows NT;)");
-
-            //得到输入流
-            InputStream inputStream = conn.getInputStream();
-            //获取自己数组
-            byte[] getData = readInputStream(inputStream);
-
-            //文件保存位置
-            File saveDir = new File(savePath);
-            if (!saveDir.exists()) {
-                saveDir.mkdir();
-            }
-            File file = new File(saveDir + File.separator + fileName);
-            FileOutputStream fos = new FileOutputStream(file);
-            fos.write(getData);
-            if (fos != null) {
-                fos.close();
-            }
-            if (inputStream != null) {
-                inputStream.close();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 

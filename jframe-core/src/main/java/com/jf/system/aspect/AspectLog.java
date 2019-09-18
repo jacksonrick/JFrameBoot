@@ -133,7 +133,7 @@ public class AspectLog {
         try {
             result = pjp.proceed(objects);
         } catch (Throwable throwable) {
-            throwable.printStackTrace();
+            throw new SysException(e.getMessage(), e);
         }
         return result;
     }*/

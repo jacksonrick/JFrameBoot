@@ -1,7 +1,6 @@
 package com.jf.poi;
 
-import com.jf.string.StringUtil;
-import org.apache.commons.lang3.ArrayUtils;
+import com.jf.exception.SysException;
 import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.ss.util.CellReference;
@@ -71,7 +70,7 @@ public class ExcelReaderOPC {
                 stream.close();
                 opcPackage.close();
             } catch (IOException e) {
-                e.printStackTrace();
+                throw new SysException(e.getMessage(), e);
             }
         }
         return datas;
