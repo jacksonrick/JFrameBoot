@@ -5,7 +5,7 @@ made by @jackson-rick   <br>
 
 
 ### 模块
-* jframe `文档/配置/静态资源/部署脚本`
+* jframe `文档/配置/部署脚本`
 * jframe-core `实体对象/服务类/系统相关`
 * jframe-utils `工具类`
 * jframe-web-app `App端`
@@ -20,22 +20,24 @@ made by @jackson-rick   <br>
 * Spring/SpringMVC/MyBatis/SpringBoot/SpringCloud
 * Spring Redis/Redis Session/Redisson/FastDFS
 * 拦截器/AppToken/自定义权限/SpringSecurity/SSO单点登录
-* 后台管理功能：权限管理、模块管理、地址、文件、工具、UI等
-* 线程池、日志服务、分布式日志Flume&ELK、异常处理、多数据源、分布式锁
-* PageHelper分页、封装分页组件
-* Freemarker模板、封装函数和指令
+* 后台管理功能：权限管理、模块管理、地址、文件、工具、日志、UI等
+* 线程池、日志服务、分布式日志ELK、异常处理、多数据源、分布式锁、分布式Session
+* PageHelper分页、封装分页组件、Freemarker模板、封装函数和指令
 * Quartz(单点/集群)、图形化管理、异步任务
 * 第三方：微信SDK/支付宝SDK/推送/高德/阿里云/短信/邮件
 * 日志可视化管理、Actuator健康监控、数据源监控
-* Util包：字符、时间、数字转换/JSON/Http/POI/分页/文件/对象/验证器...
-* JS插件：Ajax/DataTables/CityPicker/Layer/DatePicker...
-* 子服务及微服务：quartz、cache、rabbitmq、websocket、fdfs、eureka、oauth2、gateway、ssl、nacos...
-* 测试模块：jframe-web-test
+* 工具包：字符、时间、数字转换/JSON/Http/POI/PDF/分页/文件/对象/验证器/加密等
+* JS插件：Ajax/DataTables/CityPicker/Layer/DatePicker/Ztree/Select2/Upload等
+* 子模块及微服务：quartz、cache、rabbitmq、websocket、fdfs、eureka、oauth2、zuul、nacos、zookeeper等
+* Nginx&Docker&Jenkins自动化部署
+* 测试模块，仅供参考：
     * 消息队列RabbitMQ
     * Nacos分布式配置、服务发现
     * Quartz管理器
     * Websocket单点和MQ集群
-* Jenkins&Docker自动化部署
+    * Elastic全文搜索
+    * dubbo服务
+
 
 ### 更新日志：
 * v5.7.1 `20190918`
@@ -310,7 +312,7 @@ made by @jackson-rick   <br>
 * Linux CentOS 7
 * IDEA 2018.1
 * Docker CE 18+
-* 其他：RabbitMQ3.6、Jenkins、Dubbo2.7.1
+* 其他：RabbitMQ3.6、Jenkins、Dubbo2.7.1、ES6.4.3
 ---
 
 现所有环境已集成到application.yml
@@ -318,7 +320,12 @@ made by @jackson-rick   <br>
 ### 运行
 #### 打包到服务器运行
 * 修改生产环境配置
-* 在各个端下运行 `clean package -DskipTests`进行打包[必须先安装jframe和jframe-utils]
+* 安装依赖到本地仓库 
+    * cd jframe -> clean install
+    * cd jframe-utils -> clean install -e
+    * cd jframe-core -> clean install -e
+* 在各个端下运行 
+    * clean package -Dmaven.test.skip=true -e
 * 将target目录下的打包文件上传到服务器目录
 * 运行`jframe/build/run`命令或直接运行`java -jar`命令
 * 注意：运行脚本前，请先查看注释，需要按照指定的命名方式
@@ -331,7 +338,7 @@ made by @jackson-rick   <br>
 
 ### 其他
 * 使用maven下载Jar包时，请先在Maven中添加阿里的镜像源
-* 数据库脚本：`jframe/doc/database.sql`
+* 数据库脚本：`jframe/doc/mysql/database.sql`
 * 操作手册说明：`jframe/doc/框架使用手册.docx`
-* 默认为MySQL数据库，如使用Postgresql，将数据库脚本替换为`jframe/doc/postgresql`
+* 默认为MySQL数据库，如使用Postgresql，将数据库脚本替换为`jframe/doc/postgresql/public.sql`
 * jframe-web-test模块代码仅供参考
