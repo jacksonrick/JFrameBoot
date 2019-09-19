@@ -4,18 +4,55 @@ import com.jf.exception.SysException;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Random;
 
 /**
  * Created with IntelliJ IDEA.
- * Description:
+ * Description: 密码工具类
  * User: xujunfei
  * Date: 2018-04-26
  * Time: 16:34
  */
 public class PasswordUtil {
 
+    public static final String RANDOM_NUMBER = "1234567890";
+    public static final String RANDOM_LETTER_LOW = "abcdefghijklmnopqrstuvwxyz";
+    public static final String RANDOM_LETTER_UPPER = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    public static final String RANDOM_SYMBOL = "!@#$%?.,*";
+    public static final String[] RANDOM_ALL = {RANDOM_NUMBER, RANDOM_LETTER_LOW, RANDOM_LETTER_UPPER, RANDOM_SYMBOL};
+
     /**
-     * 对密码进行加密
+     * 生成随机密码，数字+小写字母，8位
+     *
+     * @return
+     */
+    public static String randomPasswd() {
+        return randomPasswd(8, 2);
+    }
+
+    /**
+     * 生成随机密码
+     *
+     * @param length 密码长度，默认8
+     * @param level  密码策略，1-数字 2-小写字母 3-大写字母 4-半角符号（逐级增加复杂度）；默认2，即数字+小写字母
+     * @return
+     */
+    public static String randomPasswd(int length, int level) {
+        if (level < 1 || level > 4) {
+            throw new SysException("密码策略必须在1～4之间");
+        }
+        Random random = new Random();
+        StringBuffer sb = new StringBuffer();
+        for (int i = 0; i < length; i++) {
+            String tmp = RANDOM_ALL[random.nextInt(level)];
+            int number = random.nextInt(tmp.length());
+            sb.append(tmp.charAt(number));
+        }
+        return sb.toString();
+    }
+
+    /**
+     * 对密码进行MD5加密
      *
      * @param origin 明文密码
      * @return

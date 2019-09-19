@@ -2,6 +2,7 @@ package com.jf;
 
 import com.jf.database.model.CustomRole;
 import com.jf.database.model.CustomUser;
+import com.jf.http.HttpUtils;
 import com.jf.json.JacksonUtil;
 import com.jf.obj.BeanUtil;
 import org.joda.time.Days;
@@ -19,6 +20,11 @@ public class MainTest {
 
     public static void main(String[] args) throws Exception {
 
+    }
+
+    public static void testHttpclient() {
+        String str = HttpUtils.doGet("http://127.0.0.1:8888/test", null, null);
+        System.out.println(str);
     }
 
     public static void jsonSerialize() {

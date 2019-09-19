@@ -34,9 +34,9 @@ public class CloudController extends BaseController {
      *
      * @return
      */
-    @RequestMapping("/test")
+    @RequestMapping("/cfg")
     @ResponseBody
-    public ResMsg test() {
+    public ResMsg cfg() {
         return new ResMsg(ResCode.SUCCESS.code(), ResCode.SUCCESS.msg(), a);
     }
 

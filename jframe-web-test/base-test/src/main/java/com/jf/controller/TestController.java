@@ -1,8 +1,10 @@
 package com.jf.controller;
 
 import com.jf.common.BaseController;
+import com.jf.entity.ResMsg;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.AsyncContext;
 import javax.servlet.AsyncEvent;
@@ -19,6 +21,16 @@ import java.io.IOException;
  */
 @Controller
 public class TestController extends BaseController {
+
+    @RequestMapping("/test")
+    @ResponseBody
+    public ResMsg test() {
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+        }
+        return new ResMsg(0, "SUCCESS");
+    }
 
     @RequestMapping("/testAsyncRequest")
     public void testAsyncRequest(HttpServletRequest request) {
