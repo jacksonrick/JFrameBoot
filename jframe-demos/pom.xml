@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.jf</groupId>
+    <artifactId>jframe-demos</artifactId>
+    <version>1</version>
+    <packaging>pom</packaging>
+    <name>jframe-demos</name>
+
+    <modules>
+        <module>base-test</module>
+        <module>mq-consumer1</module>
+        <module>mq-consumer2</module>
+        <module>mq-producer</module>
+        <module>dubbo-consumer</module>
+        <module>dubbo-producer</module>
+        <module>quartz</module>
+        <module>websocket</module>
+        <module>websocket-mq</module>
+        <module>zookeeper</module>
+        <module>actuator</module>
+        <module>elasticsearch</module>
+        <module>nacos-config</module>
+    </modules>
+
+</project>

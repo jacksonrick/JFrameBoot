@@ -60,15 +60,26 @@ public class CacheConfig extends CachingConfigurerSupport {
         return template;
     }
 
+    /**
+     * 支持缓存注解
+     *
+     * @param redisTemplate
+     * @return
+     */
     @Bean
     public RedisCacheManager redisCacheManager(RedisTemplate redisTemplate) {
         // 初始化一个RedisCacheWriter
         RedisCacheWriter redisCacheWriter = RedisCacheWriter.nonLockingRedisCacheWriter(redisTemplate.getConnectionFactory());
 
-        RedisCacheConfiguration redisCacheConfiguration = RedisCacheConfiguration.defaultCacheConfig()
-                .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(redisTemplate.getValueSerializer()));//设置序列化
-        // 设置默认超过期时间是30秒
-        redisCacheConfiguration.entryTtl(Duration.ofSeconds(30));
+        RedisCacheConfiguration redisCacheConfiguration = RedisCacheConfiguration
+                .defaultCacheConfig()
+                .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(redisTemplate.getValueSerializer())) //设置序列化
+                .entryTtl(Duration.ofHours(1)); // 设置默认超过期时间
+
+        // 根据cacheName设置不同的过期时间
+        // Map<String, RedisCacheConfiguration> redisCacheConfigurationMap
+        // new RedisCacheManager(redisCacheWriter, redisCacheConfiguration, redisCacheConfigurationMap);
+
         // 初始化RedisCacheManager
         RedisCacheManager cacheManager = new RedisCacheManager(redisCacheWriter, redisCacheConfiguration);
         return cacheManager;

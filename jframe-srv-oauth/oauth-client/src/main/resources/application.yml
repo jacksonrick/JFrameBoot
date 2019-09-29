@@ -1,2 +1,16 @@
+auth-server: http://127.0.0.1:8090
 server:
   port: 8099
+security:
+  oauth2:
+    client:
+      client-id: client
+      client-secret: 123456
+      grant-type: client_credentials
+      user-authorization-uri: ${auth-server}/oauth/authorize
+      access-token-uri: ${auth-server}/oauth/token
+    resource:
+      user-info-uri: ${auth-server}/authentication/user
+spring:
+  main:
+    allow-bean-definition-overriding: true

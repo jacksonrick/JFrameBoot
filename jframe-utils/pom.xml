@@ -53,6 +53,8 @@
         <freemarker.version>2.3.28</freemarker.version>
         <poi.version>3.17</poi.version>
         <itextpdf.version>5.5.9</itextpdf.version>
+        <httpclient.version>4.5.2</httpclient.version>
+        <httpcore.version>4.4.3</httpcore.version>
         <itextasian.version>5.2.0</itextasian.version>
         <jdom.version>1.1</jdom.version>
         <dom4j.version>1.6.1</dom4j.version>
@@ -131,7 +133,7 @@
             <artifactId>ant</artifactId>
             <version>1.7.0</version>
         </dependency>
-        <!-- commons -->
+        <!-- apache commons -->
         <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
@@ -162,21 +164,26 @@
             <artifactId>commons-collections</artifactId>
             <version>3.2.2</version>
         </dependency>
-        <!-- httpcomponents -->
+        <!-- apache httpcomponents -->
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>
-            <version>4.5.2</version>
+            <version>${httpclient.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpcore</artifactId>
-            <version>4.4.3</version>
+            <version>${httpcore.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>fluent-hc</artifactId>
-            <version>4.5.2</version>
+            <version>${httpclient.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpmime</artifactId>
+            <version>${httpclient.version}</version>
         </dependency>
         <!-- joda time -->
         <dependency>

@@ -69,6 +69,8 @@ spring:
       boolean_format: true,false
       classic_compatible: true
       whitespace_stripping: true
+      log_template_exceptions: true # 日志打印
+      template_exception_handler: ignore
   datasource:
     druid: # Druid数据源配置
       driver-class-name: com.mysql.jdbc.Driver

@@ -1,6 +1,8 @@
 package com.jf.http;
 
 import com.jf.exception.HttpTimeoutException;
+import com.jf.exception.SysException;
+import org.apache.http.HttpEntity;
 import org.apache.http.HttpHeaders;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.CookieStore;
@@ -12,11 +14,14 @@ import org.apache.http.client.protocol.HttpClientContext;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.conn.ssl.TrustSelfSignedStrategy;
+import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
+import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.protocol.HTTP;
 import org.apache.http.ssl.SSLContextBuilder;
 import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
@@ -316,10 +321,11 @@ public class HttpUtils {
                                     CloseableHttpClient httpClient, HttpClientContext httpClientContext) {
         InputStream inputStream = null;
         BufferedOutputStream outputStream = null;
+        CloseableHttpResponse httpResponse = null;
         try {
             HttpGet httpGet = doGetObj(downUrl, null, null);
-            CloseableHttpResponse response = httpClient.execute(httpGet, httpClientContext);
-            inputStream = response.getEntity().getContent();
+            httpResponse = httpClient.execute(httpGet, httpClientContext);
+            inputStream = httpResponse.getEntity().getContent();
             inputStream = new BufferedInputStream(inputStream);
             outputStream = new BufferedOutputStream(new FileOutputStream(filepath));
             int byteCount = 0;
@@ -329,29 +335,73 @@ public class HttpUtils {
                 //filesize += byteCount;
                 outputStream.write(bytes, 0, byteCount);
             }
-
         } catch (Exception e) {
             log.error("文件：" + filepath + "下载失败", e);
         } finally {
-            if (outputStream != null) {
-                try {
+            try {
+                if (outputStream != null) {
                     outputStream.flush();
                     outputStream.close();
-                } catch (IOException e) {
-                    log.error(e.getMessage(), e);
                 }
-            }
-            if (inputStream != null) {
-                try {
+                if (inputStream != null) {
                     inputStream.close();
-                } catch (IOException e) {
-                    log.error(e.getMessage(), e);
                 }
-            }
-            try {
+                if (httpResponse != null) {
+                    httpResponse.close();
+                }
                 httpClient.close();
             } catch (IOException e) {
                 log.error(e.getMessage(), e);
+            }
+        }
+    }
+
+    /**
+     * 上传文件
+     *
+     * @param server
+     * @param localPath
+     * @param extra
+     * @param httpClient
+     * @param httpClientContext
+     */
+    private void uploadFile(String server, String localPath, String extra,
+                            CloseableHttpClient httpClient, HttpClientContext httpClientContext) {
+        CloseableHttpResponse httpResponse = null;
+        try {
+            File file = new File(localPath);
+            if (!file.exists()) {
+                throw new SysException("文件不存在：" + localPath);
+            }
+            HttpPost httpPost = new HttpPost(server);
+            MultipartEntityBuilder multipartEntityBuilder = MultipartEntityBuilder.create();
+            ContentType contentType = ContentType.create(HTTP.PLAIN_TEXT_TYPE, HTTP.UTF_8); // 中文乱码问题
+            multipartEntityBuilder.addBinaryBody("file", file);
+            multipartEntityBuilder.addTextBody("extra", extra, contentType);
+            HttpEntity httpEntity = multipartEntityBuilder.build();
+            httpPost.setEntity(httpEntity);
+
+            httpResponse = httpClient.execute(httpPost);
+            HttpEntity responseEntity = httpResponse.getEntity();
+            if (httpResponse.getStatusLine().getStatusCode() == 200) {
+                String content = EntityUtils.toString(httpResponse.getEntity(), "UTF-8");
+                if ("success".equals(content)) {
+                    log.info("上传成功");
+                } else {
+                    log.info("上传失败：" + content);
+                }
+            } else {
+                log.info("上传失败");
+            }
+        } catch (IOException e) {
+            log.info("上传失败", e);
+        } finally {
+            try {
+                if (httpResponse != null) {
+                    httpResponse.close();
+                }
+                httpClient.close();
+            } catch (Exception e) {
             }
         }
     }

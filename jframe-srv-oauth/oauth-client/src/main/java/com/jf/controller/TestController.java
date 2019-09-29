@@ -1,10 +1,12 @@
 package com.jf.controller;
 
-import com.jf.config.OAuthClient;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.oauth2.client.OAuth2RestTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.annotation.Resource;
+import org.springframework.web.client.RestTemplate;
 
 /**
  * Created with IntelliJ IDEA.
@@ -16,17 +18,40 @@ import javax.annotation.Resource;
 @RestController
 public class TestController {
 
-    @Resource
-    private OAuthClient oAuthClient;
+    @Autowired
+    private RestTemplate restTemplate;
 
     @GetMapping("/test1")
     public Object test1() {
-        return oAuthClient.get("http://127.0.0.1:8010");
+        ResponseEntity<String> response = restTemplate.getForEntity("http://127.0.0.1:8010", null);
+        return response.getBody();
     }
 
     @GetMapping("/test2")
     public Object test2() {
-        return oAuthClient.getAuth("http://127.0.0.1:8010/monitor/a");
+        ResponseEntity<String> response = restTemplate.getForEntity("http://127.0.0.1:8010/monitor/a", null);
+        return response.getBody();
+    }
+
+
+    @Autowired
+    private OAuth2RestTemplate oAuth2RestTemplate;
+
+    /**
+     * 测试SSO Client
+     * 请在application.yml配置正确的参数
+     *
+     * @return
+     */
+    @GetMapping("/test3")
+    public String test3() {
+        try {
+            ResponseEntity<String> response = oAuth2RestTemplate.exchange("http://127.0.0.1:8010/monitor/a", HttpMethod.GET, null, String.class);
+            return response.getBody();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return "401";
+        }
     }
 
 }

@@ -20,6 +20,14 @@ public class LogManager {
 
     /**
      * @param msg
+     * @param throwable
+     */
+    public static void info(String msg, Throwable throwable) {
+        log.info(msg, throwable);
+    }
+
+    /**
+     * @param msg
      * @param cls
      */
     public static void info(String msg, Class cls) {
@@ -50,10 +58,10 @@ public class LogManager {
 
     /**
      * @param msg
-     * @param e
+     * @param throwable
      */
-    public static void error(String msg, Exception e) {
-        log.error(msg, e);
+    public static void error(String msg, Throwable throwable) {
+        log.error(msg, throwable);
     }
 
     /**
@@ -79,7 +87,7 @@ public class LogManager {
         double minSpace = 5;
         double minMem = 0.3;
         if (space[0] < minSpace || space[3] < minMem) {
-            LogManager.error("磁盘或内存空间不足【minSpace:" + minSpace + "GB, minMem:" + minMem + "GB】");
+            LogManager.warn("磁盘或内存空间不足【minSpace:" + minSpace + "GB, minMem:" + minMem + "GB】");
             //System.exit(0);
         }
     }

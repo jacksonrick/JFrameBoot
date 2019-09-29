@@ -1,5 +1,5 @@
 # JFrame
-##### JFrame - SpringBoot & Cloud Project `v5.7.1`
+##### JFrame - SpringBoot & Cloud Project `v5.7.2`
 made by @jackson-rick   <br>
 本架构是对技术框架的整合及开发的规范，适合多端项目和微服务
 
@@ -14,7 +14,7 @@ made by @jackson-rick   <br>
 * jframe-srvs `微服务模块`
 * jframe-srv-oauth `OAuth2.0模块`
 * jframe-srv-gateway `网关模块`
-* jframe-web-test `综合测试模块`
+* jframe-demos `集成案例`
 
 ### 集成
 * Spring/SpringMVC/MyBatis/SpringBoot/SpringCloud
@@ -30,16 +30,12 @@ made by @jackson-rick   <br>
 * JS插件：Ajax/DataTables/CityPicker/Layer/DatePicker/Ztree/Select2/Upload等
 * 子模块及微服务：quartz、cache、rabbitmq、websocket、fdfs、eureka、oauth2、zuul、nacos、zookeeper等
 * Nginx&Docker&Jenkins自动化部署
-* 测试模块，仅供参考：
-    * 消息队列RabbitMQ
-    * Nacos分布式配置、服务发现
-    * Quartz管理器
-    * Websocket单点和MQ集群
-    * Elastic全文搜索
-    * dubbo服务
+* 测试示例：消息队列RabbitMQ、Nacos分布式配置、服务发现、Quartz管理器、Websocket单点和MQ集群、Elastic全文搜索、dubbo服务
 
 
 ### 更新日志：
+* v5.7.2 `20190929`
+    * 1.优化SSO及客户端
 * v5.7.1 `20190918`
     * 1.重新设计表字段[后台管理模块]
     * 2.优化SSO单点登陆

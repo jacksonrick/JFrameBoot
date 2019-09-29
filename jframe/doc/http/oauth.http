@@ -34,11 +34,17 @@ Accept: */*
 Cache-Control: no-cache
 
 ###
-#POST {{host}}/hello?access_token=471d240b-7401-43e1-9d50-6e5ce5efdfcf
-#Accept: */*
-#Cache-Control: no-cache
-
-###
 GET {{host}}/oauth/token_key
 Accept: */*
 Cache-Control: no-cache
+
+###
+GET http://127.0.0.1:8099/test1
+
+###
+GET http://127.0.0.1:8099/test2
+
+###
+GET http://127.0.0.1:8099/test3
+
+###

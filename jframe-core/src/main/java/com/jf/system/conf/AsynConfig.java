@@ -59,7 +59,7 @@ public class AsynConfig implements AsyncConfigurer {
         return new AsyncUncaughtExceptionHandler() {
             @Override
             public void handleUncaughtException(Throwable arg0, Method arg1, Object... arg2) {
-                LogManager.error("AsyncTaskExecutePool Exception Method:" + arg1.getName());
+                LogManager.error("AsyncTaskExecutePool Exception Method:" + arg1.getName(), arg0);
             }
         };
     }
