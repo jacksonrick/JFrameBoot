@@ -16,6 +16,11 @@ import java.util.*;
 /**
  * 读取Excel
  * <p>支持excel2007以上版本</p>
+ * <p>
+ *     HSSF: 2003
+ *     XSSF: 2007
+ *     SXSSF: XSSF增强(降低内存消耗)
+ * </p>
  *
  * @author rick
  * @version 1.2

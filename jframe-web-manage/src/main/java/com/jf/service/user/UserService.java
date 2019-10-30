@@ -32,7 +32,7 @@ public class UserService {
      * @param id
      * @return
      */
-    @Cacheable(value = "user", key = "'findUserById'+#id")
+    @Cacheable(value = "rds", key = "'findUserById'+#id")
     public User findUserById(Long id) {
         return userMapper.findById(id);
     }
@@ -44,7 +44,7 @@ public class UserService {
      * @param user
      * @return
      */
-    @CacheEvict(value = "user", key = "'findUserById'+#user.id")
+    @CacheEvict(value = "rds", key = "'findUserById'+#user.id")
     public int updateUser(User user) {
         return userMapper.update(user);
     }

@@ -64,10 +64,11 @@ public class HttpUtils {
     public static String doGet(String url, Map<String, String> headers, Map<String, String> params) {
         HttpClientContext httpClientContext = HttpClientContext.create();
         CloseableHttpClient httpClient = HttpClients.createDefault();
+        CloseableHttpResponse response = null;
         String responseStr = "";
         try {
             HttpGet httpGet = doGetObj(url, headers, params);
-            CloseableHttpResponse response = httpClient.execute(httpGet, httpClientContext);
+            response = httpClient.execute(httpGet, httpClientContext);
             if (response.getEntity() != null) {
                 responseStr = EntityUtils.toString(response.getEntity(), "UTF-8");
             }
@@ -78,6 +79,9 @@ public class HttpUtils {
             log.error(e.getMessage(), e);
         } finally {
             try {
+                if (response != null) {
+                    response.close();
+                }
                 httpClient.close();
             } catch (IOException e) {
                 log.error(e.getMessage(), e);
@@ -125,10 +129,11 @@ public class HttpUtils {
     public static String doPost(String url, Map<String, String> headers, Map<String, String> params) throws Exception {
         HttpClientContext httpClientContext = HttpClientContext.create();
         CloseableHttpClient httpClient = HttpClients.createDefault();
+        CloseableHttpResponse response = null;
         String responseStr = "";
         try {
             HttpPost httpPost = doPostObj(url, headers, params);
-            CloseableHttpResponse response = httpClient.execute(httpPost, httpClientContext);
+            response = httpClient.execute(httpPost, httpClientContext);
             if (response.getEntity() != null) {
                 responseStr = EntityUtils.toString(response.getEntity(), "UTF-8");
             }
@@ -139,6 +144,9 @@ public class HttpUtils {
             log.error(e.getMessage(), e);
         } finally {
             try {
+                if (response != null) {
+                    response.close();
+                }
                 httpClient.close();
             } catch (IOException e) {
                 log.error(e.getMessage(), e);
@@ -159,12 +167,13 @@ public class HttpUtils {
     public static String doPost(String url, String json) throws Exception {
         HttpClientContext httpClientContext = HttpClientContext.create();
         CloseableHttpClient httpClient = HttpClients.createDefault();
+        CloseableHttpResponse response = null;
         String responseStr = "";
         try {
             Map<String, String> headers = new HashMap<>();
             headers.put(HttpHeaders.CONTENT_TYPE, "application/json");
             HttpPost httpPost = doPostObj(url, headers, json);
-            CloseableHttpResponse response = httpClient.execute(httpPost, httpClientContext);
+            response = httpClient.execute(httpPost, httpClientContext);
             if (response.getEntity() != null) {
                 responseStr = EntityUtils.toString(response.getEntity(), "UTF-8");
             }
@@ -175,6 +184,9 @@ public class HttpUtils {
             log.error(e.getMessage(), e);
         } finally {
             try {
+                if (response != null) {
+                    response.close();
+                }
                 httpClient.close();
             } catch (IOException e) {
                 log.error(e.getMessage(), e);
@@ -266,6 +278,8 @@ public class HttpUtils {
         }
     }
 
+    // 以下为DEMO，请勿直接使用
+
     /**
      * 登陆
      * <p>
@@ -294,6 +308,7 @@ public class HttpUtils {
         CloseableHttpResponse response = httpClient.execute(httpPost, httpClientContext);
         String responseStr = EntityUtils.toString(response.getEntity(), "UTF-8");
         log.info("登陆返回: " + responseStr);
+        response.close();
         return httpClient;
     }
 

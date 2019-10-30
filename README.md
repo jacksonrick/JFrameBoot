@@ -1,5 +1,5 @@
 # JFrame
-##### JFrame - SpringBoot & Cloud Project `v5.7.2`
+##### JFrame - SpringBoot & Cloud Project `v5.7.3`
 made by @jackson-rick   <br>
 本架构是对技术框架的整合及开发的规范，适合多端项目和微服务
 
@@ -9,7 +9,6 @@ made by @jackson-rick   <br>
 * jframe-core `实体对象/服务类/系统相关`
 * jframe-utils `工具类`
 * jframe-web-app `App端`
-* jframe-web-front `PC端`
 * jframe-web-manage `后台管理端`
 * jframe-srvs `微服务模块`
 * jframe-srv-oauth `OAuth2.0模块`
@@ -34,6 +33,11 @@ made by @jackson-rick   <br>
 
 
 ### 更新日志：
+* v5.7.3 `20191030`
+    * 1.SpringBoot升级到2.2
+    * 2.优化配置文件
+    * 3.新增注解开关
+    * 4.优化Redis缓存配置
 * v5.7.2 `20190929`
     * 1.优化SSO及客户端
 * v5.7.1 `20190918`

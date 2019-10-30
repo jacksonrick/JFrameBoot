@@ -4,11 +4,10 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import com.jf.commons.LogManager;
 import org.springframework.cache.annotation.CachingConfigurerSupport;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.cache.RedisCacheConfiguration;
 import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.cache.RedisCacheWriter;
@@ -28,19 +27,18 @@ import java.time.Duration;
  * Date: 2018-01-03
  * Time: 10:38
  */
-@Configuration
-@ConditionalOnProperty(name = "app.cache.enabled", havingValue = "true")
 @EnableCaching
 public class CacheConfig extends CachingConfigurerSupport {
 
     /**
      * 缓存模板
      *
-     * @param factory
+     * @param connectionFactory
      * @return
      */
     @Bean
     public RedisTemplate<String, String> redisTemplate(RedisConnectionFactory connectionFactory) {
+        LogManager.info("initializing redisTemplate...", getClass());
         StringRedisTemplate template = new StringRedisTemplate(connectionFactory);
 
         // 设置序列化工具 jackson2
@@ -51,10 +49,21 @@ public class CacheConfig extends CachingConfigurerSupport {
         om.setSerializationInclusion(JsonInclude.Include.NON_NULL);
         jackson2JsonRedisSerializer.setObjectMapper(om);
 
+        // 序列化设置
+
+        // 1.redisTemplate注入
+        // key-value(默认)
         template.setKeySerializer(new StringRedisSerializer());
+        template.setValueSerializer(new StringRedisSerializer());
+        // hash
         template.setHashKeySerializer(new StringRedisSerializer());
-        template.setValueSerializer(jackson2JsonRedisSerializer);
         template.setHashValueSerializer(jackson2JsonRedisSerializer);
+
+        // 2.注解(@Cacheable)
+        //template.setValueSerializer(jackson2JsonRedisSerializer);
+
+        // 3.同时开启
+        // 需要配置两个RedisTemplate(bean-name不同)
 
         template.afterPropertiesSet();
         return template;
@@ -68,6 +77,7 @@ public class CacheConfig extends CachingConfigurerSupport {
      */
     @Bean
     public RedisCacheManager redisCacheManager(RedisTemplate redisTemplate) {
+        LogManager.info("initializing redisCacheManager...", getClass());
         // 初始化一个RedisCacheWriter
         RedisCacheWriter redisCacheWriter = RedisCacheWriter.nonLockingRedisCacheWriter(redisTemplate.getConnectionFactory());
 

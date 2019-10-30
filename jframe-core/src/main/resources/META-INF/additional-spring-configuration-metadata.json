@@ -231,54 +231,6 @@
       "type": "java.lang.String[]",
       "description": "文件类型.",
       "sourceType": "com.jf.system.conf.SysConfig$Upload"
-    },
-    {
-      "name": "app.eureka.enabled",
-      "defaultValue": false,
-      "type": "java.lang.Boolean",
-      "description": "[core]Eureka注册中心."
-    },
-    {
-      "name": "app.monitor.enabled",
-      "defaultValue": false,
-      "type": "java.lang.Boolean",
-      "description": "[core]监控."
-    },
-    {
-      "name": "app.cache.enabled",
-      "defaultValue": false,
-      "type": "java.lang.Boolean",
-      "description": "[core]redis缓存支持."
-    },
-    {
-      "name": "app.async.enabled",
-      "defaultValue": false,
-      "type": "java.lang.Boolean",
-      "description": "[core]异步任务."
-    },
-    {
-      "name": "app.ssl.enabled",
-      "defaultValue": false,
-      "type": "java.lang.Boolean",
-      "description": "[core]启用SSL."
-    },
-    {
-      "name": "rmi.enabled",
-      "defaultValue": false,
-      "type": "java.lang.Boolean",
-      "description": "[core]启用rmi监控."
-    },
-    {
-      "name": "rmi.host",
-      "type": "java.lang.String",
-      "description": "rmi地址.",
-      "sourceType": "com.jf.system.conf.JMXConfig"
-    },
-    {
-      "name": "rmi.port",
-      "type": "java.lang.String",
-      "description": "rmi端口.",
-      "sourceType": "com.jf.system.conf.JMXConfig"
     }
   ]
 }

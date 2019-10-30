@@ -946,7 +946,7 @@ body.canvas-menu.mini-navbar #page-wrapper, body.canvas-menu.mini-navbar .footer
 
 body.canvas-menu .navbar-static-side, body.fixed-sidebar .navbar-static-side {
     position: fixed;
-    width: 220px;
+    width: 180px;
     z-index: 1000;
     height: 100%
 }
@@ -3216,7 +3216,7 @@ video {
 #page-wrapper {
     padding: 0 15px;
     position: inherit;
-    margin: 0 0 0 220px
+    margin: 0 0 0 180px
 }
 
 .title-action {

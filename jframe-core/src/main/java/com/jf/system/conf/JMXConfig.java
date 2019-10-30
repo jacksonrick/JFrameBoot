@@ -1,10 +1,8 @@
 package com.jf.system.conf;
 
 import com.jf.commons.LogManager;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.jmx.support.ConnectorServerFactoryBean;
 import org.springframework.remoting.rmi.RmiRegistryFactoryBean;
@@ -16,15 +14,14 @@ import org.springframework.remoting.rmi.RmiRegistryFactoryBean;
  * Date: 2018-03-28
  * Time: 10:51
  */
-@Configuration
-@ConditionalOnProperty(name = "rmi.enabled", havingValue = "true")
-@ConfigurationProperties(prefix = "rmi")
 public class JMXConfig {
 
-    public String host;
-    public Integer port;
+    @Value("${jmx.host}")
+    private String host;
+    @Value("${jmx.port}")
+    private Integer port;
 
-    @Bean
+    @Bean(name = "rmiRegistry")
     public RmiRegistryFactoryBean rmiRegistry() {
         final RmiRegistryFactoryBean rmiRegistryFactoryBean = new RmiRegistryFactoryBean();
         rmiRegistryFactoryBean.setPort(port);
@@ -38,7 +35,7 @@ public class JMXConfig {
         final ConnectorServerFactoryBean connectorServerFactoryBean = new ConnectorServerFactoryBean();
         connectorServerFactoryBean.setObjectName("connector:name=rmi");
         String url = String.format("service:jmx:rmi://%s:%s/jndi/rmi://%s:%s/jmxrmi", host, port, host, port);
-        LogManager.info("JMX started at: " + host + ":" + port + " and serv_url: " + url);
+        LogManager.info("JMX started at: " + host + ":" + port + " and serv_url: " + url, getClass());
         connectorServerFactoryBean.setServiceUrl(url);
         return connectorServerFactoryBean;
     }

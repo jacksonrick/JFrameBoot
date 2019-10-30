@@ -2,11 +2,8 @@ package com.jf.system.conf;
 
 import com.jf.commons.LogManager;
 import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.AsyncConfigurer;
-import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import java.lang.reflect.Method;
@@ -15,18 +12,15 @@ import java.util.concurrent.ThreadPoolExecutor;
 
 /**
  * Created with IntelliJ IDEA.
- * Description: 异步任务
+ * Description: 异步任务 @EnableAsync
  * User: xujunfei
  * Date: 2017-11-28
  * Time: 11:03
  */
-@Configuration
-@ConditionalOnProperty(name = "app.async.enabled", havingValue = "true")
 @ConfigurationProperties(prefix = "spring.task")
-@EnableAsync
-//@EnableAspectJAutoProxy(exposeProxy = true) // 解决异步方法同步调用的问题
-// XXService service = (XXService) AopContext.currentProxy(); service.async();
 public class AsynConfig implements AsyncConfigurer {
+    // @EnableAspectJAutoProxy(exposeProxy = true) // 解决异步方法同步调用的问题
+    // XXService service = (XXService) AopContext.currentProxy(); service.async();
 
     private int corePoolSize;
     private int maxPoolSize;
@@ -37,6 +31,7 @@ public class AsynConfig implements AsyncConfigurer {
 
     @Override
     public Executor getAsyncExecutor() {
+        LogManager.info("initializing custom asyncExecutor configuration...", getClass());
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
         executor.setCorePoolSize(corePoolSize);
         executor.setMaxPoolSize(maxPoolSize);
@@ -45,7 +40,7 @@ public class AsynConfig implements AsyncConfigurer {
         executor.setWaitForTasksToCompleteOnShutdown(waitOnShutdown);
         executor.setAwaitTerminationSeconds(awaitTerminationSeconds);
         // 任务前缀
-        executor.setThreadNamePrefix("taskExecutor-");
+        executor.setThreadNamePrefix("asyncTaskExecutor-");
 
         // rejection-policy：当pool已经达到max size的时候，如何处理新任务
         // CALLER_RUNS：不在新线程中执行任务，而是由调用者所在的线程来执行

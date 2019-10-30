@@ -34,7 +34,7 @@ spring:
     enabled: true
   cache: # 缓存设置
     type: REDIS # 缓存类型 NONE | REDIS
-    cache-names: user,order # 缓存的名称(多个)
+    cache-names: rds # 缓存的名称(多个用半角逗号隔开)
     redis:
       time-to-live: 20m
   session: # session存储类型 NONE | REDIS
@@ -55,7 +55,8 @@ spring:
     default-property-inclusion: non_null # json空不输出
   freemarker:
     template-loader-path: classpath:/templates # 模板文件目录
-    cache: true # 缓存
+    suffix: .ftl # ftlh from springboot2.2
+    cache: true
     charset: UTF-8
     settings: # 数据格式设置
       template_update_delay: 0
@@ -73,8 +74,8 @@ spring:
       template_exception_handler: ignore
   datasource:
     druid: # Druid数据源配置
-      driver-class-name: com.mysql.jdbc.Driver
-      url: jdbc:mysql://dev:3306/jframe?useUnicode=true&zeroDateTimeBehavior=convertToNull&useSSL=false
+      driver-class-name: com.mysql.cj.jdbc.Driver # mysql8新版的驱动类名
+      url: jdbc:mysql://localhost:3306/jframe?serverTimezone=UTC&characterEncoding=utf8&useUnicode=true&zeroDateTimeBehavior=convertToNull&useSSL=false&allowPublicKeyRetrieval=true
       username: root
       password: 12345678
       initial-size: 5 # 初始化时建立物理连接的个数。初始化发生在显示调用init方法，或者第一次getConnection时
@@ -201,15 +202,15 @@ info:
 # springcloud config support
 eureka: # eureka客户端注册
   client:
-    enabled: ${app.eureka.enabled:false}
+    enabled: false
     serviceUrl:
       defaultZone: http://eureka:eureka1234@127.0.0.1:10000/eureka/ # eureka服务端地址
 feign: # 断路器|监控 需配合注解使用*
   hystrix:
-    enabled: ${app.eureka.enabled:false}
+    enabled: false
 management:
   endpoints: # Actuator监控
-    enabled-by-default: ${app.monitor.enabled:false}
+    enabled-by-default: false
     web:
       base-path: /monitor # 监控主路径
       exposure: # 暴露的接口
@@ -227,6 +228,9 @@ management:
       enabled: false
     jms:
       enabled: false
+jmx: # jmx监控
+  host: 127.0.0.1
+  port: 1${server.port}
 fdfs: # fastDFS配置
   so-timeout: 3000
   connect_timeout: 3000
@@ -292,9 +296,6 @@ spring:
     simple: manage
 server:
   port: 8080
-app:
-  async:
-    enabled: true
 
 ##################### 后台管理端 生产 #####################
 ---
@@ -343,9 +344,6 @@ spring:
     simple: app
 server:
   port: 8082
-app:
-  cache:
-    enabled: true
 
 ##################### APP端 生产 #####################
 ---
@@ -374,19 +372,6 @@ server:
     session:
       cookie:
         name: JSAUID
-app:
-  eureka: # Eureka注册服务
-    enabled: false
-  monitor: # 监控端点
-    enabled: false
-  cache: # redis缓存支持
-    enabled: true
-  ssl: # 启用SSL
-    enabled: false
-rmi: # 启用rmi监控
-  enabled: false
-  host: 127.0.0.1
-  port: ${server.port}
 wx: # 微信公众号API
   appid: 111111
   token: qwertyuiopqwertyuiopqwertyuiopqw
@@ -411,8 +396,3 @@ security:
   oauth2:
     resource:
       user-info-uri: http://127.0.0.1:8090/authentication/user
-app:
-  eureka:
-    enabled: true
-  monitor:
-    enabled: true

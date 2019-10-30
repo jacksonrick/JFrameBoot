@@ -76,7 +76,7 @@ public class IndexController {
     public Page<Article> search(@RequestParam(value = "pageIndex", required = false, defaultValue = "0") int pageIndex,
                                 @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize,
                                 String title, String content) {
-        Pageable pageable = new PageRequest(pageIndex, pageSize);
+        Pageable pageable = PageRequest.of(pageIndex, pageSize);
         Page<Article> articles = articleService.search(title, content, pageable);
         return articles;
     }
@@ -94,7 +94,7 @@ public class IndexController {
     public Pagination<Article> searchAll(@RequestParam(value = "pageIndex", required = false, defaultValue = "0") int pageIndex,
                                          @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize,
                                          String keyword) {
-        Pageable pageable = new PageRequest(pageIndex, pageSize);
+        Pageable pageable = PageRequest.of(pageIndex, pageSize);
         Page<Article> articles = articleService.searchPinyin(keyword, pageable);
 
         return new Pagination<Article>(articles.getContent(), articles.getPageable().getOffset(), articles.getTotalPages());

@@ -44,7 +44,7 @@ public class WebSocketConfig extends AbstractSessionWebSocketMessageBrokerConfig
                 .setUserDestinationPrefix("/user") // subscribe前缀
                 .enableStompBrokerRelay("/exchange", "/topic", "/queue", "/amq/queue") // 处理所有消息将消息发送到外部的消息代理
                 .setRelayHost("dev") // mq地址
-                .setRelayPort(10004) // stomp端口
+                //.setRelayPort() // stomp端口,default:61613
                 .setVirtualHost("/rmq-ws") // 虚拟主机
                 .setClientLogin("rabbitmq") // 用户名密码
                 .setClientPasscode("12345678")
