@@ -23,6 +23,7 @@
         <module>actuator</module>
         <module>elasticsearch</module>
         <module>nacos-config</module>
+        <module>sharding-db</module>
     </modules>
 
 </project>

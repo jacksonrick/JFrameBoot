@@ -52,7 +52,6 @@ public class OauthSSO2Application extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated()
                 .and()
                 .logout().logoutUrl("/sso/logout");
-        super.configure(http);
     }
 
     public static void main(String[] args) {

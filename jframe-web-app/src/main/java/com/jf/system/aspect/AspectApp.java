@@ -21,9 +21,9 @@ import javax.servlet.http.HttpServletRequest;
  * Date: 2018-05-24
  * Time: 15:07
  */
-@Aspect
-@Component
-@Order(1)
+//@Aspect
+//@Component
+//@Order(1)
 public class AspectApp {
 
     private final static Logger log = LoggerFactory.getLogger(AspectApp.class);

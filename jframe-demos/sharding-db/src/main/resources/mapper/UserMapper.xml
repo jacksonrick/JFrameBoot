@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.jf.mapper.UserMapper">
+
+	<insert id="insert" parameterType="com.jf.model.User">
+		INSERT INTO t_user (id, username, address, age) VALUES (#{id}, #{username}, #{address}, #{age})
+	</insert>
+
+	<select id="findById" parameterType="int" resultType="com.jf.model.User">
+		 SELECT * FROM t_user WHERE id = #{id}
+	</select>
+
+	<update id="update" parameterType="com.jf.model.User">
+		UPDATE t_user SET username = #{username} WHERE id = #{id}
+	</update>
+
+</mapper>

@@ -1,5 +1,5 @@
 # JFrame
-##### JFrame - SpringBoot & Cloud Project `v5.7.3`
+##### JFrame - SpringBoot & Cloud Project `v5.7.4`
 made by @jackson-rick   <br>
 本架构是对技术框架的整合及开发的规范，适合多端项目和微服务
 
@@ -33,6 +33,11 @@ made by @jackson-rick   <br>
 
 
 ### 更新日志：
+* v5.7.4 `20191118`
+    * 1.新增ShardingJDBC组件
+    * 2.修复升级Springcloud版本导致的问题
+    * 3.优化及修复SSO服务端
+    * 4.整理各模块Maven依赖关系
 * v5.7.3 `20191030`
     * 1.SpringBoot升级到2.2
     * 2.优化配置文件

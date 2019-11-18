@@ -2,6 +2,7 @@ package com.jf.encrypt;
 
 import com.jf.exception.SysException;
 
+import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Random;
@@ -52,7 +53,7 @@ public class PasswordUtil {
     }
 
     /**
-     * 对密码进行MD5加密
+     * MD5算法
      *
      * @param origin 明文密码
      * @return
@@ -86,6 +87,40 @@ public class PasswordUtil {
         int d1 = n / 16;
         int d2 = n % 16;
         return hexDigits[d1] + hexDigits[d2];
+    }
+
+    /**
+     * SHA256算法
+     *
+     * @param origin
+     * @return
+     */
+    public static String SHA256Encode(String origin) {
+        MessageDigest messageDigest;
+        String encodestr = "";
+        try {
+            messageDigest = MessageDigest.getInstance("SHA-256");
+            messageDigest.update(origin.getBytes("UTF-8"));
+            encodestr = byte2Hex(messageDigest.digest());
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
+        }
+        return encodestr;
+    }
+
+    private static String byte2Hex(byte[] bytes) {
+        StringBuffer stringBuffer = new StringBuffer();
+        String temp = null;
+        for (int i = 0; i < bytes.length; i++) {
+            temp = Integer.toHexString(bytes[i] & 0xFF);
+            if (temp.length() == 1) {
+                stringBuffer.append("0");
+            }
+            stringBuffer.append(temp);
+        }
+        return stringBuffer.toString();
     }
 
 }

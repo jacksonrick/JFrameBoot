@@ -13,7 +13,7 @@ Req-Type: APP
 X-Requested-With: XMLHttpRequest
 
 ###
-POST {{host}}/app/login?phone=17755451874&password=5d24bbbe2fe58aba66827aa870004c791
+POST {{host}}/app/login?phone=17755451873&password=5d24bbbe2fe58aba66827aa870004c79
 Accept: */*
 Cache-Control: no-cache
 Req-Type: APP
@@ -33,5 +33,13 @@ Cache-Control: no-cache
 Req-Type: APP
 X-Requested-With: XMLHttpRequest
 token: eq2e2qe213e12ewq
+
+###
+GET {{host}}/app/test
+Accept: */*
+Cache-Control: no-cache
+Req-Type: APP
+X-Requested-With: XMLHttpRequest
+token: E5479FD1C2585C71DCA56EA561867BAE
 
 ###

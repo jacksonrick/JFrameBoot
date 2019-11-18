@@ -8,18 +8,7 @@ spring:
     name: CLOUD-SERVER
   freemarker:
     template-loader-path: classpath:/templates/
-    settings: # 数据格式设置
-      template_update_delay: 0
-      default_encoding: UTF-8
-      locale: zh_CN
-      url_escaping_charset: zh_CN
-      date_format: yyyy-MM-dd
-      time_format: HH:mm:ss
-      datetime_format: yyyy-MM-dd HH:mm:ss
-      number_format: 0.##
-      boolean_format: true,false
-      classic_compatible: true
-      whitespace_stripping: true
+    suffix: .ftl
   mvc:
     static-path-pattern: /static/**
   resources:

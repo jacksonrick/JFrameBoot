@@ -27,7 +27,6 @@ public class OAuthClientConfig extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests().antMatchers("/**").permitAll()
                 .anyRequest().authenticated();
-        super.configure(http);
     }
 
     @Bean

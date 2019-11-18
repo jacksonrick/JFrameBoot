@@ -1,0 +1,46 @@
+sharding:
+  jdbc:
+    datasource:
+      names: dbm,dbs # 多个数据源的名称
+      dbm: # 主库
+        type: com.alibaba.druid.pool.DruidDataSource # 使用Druid连接池
+        driverClassName: com.mysql.cj.jdbc.Driver
+        url: jdbc:mysql://localhost:3306/db_master?serverTimezone=UTC&characterEncoding=utf8&useUnicode=true&zeroDateTimeBehavior=convertToNull&useSSL=false&allowPublicKeyRetrieval=true
+        username: root
+        password: 12345678
+        maxPoolSize: 10
+      dbs: # 从库
+        type: com.alibaba.druid.pool.DruidDataSource
+        driverClassName: com.mysql.cj.jdbc.Driver
+        url: jdbc:mysql://localhost:3306/db_slaver?serverTimezone=UTC&characterEncoding=utf8&useUnicode=true&zeroDateTimeBehavior=convertToNull&useSSL=false&allowPublicKeyRetrieval=true
+        username: root
+        password: 12345678
+        maxPoolSize: 10
+    config: # *注意masterslave和sharding不能同时使用
+#      masterslave: # 配置读写分离
+#        load-balance-algorithm-type: round_robin # 配置从库选择策略，提供轮询与随机【random 随机 ；round_robin 轮询】
+#        name: dbs
+#        master-data-source-name: dbm # 主数据源名称
+#        slave-data-source-names: dbs # 从数据源名称，多个用逗号隔开
+      props:
+        sql:
+          show: true # 打印SQL
+      sharding: # 分表配置
+        tables:
+          t_user: # 对应数据库表名
+            actual-data-nodes: ds_0.t_user_$->{0..2} # 表示读取ds_0数据源的t_user_0,t_user_1,t_user_2
+            table-strategy: # 策略
+              standard:
+                sharding-column: id # 根据id来区分(id值必须存在)
+                precise-algorithm-class-name: com.jf.config.MyPreciseShardingAlgorithm # 配置数据分表的策略的类
+        master-slave-rules: # 配置主从库
+          ds_0:
+            load-balance-algorithm-type: round_robin
+            master-data-source-name: dbm
+            slave-data-source-names: dbs
+spring:
+  main:
+    allow-bean-definition-overriding: true # 由于shading-jdbc也会创建bean=Datasource，必须开启覆盖
+logging:
+  level:
+    com.jf.mapper: DEBUG

@@ -1,8 +1,10 @@
 package com.jf.config.provider;
 
-import com.jf.service.OUserDetailService;
 import com.jf.database.model.OUserExtDetail;
 import com.jf.database.model.UserDetail;
+import com.jf.service.OUserDetailService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -14,6 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;
+import java.util.LinkedHashMap;
 
 /**
  * Created with IntelliJ IDEA.
@@ -24,6 +27,8 @@ import java.util.Collection;
  */
 @Component
 public class OAuthAuthenticationProvider implements AuthenticationProvider {
+
+    private static Logger log = LoggerFactory.getLogger(OAuthAuthenticationProvider.class);
 
     @Autowired
     private OUserDetailService oUserDetailService;
@@ -39,10 +44,20 @@ public class OAuthAuthenticationProvider implements AuthenticationProvider {
      */
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-        // 验证码等校验
-        OUserExtDetail detail = (OUserExtDetail) authentication.getDetails();
-        if (!detail.getVerify().equalsIgnoreCase(detail.getVerifySession())) {
-            throw new BadCredentialsException("验证码错误");
+        // 获取认证信息
+        Object details = authentication.getDetails();
+        if (details instanceof OUserExtDetail) { // sso
+            log.info("sso login user: " + authentication.getName());
+            // 验证码等校验
+            OUserExtDetail detail = (OUserExtDetail) authentication.getDetails();
+            if (!detail.getVerify().equalsIgnoreCase(detail.getVerifySession())) {
+                throw new BadCredentialsException("验证码错误");
+            }
+        } else if (details instanceof LinkedHashMap) { // password
+            //LinkedHashMap detailMap = (LinkedHashMap) authentication.getDetails();
+            log.info("password login detail: " + authentication.getDetails());
+        } else {
+            throw new RuntimeException("未做处理的认证方式");
         }
 
         // 用户名密码校验

@@ -24,12 +24,14 @@ public class TestController {
     @GetMapping("/test1")
     public Object test1() {
         ResponseEntity<String> response = restTemplate.getForEntity("http://127.0.0.1:8010", null);
+        System.out.println(response);
         return response.getBody();
     }
 
     @GetMapping("/test2")
     public Object test2() {
         ResponseEntity<String> response = restTemplate.getForEntity("http://127.0.0.1:8010/monitor/a", null);
+        System.out.println(response);
         return response.getBody();
     }
 
@@ -47,6 +49,7 @@ public class TestController {
     public String test3() {
         try {
             ResponseEntity<String> response = oAuth2RestTemplate.exchange("http://127.0.0.1:8010/monitor/a", HttpMethod.GET, null, String.class);
+            System.out.println(response);
             return response.getBody();
         } catch (Exception e) {
             System.out.println(e.getMessage());
