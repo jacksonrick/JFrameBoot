@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.jf</groupId>
     <artifactId>jframe</artifactId>
-    <version>5.0</version>
+    <version>5.1</version>
     <packaging>pom</packaging>
     <description>JFramework</description>
 
@@ -15,8 +15,10 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
 
+        <utils.version>3.3.1</utils.version>
         <spring-boot.version>2.2.0.RELEASE</spring-boot.version>
         <spring-cloud.version>Greenwich.SR2</spring-cloud.version> <!-- 2.1.2.RELEASE -->
+        <spring.core.version>5.2.0.RELEASE</spring.core.version>
         <mybatis.version>1.3.1</mybatis.version>
         <druid.version>1.1.9</druid.version>
         <mysql.version>8.0.18</mysql.version>
@@ -25,7 +27,7 @@
 
         <slf4j.version>1.7.25</slf4j.version>
         <log4j.version>1.2.17</log4j.version>
-        <jackson.version>2.9.9</jackson.version>
+        <jackson.version>2.9.10.1</jackson.version>
         <freemarker.version>2.3.28</freemarker.version>
         <poi.version>3.17</poi.version>
         <itextpdf.version>5.5.9</itextpdf.version>
@@ -34,6 +36,8 @@
         <dom4j.version>1.6.1</dom4j.version>
         <xstream.version>1.4.8</xstream.version>
         <mail.version>1.4.7</mail.version>
+        <httpclient.version>4.5.2</httpclient.version>
+        <httpcore.version>4.4.3</httpcore.version>
         <qrcode.version>3.3.1</qrcode.version>
         <aliyunecs.version>4.4.2</aliyunecs.version>
         <aliyunecs.oss>3.4.2</aliyunecs.oss>
@@ -93,21 +97,11 @@
     </repositories>-->
 
     <!-- local repos server:nexus [pom.xml] -->
-    <!--<distributionManagement>
+    <distributionManagement>
         <repository>
             <id>nexus</id>
             <name>Releases</name>
-            <url>http://192.168.1.112:8081/repository/maven-public/</url>
+            <url>http://maven.zy.cn/repository/maven-releases/</url>
         </repository>
-    </distributionManagement>-->
-
-    <!-- aliyun nexus [maven/conf/setting.xml] -->
-    <!--
-        <mirror>
-            <id>alimaven</id>
-            <name>aliyun maven</name>
-            <url>http://maven.aliyun.com/nexus/content/groups/public/</url>
-            <mirrorOf>central</mirrorOf>
-        </mirror>
-    -->
+    </distributionManagement>
 </project>

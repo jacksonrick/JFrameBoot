@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <groupId>com.jf</groupId>
+        <artifactId>jframe</artifactId>
+        <version>5.0</version>
+    </parent>
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.jf</groupId>
     <artifactId>jframe-utils</artifactId>
     <name>jframe-utils</name>
-    <version>3.3</version>
+    <version>3.3.1</version>
     <packaging>jar</packaging>
 
     <build>
@@ -21,8 +25,8 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
                 </configuration>
             </plugin>
             <plugin>
@@ -41,29 +45,6 @@
             </plugin>
         </plugins>
     </build>
-
-    <properties>
-        <spring.core.version>5.1.2.RELEASE</spring.core.version>
-        <mysql.version>8.0.18</mysql.version>
-        <postgresql.version>42.2.2</postgresql.version>
-        <servlet.version>3.1.0</servlet.version>
-        <slf4j.version>1.7.25</slf4j.version>
-        <log4j.version>1.2.17</log4j.version>
-        <jackson.version>2.9.10.1</jackson.version>
-        <freemarker.version>2.3.28</freemarker.version>
-        <poi.version>3.17</poi.version>
-        <itextpdf.version>5.5.9</itextpdf.version>
-        <httpclient.version>4.5.2</httpclient.version>
-        <httpcore.version>4.4.3</httpcore.version>
-        <itextasian.version>5.2.0</itextasian.version>
-        <jdom.version>1.1</jdom.version>
-        <dom4j.version>1.6.1</dom4j.version>
-        <xstream.version>1.4.8</xstream.version>
-        <mail.version>1.4.7</mail.version>
-        <qrcode.version>3.3.1</qrcode.version>
-        <aliyunecs.version>4.4.2</aliyunecs.version>
-        <aliyunecs.oss>3.4.2</aliyunecs.oss>
-    </properties>
 
     <!-- provided | test | compile -->
     <!-- 以下为外部提供 -->

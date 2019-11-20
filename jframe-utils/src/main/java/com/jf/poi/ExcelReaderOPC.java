@@ -133,7 +133,9 @@ public class ExcelReaderOPC {
                     datas.add(data);
                 }
             } else {
-                headers.add(formattedValue);
+                if (includeHeader) {
+                    headers.add(formattedValue);
+                }
             }
         }
 
