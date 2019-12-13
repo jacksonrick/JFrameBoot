@@ -6,7 +6,7 @@
     <parent>
         <groupId>com.jf</groupId>
         <artifactId>jframe-srvs</artifactId>
-        <version>0.0.1</version>
+        <version>FINAL</version>
     </parent>
 
     <artifactId>jframe-srv-order</artifactId>

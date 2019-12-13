@@ -6,7 +6,7 @@
     <parent>
         <groupId>com.jf</groupId>
         <artifactId>jframe</artifactId>
-        <version>5.0</version>
+        <version>5.1</version>
     </parent>
 
     <artifactId>jframe-core</artifactId>
@@ -48,7 +48,6 @@
         <dependency>
             <groupId>org.mybatis.spring.boot</groupId>
             <artifactId>mybatis-spring-boot-starter</artifactId>
-            <version>${mybatis.version}</version>
         </dependency>
         <!-- aop -->
         <dependency>
@@ -64,13 +63,11 @@
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>druid-spring-boot-starter</artifactId>
-            <version>${druid.version}</version>
         </dependency>
         <!-- mysql -->
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-            <version>${mysql.version}</version>
         </dependency>
         <!-- freemarker -->
         <dependency>
@@ -82,14 +79,12 @@
         <!--<dependency>
             <groupId>net.logstash.logback</groupId>
             <artifactId>logstash-logback-encoder</artifactId>
-            <version>6.1</version>
         </dependency>-->
 
         <!-- utils -->
         <dependency>
             <groupId>com.jf</groupId>
             <artifactId>jframe-utils</artifactId>
-            <version>${utils.version}</version>
         </dependency>
     </dependencies>
 

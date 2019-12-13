@@ -33,8 +33,10 @@ made by @jackson-rick   <br>
 
 
 ### 更新日志：
-* v5.7.5 ``
+* v5.7.5 `20191213`
     * 1.支持发布到maven私服
+    * 2.优化maven dependencyManagement
+    * 3.MyBatis Generate更新
 * v5.7.4 `20191118`
     * 1.新增ShardingJDBC组件
     * 2.修复升级Springcloud版本导致的问题

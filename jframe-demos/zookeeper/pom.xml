@@ -10,8 +10,8 @@
 
 	<parent>
 		<groupId>com.jf</groupId>
-		<artifactId>jframe</artifactId>
-		<version>5.0</version>
+		<artifactId>jframe-demos</artifactId>
+		<version>FINAL</version>
 	</parent>
 
 	<dependencies>

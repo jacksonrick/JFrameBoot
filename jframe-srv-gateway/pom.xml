@@ -6,11 +6,11 @@
     <parent>
         <groupId>com.jf</groupId>
         <artifactId>jframe</artifactId>
-        <version>5.0</version>
+        <version>5.1</version>
     </parent>
 
     <artifactId>jframe-srv-gateway</artifactId>
-    <version>1.0</version>
+    <version>FINAL</version>
     <packaging>pom</packaging>
 
     <modules>

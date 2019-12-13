@@ -6,7 +6,7 @@
     <parent>
         <groupId>com.jf</groupId>
         <artifactId>jframe</artifactId>
-        <version>5.0</version>
+        <version>5.1</version>
     </parent>
 
     <artifactId>jframe-web-app</artifactId>
@@ -25,7 +25,6 @@
         <dependency>
             <groupId>com.alipay.sdk</groupId>
             <artifactId>alipay-sdk-java</artifactId>
-            <version>3.6.0.ALL</version>
         </dependency>
     </dependencies>
 

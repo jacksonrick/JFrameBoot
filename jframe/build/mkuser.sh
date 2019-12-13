@@ -74,7 +74,7 @@ if [ "$USER_TYPE" == 'sftp' ];then
 		printf "
 Subsystem       sftp    internal-sftp
 Match Group sftp
-ChrootDirectory /home/data/sftp/%u
+ChrootDirectory $FTP_PATH/%u
 ForceCommand    internal-sftp
 AllowTcpForwarding no
 X11Forwarding no

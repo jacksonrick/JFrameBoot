@@ -6,7 +6,7 @@
     <artifactId>jframe</artifactId>
     <version>5.1</version>
     <packaging>pom</packaging>
-    <description>JFramework</description>
+    <description>An opensource Java Framework</description>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -14,6 +14,7 @@
         <java.version>1.8</java.version>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
+        <maven.test.skip>true</maven.test.skip>
 
         <utils.version>3.3.1</utils.version>
         <spring-boot.version>2.2.0.RELEASE</spring-boot.version>
@@ -53,6 +54,7 @@
     </parent>-->
 
     <dependencyManagement>
+        <!-- springboot & springcloud -->
         <dependencies>
             <dependency>
                 <groupId>org.springframework.boot</groupId>
@@ -67,6 +69,53 @@
                 <version>${spring-cloud.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
+            </dependency>
+
+            <!-- project dependency -->
+            <dependency>
+                <groupId>com.jf</groupId>
+                <artifactId>jframe-utils</artifactId>
+                <version>${utils.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mybatis.spring.boot</groupId>
+                <artifactId>mybatis-spring-boot-starter</artifactId>
+                <version>${mybatis.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>druid-spring-boot-starter</artifactId>
+                <version>${druid.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>mysql</groupId>
+                <artifactId>mysql-connector-java</artifactId>
+                <version>${mysql.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>net.logstash.logback</groupId>
+                <artifactId>logstash-logback-encoder</artifactId>
+                <version>6.1</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
+                <version>0.2.0.RELEASE</version>
+            </dependency>
+            <dependency>
+                <groupId>com.marcosbarbero.cloud</groupId>
+                <artifactId>spring-cloud-zuul-ratelimit</artifactId>
+                <version>1.5.0.RELEASE</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.zookeeper</groupId>
+                <artifactId>zookeeper</artifactId>
+                <version>${zookeeper.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.alipay.sdk</groupId>
+                <artifactId>alipay-sdk-java</artifactId>
+                <version>3.6.0.ALL</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

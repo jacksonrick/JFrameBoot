@@ -4,8 +4,8 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.jf</groupId>
-        <artifactId>jframe</artifactId>
-        <version>5.0</version>
+        <artifactId>jframe-demos</artifactId>
+        <version>FINAL</version>
     </parent>
 
     <artifactId>actuator</artifactId>
@@ -13,13 +13,6 @@
     <packaging>jar</packaging>
     <name>actuator</name>
     <description>Test project for Actuator</description>
-
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <java.version>1.8</java.version>
-        <project.name>actuator</project.name>
-    </properties>
 
     <dependencies>
         <dependency>

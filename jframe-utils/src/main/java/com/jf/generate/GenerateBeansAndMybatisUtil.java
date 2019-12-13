@@ -15,36 +15,38 @@ import java.util.*;
  * 对于mybatis xml还需进一步修改使用，实体类可直接使用<br>
  * 适用数据库：MySQL、Postgres
  *
- * @version 4.2
+ * @version 4.3
  */
 public class GenerateBeansAndMybatisUtil {
 
     /***************************************
      * 注意数据库表名称，如：t_user、t_user_info
-     * 类型应如：int、tinyint、decimal、text、char、varchar、datetime
+     * 类型如：int、tinyint、decimal、text、char、varchar、datetime
      *************************************/
 
-    private static String type_char = "char"; // like char/varchar
+    static final Map<String, String> TYPES = new HashMap<>();
 
-    private static String type_date = "date";
-
-    private static String type_timestamp = "timestamp";
-
-    private static String type_int = "int"; // like int/tinyint
-
-    private static String type_bigint = "bigint";
-
-    private static String type_text = "text";
-
-    private static String type_decimal = "decimal";
-
-    private static String type_double = "double";
-
-    private static String type_numeric = "numeric";
-
-    private static String type_bit = "bit";
-
-    private static String type_blob = "blob";
+    static {
+        TYPES.put("char", "String");
+        TYPES.put("varchar", "String");
+        TYPES.put("text", "String");
+        TYPES.put("jsonb", "String");
+        TYPES.put("date", "Date");
+        TYPES.put("datetime", "Date");
+        TYPES.put("timestamp", "Date");
+        TYPES.put("tinyint", "Integer");
+        TYPES.put("int", "Integer");
+        TYPES.put("int2", "Integer");
+        TYPES.put("int4", "Integer");
+        TYPES.put("int8", "Long");
+        TYPES.put("bigint", "Long");
+        TYPES.put("decimal", "Double");
+        TYPES.put("double", "Double");
+        TYPES.put("numeric", "Double");
+        TYPES.put("bit", "Boolean");
+        TYPES.put("bool", "Boolean");
+        TYPES.put("blob", "byte[]");
+    }
 
     // 输出路径
     private static String bean_path = null;
@@ -147,7 +149,7 @@ public class GenerateBeansAndMybatisUtil {
         if (dbType == 1) {
             sql = "SHOW TABLE STATUS";
         } else if (dbType == 2) {
-            sql = "SELECT C.relname AS NAME, CAST ( obj_description ( C.relfilenode, 'pg_class' ) AS VARCHAR ) AS COMMENT \n" +
+            sql = "SELECT C.relname AS NAME, obj_description ( C.oid ) AS COMMENT \n" +
                     "FROM pg_class C, pg_tables T WHERE T.schemaname = '" + schema + "' AND C.relname = T.tablename AND relkind = 'r'";
         }
         Map<String, String> maps = new HashMap<String, String>();
@@ -171,30 +173,11 @@ public class GenerateBeansAndMybatisUtil {
      * @date 2016年8月10日 上午8:54:55
      */
     private String processType(String type) {
-        if (type.indexOf(type_char) > -1) {
+        String s = TYPES.get(type);
+        if (s == null) {
             return "String";
-        } else if (type.indexOf(type_text) > -1) {
-            return "String";
-        } else if (type.indexOf(type_bigint) > -1) {
-            return "Long";
-        } else if (type.indexOf(type_decimal) > -1) {
-            return "Double";
-        } else if (type.indexOf(type_double) > -1) {
-            return "Double";
-        } else if (type.indexOf(type_numeric) > -1) {
-            return "Double";
-        } else if (type.indexOf(type_int) > -1) {
-            return "Integer";
-        } else if (type.indexOf(type_date) > -1) {
-            return "Date";
-        } else if (type.indexOf(type_timestamp) > -1) {
-            return "Date";
-        } else if (type.indexOf(type_bit) > -1) {
-            return "Boolean";
-        } else if (type.indexOf(type_blob) > -1) {
-            return "byte[]";
         }
-        return "String";
+        return s;
     }
 
     /**

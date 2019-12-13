@@ -4,8 +4,8 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.jf</groupId>
-        <artifactId>jframe</artifactId>
-        <version>5.0</version>
+        <artifactId>jframe-demos</artifactId>
+        <version>FINAL</version>
     </parent>
 
     <artifactId>base-test</artifactId>
