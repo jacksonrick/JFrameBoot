@@ -42,7 +42,7 @@
         <qrcode.version>3.3.1</qrcode.version>
         <aliyunecs.version>4.4.2</aliyunecs.version>
         <aliyunecs.oss>3.4.2</aliyunecs.oss>
-        <zookeeper.version>3.4.13</zookeeper.version>
+        <zookeeper.version>3.4.14</zookeeper.version>
         <dubbo.version>2.7.0</dubbo.version>
     </properties>
 
