@@ -428,14 +428,12 @@ public class DateUtil {
         StringBuffer sb = new StringBuffer("");
         if (day > 0)
             sb.append(day + "天");
-        else if (hour > 0)
+        if (hour > 0)
             sb.append(hour + "小时");
-        else if (min > 0)
+        if (min > 0)
             sb.append(min + "分钟");
-        else if (s > 0)
+        if (s > 0)
             sb.append(s + "秒");
-        else
-            sb.append("0秒");
         sb.append("前");
         return sb.toString();
     }

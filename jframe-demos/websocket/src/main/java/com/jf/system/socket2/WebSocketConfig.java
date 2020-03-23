@@ -5,18 +5,18 @@ import com.jf.model.User;
 import com.jf.system.IConstant;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.MessageHeaders;
+import org.springframework.messaging.MessagingException;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.config.ChannelRegistration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.messaging.support.ChannelInterceptorAdapter;
 import org.springframework.messaging.support.MessageHeaderAccessor;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
 import org.springframework.web.socket.config.annotation.WebSocketTransportRegistration;
@@ -42,10 +42,14 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
      */
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
+        ThreadPoolTaskScheduler tp = new ThreadPoolTaskScheduler();
+        tp.setPoolSize(1);
+        tp.setThreadNamePrefix("ws-heartbeat-thread-");
+        tp.initialize();
         registry.setApplicationDestinationPrefixes("/ws") // 客户端发送地址的前缀，如ws/send
                 .setUserDestinationPrefix("/topic") // 客户端订阅地址的前缀 subscribe("/topic/chat")
                 .enableSimpleBroker("/chat") // 客户端订阅地址(后缀),可以设置多个 "/chat1,/chat2"
-        //.setHeartbeatValue(new long[]{60000, 60000}) // 心跳60s default10s[TaskScheduler]
+                .setHeartbeatValue(new long[]{60000, 60000}).setTaskScheduler(tp) // 心跳60s default10s
         ;
     }
 
@@ -79,9 +83,13 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
                     if (list != null && list.size() > 0) {
                         Object uid = list.get(0);
                         log.info("###### Login UID: " + uid);
+                        String uidStr = String.valueOf(uid);
+                        if ("null".equals(uidStr)) {
+                            throw new MessagingException("Token异常");
+                        }
                         List names = raw.get(IConstant.UNAME);
                         StompHeaderAccessor accessor = MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
-                        accessor.setUser(new SocketPrincipal(new User(String.valueOf(uid), String.valueOf(names.get(0)))));
+                        accessor.setUser(new SocketPrincipal(new User(uidStr, String.valueOf(names.get(0)))));
                     }
                 }
                 return super.preSend(message, channel);

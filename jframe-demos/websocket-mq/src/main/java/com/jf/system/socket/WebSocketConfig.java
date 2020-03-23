@@ -19,8 +19,7 @@ import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
- * Description: Spring WebSocket配置
- * <p>后端:spring socket,redis session；前端:stomp.js</p>
+ * Description: Spring WebSocket RabbitMQ配置
  * User: xujunfei
  * Date: 2018-01-09
  * Time: 14:40

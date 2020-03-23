@@ -4,13 +4,9 @@ import com.jf.convert.Convert;
 import com.jf.date.DateUtil;
 import com.jf.exception.SysException;
 import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.tools.zip.ZipEntry;
-import org.apache.tools.zip.ZipFile;
 
 import java.io.*;
 import java.util.*;
-import java.util.zip.GZIPInputStream;
-import java.util.zip.GZIPOutputStream;
 
 /**
  * 文件处理工具类
@@ -184,108 +180,6 @@ public class FileUtil {
             return Convert.doubleFormat(Double.parseDouble(String.format("%.1f", (float) size / gb)));
         } else
             return 0;
-    }
-
-    /**
-     * 解压文件
-     *
-     * @param srcFile
-     * @param desFile
-     */
-    public static void unzip(File srcFile, File desFile) {
-        FileInputStream is;
-        FileOutputStream os;
-        InputStream gzis;
-        final int MAX_BYTE = 1024 * 1000;
-        int len = 0;
-        byte[] b = new byte[MAX_BYTE];
-        try {
-            is = new FileInputStream(srcFile);
-            os = new FileOutputStream(desFile);
-            try {
-                gzis = new GZIPInputStream(is);
-                while ((len = gzis.read(b)) != -1)
-                    os.write(b, 0, len);
-                os.flush();
-                gzis.close();
-                os.close();
-                is.close();
-            } catch (IOException e) {
-                throw new SysException(e.getMessage(), e);
-            }
-        } catch (FileNotFoundException e) {
-            throw new SysException(e.getMessage(), e);
-        }
-    }
-
-    /**
-     * 压缩文件
-     *
-     * @param srcFile
-     * @param desFile
-     */
-    public static void zip(File srcFile, File desFile) {
-        FileInputStream fis;
-        FileOutputStream fos;
-        GZIPOutputStream gzos;
-
-        final int MAX_BYTE = 1024 * 1000;
-        int len = 0;
-        byte[] b = new byte[MAX_BYTE];
-        try {
-            fis = new FileInputStream(srcFile);
-            fos = new FileOutputStream(desFile);
-            gzos = new GZIPOutputStream(fos);
-            while ((len = fis.read(b)) != -1)
-                gzos.write(b, 0, len);
-            gzos.flush();
-            gzos.close();
-            fos.close();
-            fis.close();
-        } catch (IOException e) {
-            throw new SysException(e.getMessage(), e);
-        }
-    }
-
-    /**
-     * 解压文件到指定目录[ant]
-     *
-     * @param zipFile
-     * @param descDir
-     */
-    @SuppressWarnings("rawtypes")
-    public static void unZipFiles(File zipFile, String descDir) throws IOException {
-        File pathFile = new File(descDir);
-        if (!pathFile.exists()) {
-            pathFile.mkdirs();
-        }
-        ZipFile zip = new ZipFile(zipFile, "GBK");
-        for (Enumeration entries = zip.getEntries(); entries.hasMoreElements(); ) {
-            ZipEntry entry = (ZipEntry) entries.nextElement();
-            String zipEntryName = entry.getName();
-            InputStream in = zip.getInputStream(entry);
-            String outPath = (descDir + "/" + zipEntryName).replaceAll("\\\\", "/");
-            // 判断路径是否存在,不存在则创建文件路径
-            File file = new File(outPath.substring(0, outPath.lastIndexOf('/')));
-            if (!file.exists()) {
-                file.mkdirs();
-            }
-            // 判断文件全路径是否为文件夹,如果是上面已经上传,不需要解压
-            if (new File(outPath).isDirectory()) {
-                continue;
-            }
-            // 输出文件路径信息
-            // System.out.println(outPath);
-
-            OutputStream out = new FileOutputStream(outPath);
-            byte[] buf1 = new byte[1024];
-            int len;
-            while ((len = in.read(buf1)) > 0) {
-                out.write(buf1, 0, len);
-            }
-            in.close();
-            out.close();
-        }
     }
 
     /**

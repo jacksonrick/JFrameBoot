@@ -11,8 +11,8 @@ import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.simp.config.ChannelRegistration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
-import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.messaging.support.ChannelInterceptorAdapter;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.session.web.socket.config.annotation.AbstractSessionWebSocketMessageBrokerConfigurer;
 import org.springframework.web.socket.WebSocketHandler;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
@@ -43,10 +43,14 @@ public class WebSocketConfig extends AbstractSessionWebSocketMessageBrokerConfig
      */
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
+        ThreadPoolTaskScheduler tp = new ThreadPoolTaskScheduler();
+        tp.setPoolSize(1);
+        tp.setThreadNamePrefix("ws-heartbeat-thread-");
+        tp.initialize();
         registry.setApplicationDestinationPrefixes("/ws") // 客户端发送地址的前缀，如ws/send
                 .setUserDestinationPrefix("/topic") // 客户端订阅地址的前缀 subscribe("/topic/chat")
                 .enableSimpleBroker("/chat") // 客户端订阅地址(后缀),可以设置多个 "/chat1,/chat2"
-        //.setHeartbeatValue(new long[]{60000, 60000}) // 心跳60s default10s[TaskScheduler]
+                .setHeartbeatValue(new long[]{60000, 60000}).setTaskScheduler(tp) // 心跳60s default10s
         ;
     }
 

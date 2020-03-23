@@ -173,6 +173,9 @@ public class GenerateBeansAndMybatisUtil {
      * @date 2016年8月10日 上午8:54:55
      */
     private String processType(String type) {
+        if (type.contains("(")) {
+            type = type.substring(0, type.indexOf('('));
+        }
         String s = TYPES.get(type);
         if (s == null) {
             return "String";

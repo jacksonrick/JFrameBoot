@@ -97,7 +97,6 @@
         </appender>
 
         <root level="INFO">
-            <appender-ref ref="console"/>
             <appender-ref ref="syslog"/>
             <appender-ref ref="errorlog"/>
         </root>

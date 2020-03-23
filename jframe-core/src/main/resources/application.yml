@@ -74,8 +74,8 @@ spring:
       template_exception_handler: ignore
   datasource:
     druid: # Druid数据源配置
-      driver-class-name: com.mysql.cj.jdbc.Driver # mysql8新版的驱动类名
-      url: jdbc:mysql://localhost:3306/jframe?serverTimezone=UTC&characterEncoding=utf8&useUnicode=true&zeroDateTimeBehavior=convertToNull&useSSL=false&allowPublicKeyRetrieval=true
+      driver-class-name: com.mysql.jdbc.Driver
+      url: jdbc:mysql://localhost:3306/jframe?serverTimezone=UTC&characterEncoding=utf8&useUnicode=true&zeroDateTimeBehavior=convertToNull&useSSL=false
       username: root
       password: 12345678
       initial-size: 5 # 初始化时建立物理连接的个数。初始化发生在显示调用init方法，或者第一次getConnection时
