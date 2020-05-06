@@ -40,7 +40,7 @@ import java.util.*;
  */
 public class HttpUtils {
 
-    private static Logger log = LoggerFactory.getLogger(HttpUtil.class);
+    private static final Logger log = LoggerFactory.getLogger(HttpUtil.class);
 
     private static RequestConfig requestConfig = null;
 
@@ -278,10 +278,8 @@ public class HttpUtils {
         }
     }
 
-    // 以下为DEMO，请勿直接使用
-
     /**
-     * 登陆
+     * 登陆保持会话
      * <p>
      * // 创建http上下文
      * HttpClientContext httpClientContext = HttpClientContext.create();
@@ -291,7 +289,7 @@ public class HttpUtils {
      * @param headers
      * @param params
      * @param httpClientContext
-     * @return
+     * @return 包含cookie对象
      */
     public static CloseableHttpClient login(String loginUrl, Map<String, String> headers, Map<String, String> params,
                                             HttpClientContext httpClientContext) throws Exception {
@@ -305,19 +303,23 @@ public class HttpUtils {
         CloseableHttpClient httpClient = HttpClients.custom().setSSLSocketFactory(sslsf).build();
 
         HttpPost httpPost = doPostObj(loginUrl, headers, params);
-        CloseableHttpResponse response = httpClient.execute(httpPost, httpClientContext);
-        String responseStr = EntityUtils.toString(response.getEntity(), "UTF-8");
-        log.info("登陆返回: " + responseStr);
-        response.close();
+        try (CloseableHttpResponse response = httpClient.execute(httpPost, httpClientContext);) {
+            int code = response.getStatusLine().getStatusCode();
+            if (code == 200 || code == 302) {
+                String responseStr = EntityUtils.toString(response.getEntity(), "UTF-8");
+                log.info("登陆成功，返回: " + responseStr);
+            } else {
+                throw new SysException("登陆失败，状态码：" + code);
+            }
+        }
         return httpClient;
     }
 
     /**
-     * 从网络上下载文件
+     * 下载文件
      *
      * @param downUrl
      * @param filepath
-     * @param filename
      */
     public static void downloadFile(String downUrl, String filepath) {
         CloseableHttpClient httpClient = HttpClients.createDefault();
@@ -327,6 +329,8 @@ public class HttpUtils {
     }
 
     /**
+     * 下载文件
+     *
      * @param downUrl
      * @param filepath
      * @param httpClient
@@ -340,15 +344,19 @@ public class HttpUtils {
         try {
             HttpGet httpGet = doGetObj(downUrl, null, null);
             httpResponse = httpClient.execute(httpGet, httpClientContext);
-            inputStream = httpResponse.getEntity().getContent();
-            inputStream = new BufferedInputStream(inputStream);
-            outputStream = new BufferedOutputStream(new FileOutputStream(filepath));
-            int byteCount = 0;
-            //int filesize = 0;
-            byte[] bytes = new byte[4096];
-            while ((byteCount = inputStream.read(bytes)) != -1) {
-                //filesize += byteCount;
-                outputStream.write(bytes, 0, byteCount);
+            if (httpResponse.getStatusLine().getStatusCode() == 200) {
+                inputStream = httpResponse.getEntity().getContent();
+                inputStream = new BufferedInputStream(inputStream);
+                outputStream = new BufferedOutputStream(new FileOutputStream(filepath));
+                int byteCount = 0;
+                //int filesize = 0;
+                byte[] bytes = new byte[4096];
+                while ((byteCount = inputStream.read(bytes)) != -1) {
+                    //filesize += byteCount;
+                    outputStream.write(bytes, 0, byteCount);
+                }
+            } else {
+                log.error("文件：" + filepath + "下载失败，状态码：" + httpResponse.getStatusLine().getStatusCode());
             }
         } catch (Exception e) {
             log.error("文件：" + filepath + "下载失败", e);
@@ -374,42 +382,56 @@ public class HttpUtils {
     /**
      * 上传文件
      *
-     * @param server
+     * @param uri
      * @param localPath
-     * @param extra
-     * @param httpClient
-     * @param httpClientContext
+     * @param params
      */
-    private void uploadFile(String server, String localPath, String extra,
-                            CloseableHttpClient httpClient, HttpClientContext httpClientContext) {
+    public static String uploadFile(String uri, String localPath, Map<String, String> params) {
+        CloseableHttpClient httpClient = HttpClients.createDefault();
+        HttpClientContext httpClientContext = HttpClientContext.create();
+
+        return uploadFile(uri, localPath, params, httpClient, httpClientContext);
+    }
+
+    /**
+     * 上传文件
+     *
+     * @param uri
+     * @param localPath
+     * @param params
+     * @param httpClient
+     * @param httpClientContext 含有Cookie对象
+     */
+    public static String uploadFile(String uri, String localPath, Map<String, String> params,
+                                    CloseableHttpClient httpClient, HttpClientContext httpClientContext) {
         CloseableHttpResponse httpResponse = null;
         try {
             File file = new File(localPath);
             if (!file.exists()) {
                 throw new SysException("文件不存在：" + localPath);
             }
-            HttpPost httpPost = new HttpPost(server);
+            HttpPost httpPost = new HttpPost(uri);
             MultipartEntityBuilder multipartEntityBuilder = MultipartEntityBuilder.create();
-            ContentType contentType = ContentType.create(HTTP.PLAIN_TEXT_TYPE, HTTP.UTF_8); // 中文乱码问题
             multipartEntityBuilder.addBinaryBody("file", file);
-            multipartEntityBuilder.addTextBody("extra", extra, contentType);
+            if (params != null) {
+                ContentType contentType = ContentType.create(HTTP.PLAIN_TEXT_TYPE, HTTP.UTF_8); // 中文乱码问题
+                params.forEach((k, v) -> {
+                    multipartEntityBuilder.addTextBody(k, v, contentType);
+                });
+            }
             HttpEntity httpEntity = multipartEntityBuilder.build();
             httpPost.setEntity(httpEntity);
 
             httpResponse = httpClient.execute(httpPost);
             HttpEntity responseEntity = httpResponse.getEntity();
             if (httpResponse.getStatusLine().getStatusCode() == 200) {
-                String content = EntityUtils.toString(httpResponse.getEntity(), "UTF-8");
-                if ("success".equals(content)) {
-                    log.info("上传成功");
-                } else {
-                    log.info("上传失败：" + content);
-                }
+                String response = EntityUtils.toString(httpResponse.getEntity(), "UTF-8");
+                return response;
             } else {
-                log.info("上传失败");
+                log.error("上传失败");
             }
         } catch (IOException e) {
-            log.info("上传失败", e);
+            log.error("上传失败", e);
         } finally {
             try {
                 if (httpResponse != null) {
@@ -419,6 +441,7 @@ public class HttpUtils {
             } catch (Exception e) {
             }
         }
+        return null;
     }
 
 }

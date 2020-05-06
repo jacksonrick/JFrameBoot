@@ -353,4 +353,5 @@ made by @jackson-rick   <br>
 * 数据库脚本：`jframe/doc/mysql/database.sql`
 * 操作手册说明：`jframe/doc/框架使用手册.docx`
 * 默认为MySQL数据库，如使用Postgresql，将数据库脚本替换为`jframe/doc/postgresql/public.sql`
-* jframe-web-test模块代码仅供参考
+* jframe-demos模块代码仅供参考
+* 本框架不能直接用于生产环境，需要根据业务做一定量调整

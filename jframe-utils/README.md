@@ -8,3 +8,7 @@ made by @jackson-rick   <br>
 * v3.2 `20190918`
     * 更新HttpUtils
     * 优化代码规范
+* v3.3.3 `20200506`
+    * 优化HttpUtils
+    * 优化时间DateUtil
+    * 优化代码生成类

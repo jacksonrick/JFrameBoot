@@ -640,11 +640,10 @@ public class GenerateBeansAndMybatisUtil {
         // ----------定义Mapper中的方法Begin----------
         String type = idInt ? "Integer" : "Long";
         bw.write("\tList<" + beanName + "> findByCondition(BaseVo baseVo);\n\n");
-        bw.write("\tint findCountByCondition(BaseVo baseVo);\n\n");
         bw.write("\t" + beanName + " findById(" + type + " id);\n\n");
         bw.write("\t" + beanName + " findSimpleById(" + type + " id);\n\n");
-        bw.write("\tObject findFieldById(@Param(\"id\") " + type + " id, @Param(\"field\") String field);\n\n");
         bw.write("\t" + "int insert(" + beanName + " bean);\n\n");
+        bw.write("\t" + "int insertSelective(" + beanName + " bean);\n\n");
         bw.write("\t" + "int insertBatch(List<" + beanName + "> list);\n\n");
         bw.write("\t" + "int update(" + beanName + " bean);\n\n");
         bw.write("\t" + "int delete(" + type + " id);\n\n");
@@ -694,6 +693,16 @@ public class GenerateBeansAndMybatisUtil {
         bw.write("\t<sql id=\"baseCondition\">\n");
         bw.write("\t\t<where>\n");
         bw.write("\t\t\t<include refid=\"COMMON.DATE\"><property name=\"column\" value=\"create_time\"/></include>\n");
+        for (int i = 1; i < size; i++) {
+            String tempField = processField(columns.get(i));
+            if ("String".equals(processType(types.get(i)))) {
+                bw.write("\t\t\t<if test=\"" + tempField + " != null and " + tempField + " != ''\">");
+            } else {
+                bw.write("\t\t\t<if test=\"" + tempField + " != null\">");
+            }
+            bw.write("AND " + columns.get(i) + " = #{" + tempField + "}");
+            bw.write("</if>\n");
+        }
         bw.write("\t\t</where>\n");
         bw.write("\t</sql>\n\n");
 
@@ -731,12 +740,6 @@ public class GenerateBeansAndMybatisUtil {
         bw.write("\t\t<include refid=\"COMMON.ORDER\"/>\n");
         bw.write("\t</select>\n\n");
 
-        // 条件查询总数-findBeanCountByCondition
-        bw.write("\t<select id=\"findCountByCondition\" resultType=\"int\" parameterType=\"baseVo\">\n");
-        bw.write("\t\tSELECT COUNT(1) \n\t\tFROM " + tableName + "\n");
-        bw.write("\t\t<include refid=\"baseCondition\"/>\n");
-        bw.write("\t</select>\n\n");
-
         // 通过id查询
         bw.write("\t<select id=\"findById\" resultMap=\"baseResultMap\" parameterType=\"" + type + "\">\n");
         bw.write("\t\tSELECT <include refid=\"allColumn\"/> \n\t\tFROM " + tableName + "\n");
@@ -749,13 +752,7 @@ public class GenerateBeansAndMybatisUtil {
         bw.write("\t\tWHERE id = #{id}\n");
         bw.write("\t</select>\n\n");
 
-        // findFieldById
-        bw.write("\t<select id=\"findFieldById\" resultType=\"object\">\n");
-        bw.write("\t\tSELECT ${field} \n\t\tFROM " + tableName + "\n");
-        bw.write("\t\tWHERE id = #{id}\n");
-        bw.write("\t</select>\n\n");
-
-        // 添加insert方法-insertBean
+        // 添加insert方法-insert
         bw.write("\t<insert id=\"insert\" parameterType=\"" + bean_package + "." + beanName + "\">\n");
         bw.write("\t\tINSERT INTO " + tableName + " (\n");
         for (int i = 0; i < size; i++) {
@@ -775,6 +772,21 @@ public class GenerateBeansAndMybatisUtil {
             }
         }
         bw.write("\t\t)\n");
+        bw.write("\t</insert>\n\n");
+
+        // 有选择性insert（非空）-insertSelective
+        bw.write("\t<insert id=\"insertSelective\" parameterType=\"" + bean_package + "." + beanName + "\">\n");
+        bw.write("\t\tINSERT INTO " + tableName + "\n");
+        bw.write("\t\t<trim prefix=\"(\" suffix=\")\" suffixOverrides=\",\">\n");
+        for (int i = 0; i < size; i++) {
+            bw.write("\t\t\t<if test=\"" + processField(columns.get(i)) + " != null\">" + columns.get(i) + ",</if>\n");
+        }
+        bw.write("\t\t</trim>\n");
+        bw.write("\t\t<trim prefix=\"VALUES (\" suffix=\")\" suffixOverrides=\",\">\n");
+        for (int i = 0; i < size; i++) {
+            bw.write("\t\t\t<if test=\"" + processField(columns.get(i)) + " != null\">#{" + processField(columns.get(i)) + "},</if>\n");
+        }
+        bw.write("\t\t</trim>\n");
         bw.write("\t</insert>\n\n");
 
         // 批量插入-insertBatch
@@ -807,9 +819,8 @@ public class GenerateBeansAndMybatisUtil {
         bw.write("\t\tUPDATE " + tableName + "\n");
         bw.write("\t\t<set>\n");
 
-        String tempField = null;
         for (int i = 1; i < size; i++) {
-            tempField = processField(columns.get(i));
+            String tempField = processField(columns.get(i));
             if ("String".equals(processType(types.get(i)))) {
                 bw.write("\t\t\t<if test=\"" + tempField + " != null and " + tempField + " != ''\">");
             } else {

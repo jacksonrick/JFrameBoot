@@ -437,4 +437,51 @@ public class DateUtil {
         sb.append("前");
         return sb.toString();
     }
+
+    /**
+     * 获取time距当前的时间间隔
+     *
+     * @param time 时间戳
+     * @return
+     */
+    public static String getMoment(Long time) {
+        long l = System.currentTimeMillis() - time;
+        long day = l / (24 * 60 * 60 * 1000);
+        long hour = (l / (60 * 60 * 1000) - day * 24);
+        long min = ((l / (60 * 1000)) - day * 24 * 60 - hour * 60);
+        long s = (l - day * 24 * 60 * 60 - hour * 60 * 60 - min * 60);
+        StringBuffer sb = new StringBuffer("");
+        if (day > 0)
+            sb.append(day + "天");
+        if (hour > 0)
+            sb.append(hour + "小时");
+        if (min > 0)
+            sb.append(min + "分钟");
+        if (s > 0)
+            sb.append(s + "秒");
+        return sb.toString();
+    }
+
+    /**
+     * 秒转换为中文
+     *
+     * @param seconds
+     * @return
+     */
+    public static String secondToStr(Integer seconds) {
+        long day = seconds / (24 * 60 * 60);
+        long hour = (seconds / (60 * 60) - day * 24);
+        long min = ((seconds / 60) - day * 24 * 60 - hour * 60);
+        long s = (seconds - day * 24 * 60 * 60 - hour * 60 * 60 - min * 60);
+        StringBuffer sb = new StringBuffer("");
+        if (day > 0)
+            sb.append(day + "天");
+        if (hour > 0)
+            sb.append(hour + "小时");
+        if (min > 0)
+            sb.append(min + "分钟");
+        if (s > 0)
+            sb.append(s + "秒");
+        return sb.toString();
+    }
 }
