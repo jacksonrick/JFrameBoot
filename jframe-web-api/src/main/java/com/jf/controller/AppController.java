@@ -9,7 +9,7 @@ import com.jf.entity.ResMsg;
 import com.jf.service.CommonService;
 import com.jf.service.UserService;
 import com.jf.string.StringUtil;
-import com.jf.system.aspect2.Principal;
+import com.jf.system.aspectsso.Principal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

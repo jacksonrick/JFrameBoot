@@ -9,10 +9,10 @@
         <version>5.1</version>
     </parent>
 
-    <artifactId>jframe-web-app</artifactId>
+    <artifactId>jframe-web-api</artifactId>
     <version>1.0</version>
     <packaging>jar</packaging>
-    <name>jframe-web-app</name>
+    <name>jframe-web-api</name>
 
     <dependencies>
         <dependency>
@@ -29,11 +29,11 @@
     </dependencies>
 
     <properties>
-        <project.name>app</project.name>
+        <project.name>api</project.name>
     </properties>
 
     <build>
-        <finalName>jframe-web-app</finalName>
+        <finalName>jframe-web-api</finalName>
         <sourceDirectory>src/main/java</sourceDirectory>
         <resources>
             <resource>
@@ -47,7 +47,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>com.jf.JframeWebAppApplication</mainClass>
+                            <mainClass>com.jf.JframeWebApiApplication</mainClass>
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>lib/</classpathPrefix>
                         </manifest>

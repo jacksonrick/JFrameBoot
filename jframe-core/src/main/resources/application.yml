@@ -87,7 +87,7 @@ spring:
       validation-query: SELECT 1 # 用来检测连接是否有效的sql，要求是一个查询语句
       max-open-prepared-statements: 20 # 要启用PSCache，必须配置大于0，当大于0时，poolPreparedStatements自动触发修改为true
       remove-abandoned: true # 连接使用超过时间限制是否回收
-      remove-abandoned-timeout-millis: 60000 # 超过时间限制时间（s）,Default:300s
+      remove-abandoned-timeout-millis: 60000 # 超过时间限制时间,Default:300s
       test-on-borrow: false # 申请连接时执行validationQuery检测连接是否有效,会降低性能
       test-on-return: false # 归还连接时执行validationQuery检测连接是否有效,会降低性能
       test-while-idle: true # 申请连接的时候检测，如果空闲时间大于timeBetweenEvictionRunsMillis，执行validationQuery检测连接是否有效

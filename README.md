@@ -1,17 +1,17 @@
-# JFrame
+# JFrame - A Java Integration Framework
 ##### JFrame - SpringBoot & Cloud Project `v5.7.6`
 made by @jackson-rick   <br>
-本架构是对技术框架的整合及开发的规范，适合多端项目和微服务
+> 本架构是对技术框架的整合及开发的规范，适合多端项目和微服务
 
 
 ### 模块
 * jframe `文档/配置/部署脚本`
 * jframe-core `实体对象/服务类/系统相关`
 * jframe-utils `工具类`
-* jframe-web-app `App端`
+* jframe-web-api `Api端`
 * jframe-web-manage `后台管理端`
 * jframe-srvs `微服务模块`
-* jframe-srv-oauth `OAuth2.0模块`
+* jframe-srv-oauth `SSO模块`
 * jframe-srv-gateway `网关模块`
 * jframe-demos `集成案例`
 
@@ -324,10 +324,8 @@ made by @jackson-rick   <br>
 * Linux CentOS 7
 * IDEA 2018.1
 * Docker CE 18+
-* 其他：RabbitMQ3.6、Jenkins、Dubbo2.7.1、ES6.4.3
+* 其他：RabbitMQ3.6、Jenkins、Dubbo2.7.1、ElasticSearch6.4.3
 ---
-
-现所有环境已集成到application.yml
 
 ### 运行
 #### 打包到服务器运行
@@ -345,7 +343,7 @@ made by @jackson-rick   <br>
 #### Docker[推荐]
 * 直接运行打包命令，将上传到服务器目录，如:/home/docker/web
 * 将项目jframe/build/docker/docker-compose.yml文件拷贝到项目根目录
-* 运行`docker-compose up -d` | `docker-compose restart web`
+* 运行`docker-compose up -d` | `docker-compose start web`
 * 配合Jenkins部署更佳
 
 ### 其他
@@ -354,4 +352,4 @@ made by @jackson-rick   <br>
 * 操作手册说明：`jframe/doc/框架使用手册.docx`
 * 默认为MySQL数据库，如使用Postgresql，将数据库脚本替换为`jframe/doc/postgresql/public.sql`
 * jframe-demos模块代码仅供参考
-* 本框架不能直接用于生产环境，需要根据业务做一定量调整
+* **本框架不能直接用于生产环境，需要根据业务做一定量调整**
