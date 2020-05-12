@@ -39,8 +39,8 @@ public class BaseExceptionHandler {
      * @return page or json
      * @see AspectLog
      * @see SysException
-     * @see AppException
-     * @see AppTokenException
+     * @see ApiException
+     * @see ApiTokenException
      * @see NoLoginException
      * @see NotAllowException
      * @see AdminNoLoginException
@@ -91,12 +91,12 @@ public class BaseExceptionHandler {
         if (e instanceof SysException) {
             return new ResMsg(ResCode.ERROR.code(), e.getMessage());
         }
-        // app异常
-        if (e instanceof AppException) {
+        // api异常
+        if (e instanceof ApiException) {
             return new ResMsg(ResCode.APP_ERROR.code(), e.getMessage());
         }
-        // app token异常
-        if (e instanceof AppTokenException) {
+        // api token异常
+        if (e instanceof ApiTokenException) {
             return new ResMsg(ResCode.TOKEN_EXP.code(), e.getMessage());
         }
 
@@ -152,11 +152,6 @@ public class BaseExceptionHandler {
         }
 
         // 以下为默认异常处理
-        // APP
-        String appHeader = request.getHeader("Req-Type");
-        if ("APP".equals(appHeader)) {
-            return new ResMsg(ResCode.ERROR.code(), ResCode.ERROR.msg());
-        }
         if ("XMLHttpRequest".equalsIgnoreCase(requestType)) { // Ajax
             return new ResMsg(ResCode.ERROR.code(), ResCode.ERROR.msg());
         } else { // Page

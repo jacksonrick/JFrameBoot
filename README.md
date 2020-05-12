@@ -1,5 +1,5 @@
 # JFrame - A Java Integration Framework
-##### JFrame - SpringBoot & Cloud Project `v5.7.6`
+##### JFrame - SpringBoot & Cloud Project `v5.8`
 made by @jackson-rick   <br>
 > 本架构是对技术框架的整合及开发的规范，适合多端项目和微服务
 
@@ -10,7 +10,7 @@ made by @jackson-rick   <br>
 * jframe-utils `工具类`
 * jframe-web-api `Api端`
 * jframe-web-manage `后台管理端`
-* jframe-srvs `微服务模块`
+* jframe-mservice `微服务`
 * jframe-srv-oauth `SSO模块`
 * jframe-srv-gateway `网关模块`
 * jframe-demos `集成案例`
@@ -33,6 +33,10 @@ made by @jackson-rick   <br>
 
 
 ### 更新日志：
+* v5.8 `20200512`
+    * 1.新增activiti、influxdb、storm示例代码
+    * 2.整合mservice微服务模块
+    * 3.其他优化
 * v5.7.6 `20200323`
     * 1.新增ZIP解压缩和Shell执行工具
     * 2.其他优化
@@ -324,7 +328,7 @@ made by @jackson-rick   <br>
 * Linux CentOS 7
 * IDEA 2018.1
 * Docker CE 18+
-* 其他：RabbitMQ3.6、Jenkins、Dubbo2.7.1、ElasticSearch6.4.3
+* 其他：RabbitMQ3.6、Jenkins、Dubbo2.7.1、ElasticSearch6.4.3、Zookeeper3.4.13
 ---
 
 ### 运行
@@ -352,4 +356,6 @@ made by @jackson-rick   <br>
 * 操作手册说明：`jframe/doc/框架使用手册.docx`
 * 默认为MySQL数据库，如使用Postgresql，将数据库脚本替换为`jframe/doc/postgresql/public.sql`
 * jframe-demos模块代码仅供参考
-* **本框架不能直接用于生产环境，需要根据业务做一定量调整**
+
+### 声明
+本框架不能直接用于生产环境，需要根据业务做一定量调整

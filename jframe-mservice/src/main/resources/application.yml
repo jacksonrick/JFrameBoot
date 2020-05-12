@@ -1,0 +1,67 @@
+server:
+  port: 8075
+spring:
+  application:
+    name: ZK-CLIENT
+  # 1.zookeeper注册中心
+  cloud:
+    zookeeper:
+      enabled: true
+      connect-string: dev:2181
+      discovery:
+        enabled: true
+        register: false # 客户端不注册
+        root: /discovery
+# 应用信息
+info:
+  app:
+    name: ${spring.application.name}
+    version: "1"
+    description: ${spring.application.name}
+eureka: # eureka客户端注册
+  client:
+    enabled: false
+    serviceUrl:
+      defaultZone: http://eureka:eureka1234@127.0.0.1:10000/eureka/ # eureka服务端地址
+feign: # 断路器
+  hystrix:
+    enabled: true
+management:
+  endpoints: # Actuator监控
+    enabled-by-default: false
+    web:
+      base-path: /monitor # 监控主路径
+      exposure: # 暴露的接口
+        include: info, health, env, httptrace, metrics, threaddump, logfile, refresh
+    jmx:
+      exposure:
+        include: info, health, mappings, beans # 不暴露jmx: exclude: '*'
+  server:
+    add-application-context-header: false # 隐藏http头
+  endpoint:
+    health: # 显示详细
+      show-details: ALWAYS
+  health: # 指定不监控的服务
+    mail:
+      enabled: false
+    jms:
+      enabled: false
+
+
+# 2.Eureka注册中心
+---
+server:
+  port: 10003
+spring:
+  profiles: eureka
+  application:
+    name: SRV-ORDER
+  zipkin:
+    base-url: http://192.168.24.200:9411
+  sleuth:
+    sampler:
+      probability: 1.0
+security:
+  oauth2:
+    resource:
+      user-info-uri: http://127.0.0.1:8090/authentication/user

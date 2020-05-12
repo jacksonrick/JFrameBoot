@@ -26,10 +26,10 @@ server:
 #    key-password: 123456
 spring:
   profiles:
-    active: app-dev # 指定应用和环境 {0}-{1}  0：表示应用，1：表示环境(固定：dev、test、pro)
+    active: api-dev # 指定应用和环境 {0}-{1}  0：表示应用，1：表示环境(固定：dev、test、pro)
   application:
-    name: JFRAME-APP
-    simple: app
+    name: JFRAME-API
+    simple: api
   jmx:
     enabled: true
   cache: # 缓存设置
@@ -193,41 +193,6 @@ spring:
             threadCount: 10 # 并发数
             threadPriority: 5 # 优先级
             threadsInheritContextClassLoaderOfInitializingThread: true
-# 应用信息
-info:
-  app:
-    name: ${spring.application.name}
-    version: "1"
-    description: ${spring.application.name}
-# springcloud config support
-eureka: # eureka客户端注册
-  client:
-    enabled: false
-    serviceUrl:
-      defaultZone: http://eureka:eureka1234@127.0.0.1:10000/eureka/ # eureka服务端地址
-feign: # 断路器|监控 需配合注解使用*
-  hystrix:
-    enabled: false
-management:
-  endpoints: # Actuator监控
-    enabled-by-default: false
-    web:
-      base-path: /monitor # 监控主路径
-      exposure: # 暴露的接口
-        include: info, health, env, httptrace, metrics, threaddump, logfile, refresh
-    jmx:
-      exposure:
-        include: info, health, mappings, beans # 不暴露jmx: exclude: '*'
-  server:
-    add-application-context-header: false # 隐藏http头
-  endpoint:
-    health: # 显示详细
-      show-details: ALWAYS
-  health: # 指定不监控的服务
-    mail:
-      enabled: false
-    jms:
-      enabled: false
 jmx: # jmx监控
   host: 127.0.0.1
   port: 1${server.port}
@@ -284,7 +249,7 @@ system: # 系统自定义配置
 # 2、spring.application.simple为应用简称，必须指定，否则日志不生效
 # 3、生产环境务必配置好静态文件路径和URL前缀、日志路径、数据库等，开发环境可以使用`默认`不配置
 # 4、可复写以上公共配置
-# 5、环境指定：spring.profiles.active=app-dev
+# 5、环境指定：spring.profiles.active=api-dev
 
 
 ##################### 后台管理端 开发 #####################
@@ -311,88 +276,26 @@ system:
   static_host: http://192.168.1.168:${server.port}/
   log_path: /data/wwwlogs/
 
-##################### PC端 开发 #####################
+##################### API端 开发 #####################
 ---
 spring:
-  profiles: front-dev
+  profiles: api-dev
   application:
-    name: JFRAME-WEB-FRONT
-    simple: front
+    name: JFRAME-WEB-API
+    simple: api
 server:
   port: 8081
 
-##################### PC端 生产 #####################
+##################### API端 生产 #####################
 ---
 spring:
-  profiles: front-pro
+  profiles: api-pro
   application:
-    name: JFRAME-WEB-FRONT
-    simple: front
+    name: JFRAME-WEB-API
+    simple: api
 server:
   port: 18081
 system:
-  static_path: /data/wwwroot/front/static/
+  static_path: /data/wwwroot/api/static/
   static_host: http://192.168.1.168:${server.port}/
   log_path: /data/wwwlogs/
-
-##################### APP端 开发 #####################
----
-spring:
-  profiles: app-dev
-  application:
-    name: JFRAME-WEB-APP
-    simple: app
-server:
-  port: 8082
-
-##################### APP端 生产 #####################
----
-spring:
-  profiles: app-pro
-  application:
-    name: JFRAME-WEB-APP
-    simple: app
-server:
-  port: 18082
-system:
-  static_path: /data/wwwroot/app/static/
-  static_host: http://192.168.1.168:${server.port}/
-  log_path: /data/wwwlogs/
-
-###################### 综合测试 #####################
----
-spring:
-  profiles: test-dev
-  application:
-    name: JFRAME-WEB-TEST
-    simple: test
-server:
-  port: 8888
-  servlet:
-    session:
-      cookie:
-        name: JSAUID
-wx: # 微信公众号API
-  appid: 111111
-  token: qwertyuiopqwertyuiopqwertyuiopqw
-  appsecret: 111111
-  callback-url:
-
-##################### 微服务测试 #####################
----
-spring:
-  profiles: srvtest-dev
-  application:
-    name: JFRAME-SRV-ORDER-01
-    simple: srvtest
-  zipkin:
-    base-url: http://192.168.24.200:9411
-  sleuth:
-    sampler:
-      probability: 1.0
-server:
-  port: 10003
-security:
-  oauth2:
-    resource:
-      user-info-uri: http://127.0.0.1:8090/authentication/user

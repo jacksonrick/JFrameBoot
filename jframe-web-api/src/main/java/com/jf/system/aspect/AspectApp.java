@@ -1,14 +1,11 @@
 package com.jf.system.aspect;
 
-import com.jf.exception.AppTokenException;
+import com.jf.exception.ApiTokenException;
 import org.aspectj.lang.JoinPoint;
-import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.core.annotation.Order;
-import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -42,9 +39,9 @@ public class AspectApp {
 
         // 验证header
         String appHeader = request.getHeader("Req-Type");
-        if (!"APP".equals(appHeader)) {
-            throw new AppTokenException("非法请求");
-        }
+        /*if (!"API".equals(appHeader)) {
+            throw new ApiTokenException("非法请求");
+        }*/
         // 验证APPKEY
 
     }

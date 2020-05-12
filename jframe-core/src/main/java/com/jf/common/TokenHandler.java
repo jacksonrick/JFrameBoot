@@ -4,7 +4,7 @@ import com.jf.database.enums.ResCode;
 import com.jf.database.mapper.TokenMapper;
 import com.jf.database.model.Token;
 import com.jf.date.DateUtil;
-import com.jf.exception.AppTokenException;
+import com.jf.exception.ApiTokenException;
 import com.jf.string.StringUtil;
 import com.jf.system.conf.IConstant;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -80,13 +80,13 @@ public class TokenHandler {
      */
     public Long getIdByTokenFromRedis(String token) {
         if (token == null || token.length() < 1) {
-            throw new AppTokenException(ResCode.TOKEN_EXP.msg());
+            throw new ApiTokenException(ResCode.TOKEN_EXP.msg());
         }
         Long uid = (Long) redisTemplate.opsForValue().get(IConstant.TOKEN_PREFIX + token);
         if (uid != null) {
             return uid;
         } else {
-            throw new AppTokenException(ResCode.TOKEN_EXP.msg());
+            throw new ApiTokenException(ResCode.TOKEN_EXP.msg());
         }
     }
 
@@ -98,14 +98,14 @@ public class TokenHandler {
      */
     public Long getIdByTokenFromDb(String token) {
         if (token == null || token.length() < 1) {
-            throw new AppTokenException(ResCode.TOKEN_EXP.msg());
+            throw new ApiTokenException(ResCode.TOKEN_EXP.msg());
         }
         Token tk = tokenMapper.findByToken(token);
         if (tk == null) {
-            throw new AppTokenException(ResCode.TOKEN_EXP.msg());
+            throw new ApiTokenException(ResCode.TOKEN_EXP.msg());
         }
         if (tk.getExpired().getTime() < System.currentTimeMillis()) {
-            throw new AppTokenException(ResCode.TOKEN_EXP.msg());
+            throw new ApiTokenException(ResCode.TOKEN_EXP.msg());
         }
         return Long.valueOf(tk.getUid());
     }

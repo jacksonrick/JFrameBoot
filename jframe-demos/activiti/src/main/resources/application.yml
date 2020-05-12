@@ -1,0 +1,13 @@
+server:
+  port: 8098
+spring:
+  datasource:
+    druid: # Druid数据源配置
+      driver-class-name: com.mysql.jdbc.Driver
+      url: jdbc:mysql://dev:3306/jframe?useUnicode=true&zeroDateTimeBehavior=convertToNull&useSSL=false
+      username: root
+      password: 12345678
+      initial-size: 5
+  activiti:
+    database-schema-update: false # 第一次启动改为true
+    history-level: FULL # 保存历史数据级别设置

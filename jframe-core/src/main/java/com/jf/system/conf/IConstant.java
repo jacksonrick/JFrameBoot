@@ -25,6 +25,7 @@ public class IConstant {
     public final static String TOKEN = "token";
     public final static String TOKEN_HEADER = "header";
     public final static String TOKEN_COOKIE = "cookie";
+    public final static String TOKEN_PARAM = "param";
 
     // rabbitmq topic
     public final static String QUEUE_MSGA = "TOPIC.MSG.A";

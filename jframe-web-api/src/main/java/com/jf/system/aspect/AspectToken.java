@@ -5,8 +5,8 @@ import com.jf.common.TokenHandler;
 import com.jf.database.enums.ResCode;
 import com.jf.string.StringUtil;
 import com.jf.system.conf.IConstant;
-import com.jf.exception.AppException;
-import com.jf.exception.AppTokenException;
+import com.jf.exception.ApiException;
+import com.jf.exception.ApiTokenException;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -60,97 +60,64 @@ public class AspectToken {
         HttpServletRequest request = attributes.getRequest();
         Object[] args = pjp.getArgs();
         if (args.length < 1) {
-            throw new AppTokenException("必须指定一个参数");
+            throw new ApiTokenException("必须指定一个参数");
         }
 
         String name = tk.name(); // 键名
-        String type = tk.type(); // 类型 1-header 2-cookie
+        String type = tk.type(); // 类型 header param cookie
         boolean need = tk.need(); // 是否必须 默认：true
         boolean cache = tk.useCache(); // 是否使用缓存 默认：true
 
         try {
+            String token = "";
             if (IConstant.TOKEN_HEADER.equals(type)) {
-                String token = request.getHeader(name);
-                if (!need) {
-                    if (StringUtil.isBlank(token)) {
-                        return pjp.proceed();
-                    } else {
-                        if (cache) {
-                            Long uid = (Long) redisTemplate.opsForValue().get(token);
-                            if (uid != null) {
-                                args[0] = tokenHandler.getIdByTokenFromRedis(token);
-                                return pjp.proceed(args);
-                            } else {
-                                return pjp.proceed();
-                            }
-                        } else {
-                            args[0] = tokenHandler.getIdByTokenFromDb(token);
-                            return pjp.proceed(args);
-                        }
-                    }
-                } else {
-                    if (StringUtil.isBlank(token)) {
-                        throw new AppTokenException(ResCode.TOKEN_EXP.msg());
-                    } else {
-                        log.info(IConstant.TOKEN_HEADER + " token:" + token);
-                        if (cache) {
-                            args[0] = tokenHandler.getIdByTokenFromRedis(token);
-                        } else {
-                            args[0] = tokenHandler.getIdByTokenFromDb(token);
-                        }
-                        return pjp.proceed(args);
-                    }
+                token = request.getHeader(name);
+            } else if (IConstant.TOKEN_PARAM.equals(type)) {
+                Cookie cookieValue = WebUtils.getCookie(request, name);
+                if (cookieValue != null) {
+                    token = cookieValue.getValue();
                 }
             } else if (IConstant.TOKEN_COOKIE.equals(type)) {
-                Cookie cookieValue = WebUtils.getCookie(request, name);
-                if (!need) {
-                    if (cookieValue == null) {
-                        return pjp.proceed();
-                    } else {
-                        String token = cookieValue.getValue();
-                        if (StringUtil.isBlank(token)) {
+                token = request.getParameter(name);
+            }
+
+            if (!need) { //非必须
+                if (StringUtil.isBlank(token)) {
+                    return pjp.proceed();
+                } else {
+                    if (cache) { //从缓存取
+                        Long uid = (Long) redisTemplate.opsForValue().get(token);
+                        if (uid != null) {
+                            args[0] = tokenHandler.getIdByTokenFromRedis(token);
+                            return pjp.proceed(args);
+                        } else {
                             return pjp.proceed();
                         }
-                        if (cache) {
-                            Long uid = (Long) redisTemplate.opsForValue().get(token);
-                            if (uid != null) {
-                                args[0] = tokenHandler.getIdByTokenFromRedis(token);
-                                return pjp.proceed(args);
-                            } else {
-                                return pjp.proceed();
-                            }
-                        } else {
-                            args[0] = tokenHandler.getIdByTokenFromDb(token);
-                            return pjp.proceed(args);
-                        }
-                    }
-                } else {
-                    if (cookieValue == null) {
-                        throw new AppTokenException(ResCode.TOKEN_EXP.msg());
-                    }
-                    String token = cookieValue.getValue();
-                    if (StringUtil.isNotBlank(token)) {
-                        log.info(IConstant.TOKEN_COOKIE + " token:" + token);
-                        if (cache) {
-                            args[0] = tokenHandler.getIdByTokenFromRedis(token);
-                        } else {
-                            args[0] = tokenHandler.getIdByTokenFromDb(token);
-                        }
-                        return pjp.proceed(args);
                     } else {
-                        throw new AppTokenException(ResCode.TOKEN_EXP.msg());
+                        args[0] = tokenHandler.getIdByTokenFromDb(token);
+                        return pjp.proceed(args);
                     }
                 }
-            } else {
-                throw new AppException("APP接口异常: Invalid token value.");
+            } else { //必须
+                if (StringUtil.isBlank(token)) {
+                    throw new ApiTokenException(ResCode.TOKEN_EXP.msg());
+                } else {
+                    log.info(IConstant.TOKEN_HEADER + " token:" + token);
+                    if (cache) {
+                        args[0] = tokenHandler.getIdByTokenFromRedis(token);
+                    } else {
+                        args[0] = tokenHandler.getIdByTokenFromDb(token);
+                    }
+                    return pjp.proceed(args);
+                }
             }
         } catch (Throwable throwable) {
-            if (throwable instanceof AppTokenException) {
-                throw new AppTokenException(throwable.getMessage(), throwable);
+            if (throwable instanceof ApiTokenException) {
+                throw new ApiTokenException(throwable.getMessage(), throwable);
             } else if (throwable instanceof NullPointerException) {
-                throw new AppException("NullPointerException", throwable);
+                throw new ApiException("NullPointerException", throwable);
             } else {
-                throw new AppException(StringUtil.isBlank(throwable.getMessage()) ? "Null" : throwable.getMessage(), throwable);
+                throw new ApiException(StringUtil.isBlank(throwable.getMessage()) ? "Null" : throwable.getMessage(), throwable);
             }
         }
     }

@@ -14,7 +14,7 @@ import com.jf.service.system.SystemService;
 import com.jf.string.StringUtil;
 import com.jf.system.conf.IConstant;
 import com.jf.system.conf.SysConfig;
-import com.jf.system.geetest.GeetestLib;
+import com.jf.system.third.GeetestLib;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
