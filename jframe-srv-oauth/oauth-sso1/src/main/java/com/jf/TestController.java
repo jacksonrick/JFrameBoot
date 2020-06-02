@@ -1,5 +1,7 @@
 package com.jf;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -16,11 +18,44 @@ import javax.servlet.http.HttpSession;
 @Controller
 public class TestController {
 
+    // 默认首页
+    @RequestMapping("/")
+    @ResponseBody
+    public String index() {
+        return "index";
+    }
+
+    // 前后端分离时作为中间校验接口
+    @RequestMapping("/sso")
+    public String sso() {
+        return "redirect:/static/test.html";
+    }
+
+    // 测试接口，不需要权限
     @RequestMapping("/test/a")
     @ResponseBody
     public String test() {
         System.out.println("test");
         return "test";
+    }
+
+
+    @Value("${auth-server}")
+    private String authServer;
+
+    // 退出登录
+    @RequestMapping("/sso/logout")
+    public String logout(HttpSession session) {
+        session.invalidate();
+        return "redirect:" + authServer + "/logout"; //还需要跳转到SSO退出接口
+    }
+
+    // 获取用户登陆信息，未登陆会跳转到SSO登陆页面
+    @RequestMapping("/user")
+    @ResponseBody
+    public Authentication user(Authentication user) {
+        System.out.println("user: " + user.getName());
+        return user;
     }
 
 }

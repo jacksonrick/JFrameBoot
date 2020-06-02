@@ -2,7 +2,7 @@ package com.jf.controller;
 
 import com.jf.database.model.ICONSTANT;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.imageio.ImageIO;
@@ -22,13 +22,18 @@ import java.util.Random;
 @Controller
 public class MainController {
 
-    @RequestMapping("/")
+    @GetMapping("/")
     @ResponseBody
     public String index() {
         return "Welcome to OAuth2.0";
     }
 
-    @RequestMapping("/valid")
+    @GetMapping("/logoutPage")
+    public String logout() {
+        return "logout";
+    }
+
+    @GetMapping("/valid")
     public void getValidCode(HttpServletRequest request, HttpServletResponse response) {
         try {
             BufferedImage bi = new BufferedImage(100, 35, BufferedImage.TYPE_INT_RGB);

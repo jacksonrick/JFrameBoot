@@ -90,6 +90,9 @@ public class OAuthorizationServerConfig extends AuthorizationServerConfigurerAda
      */
     @Bean
     public TokenStore tokenStore() {
+        // 1. JWT
+        // 2. JDBC
+
         // return new JwtTokenStore(jwtAccessTokenConverter());
         return new JdbcTokenStore(dataSource);
     }

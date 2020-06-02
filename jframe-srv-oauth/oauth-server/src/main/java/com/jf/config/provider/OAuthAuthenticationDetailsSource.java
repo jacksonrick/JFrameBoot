@@ -1,4 +1,4 @@
-package com.jf.config;
+package com.jf.config.provider;
 
 import com.jf.database.model.OUserExtDetail;
 import org.springframework.security.authentication.AuthenticationDetailsSource;

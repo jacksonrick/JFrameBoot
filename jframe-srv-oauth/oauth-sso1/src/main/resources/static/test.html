@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SSO client1</title>
+</head>
+<body>
+<h1>SSO Client1</h1>
+<p>
+    模拟前后端分离的场景：访问后台接口报401，前端跳转到固定的接口，登陆成功回跳该接口，并由接口重定向；<br>
+    接口可以是/sso/login，也可以是自定义的，由该接口重定向到指定页面
+</p>
+
+<div>
+    <button id="btn1">请求需要授权接口</button>
+    <button id="btn2">请求不需要授权接口</button>
+    <a href="http://127.0.0.1:8092/home.html" target="_blank">访问SSO客户端2</a>
+    <a href="/sso/logout">退出系统</a>
+</div>
+
+<script src="/static/jquery-2.1.1.min.js"></script>
+<script>
+    $(function () {
+        $("#btn1").click(function () {
+            $.get("/user", {}, function (data) {
+                console.log(data);
+            }, "json").error(function (e) {
+                if (e.status == 401) {
+                    location.href = '/sso'; //可以是/sso/login
+                }
+            });
+        });
+
+        $("#btn2").click(function () {
+            $.get("/test/a", {}, function (data) {
+                console.log(data);
+            }, "json")
+        });
+    });
+</script>
+</body>
+</html>

@@ -108,6 +108,8 @@ public class ExcelReaderOPC {
         public void endRow(int rowNum) {
             if (firstCellOfRow) {
                 cols = currentCol + 1; // 初始化列数
+            } else {
+                datas.add(data); //追加数据
             }
             firstCellOfRow = false;
         }
@@ -128,9 +130,6 @@ public class ExcelReaderOPC {
                     } else {
                         data[currentCol] = formattedValue;
                     }
-                }
-                if (currentCol == cols - 1) { // 追加数据
-                    datas.add(data);
                 }
             } else {
                 if (includeHeader) {

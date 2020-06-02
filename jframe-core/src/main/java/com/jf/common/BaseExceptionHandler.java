@@ -47,6 +47,7 @@ public class BaseExceptionHandler {
      */
     @ExceptionHandler
     @ResponseBody
+    //@ResponseStatus(code = HttpStatus.INTERNAL_SERVER_ERROR)
     public Object exceptionHandler(Throwable e, HttpServletRequest request) {
         TreeMap<String, String> rvs = new TreeMap<String, String>();
         Enumeration paramNames = request.getParameterNames();

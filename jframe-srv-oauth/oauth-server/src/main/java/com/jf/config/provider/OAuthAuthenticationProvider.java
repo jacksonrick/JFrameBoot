@@ -46,7 +46,7 @@ public class OAuthAuthenticationProvider implements AuthenticationProvider {
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         // 获取认证信息
         Object details = authentication.getDetails();
-        if (details instanceof OUserExtDetail) { // sso
+        if (details instanceof OUserExtDetail) { // sso default[WebAuthenticationDetails]
             log.info("sso login user: " + authentication.getName());
             // 验证码等校验
             OUserExtDetail detail = (OUserExtDetail) authentication.getDetails();

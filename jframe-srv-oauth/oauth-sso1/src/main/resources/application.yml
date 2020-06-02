@@ -6,10 +6,12 @@ server:
     context-path: /
     session:
       cookie:
-        name: JSAUID
+        name: JSAUID1 # 每个客户端的Cookie值必须唯一
 spring:
-  main:
-    allow-bean-definition-overriding: true
+  mvc:
+    static-path-pattern: /static/**
+  resources:
+    static-locations: classpath:/static/
 security:
   oauth2:
     sso:

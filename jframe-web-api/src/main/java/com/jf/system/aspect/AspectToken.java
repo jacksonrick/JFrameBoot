@@ -3,10 +3,9 @@ package com.jf.system.aspect;
 import com.jf.annotation.Token;
 import com.jf.common.TokenHandler;
 import com.jf.database.enums.ResCode;
+import com.jf.exception.ApiTokenException;
 import com.jf.string.StringUtil;
 import com.jf.system.conf.IConstant;
-import com.jf.exception.ApiException;
-import com.jf.exception.ApiTokenException;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -55,7 +54,7 @@ public class AspectToken {
      * @param tk
      */
     @Around("token()&&@annotation(tk)")
-    public Object token(ProceedingJoinPoint pjp, Token tk) {
+    public Object token(ProceedingJoinPoint pjp, Token tk) throws Throwable {
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = attributes.getRequest();
         Object[] args = pjp.getArgs();
@@ -68,56 +67,46 @@ public class AspectToken {
         boolean need = tk.need(); // 是否必须 默认：true
         boolean cache = tk.useCache(); // 是否使用缓存 默认：true
 
-        try {
-            String token = "";
-            if (IConstant.TOKEN_HEADER.equals(type)) {
-                token = request.getHeader(name);
-            } else if (IConstant.TOKEN_PARAM.equals(type)) {
-                Cookie cookieValue = WebUtils.getCookie(request, name);
-                if (cookieValue != null) {
-                    token = cookieValue.getValue();
-                }
-            } else if (IConstant.TOKEN_COOKIE.equals(type)) {
-                token = request.getParameter(name);
+        String token = "";
+        if (IConstant.TOKEN_HEADER.equals(type)) {
+            token = request.getHeader(name);
+        } else if (IConstant.TOKEN_PARAM.equals(type)) {
+            Cookie cookieValue = WebUtils.getCookie(request, name);
+            if (cookieValue != null) {
+                token = cookieValue.getValue();
             }
+        } else if (IConstant.TOKEN_COOKIE.equals(type)) {
+            token = request.getParameter(name);
+        }
 
-            if (!need) { //非必须
-                if (StringUtil.isBlank(token)) {
-                    return pjp.proceed();
-                } else {
-                    if (cache) { //从缓存取
-                        Long uid = (Long) redisTemplate.opsForValue().get(token);
-                        if (uid != null) {
-                            args[0] = tokenHandler.getIdByTokenFromRedis(token);
-                            return pjp.proceed(args);
-                        } else {
-                            return pjp.proceed();
-                        }
-                    } else {
-                        args[0] = tokenHandler.getIdByTokenFromDb(token);
-                        return pjp.proceed(args);
-                    }
-                }
-            } else { //必须
-                if (StringUtil.isBlank(token)) {
-                    throw new ApiTokenException(ResCode.TOKEN_EXP.msg());
-                } else {
-                    log.info(IConstant.TOKEN_HEADER + " token:" + token);
-                    if (cache) {
+        if (!need) { //非必须
+            if (StringUtil.isBlank(token)) {
+                return pjp.proceed();
+            } else {
+                if (cache) { //从缓存取
+                    Long uid = (Long) redisTemplate.opsForValue().get(token);
+                    if (uid != null) {
                         args[0] = tokenHandler.getIdByTokenFromRedis(token);
+                        return pjp.proceed(args);
                     } else {
-                        args[0] = tokenHandler.getIdByTokenFromDb(token);
+                        return pjp.proceed();
                     }
+                } else {
+                    args[0] = tokenHandler.getIdByTokenFromDb(token);
                     return pjp.proceed(args);
                 }
             }
-        } catch (Throwable throwable) {
-            if (throwable instanceof ApiTokenException) {
-                throw new ApiTokenException(throwable.getMessage(), throwable);
-            } else if (throwable instanceof NullPointerException) {
-                throw new ApiException("NullPointerException", throwable);
+        } else { //必须
+            if (StringUtil.isBlank(token)) {
+                throw new ApiTokenException(ResCode.TOKEN_EXP.msg());
             } else {
-                throw new ApiException(StringUtil.isBlank(throwable.getMessage()) ? "Null" : throwable.getMessage(), throwable);
+                log.info(IConstant.TOKEN_HEADER + " token:" + token);
+                if (cache) {
+                    args[0] = tokenHandler.getIdByTokenFromRedis(token);
+                } else {
+                    args[0] = tokenHandler.getIdByTokenFromDb(token);
+                }
+                return pjp.proceed(args);
             }
         }
     }

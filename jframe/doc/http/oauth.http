@@ -41,7 +41,7 @@ Cache-Control: no-cache
 ####################################################################################################
 
 ###check_token
-POST {{host}}/oauth/check_token?token=ea41981c-9cd2-4e9d-a552-b752950c303b
+POST {{host}}/oauth/check_token?token=786997ef-518b-4945-90e7-daf23009d9a4
 Accept: */*
 Cache-Control: no-cache
 
@@ -52,20 +52,10 @@ Cache-Control: no-cache
 POST {{host}}/authentication/user
 Accept: */*
 Cache-Control: no-cache
-Authorization: Bearer b634231b-7b8f-454d-a441-fa5c86c21764
+Authorization: Bearer 786997ef-518b-4945-90e7-daf23009d9a4
 
 ###
 GET {{host}}/oauth/token_key
 Accept: */*
 Cache-Control: no-cache
-
-###
-GET http://127.0.0.1:8099/test1
-
-###
-GET http://127.0.0.1:8099/test2
-
-###
-GET http://127.0.0.1:8099/test3
-
-###
+Authorization:

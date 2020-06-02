@@ -84,12 +84,15 @@ public class OAuthSecurityConfig extends WebSecurityConfigurerAdapter {
                 .failureHandler(authFailureHandler)
                 .authenticationDetailsSource(authenticationDetailsSource)
                 .and()
+                .logout().logoutSuccessUrl("/logoutPage")
+                .and()
                 .csrf().disable()
         ;
     }
     //.antMatcher("/**").authorizeRequests().antMatchers("/oauth/**").permitAll()
 
-    /* 记住我
+    /**
+     * 记住我
     http
         .rememberMe()
 			.rememberMeServices(rememberMeServices());

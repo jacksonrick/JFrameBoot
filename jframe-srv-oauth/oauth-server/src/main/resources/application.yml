@@ -3,7 +3,7 @@ server:
   servlet:
     session:
       cookie:
-        name: OAUTHID
+        name: OAUTHID # SSO服务器Cookie值（唯一）
 spring:
   mvc:
     static-path-pattern: /static/**
@@ -17,10 +17,10 @@ spring:
     template-loader-path: classpath:/templates/
   datasource:
     druid:
-      driver-class-name: com.mysql.cj.jdbc.Driver
-      url: jdbc:mysql://localhost:3306/jframe?serverTimezone=UTC&characterEncoding=utf8&useUnicode=true&zeroDateTimeBehavior=convertToNull&useSSL=false&allowPublicKeyRetrieval=true
+      driver-class-name: com.mysql.jdbc.Driver
+      url: jdbc:mysql://localhost:3306/jframe?serverTimezone=UTC&characterEncoding=utf8&useUnicode=true&zeroDateTimeBehavior=convertToNull&useSSL=false
       username: root
       password: 12345678
 logging:
   level:
-    org.springframework: DEBUG
+    org.springframework: INFO

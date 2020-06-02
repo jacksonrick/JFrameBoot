@@ -9,7 +9,6 @@ package com.jf.database.model;
  */
 public class User {
 
-    private Integer id;
     private String username;
     private String password;
     private String roles;
@@ -18,18 +17,9 @@ public class User {
     }
 
     public User(User user) {
-        this.id = user.id;
         this.username = user.username;
         this.password = user.password;
         this.roles = user.roles;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
     }
 
     public String getUsername() {

@@ -31,14 +31,13 @@ public class OUserService {
      * @return
      */
     public User findByUsername(String username) {
-        List<User> list = jdbcTemplate.query("SELECT id, role, name, pwd FROM oauth_user WHERE name = '" + username + "'", new RowMapper<User>() {
+        List<User> list = jdbcTemplate.query("SELECT role, name, pwd FROM oauth_user WHERE name = '" + username + "'", new RowMapper<User>() {
             @Override
             public User mapRow(ResultSet rs, int i) throws SQLException {
                 User user = new User();
-                user.setId(rs.getInt(1));
-                user.setRoles(rs.getString(2));
-                user.setUsername(rs.getString(3));
-                user.setPassword(rs.getString(4));
+                user.setRoles(rs.getString(1));
+                user.setUsername(rs.getString(2));
+                user.setPassword(rs.getString(3));
                 return user;
             }
         });

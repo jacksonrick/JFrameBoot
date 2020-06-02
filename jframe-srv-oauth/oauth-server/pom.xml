@@ -39,10 +39,12 @@
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
+            <version>${mysql.version}</version>
         </dependency>
     </dependencies>
 
     <build>
+        <finalName>oauth-server</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>

@@ -16,7 +16,7 @@
                 <div class="login_title">
                     OAuth2.0统一登录
                 </div>
-                <form action="/authentication/form" method="post">
+                <form action="/authentication/form" method="post" onsubmit="return checkForm()">
                     <div class="form_text_ipt">
                         <input name="username" type="text" placeholder="用户名" value="">
                     </div>
