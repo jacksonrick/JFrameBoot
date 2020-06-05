@@ -1,12 +1,12 @@
 package com.jf.string;
 
+import com.jf.date.DateUtil;
 import com.jf.exception.SysException;
-import org.apache.commons.lang3.StringUtils;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
-import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -25,8 +25,7 @@ public class StringUtil {
      * @return
      */
     public static String getOrderCode() {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSS");
-        return sdf.format(System.currentTimeMillis()) + "" + (int) (Math.random() * 90000 + 10000);
+        return DateUtil.dateToStr(new Date(), DateUtil.YYYYMMDDHHMMSSSS) + (int) (Math.random() * 90000 + 10000);
     }
 
     /**
@@ -53,7 +52,7 @@ public class StringUtil {
      * @return
      */
     public static String[] strToArray(String answer) {
-        if (StringUtils.isNotBlank(answer)) {
+        if (isNotBlank(answer)) {
             return answer.split("");
         }
         return null;

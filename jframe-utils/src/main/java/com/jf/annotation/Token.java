@@ -18,4 +18,9 @@ public @interface Token {
 
     String type() default "header";
 
+    /**
+     * 额外字段
+     */
+    boolean transform() default false;
+
 }

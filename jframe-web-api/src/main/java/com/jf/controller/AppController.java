@@ -9,7 +9,6 @@ import com.jf.entity.ResMsg;
 import com.jf.service.CommonService;
 import com.jf.service.UserService;
 import com.jf.string.StringUtil;
-import com.jf.system.aspectsso.Principal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,16 +30,6 @@ public class AppController extends BaseController {
     private UserService userService;
     @Resource
     private CommonService commonService;
-
-    // AOP Token测试
-    @GetMapping("/test")
-    public ResMsg test(Principal principal, String a, String b) {
-        System.out.println(principal.getPrincipal());
-        System.out.println(principal.getId());
-        System.out.println(principal.getAccessKey());
-        return ResMsg.success();
-    }
-
 
     @GetMapping("/")
     public ResMsg index() {

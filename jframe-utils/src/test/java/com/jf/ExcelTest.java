@@ -89,7 +89,7 @@ public class ExcelTest {
         }
 
         ExcelWriterSXSS sxss = new ExcelWriterSXSS();
-        sxss.write(tests);
+        sxss.write(tests, "/Users/xujunfei/Downloads/output.xlsx");
 
         System.out.println("time: " + (System.currentTimeMillis() - start));
     }

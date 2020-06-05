@@ -9,6 +9,7 @@ import java.lang.annotation.Target;
 
 /**
  * 权限验证 未声明则均验证
+ *
  * @author rick
  */
 @Documented
@@ -17,19 +18,19 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface AuthPassport {
 
-	/**
-	 * true-验证登录，false-不验证登录
-	 */
-	boolean login() default true;
+    /**
+     * true-验证登录，false-不验证登录
+     */
+    boolean login() default true;
 
-	/**
-	 * true-验证权限，false-不验证权限
-	 */
-	boolean right() default true;
+    /**
+     * true-验证权限，false-不验证权限
+     */
+    boolean right() default true;
 
-	/**
-	 * 暂未实现，与OAuth搭配使用
-	 */
-	boolean getid() default false;
+    /**
+     * 额外字段
+     */
+    boolean transform() default false;
 
 }

@@ -1,5 +1,5 @@
 # JFrame - A Java Integration Framework
-##### JFrame - SpringBoot & Cloud Project `v5.8.1`
+##### JFrame - SpringBoot & Cloud Project `v5.8.2`
 made by @jackson-rick   <br>
 > 本架构是对技术框架的整合及开发的规范，适合多端项目和微服务
 
@@ -33,6 +33,9 @@ made by @jackson-rick   <br>
 
 
 ### 更新日志：
+* v5.8.2 `20200605`
+    * 1.优化支持session redis存储序列化和@Cacheable注解
+    * 2.优化SSO客户端
 * v5.8.1 `20200602`
     * 1.完善influxdb示例
     * 2.优化OAuth服务端

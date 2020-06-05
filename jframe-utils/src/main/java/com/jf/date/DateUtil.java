@@ -16,13 +16,20 @@ import java.util.Date;
  */
 public class DateUtil {
 
-    private final static DateTimeFormatter FMT_YYYY_MM_DD_HH_MM_SS = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
-    private final static DateTimeFormatter FMT_YYYY_MM_DD = DateTimeFormat.forPattern("yyyy-MM-dd");
+    public final static DateTimeFormatter FMT_YYYY_MM_DD_HH_MM_SS = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
+    public final static DateTimeFormatter FMT_YYYY_MM_DD = DateTimeFormat.forPattern("yyyy-MM-dd");
+    public final static DateTimeFormatter FMT_YYYY_MM = DateTimeFormat.forPattern("yyyy-MM");
+    public final static DateTimeFormatter FMT_YYYYMMDD = DateTimeFormat.forPattern("yyyyMMdd");
 
-    private final static String YYYY_MM_DD_HH_MM_SS = "yyyy-MM-dd HH:mm:ss";
-    private final static String YYYY_MM_DD = "yyyy-MM-dd";
-    private final static String YYYY_MM = "yyyy-MM";
-    private final static String YYYY = "yyyy";
+    public final static String YYYY_MM_DD_HH_MM_SS_SS = "yyyy-MM-dd HH:mm:ss.SS";
+    public final static String YYYYMMDDHHMMSSSS = "yyyyMMddHHmmssSS";
+    public final static String YYYY_MM_DD_HH_MM_SS = "yyyy-MM-dd HH:mm:ss";
+    public final static String YYYYMMDDHHMMSS = "yyyyMMddHHmmss";
+    public final static String YYYY_MM_DD = "yyyy-MM-dd";
+    public final static String YYYYMMDD = "yyyyMMdd";
+    public final static String YYYY_MM = "yyyy-MM";
+    public final static String YYYYMM = "yyyyMM";
+    public final static String YYYY = "yyyy";
 
     /**
      * 获取当前时间
@@ -155,6 +162,17 @@ public class DateUtil {
     }
 
     /**
+     * string转date
+     *
+     * @param dateString
+     * @param format     自定义格式-DateTimeFormatter类型
+     * @return
+     */
+    public static Date strToDate(String dateString, DateTimeFormatter format) {
+        return format.parseDateTime(dateString).toDate();
+    }
+
+    /**
      * long转date
      *
      * @param time
@@ -164,6 +182,20 @@ public class DateUtil {
         DateTime dt = new DateTime(new Date(time));
         String date = dt.toString(YYYY_MM_DD_HH_MM_SS);
         return strToDate(date);
+    }
+
+    /**
+     * 从时分秒获取总秒数，常用于音频文件的时长
+     *
+     * @param hhmmss
+     * @return
+     */
+    public static int getSeconds(String hhmmss) {
+        String[] text = hhmmss.split(":");
+        int hour = Integer.valueOf(text[0]);
+        int minute = Integer.valueOf(text[1]);
+        int second = Integer.valueOf(text[2]);
+        return hour * 3600 + minute * 60 + second;
     }
 
     /**

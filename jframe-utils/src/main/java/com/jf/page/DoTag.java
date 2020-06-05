@@ -2,6 +2,9 @@ package com.jf.page;
 
 import com.github.pagehelper.PageInfo;
 
+/**
+ * Freemarker标签分页
+ */
 public class DoTag {
 
     /**

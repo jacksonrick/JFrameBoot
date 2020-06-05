@@ -31,9 +31,10 @@ public class ExcelWriterSXSS {
      * 写入数据
      *
      * @param data
+     * @param target
      * @throws Exception
      */
-    public void write(List<String> data) throws Exception {
+    public void write(List<String> data, String target) throws Exception {
         for (int i = 0; i < data.size(); i++) {
             Row row = sheet.createRow(i);
             String[] strs = String.valueOf(data.get(i)).split(",");
@@ -43,7 +44,7 @@ public class ExcelWriterSXSS {
         }
 
         // 导出文件
-        File file = new File("/Users/xujunfei/Downloads/output1.xlsx");
+        File file = new File(target);
         FileOutputStream out = new FileOutputStream(file);
         workbook.write(out);
         out.close();

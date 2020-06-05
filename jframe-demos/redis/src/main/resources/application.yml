@@ -1,0 +1,32 @@
+server:
+  port: 8095
+  servlet:
+    context-path: /
+    session:
+      cookie:
+        name: REDIS-COOKIE
+spring:
+  cache:
+    type: redis
+    cache-names: c1,c2,c3
+    redis:
+      time-to-live: 10m
+  session:
+    store-type: redis
+    timeout: 5m
+    redis:
+      namespace: session:redis
+  redis:
+    host: dev
+    port: 6379
+    database: 1
+  mvc:
+    static-path-pattern: /static/**
+  resources:
+    static-locations: classpath:/static/
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+logging:
+  level:
+    org.springframework: info

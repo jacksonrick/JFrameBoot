@@ -26,7 +26,7 @@
                 console.log(data);
             }, "json").error(function (e) {
                 if (e.status == 401) {
-                    location.href = '/sso'; //可以是/sso/login
+                    location.href = '/sso/login'; // /sso,/sso/login
                 }
             });
         });

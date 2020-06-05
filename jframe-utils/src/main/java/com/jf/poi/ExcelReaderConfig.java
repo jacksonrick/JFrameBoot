@@ -17,7 +17,7 @@ import java.util.*;
 
 /**
  * Created with IntelliJ IDEA.
- * Description: 配置式读取
+ * Description: 从JSON配置中读取
  * User: xujunfei
  * Date: 2018-08-30
  * Time: 11:10

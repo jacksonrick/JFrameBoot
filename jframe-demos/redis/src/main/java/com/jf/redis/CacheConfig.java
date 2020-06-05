@@ -1,9 +1,11 @@
-package com.jf.system.conf;
+package com.jf.redis;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.CachingConfigurerSupport;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
@@ -17,6 +19,7 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializationContext;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
+import org.springframework.stereotype.Component;
 
 import java.time.Duration;
 import java.util.HashMap;
@@ -29,8 +32,11 @@ import java.util.Map;
  * Date: 2018-01-03
  * Time: 10:38
  */
+@Component
 @EnableCaching
 public class CacheConfig extends CachingConfigurerSupport {
+
+    private static final Logger log = LoggerFactory.getLogger(CacheConfig.class);
 
     /**
      * 缓存模板
