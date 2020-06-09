@@ -120,7 +120,7 @@ public class UserService {
         }
 
         user.setPassword(null);
-        user.setToken(tokenHandler.bindTokenToDb(user.getId()));
+        user.setToken(tokenHandler.bindToken(user.getId()));
         return ResMsg.success("登陆成功", user);
     }
 

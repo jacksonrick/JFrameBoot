@@ -264,4 +264,11 @@ public class AppController extends BaseController {
         return ResMsg.fail("修改失败");
     }
 
+    @PostMapping("/userinfo")
+    @Token
+    public ResMsg userinfo(Long userId) {
+        User user = userService.findUserById(userId);
+        return ResMsg.successdata(user);
+    }
+
 }

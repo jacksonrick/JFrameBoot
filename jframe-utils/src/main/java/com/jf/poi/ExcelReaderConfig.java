@@ -1,5 +1,6 @@
 package com.jf.poi;
 
+import com.jf.commons.LogManager;
 import com.jf.date.DateUtil;
 import com.jf.exception.SysException;
 import com.jf.json.JacksonUtil;
@@ -37,12 +38,12 @@ public class ExcelReaderConfig {
      * @param <T>
      * @throws Exception
      */
-    public <T> void read(InputStream is, String jsonConfig, Class<T> clz) throws Exception {
+    public <T> List<T> read(InputStream is, String jsonConfig, Class<T> clz) throws Exception {
         // 创建工作簿
         wb = new XSSFWorkbook(is);
 
         List<ExcelJsonConfig> config = JacksonUtil.jsonToList(jsonConfig, ExcelJsonConfig.class);
-        System.out.println("JSON配置: " + config);
+        LogManager.info("JSON配置: " + config);
         // 存储读取的记录
         List<T> list = new ArrayList<>();
 
@@ -74,9 +75,7 @@ public class ExcelReaderConfig {
             list.add(entity);
         }
 
-        for (T t : list) {
-            System.out.println(t.toString());
-        }
+        return list;
     }
 
     /**

@@ -7,6 +7,7 @@ import com.sun.management.OperatingSystemMXBean;
 
 import java.io.*;
 import java.lang.management.ManagementFactory;
+import java.util.Arrays;
 import java.util.StringTokenizer;
 
 /**
@@ -18,17 +19,18 @@ public class SystemUtil {
 
     /**
      * 获取内存、磁盘信息
+     * [可用磁盘空间、已使用磁盘空间、总磁盘空间、可用内存、已使用内存、总内存]
      *
      * @return
      */
-    public double[] getSpace() {
+    public static double[] getSpace() {
         try {
             double freeSpace = 0;
-            double totalSpace = 0;
             double usedSpace = 0;
+            double totalSpace = 0;
             File[] roots = File.listRoots();
             for (File file : roots) {
-                freeSpace += FileUtil.convertFileSizeGB(file.getFreeSpace());
+                freeSpace += FileUtil.convertFileSizeGB(file.getUsableSpace());
                 totalSpace += FileUtil.convertFileSizeGB(file.getTotalSpace());
             }
             usedSpace = Convert.doubleSub(totalSpace, freeSpace);
@@ -47,22 +49,58 @@ public class SystemUtil {
     }
 
     /**
+     * @param rootPath 指定的挂载路径
+     * @return
+     */
+    public static double[] getSpace(String rootPath) {
+        try {
+            File file = new File(rootPath);
+            double freeSpace = 0;
+            double usedSpace = 0;
+            double totalSpace = 0;
+            if (file.exists()) {
+                long free = file.getUsableSpace();
+                long total = file.getTotalSpace();
+                freeSpace = FileUtil.convertFileSizeGB(free);
+                totalSpace = FileUtil.convertFileSizeGB(total);
+                usedSpace = FileUtil.convertFileSizeGB(total - free);
+            }
+
+            double allMemory = Convert.doubleFormat(
+                    ((OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean()).getTotalPhysicalMemorySize() / 1024.0 / 1024.0 / 1024.0);
+            double availMemory = Convert.doubleFormat(
+                    ((OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean()).getFreePhysicalMemorySize() / 1024.0 / 1024.0 / 1024.0);
+            double usedMemory = Convert.doubleSub(allMemory, availMemory);
+
+            double[] arr = {Convert.doubleFormat(freeSpace), usedSpace, Convert.doubleFormat(totalSpace), availMemory, usedMemory, allMemory};
+            return arr;
+        } catch (Exception e) {
+            return new double[]{0, 0, 0, 0, 0, 0};
+        }
+    }
+
+    public static void main(String[] args) {
+        double[] info = getSpace("");
+        System.out.println(Arrays.toString(info));
+    }
+
+    /**
      * 获取cpu使用率
      *
      * @return
      */
-    public int getCpuRatio() {
+    public static int getCpuRatio() {
         String osName = System.getProperty("os.name");
         double cpuRatio = 0;
         if (osName.toLowerCase().startsWith("windows")) {
-            cpuRatio = this.getCpuRatioForWindows();
+            cpuRatio = getCpuRatioForWindows();
         } else {
-            cpuRatio = this.getCpuRateForLinux();
+            cpuRatio = getCpuRateForLinux();
         }
         return (int) cpuRatio;
     }
 
-    private double getCpuRatioForWindows() {
+    private static double getCpuRatioForWindows() {
         try {
             String procCmd = System.getenv("windir") + "\\system32\\wbem\\wmic.exe process get Caption,CommandLine,"
                     + "KernelModeTime,ReadOperationCount,ThreadCount,UserModeTime,WriteOperationCount";
@@ -83,7 +121,7 @@ public class SystemUtil {
         }
     }
 
-    private double getCpuRateForLinux() {
+    private static double getCpuRateForLinux() {
         InputStream is = null;
         InputStreamReader isr = null;
         BufferedReader brStat = null;
@@ -119,14 +157,7 @@ public class SystemUtil {
 
     }
 
-    /**
-     * 获取剩余空间
-     *
-     * @param is
-     * @param isr
-     * @param br
-     */
-    private void freeResource(InputStream is, InputStreamReader isr, BufferedReader br) {
+    private static void freeResource(InputStream is, InputStreamReader isr, BufferedReader br) {
         try {
             if (is != null)
                 is.close();
@@ -139,7 +170,7 @@ public class SystemUtil {
         }
     }
 
-    private long[] readCpu(final Process proc) {
+    private static long[] readCpu(final Process proc) {
         long[] retn = new long[2];
         try {
             proc.getOutputStream().close();
@@ -194,7 +225,7 @@ public class SystemUtil {
         return null;
     }
 
-    public String substring(String src, int start_idx, int end_idx) {
+    public static String substring(String src, int start_idx, int end_idx) {
         byte[] b = src.getBytes();
         String tgt = "";
         for (int i = start_idx; i <= end_idx; i++) {

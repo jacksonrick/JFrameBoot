@@ -6,40 +6,40 @@
 # * 'mptr' and 'fptr' create a POST request to submit a form with a text or file field (multipart/form-data);
 
 ######## For APP ########
-POST {{host}}/app/register?phone=17755451875&password=5d24bbbe2fe58aba66827aa870004c79&sms=377204
+POST http://127.0.0.1:8081/app/register?phone=17755451875&password=5d24bbbe2fe58aba66827aa870004c79&sms=377204
 Accept: */*
 Cache-Control: no-cache
 Req-Type: APP
 X-Requested-With: XMLHttpRequest
 
 ###
-POST {{host}}/app/login?phone=17755451873&password=5d24bbbe2fe58aba66827aa870004c79
+POST http://127.0.0.1:8081/app/login?phone=17755451873&password=5d24bbbe2fe58aba66827aa870004c79
 Accept: */*
 Cache-Control: no-cache
 Req-Type: APP
 X-Requested-With: XMLHttpRequest
 
 ###
-POST {{host}}/app/sms?phone=17755451875&codeType=reg
+POST http://127.0.0.1:8081/app/sms?phone=17755451875&codeType=reg
 Accept: */*
 Cache-Control: no-cache
 Req-Type: APP
 X-Requested-With: XMLHttpRequest
 
 ###
-POST {{host}}/app/pwd/forget?phone=17755451873&password=5d24bbbe2fe58aba66827aa870004c79&sms=749950
+POST http://127.0.0.1:8081/app/pwd/forget?phone=17755451873&password=5d24bbbe2fe58aba66827aa870004c79&sms=749950
 Accept: */*
 Cache-Control: no-cache
 Req-Type: APP
 X-Requested-With: XMLHttpRequest
-token: eq2e2qe213e12ewq
+token: 0336F4989043232C4AA1C98F06EDB0F7
 
 ###
-GET {{host}}/app/test
+POST http://127.0.0.1:8081/app/userinfo
 Accept: */*
 Cache-Control: no-cache
 Req-Type: APP
+Content-Type: application/json
 X-Requested-With: XMLHttpRequest
-token: E5479FD1C2585C71DCA56EA561867BAE
+token: 9D281F3D79D6A8A37ABDB0264D723A42
 
-###

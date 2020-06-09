@@ -1,22 +1,28 @@
 package com.jf.system.aspect;
 
 import com.jf.entity.ResMsg;
+import com.jf.json.JacksonUtil;
 import com.jf.system.conf.SysConfig;
+import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
+import org.aspectj.lang.reflect.MethodSignature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.lang.annotation.Annotation;
 import java.util.Map;
 import java.util.Set;
 
@@ -54,56 +60,91 @@ public class AspectLog {
      */
     @Before("ctl()")
     public void log(JoinPoint point) {
-        ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-        if (attributes == null) {
-            log.info("Non def Request, Class: {}, Method: {}()", point.getSignature().getDeclaringTypeName(), point.getSignature().getName());
-            return;
-        }
-        HttpServletRequest request = attributes.getRequest();
+        try {
+            // 记录时间
+            MDC.put("time", String.valueOf(System.currentTimeMillis()));
+            ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+            if (attributes == null) {
+                log.info("Can't read request, Class: {}, Method: {}()", point.getSignature().getDeclaringTypeName(), point.getSignature().getName());
+                return;
+            }
+            HttpServletRequest request = attributes.getRequest();
 
-        // 请求ID
-        String requestId = String.valueOf(System.nanoTime());
-        MDC.put("rid", requestId);
-        // 服务器名称
-        MDC.put("server", config.getServerId());
-        // 客户端IP
-        String remote = request.getHeader("x-forwarded-for") == null ? request.getRemoteAddr() : request.getHeader("x-forwarded-for");
-        // 参数
-        Map<String, String[]> parameters = request.getParameterMap();
-        String param = "";
-        if (!parameters.isEmpty()) {
-            Set<String> keys = parameters.keySet();
-            for (String key : keys) {
-                String[] params = parameters.get(key);
-                if (params.length > 0) {
-                    param += "|" + key + "=" + params[0];
+            // 请求ID
+            String requestId = String.valueOf(System.nanoTime());
+            MDC.put("rid", requestId);
+            // 服务器名称
+            MDC.put("server", config.getServerId());
+            // 客户端IP
+            String remote = request.getHeader("x-forwarded-for") == null ? request.getRemoteAddr() : request.getHeader("x-forwarded-for");
+            // GET/POST参数
+            Map<String, String[]> parameters = request.getParameterMap();
+            String param = "";
+            if (!parameters.isEmpty()) {
+                Set<String> keys = parameters.keySet();
+                for (String key : keys) {
+                    String[] params = parameters.get(key);
+                    if (params.length > 0) {
+                        param += "|" + key + "=" + StringUtils.join(params, '&');
+                    }
+                }
+                param += "|";
+            }
+
+            MethodSignature signature = (MethodSignature) point.getSignature();
+            // 获取类和方法
+            // String method = signature.getDeclaringTypeName() + "." + point.getSignature().getName();
+            Annotation[][] annotation = signature.getMethod().getParameterAnnotations();
+            int anno = -1;
+            for (int i = 0; i < annotation.length; i++) {
+                for (Annotation annotation2 : annotation[i]) {
+                    if (annotation2 instanceof RequestBody) {
+                        anno = i;
+                        break;
+                    }
+                }
+                if (anno != -1) {
+                    break;
                 }
             }
-            param += "|";
-        } else {
-            param = "-";
+            if (anno != -1) {
+                Object obj = point.getArgs()[anno];
+                log.info("{} - {} {} {} {}", remote, request.getMethod(), request.getRequestURI(), param, JacksonUtil.objectToJson(obj));
+            } else {
+                log.info("{} - {} {} {}", remote, request.getMethod(), request.getRequestURI(), param);
+            }
+        } catch (Exception e) {
+            log.error("参数解析错误", e);
+            MDC.clear();
         }
-        // String method = point.getSignature().getDeclaringTypeName() + "." + point.getSignature().getName();
-        log.info("{} => {}, Params: {}, Method: {}", remote, request.getRequestURI(), param, request.getMethod());
     }
-
-    // 异常在每个端下的切点进行捕捉
 
     @AfterReturning(pointcut = "ctl()", returning = "ret")
     public void ret(Object ret) {
-        if (ret != null) {
-            // 开发环境下打印具体信息
-            if (config.dev()) {
-                if (ret instanceof ResMsg) {
-                    log.info("Returns: {}, Data: {}", ret, ((ResMsg) ret).getData());
+        try {
+            long time = 0;
+            long timeStart = Long.parseLong(MDC.get("time"));
+            long timeEnd = System.currentTimeMillis();
+            time = timeEnd - timeStart;
+            if (ret != null) {
+                // 开发环境下打印具体信息
+                if (config.dev()) {
+                    log.info("Returns: {}, Time: {}", ret, time);
                 } else {
-                    log.info("Returns: {}", ret);
+                    if (ret instanceof ResMsg) {
+                        log.info("Returns: {}, Msg: {}, Time: {}", ((ResMsg) ret).getCode(), ((ResMsg) ret).getMsg(), time);
+                    } else if (ret instanceof ModelAndView) {
+                        log.info("Returns: {}, Time: {}", ((ModelAndView) ret).getView(), time);
+                    } else {
+                        log.info("Returns: {}, Time: {}", ret, time);
+                    }
                 }
-            } else {
-                log.info("Returns: {}", ret);
             }
+        } catch (Exception e) {
+            log.error("方法返回值解析错误", e);
+        } finally {
+            MDC.clear();
         }
-        MDC.clear();
     }
 
     /* 环绕方法

@@ -78,6 +78,7 @@ public class AspectToken {
         } else if (IConstant.TOKEN_COOKIE.equals(type)) {
             token = request.getParameter(name);
         }
+        log.debug("api token: " + token);
 
         if (!need) { //非必须
             if (StringUtil.isBlank(token)) {
@@ -100,7 +101,6 @@ public class AspectToken {
             if (StringUtil.isBlank(token)) {
                 throw new ApiTokenException(ResCode.TOKEN_EXP.msg());
             } else {
-                log.info(IConstant.TOKEN_HEADER + " token:" + token);
                 if (cache) {
                     args[0] = tokenHandler.getIdByTokenFromRedis(token);
                 } else {

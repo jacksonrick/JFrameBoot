@@ -8,7 +8,7 @@ import com.jf.exception.ApiTokenException;
 import com.jf.string.StringUtil;
 import com.jf.system.conf.IConstant;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
@@ -25,9 +25,11 @@ import java.util.concurrent.TimeUnit;
 public class TokenHandler {
 
     @Autowired(required = false)
-    private RedisTemplate redisTemplate;
+    private StringRedisTemplate stringRedisTemplate;
     @Autowired
     private TokenMapper tokenMapper;
+
+    public static final int DEFAULT_TIMEOUT_DAYS = 7;
 
     /**
      * 绑定token [redis]
@@ -36,12 +38,12 @@ public class TokenHandler {
      */
     public String bindToken(Long userId) {
         String newToken = StringUtil.getTokenId();
-        String oldToken = (String) redisTemplate.opsForValue().getAndSet(IConstant.TOKEN_UID_PREFIX + userId, newToken);
+        String oldToken = (String) stringRedisTemplate.opsForValue().getAndSet(IConstant.TOKEN_UID_PREFIX + userId, newToken);
         if (oldToken != null) {
-            redisTemplate.delete(IConstant.TOKEN_PREFIX + oldToken); // 删除旧token
+            stringRedisTemplate.delete(IConstant.TOKEN_PREFIX + oldToken); // 删除旧token
         }
-        // 绑定用户唯一token 7天过期
-        redisTemplate.opsForValue().set(IConstant.TOKEN_PREFIX + newToken, userId, 7, TimeUnit.DAYS);
+        // 绑定用户唯一token
+        stringRedisTemplate.opsForValue().set(IConstant.TOKEN_PREFIX + newToken, userId + "", DEFAULT_TIMEOUT_DAYS, TimeUnit.DAYS);
         return newToken;
     }
 
@@ -55,7 +57,7 @@ public class TokenHandler {
         String newToken = StringUtil.getTokenId();
         Token oldToken = tokenMapper.findByUid(String.valueOf(userId));
         if (oldToken == null) {
-            Token tk = new Token(String.valueOf(userId), newToken, DateUtil.dateAddDay(new Date(), 7));
+            Token tk = new Token(String.valueOf(userId), newToken, DateUtil.dateAddDay(new Date(), DEFAULT_TIMEOUT_DAYS));
             if (tokenMapper.insert(tk) > 0) {
                 return newToken;
             } else {
@@ -63,7 +65,7 @@ public class TokenHandler {
             }
         } else {
             oldToken.setToken(newToken);
-            oldToken.setExpired(DateUtil.dateAddDay(new Date(), 7));
+            oldToken.setExpired(DateUtil.dateAddDay(new Date(), DEFAULT_TIMEOUT_DAYS));
             if (tokenMapper.update(oldToken) > 0) {
                 return newToken;
             } else {
@@ -82,7 +84,7 @@ public class TokenHandler {
         if (token == null || token.length() < 1) {
             throw new ApiTokenException(ResCode.TOKEN_EXP.msg());
         }
-        Long uid = (Long) redisTemplate.opsForValue().get(IConstant.TOKEN_PREFIX + token);
+        Long uid = Long.valueOf(stringRedisTemplate.opsForValue().get(IConstant.TOKEN_PREFIX + token));
         if (uid != null) {
             return uid;
         } else {

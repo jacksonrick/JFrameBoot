@@ -29,12 +29,12 @@ import java.util.List;
 public class ExcelReaderOPC {
 
     private List<String[]> datas;
-    public Integer cols;
-    public Boolean includeHeader;
-    public Boolean hasDateType;
     public List<String> headers;
+    public int cols;
+    public boolean includeHeader;
+    public boolean hasDateType;
 
-    public ExcelReaderOPC(Boolean includeHeader, Boolean hasDateType) {
+    public ExcelReaderOPC(boolean includeHeader, boolean hasDateType) {
         this.datas = new ArrayList<>();
         this.includeHeader = includeHeader;
         this.hasDateType = hasDateType;
@@ -101,6 +101,10 @@ public class ExcelReaderOPC {
         public void startRow(int rowNum) {
             currentRow = rowNum;
             currentCol = 0;
+            if (!firstCellOfRow) {
+                // 初始化数组
+                data = new String[cols];
+            }
         }
 
         // 行结束
@@ -120,9 +124,6 @@ public class ExcelReaderOPC {
             int thisCol = (new CellReference(cellReference)).getCol(); // 防止空值（可去除空行）
             currentCol = thisCol;
             if (!firstCellOfRow) { // 非首行
-                if (currentCol == 0) { // 初始化数组
-                    data = new String[cols];
-                }
                 if (currentCol < cols) { // 遍历列
                     if (hasDateType) {
                         // replace 时间格式问题，可能会替换非日期字段

@@ -35,7 +35,7 @@ public class ExcelTest {
 
         File file = new File("/Users/xujunfei/Downloads/test.xlsx");
         InputStream is = new FileInputStream(file);
-        ExcelReaderOPC xlsx2csv = new ExcelReaderOPC(true, true);
+        ExcelReaderOPC xlsx2csv = new ExcelReaderOPC(true, false);
         List<String[]> datas = xlsx2csv.process(is);
 
         long end = System.currentTimeMillis();
@@ -48,7 +48,7 @@ public class ExcelTest {
         int total = datas.size();
         int times = total % batch > 0 ? total / batch + 1 : total / batch; // 次数
         for (int i = 0; i < times; i++) {
-            List<String[]> batchs = datas.subList(0, datas.size() > batch ? batch : datas.size());
+            List<String[]> batchs = datas.subList(0, Math.min(datas.size(), batch));
             // 数据处理...
             // xxxService.insertBatch(batchs);
             for (int j = 0; j < batchs.size(); j++) {
@@ -116,16 +116,39 @@ public class ExcelTest {
             tests.add(user);
         }
 
-        ExcelWriterSXSSAuto sxss = new ExcelWriterSXSSAuto(UserTest.class);
+        ExcelWriterSXSSAuto<UserTest> sxss = new ExcelWriterSXSSAuto<>(UserTest.class);
 
         // 次数
         int times = total % pagesize > 0 ? total / pagesize + 1 : total / pagesize;
         for (int i = 0; i < times; i++) {
             List<UserTest> fd = tests.subList(0, pagesize);
-            sxss.write(fd);
+            sxss.writePage(fd);
             fd.clear();
         }
         sxss.export("/Users/xujunfei/Downloads/");
+
+        System.out.println("time: " + (System.currentTimeMillis() - start));
+    }
+
+    public static void testSXSSAuto2() throws Exception {
+        long start = System.currentTimeMillis();
+        // 测试数据
+        int total = 1000;
+        List<UserTest> tests = new ArrayList<>();
+        for (int i = 0; i < total; i++) {
+            UserTest user = new UserTest(i + 1);
+            user.setB("b");
+            user.setC("c");
+            user.setD("d");
+            user.setE("e");
+            user.setF("f");
+            user.setG("1");
+            tests.add(user);
+        }
+
+        ExcelWriterSXSSAuto<UserTest> sxss = new ExcelWriterSXSSAuto<>(UserTest.class);
+        String path = sxss.write(tests, "/Users/xujunfei/Downloads/");
+        System.out.println(path);
 
         System.out.println("time: " + (System.currentTimeMillis() - start));
     }
@@ -138,7 +161,8 @@ public class ExcelTest {
         ExcelReaderConfig read = new ExcelReaderConfig();
         try {
             String jsonConfig = getConfig();
-            read.read(new FileInputStream(file), jsonConfig, CustList.class);
+            List<CustList> list = read.read(new FileInputStream(file), jsonConfig, CustList.class);
+            System.out.println(list);
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -30,7 +30,7 @@ import java.util.List;
 public class ExcelWriterSXSSAuto<T> {
 
     private List<T> datas = new ArrayList<>();
-    private String excelName;
+    public String excelName;
     private int rowIndex = 0; // 行索引
     private int totalRow = 0; // 总列
     private Class<T> clz;
@@ -38,7 +38,7 @@ public class ExcelWriterSXSSAuto<T> {
 
     private final String NULL_VALUE = "--";
 
-    // 在内存中保持100行，超过100行将被刷新到磁盘
+    // 在内存中保持1000行，超过1000行将被刷新到磁盘
     private SXSSFWorkbook workbook = new SXSSFWorkbook(1000);
     private SXSSFSheet sheet = null;
 
@@ -86,8 +86,21 @@ public class ExcelWriterSXSSAuto<T> {
      * 写入数据
      *
      * @param data
+     * @param path 输出目录
+     * @return
+     * @throws Exception
      */
-    public void write(List<T> data) throws Exception {
+    public String write(List<T> data, String path) throws Exception {
+        writePage(data);
+        return export(path);
+    }
+
+    /**
+     * 写入分页数据
+     *
+     * @param data
+     */
+    public void writePage(List<T> data) throws Exception {
         int line = rowIndex + 1; // 行序号，第二行开始
         for (T model : data) {
             Row row = sheet.createRow(line++); // 创建行
@@ -148,7 +161,7 @@ public class ExcelWriterSXSSAuto<T> {
      *
      * @param path 路径需要以 / 结尾
      */
-    public void export(String path) {
+    public String export(String path) {
         // 自动列宽
         sheet.trackAllColumnsForAutoSizing();
         // 输出到文件
@@ -157,6 +170,7 @@ public class ExcelWriterSXSSAuto<T> {
         try {
             out = new FileOutputStream(file);
             workbook.write(out);
+            return file.getAbsolutePath();
         } catch (IOException e) {
             throw new SysException(e.getMessage(), e);
         } finally {
