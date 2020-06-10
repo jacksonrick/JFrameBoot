@@ -29,6 +29,12 @@ public class TestController extends ResourceServerConfigurerAdapter {
         return "oauth-resource-index";
     }
 
+    @RequestMapping("/login")
+    public String login(String username, String password) {
+
+        return "";
+    }
+
     @RequestMapping("/monitor/a")
     public String monitor() {
         System.out.println("oauth-resource-monitor");

@@ -24,14 +24,8 @@ public class TestController {
         return "index";
     }
 
-    // 前后端分离时作为中间校验接口
-    @RequestMapping("/sso")
-    public String sso() {
-        return "redirect:/static/test.html";
-    }
-
     // 测试接口，不需要权限
-    @RequestMapping("/test/a")
+    @RequestMapping("/test/get")
     @ResponseBody
     public String test() {
         System.out.println("test");

@@ -7,8 +7,11 @@
 <body>
 <h1>SSO Client1</h1>
 <p>
-    模拟前后端分离的场景：访问后台接口报401，前端跳转到固定的接口，登陆成功回跳该接口，并由接口重定向；<br>
-    接口可以是/sso/login，也可以是自定义的，由该接口重定向到指定页面
+    模拟前后端分离的场景：访问后台接口报401，前端跳转到固定的接口，登陆成功回跳该接口，并由接口重定向到/sso/login<br>
+    使用代理（如Nginx）解决：
+        1.所有接口加上前缀：/api，Nginx配置/api代理路径
+        2.如果重定向次数过多，修改server.servlet.session.cookie.name: OAUTH2SESSION
+        3.尽量使两个服务访问的IP或域名不同，以保证cookie不冲突
 </p>
 
 <div>
@@ -26,13 +29,13 @@
                 console.log(data);
             }, "json").error(function (e) {
                 if (e.status == 401) {
-                    location.href = '/sso/login'; // /sso,/sso/login
+                    location.href = '/sso/login';
                 }
             });
         });
 
         $("#btn2").click(function () {
-            $.get("/test/a", {}, function (data) {
+            $.get("/test/get", {}, function (data) {
                 console.log(data);
             }, "json")
         });

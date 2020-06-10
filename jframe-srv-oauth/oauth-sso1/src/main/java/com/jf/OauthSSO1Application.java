@@ -7,10 +7,8 @@ import org.springframework.boot.autoconfigure.security.oauth2.client.EnableOAuth
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.stereotype.Controller;
 
 @SpringBootApplication
-@Controller
 @EnableOAuth2Sso
 public class OauthSSO1Application extends WebSecurityConfigurerAdapter {
 
@@ -22,12 +20,6 @@ public class OauthSSO1Application extends WebSecurityConfigurerAdapter {
         web.ignoring().antMatchers("/static/**");
     }
 
-    /**
-     * 配置不拦截请求
-     *
-     * @param http
-     * @throws Exception
-     */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http

@@ -1,12 +1,11 @@
-auth-server: http://127.0.0.1:8090
-local-server: http://127.0.0.1:8092
+auth-server: http://192.168.24.200:8090
 server:
   port: 8092
   servlet:
     context-path: /
     session:
       cookie:
-        name: JSAUID2 # 每个客户端的Cookie值必须唯一
+        name: OAUTH2SESSION
 security:
   oauth2:
     sso:

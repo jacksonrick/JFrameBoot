@@ -1,18 +1,17 @@
 auth-server: http://192.168.24.200:8090
-local-server: http://192.168.1.129:8091
 server:
   port: 8091
   servlet:
     context-path: /
     session:
       cookie:
-        name: JSAUID1 # 每个客户端的Cookie值必须唯一
+        name: OAUTH2SESSION
 spring:
-  session:
-    store-type: redis
-    timeout: 5m
-    redis:
-      namespace: session:sso
+#  session:
+#    store-type: redis
+#    timeout: 5m
+#    redis:
+#      namespace: session:sso
   redis:
     host: dev
     port: 6379
