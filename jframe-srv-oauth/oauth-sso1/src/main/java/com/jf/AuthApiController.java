@@ -17,8 +17,8 @@ public class AuthApiController {
 
     @GetMapping("/index")
     @AuthPassport
-    public Object index(Authentication authentication, String type) {
-        System.out.println("[index]当前用户：" + authentication.getName());
+    public Object index(String username, String type) {
+        System.out.println("[index]当前用户：" + username);
         System.out.println("参数type: " + type);
         return "SUCCESS";
     }

@@ -59,3 +59,13 @@ GET {{host}}/oauth/token_key
 Accept: */*
 Cache-Control: no-cache
 Authorization:
+
+###
+GET http://127.0.0.1:8099/test1
+Accept: */*
+Cache-Control: no-cache
+
+###
+GET http://127.0.0.1:8099/test3
+Accept: */*
+Cache-Control: no-cache

@@ -12,9 +12,9 @@ spring:
 #    timeout: 5m
 #    redis:
 #      namespace: session:sso
-  redis:
-    host: dev
-    port: 6379
+#  redis:
+#    host: dev
+#    port: 6379
   mvc:
     static-path-pattern: /static/**
   resources:

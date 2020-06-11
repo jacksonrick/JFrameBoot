@@ -23,14 +23,14 @@ public class TestController {
 
     @GetMapping("/test1")
     public Object test1() {
-        ResponseEntity<String> response = restTemplate.getForEntity("http://127.0.0.1:8010", null);
+        ResponseEntity<String> response = restTemplate.getForEntity("http://127.0.0.1:8010", String.class);
         System.out.println(response);
         return response.getBody();
     }
 
     @GetMapping("/test2")
     public Object test2() {
-        ResponseEntity<String> response = restTemplate.getForEntity("http://127.0.0.1:8010/monitor/a", null);
+        ResponseEntity<String> response = restTemplate.getForEntity("http://127.0.0.1:8010/monitor/a", String.class);
         System.out.println(response);
         return response.getBody();
     }

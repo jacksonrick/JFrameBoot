@@ -4,8 +4,7 @@ server:
 security:
   oauth2:
     resource:
-#      token-info-uri: http://127.0.0.1:8090/oauth/check_token
-      user-info-uri: http://192.168.24.200:8090/authentication/user
+      token-info-uri: http://127.0.0.1:8090/oauth/check_token
     client:
       grant-type: password
       client-id: pwd

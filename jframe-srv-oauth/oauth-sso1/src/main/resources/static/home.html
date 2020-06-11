@@ -29,7 +29,7 @@
                 console.log(data);
             }, "json").error(function (e) {
                 if (e.status == 401) {
-                    location.href = '/sso/login';
+                    location.href = '/sso/login?callback=/static/welcome.html';
                 }
             });
         });

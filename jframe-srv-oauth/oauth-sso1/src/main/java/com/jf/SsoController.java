@@ -15,7 +15,7 @@ import javax.servlet.http.HttpSession;
  * Time: 10:49
  */
 @Controller
-public class TestController {
+public class SsoController {
 
     // 默认首页
     @RequestMapping("/")

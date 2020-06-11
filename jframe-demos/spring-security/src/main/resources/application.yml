@@ -1,0 +1,28 @@
+server:
+  port: 8098
+  servlet:
+    context-path: /
+    session:
+      cookie:
+        name: SSCOOKIE
+spring:
+  mvc:
+    static-path-pattern: /static/**
+  resources:
+    static-locations: classpath:/static/
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+  freemarker:
+    template-loader-path: classpath:/templates
+    suffix: .ftl
+    cache: true
+    charset: UTF-8
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/jframe?serverTimezone=UTC&characterEncoding=utf8&useUnicode=true&zeroDateTimeBehavior=convertToNull&useSSL=false
+    username: root
+    password: 12345678
+logging:
+  level:
+    org.springframework: info

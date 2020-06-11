@@ -1,12 +1,13 @@
 package com.jf.auth;
 
-import com.jf.exception.PermissionDenyException;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -31,9 +32,13 @@ public class AspectAuth {
     }
 
     @Around("app()")
-    public void token(ProceedingJoinPoint pjp) throws Throwable {
+    public Object token(ProceedingJoinPoint pjp) throws Throwable {
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = attributes.getRequest();
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Object[] args = pjp.getArgs();
+        args[0] = authentication.getName();
 
         // 权限校验
         String action = request.getRequestURI();
@@ -45,6 +50,8 @@ public class AspectAuth {
         /*if (1 == 1) {
             throw new PermissionDenyException("拒绝访问");
         }*/
+
+        return pjp.proceed(args);
     }
 
 }
