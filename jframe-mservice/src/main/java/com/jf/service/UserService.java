@@ -18,7 +18,7 @@ public class UserService {
      * @return
      */
     public User findUserById(Integer id) {
-        User user = new User(1001);
+        User user = new User(id);
         user.setNickname("xxx");
         user.setMoney(99.99d);
         return user;

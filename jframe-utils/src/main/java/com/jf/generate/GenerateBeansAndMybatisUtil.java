@@ -310,7 +310,7 @@ public class GenerateBeansAndMybatisUtil {
      */
     private Boolean checkDate(int size, List<String> types) {
         for (int i = 0; i < size; i++) {
-            if (processType(types.get(i)).equals("Date")) {
+            if ("Date".equals(processType(types.get(i)))) {
                 return true;
             }
         }

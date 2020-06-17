@@ -32,7 +32,7 @@ public class DESUtil {
      * @throws Exception 
      */
     private static SecretKey keyGenerator(String keyStr) throws Exception {
-        byte input[] = HexString2Bytes(keyStr);
+        byte[] input = HexString2Bytes(keyStr);
         DESKeySpec desKey = new DESKeySpec(input);
         //创建一个密匙工厂，然后用它把DESKeySpec转换成
         SecretKeyFactory keyFactory = SecretKeyFactory.getInstance("DES");

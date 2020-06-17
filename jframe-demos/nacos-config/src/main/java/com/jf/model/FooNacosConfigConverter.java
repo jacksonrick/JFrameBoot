@@ -1,4 +1,4 @@
-package com.jf.database.model;
+package com.jf.model;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.nacos.api.config.convert.NacosConfigConverter;

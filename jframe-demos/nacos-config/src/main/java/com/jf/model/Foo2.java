@@ -1,4 +1,4 @@
-package com.jf.database.model;
+package com.jf.model;
 
 import com.alibaba.nacos.api.config.annotation.NacosConfigurationProperties;
 import org.springframework.stereotype.Component;
@@ -11,8 +11,16 @@ import org.springframework.stereotype.Component;
  * Time: 17:08
  */
 @Component
-@NacosConfigurationProperties(dataId = "user2", groupId = "com.jf", autoRefreshed = true)
+@NacosConfigurationProperties(dataId = "user2", groupId = "MYGROUP", autoRefreshed = true)
 public class Foo2 {
+
+    /**
+     * 格式：TEXT
+     * 多个键值换行
+     * a=10
+     * b=20
+     * c=30
+     */
 
     private Integer a;
     private Integer b;

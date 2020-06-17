@@ -177,7 +177,7 @@ public class StringUtil {
     public static synchronized String getTokenId() {
         // 取随机数发生器, 默认是SecureRandom
         Random random = new SecureRandom();
-        byte bytes[] = new byte[SESSION_ID_BYTES];
+        byte[] bytes = new byte[SESSION_ID_BYTES];
         // 产生16字节的byte
         random.nextBytes(bytes);
         // 取摘要,默认是"MD5"算法
@@ -205,6 +205,8 @@ public class StringUtil {
         return (result.toString());
     }
 
+    static Pattern pattern = Pattern.compile("[A-Z]");
+
     /**
      * 将驼峰命名改为下划线
      * 如：bBindAdsd -> b_bind_adsd
@@ -213,7 +215,6 @@ public class StringUtil {
      * @return
      */
     public static StringBuffer underline(String str) {
-        Pattern pattern = Pattern.compile("[A-Z]");
         Matcher matcher = pattern.matcher(str);
         StringBuffer sb = new StringBuffer(str);
         if (matcher.find()) {

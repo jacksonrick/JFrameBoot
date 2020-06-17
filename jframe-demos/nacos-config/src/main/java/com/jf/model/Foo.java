@@ -1,4 +1,4 @@
-package com.jf.database.model;
+package com.jf.model;
 
 /**
  * Created with IntelliJ IDEA.
@@ -8,6 +8,11 @@ package com.jf.database.model;
  * Time: 16:35
  */
 public class Foo {
+
+    /**
+     * 格式：JSON
+     * {"a":9,"b":"xxx"}
+     */
 
     private Integer a;
 

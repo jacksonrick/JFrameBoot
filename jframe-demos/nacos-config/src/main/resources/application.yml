@@ -1,8 +1,11 @@
 server:
   port: 8085
 spring:
+#  profiles:
+#    active: dev
   application:
     name: NACOS-CONFIG
 nacos:
   config:
-    server-addr: dev:8848
+    server-addr: 192.168.24.200:8848
+# springboot使用此配置，springcloud使用bootstrap.yml

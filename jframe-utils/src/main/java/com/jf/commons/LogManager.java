@@ -71,7 +71,7 @@ public class LogManager {
      */
     public static void startup(String appName) {
         StringBuffer sb = new StringBuffer(appName + " starting...");
-        double[] space = new SystemUtil().getSpace();
+        double[] space = SystemUtil.getSpace();
         sb.append("\n操作系统：\t").append(Environment.getOsName())
                 .append("\n系统版本：\t").append(Environment.getOsVersion())
                 .append("\nIP地址：\t").append(Environment.getHostAddress())

@@ -6,10 +6,12 @@ spring:
   cloud:
     nacos:
       config:
-        server-addr: dev:8848
-logging:
-  path: /Users/xujunfei/Downloads/logs/nacos/
-  file: nacos.log
+        server-addr: 192.168.24.200:8848
 gw:
-  data-id: gw01
-  group: gw
+  data-id: nacos.gateway
+  group: MYGROUP
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'

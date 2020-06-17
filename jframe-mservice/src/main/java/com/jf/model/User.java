@@ -74,6 +74,18 @@ public class User implements Serializable {
     public void setDeleted(Boolean deleted) {
         this.deleted = deleted;
     }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", nickname='" + nickname + '\'' +
+                ", phone='" + phone + '\'' +
+                ", money=" + money +
+                ", createTime=" + createTime +
+                ", deleted=" + deleted +
+                '}';
+    }
 }
 
 

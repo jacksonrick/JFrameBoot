@@ -1,16 +1,17 @@
-# 需安装Nacos注册中心
-# 启动多个provider或consumer，注意修改port
+# 需启动jframe-srv-gateway/zookeeper-server服务提供者
 server:
-  port: 8072
+  port: 8070
 spring:
   application:
-#    name: ms-provider
-    name: ms-consumer
+    name: ms-provider
   cloud:
-    nacos:
+    zookeeper:
+      enabled: true
+      connect-string: dev:2181
       discovery:
-        group: SRV_REG_GROUP
-        server-addr: 192.168.24.200:8848
+        enabled: true
+        register: false # 客户端不注册
+        root: /discovery
 # 应用信息
 info:
   app:

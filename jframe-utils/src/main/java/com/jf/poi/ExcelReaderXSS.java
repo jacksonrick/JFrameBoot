@@ -150,7 +150,7 @@ public class ExcelReaderXSS {
                 strCell = "";
                 break;
         }
-        if (strCell.equals("") || strCell == null) {
+        if ("".equals(strCell) || strCell == null) {
             return "";
         }
         return strCell;

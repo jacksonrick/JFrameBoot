@@ -2,10 +2,7 @@ package com.jf.service;
 
 import com.jf.model.User;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
@@ -16,7 +13,7 @@ import java.util.Map;
  * Date: 2018-02-27
  * Time: 10:27
  */
-@FeignClient(value = "SRV-ORDER", fallback = com.jf.service.OrderRestServiceHystrix.class)
+@FeignClient(value = "ms-provider", fallback = OrderRestServiceHystrix.class)
 public interface OrderRestService {
 
     /**
@@ -47,4 +44,7 @@ public interface OrderRestService {
     @PostMapping("/post")
     String post(@RequestBody User user);
 
+
+    @GetMapping("/getUserById/{id}")
+    User getUserById(@PathVariable("id") Integer id);
 }

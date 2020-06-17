@@ -4,7 +4,7 @@ import org.springframework.stereotype.Component;
 
 /**
  * Created with IntelliJ IDEA.
- * Description: 断路器
+ * Description: Zookeeper断路器
  * User: xujunfei
  * Date: 2019-07-05
  * Time: 15:21

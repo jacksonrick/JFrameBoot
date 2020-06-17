@@ -1,45 +1,54 @@
 package com.jf.controller;
 
 import com.jf.service.IApiService;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 /**
  * Created with IntelliJ IDEA.
- * Description:
+ * Description: Zookeeper接口测试
  * User: xujunfei
  * Date: 2019-07-05
  * Time: 11:43
  */
-@RestController
+//@RestController
 public class ZKController {
 
-    @Autowired
-    private IApiService iApiService;
-
-    @GetMapping("/test")
-    public String test() {
-        return iApiService.list();
-    }
-
-    // restTemplate
-    @Bean
+    /**
+     * RestTemplate支持Ribbon负载均衡
+     *
+     * @return
+     */
     @LoadBalanced
-    RestTemplate loadBalancedRestTemplate() {
+    @Bean
+    public RestTemplate restTemplate() {
         return new RestTemplate();
     }
 
     @Autowired
-    private RestTemplate rest;
+    private IApiService iApiService;
 
-    @RequestMapping("/rest")
-    public String rest() {
-        return this.rest.getForObject("http://ZK-SERVER/list", String.class);
+    @GetMapping("/zk/list")
+    public String list() {
+        return iApiService.list();
     }
 
+
+    @Autowired
+    private RestTemplate restTemplate;
+
+    @RequestMapping("/rest")
+    @HystrixCommand(fallbackMethod = "error")
+    public String rest() {
+        return restTemplate.getForObject("http://ZK-SERVER/list", String.class);
+    }
+
+    public String error() {
+        return "服务异常，请稍后再试！";
+    }
 }

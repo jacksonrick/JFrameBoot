@@ -1,0 +1,45 @@
+###
+GET http://127.0.0.1:8085/getFoo
+Accept: application/json
+
+###
+GET http://127.0.0.1:8085/getOpen
+Accept: application/json
+
+
+### 自定义接口新增路由
+POST http://127.0.0.1:9091/route/add
+Content-Type: application/json
+
+{
+  "id": "test",
+  "predicates": [
+    {
+      "name": "Path",
+      "args": {
+        "pattern": "/api/**"
+      }
+    }
+  ],
+  "uri": "https://www.baidu.com/",
+  "filters": []
+}
+
+### 路由表
+GET http://127.0.0.1:9091/actuator/gateway/routes
+
+
+### springcloud服务发现
+GET http://127.0.0.1:8072/order?userId=1&productId=2
+
+###
+GET http://127.0.0.1:8072/get?a=1&b=2
+
+###
+POST http://127.0.0.1:8072/post
+Content-Type: application/json
+
+{"id": 1,"nickname": "xxx","money": 99.9}
+
+###
+GET http://127.0.0.1:8072/getUserById/102

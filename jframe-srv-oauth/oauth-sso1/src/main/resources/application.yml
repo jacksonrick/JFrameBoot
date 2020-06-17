@@ -10,7 +10,7 @@ spring:
 #  session:
 #    store-type: redis
 #    timeout: 5m
-#    redis:
+#    redis:  # SSO环境下使用jackson或fastjson序列化有BUG，使用默认序列化方式即可
 #      namespace: session:sso
 #  redis:
 #    host: dev

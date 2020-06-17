@@ -130,6 +130,8 @@ public class ValidUtil {
         return number >= 0 && number <= 1;
     }
 
+    static Pattern pattern = Pattern.compile("<[^>]+>");
+
     /**
      * 去除HTML标签
      *
@@ -140,7 +142,6 @@ public class ValidUtil {
         if (StringUtil.isBlank(str)) {
             return "";
         }
-        Pattern pattern = Pattern.compile("<[^>]+>");
         Matcher matcher = pattern.matcher(str);
         if (matcher.find()) {
             return matcher.replaceAll("");

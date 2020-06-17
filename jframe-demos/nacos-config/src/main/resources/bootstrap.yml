@@ -1,0 +1,13 @@
+# springcloud使用此配置文件
+
+#spring:
+#  application:
+#    name: nacos-configuer
+#  cloud:
+#    nacos:
+#      config:
+#        server-addr: 192.168.24.200:8848
+#        group: MYGROUP
+#        file-extension: yaml
+
+# dataId格式：${spring.application.name}-${spring.profile.active}.${file-extension}

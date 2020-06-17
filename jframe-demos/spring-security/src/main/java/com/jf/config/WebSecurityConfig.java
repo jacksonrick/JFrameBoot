@@ -4,6 +4,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -79,17 +80,23 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth
                 .jdbcAuthentication().dataSource(dataSource);
-                // 数据库存储用户（需要创建authorities,users表）
-                //.inMemoryAuthentication().withUser("admin").password("$2a$10$2QaFSy4T84/06c2uREOqxeTSNRsA1z6YYsGM/NJl..ZbjrOP9lL02").roles("ADMIN");
-                // 创建一个内存用户
+        // 数据库存储用户（需要创建authorities,users表）
+
+        //.inMemoryAuthentication().withUser("admin").password("$2a$10$2QaFSy4T84/06c2uREOqxeTSNRsA1z6YYsGM/NJl..ZbjrOP9lL02").roles("ADMIN");
+        // 创建一个内存用户
     }
 
-    /** 表DDL
-     create table users(username varchar(50) not null primary key,password varchar(500) not null,enabled boolean not null);
-     create table authorities (username varchar(50) not null,authority varchar(50) not null,constraint fk_authorities_users foreign key(username) references users(username));
-     create unique index ix_auth_username on authorities (username,authority);
+    /**
+     * 表DDL
+     * create table users(username varchar(50) not null primary key,password varchar(500) not null,enabled boolean not null);
+     * create table authorities (username varchar(50) not null,authority varchar(50) not null,constraint fk_authorities_users foreign key(username) references users(username));
+     * create unique index ix_auth_username on authorities (username,authority);
+     * create table persistent_logins (username varchar(64) not null, series varchar(64) primary key,token varchar(64) not null, last_used timestamp not null)
+     */
 
-     create table persistent_logins (username varchar(64) not null, series varchar(64) primary key,token varchar(64) not null, last_used timestamp not null)
-    * */
-
+    @Override
+    public void configure(WebSecurity web) {
+        // 过滤静态资源
+        web.ignoring().antMatchers("/static/**");
+    }
 }

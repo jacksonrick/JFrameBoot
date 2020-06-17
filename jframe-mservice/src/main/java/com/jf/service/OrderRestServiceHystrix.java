@@ -29,4 +29,9 @@ public class OrderRestServiceHystrix implements OrderRestService {
     public String post(User user) {
         return "sorry!service[post] is Unavailable!";
     }
+
+    @Override
+    public User getUserById(Integer id) {
+        return new User(-1);
+    }
 }
