@@ -562,14 +562,15 @@ public class GenerateBeansAndMybatisUtil {
             String field = processField(columns.get(i));
             String type = processType(types.get(i));
             bw.write("\t/** " + (StringUtil.isBlank(comments.get(i)) ? field : comments.get(i)) + " */\n");
-            bw.write("\tprivate " + type + " " + field + ";\n\n");
             if ("id".equals(field)) {
                 if ("Integer".equals(type)) {
                     idInt = true;
                 } else {
                     idInt = false;
+                    bw.write("\t//@JsonSerialize(using = ToStringSerializer.class)\n");
                 }
             }
+            bw.write("\tprivate " + type + " " + field + ";\n\n");
         }
         //生成构造方法
         bw.write("\tpublic " + beanName + "() {\n");

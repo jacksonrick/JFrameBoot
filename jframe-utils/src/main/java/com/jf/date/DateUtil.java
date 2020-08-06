@@ -1,5 +1,6 @@
 package com.jf.date;
 
+import com.jf.string.StringUtil;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -69,6 +70,9 @@ public class DateUtil {
      * @return
      */
     public static String getCurrentTime(String format) {
+        if (format == null || "".equals(format)) {
+            format = YYYY_MM_DD_HH_MM_SS;
+        }
         DateTime dt = new DateTime(System.currentTimeMillis());
         return dt.toString(format);
     }
@@ -100,6 +104,9 @@ public class DateUtil {
      * @return YYYY_MM_DD_HH_MM_SS
      */
     public static String dateToStr(Date date) {
+        if (date == null) {
+            return StringUtil.EMPTY_STRING;
+        }
         DateTime dt = new DateTime(date);
         return dt.toString(YYYY_MM_DD_HH_MM_SS);
     }
@@ -111,6 +118,9 @@ public class DateUtil {
      * @return YYYY_MM_DD
      */
     public static String dateToStrDay(Date date) {
+        if (date == null) {
+            return StringUtil.EMPTY_STRING;
+        }
         DateTime dt = new DateTime(date);
         return dt.toString(YYYY_MM_DD);
     }
@@ -123,6 +133,9 @@ public class DateUtil {
      * @return
      */
     public static String dateToStr(Date date, String format) {
+        if (date == null) {
+            return StringUtil.EMPTY_STRING;
+        }
         DateTime dt = new DateTime(date);
         return dt.toString(format);
     }
@@ -135,6 +148,9 @@ public class DateUtil {
      * @return
      */
     public static Date strToDate(String dateString) {
+        if (dateString == null || "".equals(dateString)) {
+            return null;
+        }
         return FMT_YYYY_MM_DD_HH_MM_SS.parseDateTime(dateString).toDate();
     }
 
@@ -146,6 +162,9 @@ public class DateUtil {
      * @return
      */
     public static Date strToDateDay(String dateString) {
+        if (dateString == null || "".equals(dateString)) {
+            return null;
+        }
         return FMT_YYYY_MM_DD.parseDateTime(dateString).toDate();
     }
 
@@ -157,6 +176,9 @@ public class DateUtil {
      * @return
      */
     public static Date strToDate(String dateString, String format) {
+        if (dateString == null || "".equals(dateString)) {
+            return null;
+        }
         DateTimeFormatter FMT = DateTimeFormat.forPattern(format);
         return FMT.parseDateTime(dateString).toDate();
     }
@@ -169,6 +191,9 @@ public class DateUtil {
      * @return
      */
     public static Date strToDate(String dateString, DateTimeFormatter format) {
+        if (dateString == null || "".equals(dateString)) {
+            return null;
+        }
         return format.parseDateTime(dateString).toDate();
     }
 
@@ -191,6 +216,9 @@ public class DateUtil {
      * @return
      */
     public static int getSeconds(String hhmmss) {
+        if (hhmmss == null || "".equals(hhmmss)) {
+            return 0;
+        }
         String[] text = hhmmss.split(":");
         int hour = Integer.valueOf(text[0]);
         int minute = Integer.valueOf(text[1]);
@@ -332,6 +360,9 @@ public class DateUtil {
      * @return
      */
     public static Date dateAddMonth(Date date, int month) {
+        if (date == null) {
+            return null;
+        }
         return add(date, Calendar.MONTH, month);
     }
 
@@ -343,6 +374,9 @@ public class DateUtil {
      * @return
      */
     public static Date dateAddDay(Date date, int day) {
+        if (date == null) {
+            return null;
+        }
         return add(date, Calendar.DAY_OF_YEAR, day);
     }
 
@@ -354,6 +388,9 @@ public class DateUtil {
      * @return
      */
     public static Date dateAddYear(Date date, int year) {
+        if (date == null) {
+            return null;
+        }
         return add(date, Calendar.YEAR, year);
     }
 
@@ -449,6 +486,9 @@ public class DateUtil {
      * @return
      */
     public static String getMoment(String time) {
+        if (time == null || "".equals(time)) {
+            return null;
+        }
         Date now = new Date();
         Date date = FMT_YYYY_MM_DD_HH_MM_SS.parseDateTime(time).toDate();
         long l = now.getTime() - date.getTime();
@@ -501,6 +541,9 @@ public class DateUtil {
      * @return
      */
     public static String secondToStr(Integer seconds) {
+        if (seconds < 0) {
+            return "0";
+        }
         long day = seconds / (24 * 60 * 60);
         long hour = (seconds / (60 * 60) - day * 24);
         long min = ((seconds / 60) - day * 24 * 60 - hour * 60);

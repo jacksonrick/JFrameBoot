@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.jf.database.mapper.MessageMapper">
+
+	<sql id="allColumn">
+		id,
+		chat_no,
+		from_id,
+		to_id,
+		content,
+		msg_type,
+		readed,
+		create_time,
+		extra
+	</sql>
+
+	<resultMap type="com.jf.database.model.Message" id="baseResultMap">
+		<id property="id" column="id" />
+		<result property="chatNo" column="chat_no" />
+		<result property="fromId" column="from_id" />
+		<result property="toId" column="to_id" />
+		<result property="content" column="content" />
+		<result property="msgType" column="msg_type" />
+		<result property="readed" column="readed" />
+		<result property="createTime" column="create_time" />
+		<result property="extra" column="extra" />
+	</resultMap>
+
+	<select id="findByCondition" resultMap="baseResultMap" parameterType="baseVo">
+		SELECT <include refid="allColumn"/> 
+		FROM im_message
+		WHERE chat_no = #{chatNo}
+		ORDER BY id DESC
+	</select>
+
+	<select id="findUnReadMsgCount" resultType="int" parameterType="long">
+		SELECT COUNT(1) FROM im_message WHERE to_id = #{userId} AND readed = 0
+	</select>
+
+	<insert id="insert" parameterType="com.jf.database.model.Message" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO im_message (
+			chat_no,
+			from_id,
+			to_id,
+			content,
+			msg_type,
+			extra
+		)
+		VALUES (
+			#{chatNo},
+			#{fromId},
+			#{toId},
+			#{content},
+			#{msgType},
+			#{extra}
+		)
+	</insert>
+
+	<update id="update" parameterType="long">
+		UPDATE im_message SET readed = 1
+		WHERE id = #{id}
+	</update>
+
+	<update id="update2">
+		UPDATE im_message SET readed = 1
+		WHERE chat_no = #{chatNo} AND to_id = #{toId}
+	</update>
+
+</mapper>

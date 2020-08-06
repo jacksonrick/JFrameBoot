@@ -4,6 +4,7 @@ import com.jf.commons.LogManager;
 import com.jf.json.JacksonUtil;
 import com.jf.sdk.wxpay.WXPay;
 import com.jf.sdk.wxpay.WXPayConfig;
+import com.jf.sdk.wxpay.WXPayConstants;
 import com.jf.sdk.wxpay.WXPayUtil;
 import com.jf.system.conf.SysConfig;
 import org.springframework.core.io.ClassPathResource;
@@ -193,7 +194,7 @@ public class WxPayService implements WXPayConfig {
      * @return
      * @throws Exception
      */
-    public String transfer(String orderNum, String openid, String username, Double money, String desc, String ip) throws Exception {
+    public Map<String, String> transfer(String orderNum, String openid, String username, Double money, String desc, String ip) throws Exception {
         WXPay wxpay = new WXPay(this);
         Map<String, String> data = new HashMap<String, String>();
         data.put("partner_trade_no", orderNum);
@@ -206,10 +207,7 @@ public class WxPayService implements WXPayConfig {
 
         Map<String, String> resp = wxpay.transfer(data);
         LogManager.info(resp.toString(), WxPayService.class);
-        if ("SUCCESS".equals(resp.get("result_code"))) {
-            return JacksonUtil.objectToJson(resp);
-        }
-        return null;
+        return resp;
     }
 
     /**

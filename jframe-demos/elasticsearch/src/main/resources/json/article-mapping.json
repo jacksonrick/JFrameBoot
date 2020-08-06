@@ -5,7 +5,7 @@
         "type": "long"
       },
       "title": {
-        "type": "keyword",
+        "type": "text",
         "fields": {
           "pinyin": {
             "type": "text",
@@ -20,6 +20,9 @@
         "type": "text",
         "analyzer": "ik_max_word",
         "search_analyzer": "ik_smart"
+      },
+      "tag": {
+        "type": "keyword"
       }
     }
   }

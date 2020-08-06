@@ -26,14 +26,16 @@ public class Article {
     //@Field(type = FieldType.Text, searchAnalyzer = "ikSearchAnalyzer", analyzer = "ikSearchAnalyzer")
     private String title;
     private String content;
+    private String tag;
 
     // @Field(type = FieldType.Date)
     // private Date createTime;
 
-    public Article(long id, String title, String content) {
+    public Article(long id, String title, String content, String tag) {
         this.id = id;
         this.title = title;
         this.content = content;
+        this.tag = tag;
     }
 
     public Article(String title, String content) {
@@ -68,12 +70,21 @@ public class Article {
         this.content = content;
     }
 
+    public String getTag() {
+        return tag;
+    }
+
+    public void setTag(String tag) {
+        this.tag = tag;
+    }
+
     @Override
     public String toString() {
         return "Article{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
                 ", content='" + content + '\'' +
+                ", tag='" + tag + '\'' +
                 '}';
     }
 

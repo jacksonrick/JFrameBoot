@@ -5,10 +5,13 @@ spring:
     static-locations: classpath:/static/
   mvc:
     static-path-pattern: /static/**
+  freemarker:
+    template-loader-path: classpath:/templates
+    suffix: .ftl
   data: # es配置
     elasticsearch:
       cluster-name: docker-cluster
-      cluster-nodes: 192.168.40.200:9300
+      cluster-nodes: dev:9300
       repositories:
         enabled: true
 logging:

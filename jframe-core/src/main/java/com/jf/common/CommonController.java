@@ -1,8 +1,9 @@
 package com.jf.common;
 
 import com.jf.date.DateUtil;
+import com.jf.entity.CaptchaConfig;
 import com.jf.entity.UploadRet;
-import com.jf.exception.SysException;
+import com.jf.file.CaptchaUtil;
 import com.jf.sdk.fdfs.domain.StorePath;
 import com.jf.sdk.fdfs.service.AppendFileStorageClient;
 import com.jf.sdk.fdfs.service.FastFileStorageClient;
@@ -10,22 +11,19 @@ import com.jf.string.StringUtil;
 import com.jf.system.conf.IConstant;
 import com.jf.system.conf.SysConfig;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
 
 /**
  * 通用工具类控制器
@@ -42,7 +40,7 @@ public class CommonController {
 
     @Autowired(required = false)
     private FastFileStorageClient storageClient;
-    @Autowired
+    @Autowired(required = false)
     private AppendFileStorageClient appendFileStorageClient;
 
     /**
@@ -50,7 +48,7 @@ public class CommonController {
      *
      * @return
      */
-    @RequestMapping("/error/{path}")
+    @GetMapping("/error/{path}")
     public String error(@PathVariable("path") String path) {
         return "error/" + path;
     }
@@ -58,56 +56,32 @@ public class CommonController {
     /**
      * 获取验证码
      * <p> sessionName:Constant.SESSION_RAND </p>
-     * <p> 6位数字 </p>
      *
      * @throws IOException
      */
-    @RequestMapping("/getValidCode")
-    public void getValidCode(HttpServletRequest request, HttpServletResponse response) {
-        try {
-            BufferedImage bi = new BufferedImage(100, 35, BufferedImage.TYPE_INT_RGB);
-            Graphics g = bi.getGraphics();
-            Color c = new Color(127, 255, 212);
-            g.setColor(c);
-            int width = 100;
-            int height = 35;
-            g.fillRect(0, 0, width, height);
-            g.setFont(new Font("Default", Font.PLAIN, 24));
-            Random random = new Random();
-            // g.setColor(Color.BLACK);
-            int red = 0, green = 0, blue = 0;
-            for (int i = 0; i < 20; i++) {
-                int xs = random.nextInt(width);
-                int ys = random.nextInt(height);
-                int xe = xs + random.nextInt(width / 8);
-                int ye = ys + random.nextInt(height / 8);
-                red = random.nextInt(255);
-                green = random.nextInt(255);
-                blue = random.nextInt(255);
-                g.setColor(new Color(red, green, blue));
-                g.drawLine(xs, ys, xe, ye);
-            }
+    @GetMapping("/getValidCode")
+    public void getValidCode(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        CaptchaConfig config = new CaptchaConfig(6, 100, 35);
+        char[] chars = CaptchaUtil.getTextChars(config);
+        request.getSession().setAttribute(IConstant.SESSION_RAND, new String(chars));
+        // 输出流方式的验证码，需要先获取文本，再输出
+        CaptchaUtil.toStream(chars, response.getOutputStream(), config);
+    }
 
-            char[] ch = "0123456789".toCharArray();
-            int len = ch.length, index;
-            StringBuffer sb = new StringBuffer();
-            // 验证码位数：5
-            for (int i = 0; i < 5; i++) {
-                Graphics2D gg = (Graphics2D) g.create();
-                gg.translate((i * 15) + 14, 20);
-                gg.rotate(random.nextInt(60) * Math.PI / 180);
-
-                index = random.nextInt(len);
-                gg.setColor(new Color(random.nextInt(100), random.nextInt(180), random.nextInt(255)));
-                gg.drawString(ch[index] + "", 0, 0);
-                sb.append(ch[index]);
-            }
-            request.getSession().setAttribute(IConstant.SESSION_RAND, sb.toString());
-            ImageIO.write(bi, "JPG", response.getOutputStream());
-            g.dispose();
-        } catch (Exception e) {
-            throw new SysException(e.getMessage(), e);
-        }
+    /**
+     * 获取base64验证码
+     *
+     * @param request
+     * @return
+     */
+    @GetMapping("/getValidCodeStr")
+    @ResponseBody
+    public String getValidCodeStr(HttpServletRequest request) {
+        // 默认配置：CaptchaUtil.DEFAULT_CONFIG
+        ImmutablePair<String, String> pair = CaptchaUtil.toBase64();
+        // pair.getKey() 验证码明文，可以存放在数据库如redis
+        request.getSession().setAttribute(IConstant.SESSION_RAND, pair.getKey());
+        return pair.getValue();
     }
 
     /**
@@ -118,7 +92,7 @@ public class CommonController {
      * @return
      * @throws IOException
      */
-    @RequestMapping(value = "/uploadwithKE", method = RequestMethod.POST)
+    @PostMapping("/uploadwithKE")
     @ResponseBody
     public UploadRet uploadwithKE(@RequestParam("imgFile") MultipartFile file, HttpServletRequest request) throws IOException {
         // 文件限制
@@ -160,7 +134,7 @@ public class CommonController {
      * @return
      * @throws IOException
      */
-    @RequestMapping(value = "/uploadwithUE")
+    @PostMapping("/uploadwithUE")
     @ResponseBody
     public Map<String, Object> uploadwithUE(String action, @RequestParam(name = "imgFile", required = false) MultipartFile file, HttpServletRequest request) throws IOException {
         Map<String, Object> map = new HashMap();
@@ -204,7 +178,7 @@ public class CommonController {
      * @return
      * @throws IOException
      */
-    @RequestMapping(value = "/upload", method = RequestMethod.POST)
+    @PostMapping("/upload")
     @ResponseBody
     public UploadRet upload(@RequestParam("file") MultipartFile file, Integer t, HttpServletRequest request) throws IOException {
         // 文件后缀
@@ -265,7 +239,7 @@ public class CommonController {
      * @return
      * @throws IOException
      */
-    @RequestMapping(value = "/uploadAppend", method = RequestMethod.POST)
+    @PostMapping("/uploadAppend")
     @ResponseBody
     public UploadRet uploadAppend(@RequestParam("file") MultipartFile file, Boolean append,
                                   String path, HttpServletRequest request) throws IOException {

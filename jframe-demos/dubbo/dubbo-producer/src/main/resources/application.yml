@@ -1,0 +1,22 @@
+server:
+  port: 8081
+spring:
+  application:
+    name: DUBBO-PRODUCER
+dubbo: # dubbo配置
+  consumer:
+    timeout: 1000 # 超时时间
+    retries: 3 # 重试次数
+  provider:
+    threads: 200 # 服务线程池大小
+  scan:
+    base-packages: com.jf.service.impl # 包扫描路径
+  protocol:
+    name: dubbo # 协议
+    port: -1 # 随机端口
+  registry:
+    address: zookeeper://dev:2181 # 注册地址，使用zookeeper
+#  config-center:
+#    address: zookeeper://dev:2181 # 配置中心地址
+#  metadata-report:
+#    address: zookeeper://dev:2181 # 元数据中心地址

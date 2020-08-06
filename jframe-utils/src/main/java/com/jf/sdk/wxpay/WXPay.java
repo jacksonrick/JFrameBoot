@@ -371,8 +371,13 @@ public class WXPay {
      */
     public Map<String, String> transfer(Map<String, String> reqData, int connectTimeoutMs, int readTimeoutMs) throws Exception {
         String url = WXPayConstants.TRANSFER_URL;
-        String respXml = this.requestWithoutCert(url, this.fillRequestData(reqData), connectTimeoutMs, readTimeoutMs);
-        return this.processResponseXml(respXml);
+        reqData.put("mch_appid", config.getAppID());
+        reqData.put("mchid", config.getMchID());
+        reqData.put("nonce_str", WXPayUtil.generateNonceStr());
+        reqData.put("sign", WXPayUtil.generateSignature(reqData, config.getKey(), WXPayConstants.SignType.MD5));
+
+        String respXml = this.requestWithCert(url, reqData, connectTimeoutMs, readTimeoutMs);
+        return WXPayUtil.xmlToMap(respXml);
     }
 
 

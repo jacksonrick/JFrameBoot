@@ -1,0 +1,8 @@
+server:
+  port: 8082
+spring:
+  application:
+    name: DUBBO-CONSUMER
+dubbo:
+  registry: # 注册地址，使用zookeeper
+    address: zookeeper://dev:2181

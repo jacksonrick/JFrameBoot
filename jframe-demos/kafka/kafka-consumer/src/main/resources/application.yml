@@ -1,0 +1,23 @@
+# 消费者
+server:
+  port: 8096
+spring:
+  kafka:
+    bootstrap-servers: dev:9093,dev:9094,dev:9095
+    producer: # 消费者同时也作为生产者
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer #如果消费者端配置（转发到）DLT队列，需要此项配置
+      transaction-id-prefix: tx. # tx support
+    consumer:
+      auto-offset-reset: earliest
+      enable-auto-commit: true
+      auto-commit-interval: 100
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: '*'
+        spring.json.type.mapping: foo:com.jf.bean.Foo,bar:com.jf.bean.Bar #按照bean类型分发处理
+        isolation.level: read_committed # tx support
+    listener:
+      type: batch # 批量消费
+logging:
+  level:
+    org.springframework: info

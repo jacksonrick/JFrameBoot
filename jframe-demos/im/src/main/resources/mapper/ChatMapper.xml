@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.jf.database.mapper.ChatMapper">
+
+	<resultMap id="chatResultMapper" type="com.jf.database.model.Chat">
+		<id property="id" column="id"/>
+		<result property="chatNo" column="chat_no"/>
+		<result property="otherId" column="other_id"/>
+		<result property="otherName" column="nickname"/>
+		<result property="unread" column="unread"/>
+		<association property="lastMsg" javaType="com.jf.database.model.Message">
+			<id property="id" column="msg_id"/>
+			<result property="fromId" column="from_id"/>
+			<result property="toId" column="to_id"/>
+			<result property="content" column="content"/>
+			<result property="msgType" column="msg_type"/>
+			<result property="createTime" column="create_time"/>
+		</association>
+	</resultMap>
+
+	<select id="findByUserId" resultMap="chatResultMapper" parameterType="long">
+		SELECT a.id, a.chat_no, a.other_id, b.id AS msg_id, b.from_id, b.to_id, b.content, b.msg_type, b.create_time, c.nickname,
+			(SELECT COUNT(1) FROM im_message WHERE chat_no = a.chat_no AND to_id = #{userId} AND readed = 0) AS unread
+		FROM im_chat a
+		LEFT JOIN im_message b ON a.last_msg_id = b.id
+		LEFT JOIN t_user c ON a.other_id = c.id
+		WHERE a.user_id = #{userId}
+		ORDER BY b.create_time DESC
+	</select>
+
+	<select id="findChatByUidAndOid" resultMap="chatResultMapper">
+		SELECT a.id, a.chat_no, a.other_id, b.id AS msg_id, b.from_id, b.to_id, b.content, b.msg_type, b.create_time, c.nickname,
+		(SELECT COUNT(1) FROM im_message WHERE chat_no = a.chat_no AND to_id = #{userId} AND readed = 0) AS unread
+		FROM im_chat a
+		LEFT JOIN im_message b ON a.last_msg_id = b.id
+		LEFT JOIN t_user c ON a.other_id = c.id
+		WHERE a.user_id = #{userId} AND a.other_id = #{otherId}
+	</select>
+
+	<select id="findChatNoByUidAndOid" resultType="int">
+		SELECT chat_no FROM im_chat
+		WHERE user_id = #{userId} AND other_id = #{otherId}
+	</select>
+
+	<select id="findOidByChatNoAndUid" resultType="long">
+		SELECT other_id FROM im_chat
+		WHERE chat_no = #{chatNo} AND user_id = #{userId}
+	</select>
+
+	<select id="findUidByChatNoAndOid" resultType="long">
+		SELECT user_id FROM im_chat
+		WHERE chat_no = #{chatNo} AND other_id = #{otherId}
+	</select>
+
+	<select id="findMaxChatNo" resultType="int">
+		SELECT MAX(chat_no) FROM im_chat
+	</select>
+
+	<insert id="insert" parameterType="com.jf.database.model.Chat">
+		INSERT INTO im_chat (
+			chat_no,
+			user_id,
+			other_id
+		)
+		VALUES (
+			#{chatNo},
+			#{userId},
+			#{otherId}
+		)
+	</insert>
+
+	<update id="update">
+		UPDATE im_chat SET last_msg_id = #{msgId} WHERE chat_no = #{chatNo}
+	</update>
+</mapper>

@@ -1,6 +1,6 @@
 package com.jf.file;
 
-import com.jf.convert.Convert;
+import com.jf.math.Convert;
 import com.jf.date.DateUtil;
 import com.jf.exception.SysException;
 import org.apache.commons.codec.digest.DigestUtils;

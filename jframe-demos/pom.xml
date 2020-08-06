@@ -15,21 +15,18 @@
     <name>jframe-demos</name>
 
     <modules>
-        <module>base-test</module>
-        <module>mq-consumer1</module>
-        <module>mq-consumer2</module>
-        <module>mq-producer</module>
-        <module>dubbo-consumer</module>
-        <module>dubbo-producer</module>
+        <module>rabbitmq</module>
+        <module>dubbo</module>
+        <module>kafka</module>
         <module>quartz</module>
         <module>websocket</module>
         <module>websocket-mq</module>
         <module>zookeeper</module>
         <module>actuator</module>
         <module>elasticsearch</module>
-        <module>nacos-cloud</module>
         <module>nacos-config</module>
         <module>sharding-db</module>
+        <module>im</module>
     </modules>
 
 </project>

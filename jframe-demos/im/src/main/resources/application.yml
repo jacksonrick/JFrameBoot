@@ -1,0 +1,55 @@
+server:
+  port: 9500
+  servlet:
+    session:
+      cookie:
+        name: IMID
+spring:
+  profiles:
+    active: dev
+  application:
+    name: JFRAME-IM
+  mvc:
+    static-path-pattern: /static/** # 静态地址映射
+  servlet:
+    multipart: # 文件上传限制
+      max-file-size: 20MB
+      max-request-size: 10MB
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss # json时间转换
+    time-zone: GMT+8
+    default-property-inclusion: non_null
+  resources:
+    static-locations: classpath:/static,file:/Users/xujunfei/Downloads/tmp/static/
+  freemarker:
+    template-loader-path: classpath:/templates # 模板文件目录
+    suffix: .ftl
+    cache: true # 缓存
+    charset: UTF-8
+    settings: # 数据格式设置
+      template_update_delay: 0
+      default_encoding: UTF-8
+      locale: zh_CN
+      url_escaping_charset: zh_CN
+      date_format: yyyy-MM-dd
+      time_format: HH:mm:ss
+      datetime_format: yyyy-MM-dd HH:mm:ss
+      number_format: 0.##
+      boolean_format: true,false
+      classic_compatible: true
+      whitespace_stripping: true
+      log_template_exceptions: true
+      template_exception_handler: ignore
+  datasource:
+    druid: # Druid数据源配置
+      driver-class-name: com.mysql.jdbc.Driver
+      url: jdbc:mysql://localhost:3306/jframe?serverTimezone=UTC&characterEncoding=utf8&useUnicode=true&zeroDateTimeBehavior=convertToNull&useSSL=false
+      username: root
+      password: 12345678
+      initial-size: 5 # 初始化时建立物理连接的个数。初始化发生在显示调用init方法，或者第一次getConnection时
+      max-active: 20 # 最大连接池数量 Default:8
+      max-wait: 60000 # 获取连接时最大等待时间
+      min-idle: 5 # 最小连接池数量
+logging:
+  level:
+    com.jf.database: DEBUG

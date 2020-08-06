@@ -1,0 +1,17 @@
+### kafka producer
+GET http://localhost:8097/send?name=jack
+
+###
+GET http://localhost:8097/send/foo
+
+###
+GET http://localhost:8097/send/bar
+
+###
+GET http://localhost:8097/send/unknow
+
+###
+GET http://localhost:8097/send/batch?names=jack,rick,tom,james,jerry,dalin,nick
+
+###
+GET http://localhost:8097/send/batch2?names=jack,rick,tom,james,jerry,dalin,nick

@@ -1,5 +1,5 @@
 # JFrame - A Java Integration Framework
-##### JFrame - SpringBoot & Cloud Project `v5.9`
+##### JFrame - SpringBoot & Cloud Project `v5.9.2`
 made by @jackson-rick   <br>
 > 本架构是对技术框架的整合及开发的规范，适合多端项目和微服务
 
@@ -31,8 +31,55 @@ made by @jackson-rick   <br>
 * Nginx&Docker&Jenkins自动化部署
 * 测试示例：消息队列RabbitMQ、Nacos分布式配置、服务发现、Quartz管理器、Websocket单点和MQ集群、Elastic全文搜索、dubbo服务
 
+### 环境与配置
+* Jdk 1.8
+* MySQL 5.6 +
+* Postgresql 9 +
+* Maven 3.3.9
+* Redis 2.8.9
+* Linux CentOS 7
+* IDEA 2018.1
+* Docker CE 18+
+* 其他：RabbitMQ3.6、Jenkins、Dubbo2.7.1、ElasticSearch6.4.3、Zookeeper3.4.13
+---
+
+### 运行
+#### 打包到服务器运行
+* 修改生产环境配置
+* 安装依赖到本地仓库 
+    * cd jframe -> clean install
+    * cd jframe-utils -> clean install -e
+    * cd jframe-core -> clean install -e
+* 在各个端下运行 
+    * clean package -Dmaven.test.skip=true -e
+* 将target目录下的打包文件上传到服务器目录
+* 运行`jframe/build/run`命令或直接运行`java -jar`命令
+* 注意：运行脚本前，请先查看注释，需要按照指定的命名方式
+
+#### Docker
+* 直接运行打包命令，将上传到服务器目录，如:/home/docker/web
+* 将项目jframe/build/docker/docker-compose.yml文件拷贝到项目根目录
+* 运行`docker-compose up -d` | `docker-compose start web`
+* 可搭配Jenkins发布
+
+### 其他
+* 使用maven下载Jar包时，请先在Maven中添加阿里的镜像源
+* 数据库脚本：`jframe/doc/mysql/database.sql`
+* 操作手册说明：`jframe/doc/框架使用手册.docx`
+* 默认为MySQL数据库，如使用Postgresql，将数据库脚本替换为`jframe/doc/postgresql/public.sql`
+* jframe-demos模块代码仅供参考
+
+### 声明
+本框架不能直接用于生产环境，需要根据业务做一定量调整
+
+---
 
 ### 更新日志：
+* v5.9.2 `20200806`
+    * 1.新增即时聊天模块 [前往](jframe-demos/im/README.md)
+* v5.9.1 `20200624`
+    * 1.优化utils工具包
+    * 2.新增KafKa示例
 * v5.9 `20200617`
     * 1.集成Nacos配置管理和服务发现
     * 2.升级springcloud及相关依赖的版本
@@ -337,44 +384,3 @@ made by @jackson-rick   <br>
     * 2.优化封装的JS插件
 * v1.x `20160601`
     * JFrame项目Start
-    
-### 环境与配置
-* Jdk 1.8
-* MySQL 5.6 +
-* Postgresql 9 +
-* Maven 3.3.9
-* Redis 2.8.9
-* Linux CentOS 7
-* IDEA 2018.1
-* Docker CE 18+
-* 其他：RabbitMQ3.6、Jenkins、Dubbo2.7.1、ElasticSearch6.4.3、Zookeeper3.4.13
----
-
-### 运行
-#### 打包到服务器运行
-* 修改生产环境配置
-* 安装依赖到本地仓库 
-    * cd jframe -> clean install
-    * cd jframe-utils -> clean install -e
-    * cd jframe-core -> clean install -e
-* 在各个端下运行 
-    * clean package -Dmaven.test.skip=true -e
-* 将target目录下的打包文件上传到服务器目录
-* 运行`jframe/build/run`命令或直接运行`java -jar`命令
-* 注意：运行脚本前，请先查看注释，需要按照指定的命名方式
-
-#### Docker[推荐]
-* 直接运行打包命令，将上传到服务器目录，如:/home/docker/web
-* 将项目jframe/build/docker/docker-compose.yml文件拷贝到项目根目录
-* 运行`docker-compose up -d` | `docker-compose start web`
-* 配合Jenkins部署更佳
-
-### 其他
-* 使用maven下载Jar包时，请先在Maven中添加阿里的镜像源
-* 数据库脚本：`jframe/doc/mysql/database.sql`
-* 操作手册说明：`jframe/doc/框架使用手册.docx`
-* 默认为MySQL数据库，如使用Postgresql，将数据库脚本替换为`jframe/doc/postgresql/public.sql`
-* jframe-demos模块代码仅供参考
-
-### 声明
-本框架不能直接用于生产环境，需要根据业务做一定量调整

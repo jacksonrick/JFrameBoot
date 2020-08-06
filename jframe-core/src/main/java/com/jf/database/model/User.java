@@ -29,7 +29,7 @@ public class User extends BaseVo implements Serializable {
 
     /** id */
     // @JsonFormat(shape = JsonFormat.Shape.STRING)
-    // @JsonSerialize(using = ToStringSerializer.class)
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long id;
 
     /** 昵称 */

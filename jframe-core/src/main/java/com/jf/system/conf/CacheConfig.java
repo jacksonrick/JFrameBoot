@@ -39,7 +39,7 @@ public class CacheConfig extends CachingConfigurerSupport {
      * private RedisTemplate redisTemplate;
      * </p>
      *
-     * @param connectionFactory
+     * @param redisConnectionFactory
      * @return
      */
     @Bean(name = "redisTemplate")

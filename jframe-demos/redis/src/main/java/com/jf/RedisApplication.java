@@ -1,5 +1,6 @@
 package com.jf;
 
+import com.jf.lock.RedisLocker;
 import com.jf.model.Admin;
 import com.jf.model.Product;
 import com.jf.service.ProductService;
@@ -16,6 +17,7 @@ import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Set;
+import java.util.UUID;
 
 @SpringBootApplication
 @Controller
@@ -111,6 +113,24 @@ public class RedisApplication {
     public String logout(HttpSession session) {
         session.invalidate();
         return "logout success";
+    }
+
+    @Resource
+    private RedisLocker redisLocker;
+
+    @GetMapping("/rush")
+    @ResponseBody
+    public String rush(String user) {
+        System.out.println(System.currentTimeMillis() + " 用户：" + user + "开始抢购");
+        String requestId = UUID.randomUUID().toString();
+        boolean result = redisLocker.tryGetDistributedLock("P100", requestId, 10);
+        if (result) {
+            System.out.println("用户：" + user + "抢到了");
+            redisLocker.releaseDistributedLock("P100", requestId);
+            return "SUCCESS";
+        } else {
+            return "FAIL";
+        }
     }
 
     public static void main(String[] args) {

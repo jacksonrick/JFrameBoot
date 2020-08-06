@@ -77,7 +77,7 @@ public class ArticleService {
      */
     public Page<Article> searchPinyin(String keyword, Pageable pageable) {
         BoolQueryBuilder boolQuery = QueryBuilders.boolQuery();
-        MultiMatchQueryBuilder matchQuery = QueryBuilders.multiMatchQuery(keyword, "title", "title.pinyin", "content");
+        MultiMatchQueryBuilder matchQuery = QueryBuilders.multiMatchQuery(keyword, "title", "title.pinyin", "content", "tag");
         boolQuery.must(matchQuery);
         SearchQuery searchQuery = new NativeSearchQueryBuilder()
                 .withQuery(matchQuery)

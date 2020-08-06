@@ -1,0 +1,19 @@
+# 生产者
+server:
+  port: 8097
+spring:
+  kafka:
+    bootstrap-servers: dev:9093,dev:9094,dev:9095
+    producer:
+      retries: 0
+      batch-size: 100
+      buffer-memory: 33554432 # 32M
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      properties:
+        spring.json.trusted.packages: '*'
+        enable.idempotence: true # tx support
+        retries: 3 # tx support
+      transaction-id-prefix: tx. # tx support
+logging:
+  level:
+    org.springframework: info

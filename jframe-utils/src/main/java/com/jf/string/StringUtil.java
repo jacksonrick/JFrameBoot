@@ -19,6 +19,8 @@ import java.util.regex.Pattern;
  */
 public class StringUtil {
 
+    public static final String EMPTY_STRING = "";
+
     /**
      * 获取订单编号（时间戳+8位随机数）
      *

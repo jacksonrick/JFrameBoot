@@ -238,7 +238,7 @@ system: # 系统自定义配置
     secret: secret
     ios_product: false
   upload: # FastDFS
-    fdfs: true
+    fdfs: false
     img_size: 3
     img_type: jpg,jpeg,png
     file_size: 10

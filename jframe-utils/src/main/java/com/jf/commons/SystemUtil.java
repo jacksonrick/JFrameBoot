@@ -1,6 +1,6 @@
 package com.jf.commons;
 
-import com.jf.convert.Convert;
+import com.jf.math.Convert;
 import com.jf.exception.SysException;
 import com.jf.file.FileUtil;
 import com.sun.management.OperatingSystemMXBean;

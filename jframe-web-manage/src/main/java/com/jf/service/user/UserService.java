@@ -7,6 +7,7 @@ import com.jf.database.model.custom.IdText;
 import com.jf.database.model.excel.UserModel;
 import com.jf.string.IdGen;
 import com.jf.string.StringUtil;
+import com.jf.uid.UidGenerator;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -153,6 +154,9 @@ public class UserService {
         return userMapper.findForExcel(condition);
     }
 
+    @Resource
+    private UidGenerator uidGenerator;
+
     /**
      * 新增用户
      *
@@ -163,7 +167,7 @@ public class UserService {
      * @return
      */
     public int insertUser(String nickname, String email, String password, String phone) {
-        User user = new User(IdGen.get().nextId());
+        User user = new User(uidGenerator.getUID());
         user.setEmail(email);
         user.setPassword(password);
         user.setPhone(phone);
