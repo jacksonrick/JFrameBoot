@@ -101,6 +101,10 @@ input[type=file] {
     content: "\f03e";
 }
 
+.fa-link:before {
+    content: "\f0c1";
+}
+
 .fa-arrow-left:before {
     content: "\f060";
 }
@@ -229,7 +233,7 @@ input[type=file] {
 }
 
 .menu-list-none {
-    display: none;
+    display: block;
     width: 150px;
     height: 30px;
     line-height: 30px;
@@ -454,6 +458,27 @@ input[type=file] {
     word-break: break-all;
 }
 
+.x-message-link {
+    color: #fff;
+    background-color: #00a163;
+    border-color: #00a163;
+    max-width: 200px;
+    text-align: left;
+    font-size: 14px;
+    display: inline-block;
+    margin-bottom: 0;
+    font-weight: 500;
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+    cursor: pointer;
+    background-image: none;
+    border: 1px solid transparent;
+    padding: 0px 5px;
+    border-radius: 2px;
+    height: 28px;
+    line-height: 28px;
+}
+
 .x-message-audio .audio-btn {
     color: #fff;
     background-color: #00a163;
@@ -584,14 +609,6 @@ input[type=file] {
 
 .ib {
     display: inline-block;
-}
-
-.recorder {
-    font-size: 20px;
-    display: inline-block;
-    padding: 0 10px;
-    cursor: pointer;
-    color: rgba(0, 0, 0, 0.65);
 }
 
 .x-chat-send .ant-input-group-wrapper {
@@ -827,6 +844,14 @@ input[type=file] {
     padding-bottom: 24px;
 }
 
+.ant-modal-iframe {
+    width: auto;
+    height: 90%;
+    margin: 10px;
+    position: relative;
+    padding-bottom: 24px;
+}
+
 .ant-modal-body {
     padding: 16px;
     font-size: 12px;
@@ -917,4 +942,58 @@ input[type=file] {
     color: #fff;
     background-color: #f04134;
     border-color: #ffffff;
+}
+
+#link-form {
+    background-color: #ffffff;
+    padding: 10px 5px;
+}
+
+.link-form-item {
+    margin-top: 14px;
+}
+
+.link-form-input {
+    display: inline-block;
+    color: rgba(0, 0, 0, 0.65);
+    outline: none;
+    height: 28px;
+    width: 85%;
+    border: solid 1px #ccc;
+    margin-left: 5px;
+    padding: 0px 4px;
+}
+
+.link-form-button {
+    display: inline-block;
+    margin-bottom: 0;
+    font-weight: normal;
+    text-align: center;
+    vertical-align: middle;
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+    cursor: pointer;
+    background-image: none;
+    border: 1px solid #ccc;
+    padding: 5px 20px;
+    font-size: 12px;
+    line-height: 1.5;
+    border-radius: 0;
+    color: #333;
+    background-color: #fff;
+    outline: none;
+}
+
+.modal-iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+.modal-iframe-close {
+    height: 28px;
+    line-height: 28px;
+    font-size: 14px;
+    background-color: #ffffff;
+    text-align: center;
 }

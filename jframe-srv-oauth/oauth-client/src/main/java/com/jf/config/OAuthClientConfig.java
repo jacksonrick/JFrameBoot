@@ -60,4 +60,31 @@ public class OAuthClientConfig extends WebSecurityConfigurerAdapter {
         return new OAuth2RestTemplate(resource, context);
     }
 
+    /*
+    同时支持authorization_code和client_credentials，需要注解@EnableOAuth2Sso，并且配置资源服务
+    @Configuration
+    @EnableResourceServer
+    public class ResourceConfig extends ResourceServerConfigurerAdapter {
+        @Override
+        public void configure(HttpSecurity http) throws Exception {
+            http
+                    .antMatcher("/api/extra/**")
+                    .authorizeRequests()
+                    .anyRequest().authenticated()
+            ;
+        }
+    }
+
+    //配置OAuth2RestTemplate
+    @Bean
+    @ConfigurationProperties(prefix = "security.oauth2.client")
+    public ClientCredentialsResourceDetails getClientCredentialsResourceDetails() {
+        return new ClientCredentialsResourceDetails();
+    }
+
+    @Bean
+    public OAuth2RestTemplate oAuth2RestOperations() {
+        return new OAuth2RestTemplate(getClientCredentialsResourceDetails());
+    }
+    * */
 }

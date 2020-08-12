@@ -1,15 +1,16 @@
-auth-server: http://127.0.0.1:8090
+auth-server: http://192.168.24.200:8090
 server:
   port: 8010
 security:
   oauth2:
     resource:
-      token-info-uri: http://127.0.0.1:8090/oauth/check_token
-    client:
-      grant-type: password
-      client-id: pwd
-      client-secret: 123456
-      user-authorization-uri: ${auth-server}/oauth/authorize
-      access-token-uri: ${auth-server}/oauth/token
-      resource:
-        user-info-uri: ${auth-server}/authentication/user
+      token-info-uri: ${auth-server}/oauth/check_token
+      user-info-uri: ${auth-server}/authentication/user
+#    client:
+#      client-id: client
+#      client-secret: 123456
+#      grant-type: client_credentials
+#      user-authorization-uri: ${auth-server}/oauth/authorize
+#      access-token-uri: ${auth-server}/oauth/token
+#      resource:
+#        user-info-uri: ${auth-server}/authentication/user

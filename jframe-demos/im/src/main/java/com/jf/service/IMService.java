@@ -31,6 +31,8 @@ public class IMService {
     public static final String MSG_TYPE_PIC_MARK = "[图片]";
     public static final String MSG_TYPE_AUD = "aud";
     public static final String MSG_TYPE_AUD_MARK = "[语音]";
+    public static final String MSG_TYPE_LINK = "link";
+    public static final String MSG_TYPE_LINK_MARK = "[链接]";
 
     @Resource
     private ChatMapper chatMapper;
@@ -87,6 +89,8 @@ public class IMService {
                 chat.getLastMsg().setContent(MSG_TYPE_PIC_MARK);
             } else if (MSG_TYPE_AUD.equals(chat.getLastMsg().getMsgType())) {
                 chat.getLastMsg().setContent(MSG_TYPE_AUD_MARK);
+            } else if (MSG_TYPE_LINK.equals(chat.getLastMsg().getMsgType())) {
+                chat.getLastMsg().setContent(MSG_TYPE_LINK_MARK);
             }
         }
         return list;

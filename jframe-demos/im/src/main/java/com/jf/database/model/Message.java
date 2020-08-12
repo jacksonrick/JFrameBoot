@@ -27,7 +27,7 @@ public class Message extends BaseVo implements Serializable {
 	/** 内容 */
 	private String content;
 
-	/** txt,pic */
+	/** txt,pic,aud,link */
 	private String msgType;
 
 	/** 收信人已读 */

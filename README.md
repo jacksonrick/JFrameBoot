@@ -1,5 +1,5 @@
 # JFrame - A Java Integration Framework
-##### JFrame - SpringBoot & Cloud Project `v5.9.2`
+##### JFrame - SpringBoot & Cloud Project `v5.9.3`
 made by @jackson-rick   <br>
 > 本架构是对技术框架的整合及开发的规范，适合多端项目和微服务
 
@@ -30,6 +30,7 @@ made by @jackson-rick   <br>
 * 子模块及微服务：quartz、cache、rabbitmq、websocket、fdfs、eureka、oauth2、zuul、nacos、zookeeper等
 * Nginx&Docker&Jenkins自动化部署
 * 测试示例：消息队列RabbitMQ、Nacos分布式配置、服务发现、Quartz管理器、Websocket单点和MQ集群、Elastic全文搜索、dubbo服务
+* IM即时聊天模块
 
 ### 环境与配置
 * Jdk 1.8
@@ -75,6 +76,9 @@ made by @jackson-rick   <br>
 ---
 
 ### 更新日志：
+* v5.9.3 `20200812`
+    * 1.聊天功能优化
+    * 2.其他优化
 * v5.9.2 `20200806`
     * 1.新增即时聊天模块 [前往](jframe-demos/im/README.md)
 * v5.9.1 `20200624`

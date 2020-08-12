@@ -28,12 +28,15 @@
         <div class="x-chat-content"></div>
         <div class="x-chat-footer">
             <div class="x-list-item x-chat-ops">
-                <div class="x-chat-ops-icon ib">
+                <div class="x-chat-ops-icon ib emojier">
                     <div class="ib"><i class="fa fa-smile-o"></i></div>
                 </div>
                 <label for="uploadImage" class="x-chat-ops-icon ib"><i class="fa fa-picture-o"></i><input id="uploadImage" type="file" class="hide"></label>
-                <div class="recorder">
-                    <div><i class="fa fa-microphone"></i></div>
+                <div class="x-chat-ops-icon recorder">
+                    <i class="fa fa-microphone"></i>
+                </div>
+                <div class="x-chat-ops-icon linker">
+                    <i class="fa fa-link"></i>
                 </div>
 
                 <div class="x-list-item x-chat-send">
@@ -54,7 +57,7 @@
         </li>
     </ul>
 </div>
-<div tabindex="-1" class="ant-modal-wrap" role="dialog">
+<div id="record-modal" class="ant-modal-wrap" role="dialog">
     <div class="ant-modal-mask"></div>
     <div class="ant-modal">
         <div class="ant-modal-content">
@@ -91,6 +94,29 @@
                 </div>
             </div>
         </div>
+    </div>
+</div>
+<div id="link-modal" class="ant-modal-wrap" role="dialog">
+    <div class="ant-modal-mask"></div>
+    <div class="ant-modal">
+        <form id="link-form">
+            <div class="link-form-item">
+                <label>链接<input type="text" class="link-form-input" id="link-form-content" placeholder="链接地址，http开头"></label>
+            </div>
+            <div class="link-form-item">
+                <label>说明<input type="text" class="link-form-input" id="link-form-extra" placeholder="链接说明"></label>
+            </div>
+            <div class="link-form-item" style="text-align: center;">
+                <button class="link-form-button" id="link-form-button" type="button">发送</button>
+            </div>
+        </form>
+    </div>
+</div>
+<div id="iframe-modal" class="ant-modal-wrap" role="dialog">
+    <div class="ant-modal-mask"></div>
+    <div class="ant-modal-iframe">
+        <iframe class="modal-iframe" src=""></iframe>
+        <div class="modal-iframe-close">关闭</div>
     </div>
 </div>
 

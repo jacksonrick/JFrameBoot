@@ -23,13 +23,9 @@ function getChatList() {
             "loginId": userId
         },
         success: function (data) {
-            if (data.length == 0) {
-                $(".menu-list-none").show();
-            } else {
-                data.forEach(function (chat) {
-                    addChatElement(chat, false);
-                });
-            }
+            data.forEach(function (chat) {
+                addChatElement(chat, false);
+            });
         }
     });
 }
@@ -44,6 +40,7 @@ function addChatElement(chat, prepend) {
     if (!chat.lastMsg) {
         return;
     }
+    $(".menu-list-none").hide();
     var html = '<li class="ant-menu-item" data-chatno="' + chat.chatNo + '" data-otherid="' + chat.otherId + '" data-othername="'
         + chat.otherName + '" data-unread="' + chat.unread + '" style="padding-left: 24px;">' +
         '<div class="nav-text"><div class="nav-text-left"><span style="vertical-align: middle;">' + chat.otherName + (chat.online ? '<i class="fa fa-circle fa-online"></i>' : '') + '</span>';
@@ -132,6 +129,9 @@ function addMsgElement(type, content, toId, readed, time, prepend, extra) {
     } else if (type == 'aud') {
         var sec = typeof (extra) == "undefined" ? 0 : extra;
         html += '<div class="x-message-audio"><div class="audio-btn" data-sec="' + sec + '" data-src="' + content + '"><i class="fa fa-volume-up"></i><span>' + sec + '\'\'</span></div></div>';
+    } else if (type == 'link') {
+        var extraTxt = typeof (extra) == "undefined" ? "链接" : (extra == "" ? "链接" : extra);
+        html += '<p class="x-message-link" data-link="' + content + '"><i class="fa fa-link"></i> ' + extraTxt + '</p>';
     }
     html += '</div>';
     if (userId == toId) {
@@ -150,7 +150,7 @@ function addMsgElement(type, content, toId, readed, time, prepend, extra) {
 
 /**
  * 发送消息
- * @param {*} type txt文本｜pic图片|aud语音
+ * @param {*} type txt文本｜pic图片|aud语音|link链接
  * @param {*} content
  * @param {*} extra 额外数据
  */
@@ -207,6 +207,8 @@ function updateChatItem(inChatNo, fromId, content, msgType, receive) {
         ele.find(".nav-text-desc").text("[图片]");
     } else if (msgType == 'aud') {
         ele.find(".nav-text-desc").text("[语音]");
+    } else if (msgType == 'link') {
+        ele.find(".nav-text-desc").text("[链接]");
     }
     if (receive && inChatNo != chatNo) {
         // 如果是接收，并且当前对话不是该编号
@@ -331,7 +333,7 @@ function resetAudio() {
     stopWave();
     $(".hold-btn-rec").removeClass("active");
     $(".hold-btn-cancel").hide();
-    $(".ant-modal-wrap").hide();
+    $("#record-modal").hide();
     clearInterval(recTimer);
     recSec = 0;
     recording = false;
@@ -441,6 +443,10 @@ $(function () {
         }
     });
 
+    $(".menu-list").on("click", ".menu-list-none", function () {
+        $(".menu-list").animate({"left": "-100%"});
+    });
+
     // 返回
     $(".fl").click(function () {
         $(".menu-list").animate({"left": "0px"});
@@ -454,7 +460,7 @@ $(function () {
     });
 
     // Emoji
-    $(".x-chat-ops-icon").click(function () {
+    $(".emojier").click(function () {
         $(".ant-dropdown-emoji-content").fadeToggle();
     });
 
@@ -479,7 +485,35 @@ $(function () {
 
     // 录音弹窗
     $(".recorder").click(function () {
-        $(".ant-modal-wrap").show();
+        $("#record-modal").show();
+    });
+
+    $(".linker").click(function () {
+        $("#link-modal").show();
+    });
+
+    // 发送链接
+    $("#link-form-button").click(function () {
+        var content = $("#link-form-content").val();
+        var extra = $("#link-form-extra").val();
+        if (content == "") {
+            showAlert("请输入链接地址");
+            return;
+        }
+        send('link', content, extra);
+        $(".ant-modal-wrap").hide();
+        $("#link-form-content").val('');
+        $("#link-form-extra").val('');
+    });
+
+    // iframe显示链接
+    $(".x-chat-content").on("click", ".x-message-link", function () {
+        $("#iframe-modal").show();
+        var oldLink = $(".modal-iframe").attr("src");
+        var link = $(this).data("link");
+        if (oldLink != link) {
+            $(".modal-iframe").attr("src", link);
+        }
     });
 
     // 取消录音
@@ -535,7 +569,7 @@ $(function () {
         }
     });
 
-    $(".ant-modal-mask").click(function () {
+    $(".ant-modal-mask, .modal-iframe-close").click(function () {
         $(".ant-modal-wrap").hide();
     });
 
