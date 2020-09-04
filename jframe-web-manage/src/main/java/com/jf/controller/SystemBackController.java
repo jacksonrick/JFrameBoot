@@ -66,13 +66,13 @@ public class SystemBackController extends BaseController {
     @Resource
     private SysConfig config;
 
-    @RequestMapping("file")
+    @RequestMapping("/file")
     @AuthPassport
     public String file() {
         return "system/file";
     }
 
-    @RequestMapping("icons")
+    @RequestMapping("/icons")
     @AuthPassport(right = false)
     public String icons() {
         return "system/icons";
@@ -228,7 +228,7 @@ public class SystemBackController extends BaseController {
     /**
      * @return
      */
-    @RequestMapping("module")
+    @RequestMapping("/module")
     @AuthPassport
     public String module() {
         return "system/module";

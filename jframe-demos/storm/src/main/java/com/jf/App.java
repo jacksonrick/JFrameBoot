@@ -10,7 +10,11 @@ import org.apache.storm.topology.TopologyBuilder;
 import org.apache.storm.tuple.Fields;
 
 /**
- * Hello world!
+ * Created with IntelliJ IDEA.
+ * Description: 词频统计
+ * User: xujunfei
+ * Date: 2019-08-05
+ * Time: 11:20
  */
 public class App {
 
@@ -25,6 +29,7 @@ public class App {
         // 配置
         Config config = new Config();
         config.setDebug(false);
+        // 本地模式运行
         LocalCluster cluster = new LocalCluster();
 
         // 提交拓扑图，会一直轮询执行

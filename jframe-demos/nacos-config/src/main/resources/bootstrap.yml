@@ -10,4 +10,4 @@
 #        group: MYGROUP
 #        file-extension: yaml
 
-# dataId格式：${spring.application.name}-${spring.profile.active}.${file-extension}
+# dataId格式：${spring.application.name}-${spring.profiles.active}.${file-extension}

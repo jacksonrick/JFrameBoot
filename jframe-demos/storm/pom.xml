@@ -32,6 +32,7 @@
 
 
     <build>
+        <finalName>storm-demo</finalName>
         <plugins>
             <plugin>
                 <artifactId>maven-assembly-plugin</artifactId>

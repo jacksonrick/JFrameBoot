@@ -1,11 +1,14 @@
 package com.jf;
 
 import org.springframework.security.core.Authentication;
+import org.springframework.security.oauth2.provider.authentication.OAuth2AuthenticationDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
@@ -44,6 +47,16 @@ public class SsoController {
     public Authentication user(Authentication user) {
         System.out.println("user: " + user.getName());
         return user;
+    }
+
+    // 获取token
+    @RequestMapping("/token")
+    @ResponseBody
+    public Map<String, String> token(Authentication user) {
+        OAuth2AuthenticationDetails details = (OAuth2AuthenticationDetails) user.getDetails();
+        Map<String, String> map = new HashMap<String, String>();
+        map.put("token", details.getTokenValue());
+        return map;
     }
 
 }

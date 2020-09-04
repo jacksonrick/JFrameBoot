@@ -345,7 +345,7 @@ function resetAudio() {
 
 // ws连接
 function connect() {
-    var socket = "ws://" + window.location.host + "/websocket";
+    var socket = (window.location.protocol == "https:" ? "wss://" : "ws://") + window.location.host + "/websocket";
     stompClient = Stomp.client(socket);
     stompClient.debug = false;
     var headers = {

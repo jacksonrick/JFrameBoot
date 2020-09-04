@@ -1,7 +1,5 @@
 package com.jf.controller;
 
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -13,15 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
  * Time: 14:59
  */
 @RestController
-public class TestController extends ResourceServerConfigurerAdapter {
-
-    @Override
-    public void configure(HttpSecurity http) throws Exception {
-        http
-                .authorizeRequests().antMatchers("/monitor/**").authenticated() // 只拦截/monitor/**
-                .anyRequest().permitAll()
-        ;
-    }
+public class TestController  {
 
     @RequestMapping("/")
     public String index() {
@@ -31,7 +21,6 @@ public class TestController extends ResourceServerConfigurerAdapter {
 
     @RequestMapping("/login")
     public String login(String username, String password) {
-
         return "";
     }
 

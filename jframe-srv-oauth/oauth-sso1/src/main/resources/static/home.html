@@ -9,14 +9,15 @@
 <p>
     模拟前后端分离的场景：访问后台接口报401，前端跳转到固定的接口，登陆成功回跳该接口，并由接口重定向到/sso/login<br>
     使用代理（如Nginx）解决：
-        1.所有接口加上前缀：/api，Nginx配置/api代理路径
-        2.如果重定向次数过多，修改server.servlet.session.cookie.name: OAUTH2SESSION
-        3.尽量使两个服务访问的IP或域名不同，以保证cookie不冲突
+    1.所有接口加上前缀：/api，Nginx配置/api代理路径
+    2.如果重定向次数过多，修改server.servlet.session.cookie.name: OAUTH2SESSION
+    3.尽量使两个服务访问的IP或域名不同，以保证cookie不冲突
 </p>
 
 <div>
     <button id="btn1">请求需要授权接口</button>
     <button id="btn2">请求不需要授权接口</button>
+    <button id="btn3">请求其他系统接口</button>
     <a href="http://127.0.0.1:8092/home.html" target="_blank">访问SSO客户端2</a>
     <a href="/sso/logout">退出系统</a>
 </div>
@@ -37,7 +38,21 @@
         $("#btn2").click(function () {
             $.get("/test/get", {}, function (data) {
                 console.log(data);
-            }, "json")
+            }, "text")
+        });
+
+        $("#btn3").click(function () {
+            // 先获取token
+            $.get("/token", {}, function (data) {
+                console.log(data);
+                $.get("http://192.168.1.129:8010/monitor/a?access_token=" + data.token, {}, function (data) {
+                    console.log(data);
+                }, "text");
+            }, "json").error(function (e) {
+                if (e.status == 401) {
+                    alert("未登陆");
+                }
+            });
         });
     });
 </script>

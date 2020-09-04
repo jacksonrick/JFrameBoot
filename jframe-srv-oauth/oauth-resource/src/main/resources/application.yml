@@ -6,9 +6,9 @@ security:
     resource:
       token-info-uri: ${auth-server}/oauth/check_token
       user-info-uri: ${auth-server}/authentication/user
-#    client:
-#      client-id: client
-#      client-secret: 123456
+    client:
+      client-id: client
+      client-secret: 123456
 #      grant-type: client_credentials
 #      user-authorization-uri: ${auth-server}/oauth/authorize
 #      access-token-uri: ${auth-server}/oauth/token
